@@ -8,6 +8,7 @@
     "retention_days": 182,
     "demo_offset_days": 0,
     "demo_mode": true,
+    "snapshot_weekday": 1,
     "escalation_contacts": {
       "general": [
         "HR (Nurul Aisyah): 03-5555 0100",

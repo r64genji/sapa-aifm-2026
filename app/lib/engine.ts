@@ -15,6 +15,7 @@ import {
   type Person,
 } from "@/lib/directory";
 import { now } from "@/lib/clock";
+import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 import { packs, type CommandId, type Language } from "@/lib/packs";
 
 export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[] };
@@ -129,7 +130,12 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (!person) {
     if (input.kind === "text") {
       const [head, token] = input.text.trim().split(/\s+/);
-      if (head.toLowerCase().split("@")[0] === "/start" && token) return join(chatId, token);
+      if (head.toLowerCase().split("@")[0] === "/start" && token) {
+        if (!token.startsWith(MANAGER_TOKEN_PREFIX)) return join(chatId, token);
+        return {
+          replies: [{ text: (await bindManager(token, chatId)) ? packs.en.managerLinked : packs.en.invalidInvite }],
+        };
+      }
     }
     return { replies: [{ text: packs.en.start }] };
   }
