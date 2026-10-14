@@ -142,5 +142,16 @@
       "safety_hazard": ["unsafe machine", "no safety guard", "fire exit is locked", "fire exit locked", "got injured"],
       "wage_legal": ["salary not paid", "not paid my salary", "no salary for", "haven't been paid"]
     }
+  },
+  "exitPrompt": "If you resign one day, may HR ask you one short question about why?",
+  "exitYes": "Yes, that's fine",
+  "exitNo": "No, I would rather not",
+  "exitSaved": "Saved.",
+  "end": "Your check-ins have ended. Your answers are kept until {date}. Type DELETE to remove them now.",
+  "exit": {
+    "question": "One last question, if you are willing: what was the main reason you left?",
+    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Belonging", "ONBOARDING_TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
+    "open": "Is there anything you want to add? Please type it.",
+    "thanks": "Thank you. Sapa will not message you again."
   }
 }

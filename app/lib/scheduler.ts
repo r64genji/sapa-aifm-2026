@@ -1,7 +1,8 @@
 import { checkinReminder, checkinStart } from "@/lib/checkin";
 import { now } from "@/lib/clock";
 import { offerReply } from "@/lib/offers";
-import type { Language } from "@/lib/packs";
+import { exitQuestion } from "@/lib/exit";
+import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 
@@ -28,7 +29,15 @@ export async function dispatch() {
   for (const offer of offers as { chat_id: number; language: Language }[]) {
     await send(offer.chat_id, offerReply(offer.language));
   }
-  return claims.length + offers.length;
+  const { data: left, error: leftError } = await createAdminClient().rpc("left_claim", {
+    at: (await now()).toISOString(),
+  });
+  if (leftError) throw leftError;
+  for (const person of left as { chat_id: number; language: Language; end_date: string; ask_exit: boolean }[]) {
+    await send(person.chat_id, { text: packs[person.language].end.replace("{date}", person.end_date) });
+    if (person.ask_exit) await send(person.chat_id, exitQuestion(person.language));
+  }
+  return claims.length + offers.length + left.length;
 }
 
 export async function scheduleFor(personId: string) {

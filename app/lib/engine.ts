@@ -1,4 +1,5 @@
 import { checkinButton, checkinText } from "@/lib/checkin";
+import { exitButton, exitText, exitTickPrompt, needsExitTick, setExitTick } from "@/lib/exit";
 import { answerOffer } from "@/lib/offers";
 import { scheduleFor } from "@/lib/scheduler";
 import {
@@ -110,7 +111,12 @@ async function press(person: Person, id: string, value: string, languages: Langu
     (value === "hr_only" || value === "share_with_manager")
   ) {
     await setScope(person, value, pack.consentVersion);
-    return { replies: [{ text: pack.visibilitySaved }] };
+    const saved = { text: pack.visibilitySaved };
+    return { replies: (await needsExitTick(person)) ? [saved, exitTickPrompt(person.language)] : [saved] };
+  }
+  if (id === "exitok" && person.state === "active") {
+    const replies = await setExitTick(person, value);
+    if (replies) return { replies };
   }
   if (id === "offer" && person.state === "active" && (value === "yes" || value === "no_thanks")) {
     const replies = await answerOffer(person, value);
@@ -138,6 +144,15 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (command === "stop") {
     await stopPerson(chatId);
     return { replies: [{ text: packs[person.language].stopped }] };
+  }
+  if (person.state === "left") {
+    let replies: Reply[] | null = null;
+    if (input.kind === "button") {
+      if (input.id === "exit") replies = await exitButton(person, input.value);
+    } else if (!command) {
+      replies = await exitText(person, input.text);
+    }
+    return replies ? { replies } : none;
   }
   if (person.state === "declined") return none;
   if (input.kind === "button") return press(person, input.id, input.value, languages);
