@@ -16,6 +16,14 @@ This is the only test command, and the only thing that may start or reset the lo
 - Each test file resets to the seed first through `POST /api/demo/reset`, the same reset the demo uses, and freezes the clock with `freezeClock`. With `SAPA_TEST=1` the clock reads the `test_clock` row; that table and code path exist only in the test build.
 - With `SAPA_TEST=1` the app refuses to start if any base URL is not on localhost. `NODE_ENV=test` stops Next from loading `.env.local`, so no real key or token reaches a test run.
 
+## Eval runners
+
+```bash
+npm run measure -- classify|qa|reliability --model gemini|deepseek [--split dev|test]
+```
+
+Not part of `npm test`: these call the real model and need real keys in `.env.local`. Exactly one `--model` is required and there is no fallback (R38); a failed call is recorded as failed. The sets are hand-written data in `../eval/sets/` (`classify.jsonl` with a dev/test `split` per item, `qa.jsonl`, `reliability-adversarial.jsonl`). Results, with every response, are written to `../eval/results/`. Set `EVAL_ORGANISATION_ID` to also write `ai_usage` rows tagged with the run ID. Run the test split once per prompt version.
+
 ## Data and secrets
 
 - Seed and pack texts are data files in `data/`. The seed is loaded only by the demo reset.

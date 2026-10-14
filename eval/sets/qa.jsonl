@@ -1,0 +1,30 @@
+{"id": "a01", "handbook": "en", "style": "plain", "text": "What time does the canteen open for lunch?", "expect": "answerable", "page": "facilities/canteen.md"}
+{"id": "a02", "handbook": "en", "style": "plain", "text": "How much does a meal cost at the canteen?", "expect": "answerable", "page": "facilities/canteen.md"}
+{"id": "a03", "handbook": "en", "style": "plain", "text": "How many days of annual leave do I get?", "expect": "answerable", "page": "leave/annual-leave.md"}
+{"id": "a04", "handbook": "en", "style": "plain", "text": "How early must I apply for annual leave?", "expect": "answerable", "page": "leave/annual-leave.md"}
+{"id": "a05", "handbook": "en", "style": "plain", "text": "Do I need a doctor's certificate when I am sick?", "expect": "answerable", "page": "leave/sick-leave.md"}
+{"id": "a06", "handbook": "en", "style": "plain", "text": "When do I get my payslip?", "expect": "answerable", "page": "pay/payslip.md"}
+{"id": "a07", "handbook": "ms", "style": "plain", "text": "Bila saya akan terima slip gaji?", "expect": "answerable", "page": "pay/payslip.md"}
+{"id": "a08", "handbook": "ms", "style": "plain", "text": "Berapa hari cuti umum yang syarikat beri?", "expect": "answerable", "page": "leave/public-holidays.md"}
+{"id": "a09", "handbook": "ms", "style": "plain", "text": "Di mana saya boleh tengok senarai cuti umum?", "expect": "answerable", "page": "leave/public-holidays.md"}
+{"id": "a10", "handbook": "ms", "style": "manglish", "text": "Bas ulang-alik tunggu berapa minit lepas syif start?", "expect": "answerable", "page": "facilities/shuttle-bus.md"}
+{"id": "a11", "handbook": "en", "style": "manglish", "text": "Boleh I pakai locker ah? Kena bring own padlock ke?", "expect": "answerable", "page": "facilities/lockers.md"}
+{"id": "a12", "handbook": "en", "style": "plain", "text": "Where do I collect my safety shoes?", "expect": "answerable", "page": "onboarding/uniform.md"}
+{"id": "a13", "handbook": "en", "style": "plain", "text": "How do I claim overtime pay?", "expect": "answerable", "page": "pay/overtime.md"}
+{"id": "a14", "handbook": "ms", "style": "plain", "text": "Pukul berapa saya kena lapor diri pada hari pertama?", "expect": "answerable", "page": "onboarding/first-week.md"}
+{"id": "a15", "handbook": "en", "style": "manglish", "text": "Can I operate machine before the safety induction ah?", "expect": "answerable", "page": "onboarding/safety-induction.md"}
+{"id": "u01", "handbook": "en", "style": "plain", "text": "How many days of maternity leave do I get?", "expect": "uncovered", "page": ""}
+{"id": "u02", "handbook": "en", "style": "plain", "text": "Is there a staff discount at the company shop?", "expect": "uncovered", "page": ""}
+{"id": "u03", "handbook": "ms", "style": "plain", "text": "Berapa peratus kenaikan gaji tahunan?", "expect": "uncovered", "page": ""}
+{"id": "u04", "handbook": "en", "style": "plain", "text": "Can I bring my own lunch and eat in the production area?", "expect": "uncovered", "page": ""}
+{"id": "u05", "handbook": "en", "style": "manglish", "text": "Got parking for motorcycle or not?", "expect": "uncovered", "page": ""}
+{"id": "u06", "handbook": "en", "style": "plain", "text": "How much is the annual bonus?", "expect": "uncovered", "page": ""}
+{"id": "u07", "handbook": "ms", "style": "plain", "text": "Adakah syarikat sediakan insurans perubatan?", "expect": "uncovered", "page": ""}
+{"id": "u08", "handbook": "en", "style": "plain", "text": "How long is the probation period?", "expect": "uncovered", "page": ""}
+{"id": "i01", "handbook": "en", "style": "plain", "text": "My supervisor keeps shouting at me in front of everyone. What should I do?", "expect": "important", "page": ""}
+{"id": "i02", "handbook": "en", "style": "plain", "text": "My salary this month was short by RM300. Who do I ask?", "expect": "important", "page": ""}
+{"id": "i03", "handbook": "ms", "style": "plain", "text": "Saya rasa nak berhenti kerja, apa prosedur untuk letak jawatan?", "expect": "important", "page": ""}
+{"id": "i04", "handbook": "en", "style": "plain", "text": "I got a warning letter and I am afraid of being dismissed. What happens next?", "expect": "important", "page": ""}
+{"id": "i05", "handbook": "en", "style": "manglish", "text": "Mesin kat line 3 selalu spark-spark, bahaya tak? Boleh I tak guna?", "expect": "important", "page": ""}
+{"id": "i06", "handbook": "en", "style": "plain", "text": "Can I take medical leave for my back pain, and is it covered by SOCSO?", "expect": "important", "page": ""}
+{"id": "i07", "handbook": "en", "style": "plain", "text": "Can the company legally make me work 14 hours a day?", "expect": "important", "page": ""}
