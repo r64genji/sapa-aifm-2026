@@ -67,6 +67,15 @@
         "text": "Is there anything about your first weeks that you would like HR to know? Please type your answer."
       }
     ],
+    "gotIt": "Got it. Your answer is saved and HR will look at it.",
+    "probes": [
+      { "id": "GENERIC_MORE", "text": "Could you tell me a bit more about that?" },
+      { "id": "GENERIC_HELP", "text": "What would help with that?" },
+      { "id": "ROLE_CLARITY", "text": "Which tasks or priorities are unclear to you right now?" },
+      { "id": "MANAGER_SUPPORT", "text": "What support would you like from your manager?" },
+      { "id": "BELONGING", "text": "What would help you feel more part of the team?" },
+      { "id": "WORKLOAD", "text": "Which part of your workload is hardest to manage?" }
+    ],
     "sequence": [
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",

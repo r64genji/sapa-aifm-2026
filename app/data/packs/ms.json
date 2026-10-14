@@ -67,6 +67,15 @@
         "text": "Adakah apa-apa tentang minggu-minggu pertama anda yang anda mahu HR tahu? Sila taip jawapan anda."
       }
     ],
+    "gotIt": "Baik, difahami. Jawapan anda telah disimpan dan HR akan melihatnya.",
+    "probes": [
+      { "id": "GENERIC_MORE", "text": "Boleh ceritakan sedikit lagi tentang perkara itu?" },
+      { "id": "GENERIC_HELP", "text": "Apakah yang boleh membantu dalam hal itu?" },
+      { "id": "ROLE_CLARITY", "text": "Tugasan atau keutamaan mana yang masih tidak jelas bagi anda sekarang?" },
+      { "id": "MANAGER_SUPPORT", "text": "Apakah sokongan yang anda mahu daripada pengurus anda?" },
+      { "id": "BELONGING", "text": "Apakah yang boleh membantu anda berasa lebih menjadi sebahagian daripada pasukan?" },
+      { "id": "WORKLOAD", "text": "Bahagian mana dalam beban kerja anda yang paling sukar diuruskan?" }
+    ],
     "sequence": [
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",

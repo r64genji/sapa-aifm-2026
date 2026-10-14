@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { db, freezeClock, hrRequest, link, resetDemo, say, sentTo, tap } from "./helpers.ts";
+import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -36,6 +36,7 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   await tap(live, "4");
   await tap(live, "3");
   await tap(live, "5");
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [

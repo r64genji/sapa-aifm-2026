@@ -41,6 +41,9 @@ export OMNIROUTE_BASE_URL=http://127.0.0.1:$FAKE_MODEL_PORT/omniroute/v1
 export OMNIROUTE_API_KEY=test-omniroute-key
 export DEEPSEEK_BASE_URL=http://127.0.0.1:$FAKE_MODEL_PORT/deepseek
 export DEEPSEEK_API_KEY=test-deepseek-key
+export GEMINI_MODEL_ID=test-gemini
+export GEMINI_MODEL_ID_MEDIUM=test-gemini-medium
+export DEEPSEEK_MODEL_ID=test-deepseek
 export DISPATCH_SECRET=test-dispatch-secret
 export SEED_USER_PASSWORD=test-seed-password
 export REPLY_ENCRYPTION_KEY=c2FwYS10ZXN0LXJlcGx5LWVuY3J5cHRpb24ta2V5ISE=

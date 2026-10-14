@@ -17,7 +17,37 @@ export async function resetDemo() {
   });
   if (!res.ok) throw new Error(`demo reset failed: ${res.status}`);
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
+  await fetch(`${modelUrl}/calls`, { method: "DELETE" });
 }
+
+export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
+
+type ModelScript = { kind: "json"; content: unknown } | { kind: "text"; content: string } | { kind: "error"; status: number };
+
+export async function scriptModel(provider: "omniroute" | "deepseek", scripts: ModelScript[]) {
+  await fetch(`${modelUrl}/${provider}/script`, { method: "POST", body: JSON.stringify(scripts) });
+}
+
+export async function modelCalls(provider: "omniroute" | "deepseek") {
+  const res = await fetch(`${modelUrl}/calls`);
+  const calls: { provider: string; body: { messages: { content: string }[] } }[] = await res.json();
+  return calls.filter((call) => call.provider === provider);
+}
+
+export const classifierTag = (fields: Record<string, unknown> = {}) => ({
+  drivers: ["ROLE_CLARITY"],
+  context_tags: [],
+  positive: false,
+  concern_level: "needs_follow_up",
+  escalate: false,
+  escalate_category: "none",
+  evidence_quote: "tak tahu mana nak buat dulu",
+  summary: "The employee does not know which task to do first.",
+  confidence: "high",
+  uncertain: false,
+  probe_id: "none",
+  ...fields,
+});
 
 export async function freezeClock(iso: string) {
   const { error } = await db.from("test_clock").upsert({ id: true, now: iso });

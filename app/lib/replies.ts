@@ -1,3 +1,4 @@
+import { tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -22,4 +23,26 @@ export async function readReplies(organisationId: string, actor: string) {
     text: decrypt(row.text_encrypted!),
     created_at: row.created_at,
   }));
+}
+
+export async function retryReply(organisationId: string, responseId: string) {
+  const db = createAdminClient();
+  const { data, error } = await db
+    .from("responses")
+    .select("text_encrypted")
+    .eq("organisation_id", organisationId)
+    .eq("id", responseId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data?.text_encrypted) return { error: "Not found", code: 404 };
+  const { data: tag, error: tagError } = await db
+    .from("ai_tags")
+    .select("status")
+    .eq("response_id", responseId)
+    .maybeSingle();
+  if (tagError) throw tagError;
+  if (tag?.status !== "awaiting_ai" && tag?.status !== "needs_review") {
+    return { error: "Nothing to retry", code: 409 };
+  }
+  return { status: (await tagReply(organisationId, responseId, decrypt(data.text_encrypted))).status };
 }

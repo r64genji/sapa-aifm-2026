@@ -1,3 +1,4 @@
+import { tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { encrypt } from "@/lib/crypto";
 import type { Person } from "@/lib/directory";
@@ -5,7 +6,10 @@ import type { Reply } from "@/lib/engine";
 import { packs } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-type Open = { id: string; progress: number };
+type Open = { id: string; progress: number; touchpoint: number; probes_used: number };
+
+const probeCap = (touchpoint: number) => (touchpoint <= 7 ? 1 : 2);
+const PROBE_WINDOW_MS = 48 * 3600 * 1000;
 
 export function questionReply(person: Pick<Person, "language">, progress: number): Reply {
   const { checkin } = packs[person.language];
@@ -28,7 +32,7 @@ export function checkinReminder(person: Pick<Person, "language">, progress: numb
 async function openCheckin(person: Person) {
   const { data, error } = await createAdminClient()
     .from("checkin_schedule")
-    .select("id, progress")
+    .select("id, progress, touchpoint, probes_used")
     .eq("person_id", person.id)
     .in("status", ["sent", "reminded"])
     .order("due_at", { ascending: false })
@@ -38,31 +42,75 @@ async function openCheckin(person: Person) {
   return data;
 }
 
+async function insertResponse(
+  person: Person,
+  scheduleId: string,
+  questionId: string,
+  scale: number | null,
+  text: string | null,
+) {
+  const { data, error } = await createAdminClient()
+    .from("responses")
+    .insert({
+      organisation_id: person.organisation_id,
+      person_id: person.id,
+      schedule_id: scheduleId,
+      question_id: questionId,
+      scale_value: scale,
+      text_encrypted: text === null ? null : encrypt(text),
+      language: person.language,
+      created_at: (await now()).toISOString(),
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
 async function store(person: Person, open: Open, scale: number | null, text: string | null) {
   const { checkin } = packs[person.language];
-  const db = createAdminClient();
-  const at = (await now()).toISOString();
   const last = open.progress === checkin.sequence.length - 1;
-  const { data, error } = await db
+  const { data, error } = await createAdminClient()
     .from("checkin_schedule")
     .update({ progress: open.progress + 1, ...(last ? { status: "answered" } : {}) })
     .eq("id", open.id)
     .eq("progress", open.progress)
     .select("id");
   if (error) throw error;
-  if (data.length === 0) return false;
-  const { error: insertError } = await db.from("responses").insert({
-    organisation_id: person.organisation_id,
-    person_id: person.id,
-    schedule_id: open.id,
-    question_id: checkin.sequence[open.progress],
-    scale_value: scale,
-    text_encrypted: text === null ? null : encrypt(text),
-    language: person.language,
-    created_at: at,
-  });
-  if (insertError) throw insertError;
-  return true;
+  if (data.length === 0) return null;
+  return insertResponse(person, open.id, checkin.sequence[open.progress], scale, text);
+}
+
+async function openProbe(person: Person) {
+  const { data, error } = await createAdminClient()
+    .from("checkin_schedule")
+    .select("id, progress, touchpoint, probes_used, probe_id, probe_at")
+    .eq("person_id", person.id)
+    .eq("status", "answered")
+    .not("probe_id", "is", null)
+    .order("due_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<Open & { probe_id: string; probe_at: string }>();
+  if (error) throw error;
+  if (!data || Date.parse(data.probe_at) + PROBE_WINDOW_MS <= (await now()).getTime()) return null;
+  return data;
+}
+
+async function conclude(person: Person, open: Open, responseId: string, text: string): Promise<Reply[]> {
+  const { checkin } = packs[person.language];
+  const result = await tagReply(person.organisation_id, responseId, text);
+  if (result.status === "awaiting_ai") return [{ text: checkin.gotIt }];
+  const probe =
+    result.status === "ok" && !result.tag.escalate && open.probes_used < probeCap(open.touchpoint)
+      ? checkin.probes.find((p) => p.id === result.tag.probe_id)
+      : undefined;
+  if (!probe) return [{ text: checkin.thanks }];
+  const { error } = await createAdminClient()
+    .from("checkin_schedule")
+    .update({ probe_id: probe.id, probe_at: (await now()).toISOString(), probes_used: open.probes_used + 1 })
+    .eq("id", open.id);
+  if (error) throw error;
+  return [{ text: probe.text }];
 }
 
 export async function checkinButton(person: Person, value: string): Promise<Reply[] | null> {
@@ -80,10 +128,26 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
 
 export async function checkinText(person: Person, text: string): Promise<Reply[] | null> {
   const open = await openCheckin(person);
-  if (!open) return null;
+  if (!open) return answerProbe(person, text);
   const { checkin } = packs[person.language];
   const question = checkin.questions.find((q) => q.id === checkin.sequence[open.progress])!;
   if (question.type !== "open") return [questionReply(person, open.progress)];
-  if (!(await store(person, open, null, text))) return null;
-  return [{ text: checkin.thanks }];
+  const responseId = await store(person, open, null, text);
+  if (!responseId) return null;
+  return conclude(person, open, responseId, text);
+}
+
+async function answerProbe(person: Person, text: string): Promise<Reply[] | null> {
+  const open = await openProbe(person);
+  if (!open) return null;
+  const { data, error } = await createAdminClient()
+    .from("checkin_schedule")
+    .update({ probe_id: null })
+    .eq("id", open.id)
+    .eq("probe_id", open.probe_id)
+    .select("id");
+  if (error) throw error;
+  if (data.length === 0) return null;
+  const responseId = await insertResponse(person, open.id, open.probe_id, null, text);
+  return conclude(person, open, responseId, text);
 }
