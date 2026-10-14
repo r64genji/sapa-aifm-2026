@@ -1,0 +1,15 @@
+[
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000201",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "code_name": "Live hire",
+    "team": "Production",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "start_date": "2026-10-02",
+    "role": "Production operator",
+    "language": "en",
+    "invite_token": "live-hire-invite",
+    "invite_expires_at": "2026-10-28T01:00:00Z",
+    "state": "invited"
+  }
+]

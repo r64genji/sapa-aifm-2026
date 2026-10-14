@@ -1,0 +1,10 @@
+{
+  "update_id": "{{update_id}}",
+  "message": {
+    "message_id": "{{update_id}}",
+    "from": { "id": "{{chat_id}}", "is_bot": false, "first_name": "Hire", "language_code": "en" },
+    "chat": { "id": "{{chat_id}}", "first_name": "Hire", "type": "private" },
+    "date": 1792018900,
+    "text": "{{text}}"
+  }
+}

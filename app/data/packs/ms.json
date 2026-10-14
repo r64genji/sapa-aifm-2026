@@ -1,0 +1,29 @@
+{
+  "name": "Bahasa Malaysia",
+  "start": "Hai, saya Sapa, pembantu semakan untuk pekerja baharu. Sila guna pautan jemputan daripada HR untuk menyertai.",
+  "invalidInvite": "Pautan jemputan ini tidak boleh digunakan. Sila minta pautan baharu daripada HR.",
+  "languagePrompt": "Sila pilih bahasa anda.",
+  "consentVersion": "ms-2026-10-15",
+  "consent": "Sapa akan bertanya beberapa soalan pendek sepanjang enam bulan pertama anda. Penyertaan adalah sukarela. Anda memilih siapa yang boleh membaca jawapan anda, dan anda boleh menaip BERHENTI pada bila-bila masa untuk menamatkan semuanya. Adakah anda bersetuju untuk menyertai?",
+  "agree": "Saya setuju",
+  "decline": "Tidak, terima kasih",
+  "declined": "Tiada masalah. Anda tidak akan menerima mesej lagi daripada Sapa.",
+  "visibilityPrompt": "Terima kasih. Siapa yang boleh membaca jawapan anda? Lalai ialah HR sahaja.",
+  "visibilityHrOnly": "HR sahaja",
+  "visibilityHrManager": "HR dan pengurus saya",
+  "visibilitySaved": "Disimpan. Anda boleh menukarnya kemudian dengan /privasi.",
+  "stopped": "Anda telah berhenti. Sapa tidak akan menghantar mesej lagi kepada anda.",
+  "help": "Anda boleh menaip /bantuan, /berhenti, atau BERHENTI pada bila-bila masa. Sapa akan menghubungi anda untuk semakan seterusnya.",
+  "commands": {
+    "start": { "name": "start", "description": "Mulakan Sapa" },
+    "ask": { "name": "tanya", "description": "Tanya soalan tentang syarikat" },
+    "skip": { "name": "langkau", "description": "Langkau semakan ini" },
+    "privacy": { "name": "privasi", "description": "Lihat siapa boleh membaca jawapan anda" },
+    "language": { "name": "bahasa", "description": "Tukar bahasa anda" },
+    "stop": { "name": "berhenti", "description": "Hentikan semua mesej" },
+    "delete": { "name": "padam", "description": "Padam jawapan anda" },
+    "myanswers": { "name": "jawapansaya", "description": "Lihat jawapan anda sendiri" },
+    "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
+  },
+  "typedStop": "berhenti"
+}

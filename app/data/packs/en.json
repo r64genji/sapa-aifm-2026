@@ -1,3 +1,29 @@
 {
-  "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join."
+  "name": "English",
+  "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join.",
+  "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
+  "languagePrompt": "Please choose your language.",
+  "consentVersion": "en-2026-10-15",
+  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. You choose who can read your answers, and you can type STOP at any time to end everything. Do you agree to take part?",
+  "agree": "I agree",
+  "decline": "No thanks",
+  "declined": "No problem. You won't get any more messages from Sapa.",
+  "visibilityPrompt": "Thank you. Who may read your answers? HR only is the default.",
+  "visibilityHrOnly": "HR only",
+  "visibilityHrManager": "HR and my manager",
+  "visibilitySaved": "Saved. You can change this later with /privacy.",
+  "stopped": "You have stopped. Sapa will not send you any more messages.",
+  "help": "You can type /help, /stop, or STOP at any time. Sapa will message you for your next check-in.",
+  "commands": {
+    "start": { "name": "start", "description": "Start Sapa" },
+    "ask": { "name": "ask", "description": "Ask a question about the company" },
+    "skip": { "name": "skip", "description": "Skip this check-in" },
+    "privacy": { "name": "privacy", "description": "See who can read your answers" },
+    "language": { "name": "language", "description": "Change your language" },
+    "stop": { "name": "stop", "description": "Stop all messages" },
+    "delete": { "name": "delete", "description": "Delete your answers" },
+    "myanswers": { "name": "myanswers", "description": "See your own answers" },
+    "help": { "name": "help", "description": "Show help" }
+  },
+  "typedStop": "stop"
 }
