@@ -34,3 +34,6 @@ npm-debug.log*
 
 # large media: link instead of committing
 *.mov
+
+# python
+__pycache__/

@@ -2,11 +2,13 @@
 
 *As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/e40dee12-b432-4053-a659-68b1cc87acda)*
 
-Sapa runs as one Next.js app on Vercel, one Supabase project, and one chat bot built on Vercel's Chat SDK, with every AI call going to Gemini 3.8 Flash through the OmniRoute gateway. Almost everything is assembled from existing frameworks; the custom code is the product itself: the check-in script, the theme taxonomy, the prompts and the privacy rules from the [Sapa dossier](03-research-dossier.md).
+> **This is the original architecture.** The [implementation spec (05)](05-implementation-spec.md) wins where they disagree. Lines that conflicted with 05 (model route, tunnel, tracing, follow-ups, manager steps, demo) were updated on 15 Oct. For rules, data model, Q&A and the demo, read 05.
+
+Sapa runs as one Next.js app on Vercel, one Supabase project, and one chat bot built on Vercel's Chat SDK, with every AI call going to Gemini 3.8 Flash through the OmniRoute gateway, and DeepSeek V4.1 Flash as the direct fallback. Almost everything is assembled from existing frameworks; the custom code is the product itself: the check-in script, the theme taxonomy, the prompts and the privacy rules from the [Sapa dossier](03-research-dossier.md).
 
 ## 1. What the prototype must prove
 
-The prototype must run one complete loop live in under two minutes: a new hire answers a check-in on their phone, AI turns it into tagged themes, HR reviews and approves a drafted action, and the manager closes it.
+The prototype must run one complete loop live in under two minutes: a new hire answers a check-in on their phone, AI suggests tags and SQL counts them into themes, HR reviews the evidence and assigns a drafted action, the manager accepts it and marks it done, and the new hire gets the "Update from HR" notice.
 
 The AIFM guide sets the hard constraints:
 
@@ -18,28 +20,29 @@ The AIFM guide sets the hard constraints:
 
 | Area | In the prototype | Pitch only |
 | --- | --- | --- |
-| Employee channel | Telegram check-in bot, BM and English, text and button replies | WhatsApp (same bot code, different adapter) |
+| Employee channel | Telegram check-in bot, Bahasa Malaysia, English and Chinese language packs with Manglish accepted (spec 05 R46), text, button and voice-note replies | More channels |
 | HR view | Cohort themes (k ≥ 5), flag queue, AI summary beside original text, action drafting | HRIS sync, multi-company billing |
-| Manager view | Assigned actions, approve or edit, mark done with outcome | Calendar booking for 1:1s |
+| Manager view | Assigned actions, accept, mark done with a one-line outcome; weekly team snapshots | Calendar booking for 1:1s |
 | Safety | Escalation path, consent and DELETE, audit log | Formal PDPA DPIA |
-| Evidence | Eval run on a labelled synthetic set, response-time comparison | Real pilot results |
+| Evidence | Eval run on a labelled synthetic set, HR time-to-insight comparison | Real pilot results |
 
 **Design principles**
 
 1. **Existing frameworks first.** Custom code only where it is the product's own logic: prompts, taxonomy, scheduling rules, privacy rules.
 2. **Two platforms, one repo.** Everything deploys as a single Next.js app on Vercel plus a single Supabase project, so a three-person team has few moving parts.
-3. **AI as a fixed pipeline, not a free-roaming agent.** Every AI step has a schema, quotes its evidence, and lands in a human review queue.
+3. **AI as a fixed pipeline, not a free-roaming agent.** Every AI step has a schema and quotes its evidence. SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies.
 4. **Demo-proof.** Every live dependency (gateway, model, chat platform) has a fallback, and the demo clock can be advanced on demand.
 
 ## 2. Architecture overview
 
-Everything except OmniRoute runs on managed cloud, and every read or write passes Supabase's Row-Level Security.
+Everything except OmniRoute and its tunnel runs on managed cloud, and every read or write passes Supabase's Row-Level Security.
 
 ```mermaid
 flowchart TB
     gemini["Gemini 3.8 Flash<br/>Google API"]
-    hire["New hire<br/>Telegram, BM/English"]
-    omni["OmniRoute<br/>on home server"]
+    deepseek["DeepSeek V4.1 Flash<br/>fallback, direct"]
+    hire["New hire<br/>Telegram,<br/>language packs"]
+    omni["OmniRoute<br/>on home server<br/>behind cloudflared tunnel"]
     hr["HR and managers<br/>web app, Telegram"]
 
     subgraph vercel["Vercel: one Next.js app"]
@@ -62,7 +65,7 @@ flowchart TB
     hr <-->|web, alerts| dash
     ai <-->|API calls| omni
     omni <--> gemini
-    ai -.->|fallback| gemini
+    ai -.->|fallback| deepseek
     cron -->|triggers| disp
     bot <--> pg
     ai <--> pg
@@ -73,30 +76,29 @@ One check-in, end to end:
 
 1. Supabase Cron calls the dispatcher every minute; due check-ins go out through the bot.
 2. The hire replies by text or button; the bot stores the reply and calls the AI pipeline.
-3. The pipeline masks personal details, calls Gemini through OmniRoute, checks the schema and evidence quote, and writes tags.
-4. Realtime pushes new tags and flags to the dashboard; HR reviews and assigns a drafted action.
-5. The bot alerts the manager, who approves and closes the action in the web app.
+3. The pipeline masks personal details, calls Gemini through OmniRoute (or DeepSeek if OmniRoute fails), checks the schema and evidence quote, and writes tags.
+4. Realtime pushes new tags and flags to the dashboard; HR reviews the evidence and assigns a drafted action.
+5. The bot alerts the manager, who accepts the action and marks it done from Telegram or the web app. The bot then sends the HR-approved "Update from HR" note to the new hires it affects.
 
-Every AI call also sends a trace to Langfuse, which is left out of the drawing.
+Every AI call writes one `ai_usage` row (model, tokens, cost). There is no Langfuse in the competition build.
 
 ## 3. Tech stack at a glance
 
-All fourteen layers are existing tools; the code you write sits on top of them as the check-in script, the AI prompts and the privacy rules (section 4 lists it).
+All thirteen layers are existing tools; the code you write sits on top of them as the check-in script, the AI prompts and the privacy rules (section 4 lists it).
 
 | Layer | Choice | Why this one | Considered and rejected |
 | --- | --- | --- | --- |
-| Employee channel | Telegram Bot API | Free, instant bot creation, no business verification, no 24-hour reply window | WhatsApp Cloud API for the demo (Meta setup, template rules) |
-| Bot framework | [Vercel Chat SDK](https://github.com/vercel/chat) + Telegram adapter + `state-pg` | One handler set for Telegram now and [WhatsApp](https://chat-sdk.dev/adapters/whatsapp) later; buttons, Postgres state | grammY (Telegram only), Typebot, n8n |
+| Employee channel | Telegram Bot API | Free, instant bot creation, no business verification, no 24-hour reply window | Another chat app |
+| Bot framework | [Vercel Chat SDK](https://github.com/vercel/chat) + Telegram adapter + `state-pg` | One handler set for Telegram; buttons, Postgres state | grammY (Telegram only), Typebot, n8n |
 | Web app | Next.js 16 App Router from the [`with-supabase` template](https://vercel.com/templates/next.js/supabase) | Cookie auth, Supabase client and shadcn/ui already wired | [Kiranism dashboard starter](https://github.com/Kiranism/next-shadcn-dashboard-starter) (ships with Clerk, a second auth system), Lovable |
 | UI kit | shadcn/ui blocks: sidebar dashboard, data table, charts (Recharts) | Copied into the repo, editable, same style as the template | Tremor, MUI |
 | Database, auth, realtime | Supabase Postgres, Auth, Row-Level Security, Realtime | RLS enforces "HR only unless consent" inside the database; Realtime makes a live reply appear on the dashboard during the demo | Firebase (no SQL, no RLS policies) |
 | Scheduler | [Supabase Cron](https://supabase.com/docs/guides/functions/schedule-functions) (pg_cron + pg_net) calling `/api/dispatch` every minute | Per-minute and free; [Vercel Hobby cron](https://vercel.com/docs/cron-jobs/usage-and-pricing) runs once a day at most | [Vercel Workflow](https://vercel.com/docs/workflows/concepts), Inngest (durable sleeps cannot be fast-forwarded for a demo) |
 | LLM SDK | Vercel AI SDK + [`@ai-sdk/openai-compatible`](https://ai-sdk.dev/providers/openai-compatible-providers) | Zod-validated structured output, one-line provider swap, built-in telemetry | LangChain, raw fetch |
-| LLM gateway | [OmniRoute](https://github.com/diegosouzapw/OmniRoute), self-hosted, reached over Tailscale Funnel | One OpenAI-compatible endpoint, usage dashboard, keys stay off Vercel | Calling Gemini directly (kept as the fallback) |
-| Model | [Gemini 3.8 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-8-flash) (`gemini-3.8-flash`) | Structured output, low/medium/high thinking levels | Gemini 3.7 Flash as backup model |
+| LLM gateway | [OmniRoute](https://github.com/diegosouzapw/OmniRoute), self-hosted, reached over a Cloudflare named tunnel (`cloudflared`) | One OpenAI-compatible endpoint, usage dashboard, Gemini keys stay off Vercel | Calling Gemini directly |
+| Model | [Gemini 3.8 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-8-flash) (`gemini-3.8-flash`); fallback DeepSeek V4.1 Flash, direct | Structured output, low/medium/high thinking levels | Gemini 3.7 Flash as backup model |
 | Schemas | Zod | One schema shared by prompt output, API and UI | |
-| Tracing and evals | [Langfuse](https://langfuse.com/integrations/frameworks/vercel-ai-sdk) (cloud, or self-hosted on Coolify) | Every AI decision traceable to prompt version; datasets for eval runs | Promptfoo, Braintrust |
-| Manager notifications | Same Telegram bot | No extra service to set up | Resend email |
+| Manager notifications | Same bot, Telegram | No extra service to set up | Resend email |
 | Hosting | Vercel + Supabase cloud | Free tiers, preview URL per pull request for teammates | Home server (demo-day reliability) |
 | Repo and workflow | GitHub, Supabase CLI migrations, Claude Code | Teammates review on preview URLs, schema lives in version control | |
 
@@ -108,12 +110,11 @@ Five components, each built on one existing framework, with the product logic la
 
 The bot is a Chat SDK app whose webhook lives at `/api/webhooks/telegram` inside the same Next.js project.
 
-- **Onboarding:** HR shows a QR code that opens `t.me/<bot>?start=<invite_token>`. The bot binds the Telegram chat ID to a pseudonymous person record, then shows consent, language (BM or English) and visibility ("HR only" default, or "OK to share with my manager") as buttons.
-- **Check-in:** 3–4 scripted questions per touchpoint from the dossier's question bank (scale buttons plus one open question), then at most 1–2 AI follow-ups.
+- **Onboarding:** HR shows a QR code that opens `t.me/<bot>?start=<invite_token>`. The bot binds the Telegram chat ID to a pseudonymous person record, then shows consent, language (Bahasa Malaysia or English, spec 05 R46) and visibility ("HR only" default, or "OK to share with my manager") as buttons.
+- **Check-in:** 3–4 scripted questions per touchpoint from the dossier's question bank (scale buttons plus one open question), then at most 1–2 follow-ups from a fixed probe bank. The AI only picks a probe ID; it never writes a follow-up question.
 - **Commands first:** LANGKAU/SKIP, BERHENTI/STOP and PADAM/DELETE are matched before any AI call, so opting out never depends on a model.
-- **WhatsApp later:** swap in the WhatsApp adapter with the same handlers. One extra piece is needed: WhatsApp only lets a bot reply within [24 hours of the user's last message](https://vercel.com/changelog/chat-sdk-adds-whatsapp-adapter-support), so scheduled check-ins need pre-approved template messages sent through Meta's API directly.
 
-Why Chat SDK rather than grammY: grammY is the better Telegram-only library, but WhatsApp is what Malaysian frontline staff use. Chat SDK turns "we can move to WhatsApp" from a promise into a config change you can show in Q&A.
+Why Chat SDK rather than grammY: Chat SDK keeps the bot in the same Next.js project, with buttons and Postgres state already wired.
 
 ### 4.2 Scheduler and demo clock
 
@@ -132,14 +133,14 @@ Start from `create-next-app -e with-supabase`, then add shadcn blocks for the si
 
 | Page | Who | What it shows |
 | --- | --- | --- |
-| Cohorts | HR | Intake overview, theme cards ("Role clarity: 3 of 5"), weekly theme trend; hidden below 5 respondents |
+| Cohorts | HR | Intake overview, theme cards ("Role clarity: 8 of 19"), weekly theme trend; hidden below 5 respondents |
 | Flag queue | HR | Replies marked `needs_follow_up`, escalations pinned in red with the fixed protocol |
 | Response detail | HR | AI summary and evidence quote beside the original text; tag override |
-| Actions board | HR, manager | Draft → assigned → approved → done or dismissed, with outcome note |
+| Actions board | HR, manager | Draft → assigned → accepted → done or dismissed, with outcome note |
 | Settings | HR | Minimum group size, retention period, question bank, demo clock |
 | Audit log | HR admin | Every view and change |
 
-Managers log into the same app with a `manager` role and see only the Actions board, plus an individual's words where that person consented. Supabase Realtime pushes new tags and flags to the open dashboard, so a judge's reply appears on screen within seconds.
+Managers log into the same app with a `manager` role and see their own fixes on the Actions board, weekly team snapshots (never live counts), and an individual's words only where that person consented. Supabase Realtime pushes new tags and flags to the open dashboard, so a judge's reply appears on screen within seconds.
 
 ### 4.4 Data layer: Supabase
 
@@ -157,10 +158,10 @@ Six pieces are custom because they are the product, not plumbing:
 
 1. **Check-in state machine:** onboarding milestones, follow-up limits and commands. No framework knows your question bank.
 2. **Prompts, Zod schemas and the theme taxonomy:** the dossier's drivers, context tags, POSITIVE and ESCALATE.
-3. **Safety keyword list (BM and English):** deterministic and auditable, running beside the model.
+3. **Safety keyword list (one per language pack: BM, English and Chinese):** deterministic and auditable, running beside the model.
 4. **RLS policies and the group-size view.**
-5. **Eval script:** computes Cohen's κ and escalation recall against the labelled set (about 60 lines); Langfuse stores the runs.
-6. **Synthetic cohort generator:** seeds 20 fictional hires across 90 days with planted themes.
+5. **Eval script:** computes Cohen's κ and escalation recall against the labelled set (about 60 lines) and writes results files.
+6. **Synthetic seed files:** 30 fictional hires across six monthly intakes with planted themes, written as files by the coding agents. No model call makes seed or test data.
 
 ### 4.6 Considered and left out
 
@@ -169,45 +170,44 @@ Six pieces are custom because they are the product, not plumbing:
 - **n8n, which the AIFM guide suggests:** good glue, but a second runtime to debug on demo day, and logic in TypeScript is versioned, testable and editable by Claude Code.
 - **Topic clustering (BERTopic):** a cohort gives 5–20 replies, too few to cluster; a fixed taxonomy is also easier for HR to understand and correct.
 - **Lovable or Bolt for the app:** fast screens, but auth and data get locked into their setup. Fine for mock-ups.
-- **Voice notes:** dropped from scope (privacy questions, demo risk, extra testing).
+- **Voice notes:** in scope as transcribe-only: audio is deleted at once and no tone or emotion is kept. Voice is on for a pack only after its transcript accuracy is tested (spec 05 R50).
 
 ## 5. AI layer
 
-Four narrow AI calls, each with a fixed schema and a human gate, all going through OmniRoute to Gemini 3.8 Flash with a direct-Gemini fallback.
+Four narrow AI calls, each with a fixed schema, all going through OmniRoute to Gemini 3.8 Flash with DeepSeek V4.1 Flash as the direct fallback. 05 adds a fifth call: handbook Q&A.
 
 ### 5.1 Wiring
 
 - **Provider:** `createOpenAICompatible({ name: 'omniroute', baseURL: <OmniRoute URL>/v1, apiKey, supportsStructuredOutputs: true })` from the AI SDK.
 - **Pin the model.** Use the exact Gemini 3.8 Flash ID from the OmniRoute dashboard, never `auto` or a combo. If OmniRoute silently routes to a different model, the eval numbers stop describing what runs on stage. Store model and prompt version on every `ai_tags` row.
-- **Reachability:** OmniRoute listens on `localhost:20128`. Expose it with Tailscale Funnel at a fixed HTTPS hostname, and require an OmniRoute API key issued only to this app.
-- **Fallback chain:** OmniRoute with an 8-second timeout → `@ai-sdk/google` with a direct Gemini key, same model → save the reply as `pending_ai` so HR sees "awaiting AI". The keyword safety check runs in all three cases.
+- **Reachability:** OmniRoute listens on `localhost:20128`. Expose it with a Cloudflare named tunnel (`cloudflared`, run as a system service) at a fixed HTTPS hostname, and require an OmniRoute API key issued only to this app.
+- **Fallback chain:** OmniRoute with an 8-second timeout → DeepSeek V4.1 Flash direct, with its own key, 8-second timeout → save the reply as `pending_ai` so HR sees "awaiting AI". The keyword safety check runs in all three cases.
 - **Day-1 check:** confirm OmniRoute passes JSON-schema requests to Gemini intact. If it doesn't, set `supportsStructuredOutputs: false` and rely on JSON mode plus Zod validation.
 
 ### 5.2 The four calls
 
 | Step | Trigger | Input | Output | Thinking | Human gate |
 | --- | --- | --- | --- | --- | --- |
-| Follow-up | Open answer | Question, answer, touchpoint focus | One neutral follow-up or none | low | Hard cap of 1–2 per touchpoint |
-| A. Classify | Every reply | Masked reply, touchpoint | Drivers, context tags, `concern_level`, `escalate`, verbatim evidence quote, summary, confidence | low | HR can override any tag |
-| B. Summarise | Nightly and on demand | Tags and summaries only, cohorts ≥ 5 | Counted themes ("3 of 5") plus what is going well | medium | HR reads before acting |
-| C. Draft action | HR clicks "Draft action" | Driver, theme, action library | Short editable action, no individual named unless consented | medium | HR assigns, manager approves |
+| A. Classify | Every reply | Masked reply, touchpoint | Drivers, context tags, `concern_level`, `escalate`, verbatim evidence quote, summary, confidence, and one `probe_id` from the fixed probe bank or none | low | Unsure labels wait for HR; HR can override any tag; probes capped at 1–2 per touchpoint |
+| B. Narrative | Nightly and on demand | Counts that SQL already computed, cohorts ≥ 5 | A short narrative over the counts ("8 of 19") plus what is going well | medium | HR reads before acting |
+| C. Draft action | HR clicks "Draft action" | Driver, theme, action library | Short editable action, no individual named unless consented | medium | HR edits and assigns; manager accepts and marks done |
 
 ### 5.3 Guardrails, in code rather than in the prompt
 
 - **Evidence check:** the evidence quote must be an exact substring of the reply. If not, retry once, then send the reply to human review. This blocks invented evidence.
 - **No emotion fields:** the output schema has no emotion, personality or quit-risk field, so the model cannot return one.
-- **PII masking before the model:** regexes replace NRIC numbers, phone numbers and emails with placeholders.
+- **PII masking before the model:** regexes replace NRIC numbers, phone numbers and emails in text with placeholders. Audio cannot be masked, so a voice note goes only to the primary route and is deleted at once (spec 05 R17, R50).
 - **Prompt injection:** the reply is passed as delimited data, the model has no tools, and the schema bounds what it can return.
-- **Escalation:** a BM/English keyword match OR the model's `escalate` flag creates an escalation. HR is alerted at once, the bot sends a fixed supportive message with the contacts HR configured, and managers never see it.
+- **Escalation:** a keyword match in the person's language pack OR the model's `escalate` flag creates an escalation. HR is alerted at once, the bot sends a fixed supportive message with the contacts HR configured, and managers never see it.
 - **Sampling:** the dossier specified temperature 0. Check Google's Gemini 3.x guidance before lowering temperature; consistency comes mainly from the schema and thinking level, and the eval measures it.
 
 ### 5.4 Testing the AI (guide item 7)
 
-Teammate B labels about 150 synthetic replies in BM, English and Manglish. The eval script runs them as a Langfuse dataset experiment and reports, per language, against the dossier's targets: Cohen's κ ≥ 0.6 on drivers, follow-up recall ≥ 0.9, escalation recall 100%.
+Teammate B labels about 150 synthetic replies in BM, English and Manglish. The eval script runs them and writes results files. It reports, per language: Cohen's κ ≥ 0.6 on drivers, follow-up recall ≥ 0.9, and escalation recall as "k of n" with a 95% interval plus false alarms. The test split includes 10–15 Manglish hyperbole cases ("OT everyday, mati la"). 05 Testing Decisions is the full method.
 
 A process test sits beside it: time how long HR takes to find the main issues in 20 raw replies by hand, then with Sapa's cohort view. That gives the "faster, clearer" evidence slide 8 needs.
 
-**Cost:** about 25 calls per hire over six months at roughly 1,500 input and 300 output tokens each comes to around US$0.06 per hire at the [introductory price](https://ai.google.dev/gemini-api/docs/latest-model) of $0.75 / $3.75 per million tokens. This is an estimate to verify against Langfuse usage after the first eval run.
+**Cost:** about 25 calls per hire over six months at roughly 1,500 input and 300 output tokens each comes to around US$0.06 per hire at the [introductory price](https://ai.google.dev/gemini-api/docs/latest-model) of $0.75 / $3.75 per million tokens. This is an estimate to verify against the `ai_usage` table after the first eval run.
 
 ## 6. Data model and privacy enforcement
 
@@ -233,23 +233,15 @@ The dossier's F7 tables stand as the schema; the architecture adds a few columns
 | Every access is visible | Audit trigger on writes, app logging on reads | Database + app |
 | Not used for performance or probation | Stated in the consent text; no per-person history export for managers | Policy + UI |
 
-**Data sent to the model.** OmniRoute is a proxy, so Google still receives every request. For the competition that is acceptable because all data is synthetic, as the AIFM guide requires. For a real pilot, route only to a paid Gemini API or Vertex AI account whose terms exclude training on your data, and keep OmniRoute pinned to that one provider.
+**Data sent to the model.** OmniRoute is a proxy, so Google still receives every request. The DeepSeek fallback processes data in China. For the competition that is acceptable because all data is synthetic, as the AIFM guide requires. For a real pilot, route only to a paid Gemini API or Vertex AI account whose terms exclude training on your data, and keep OmniRoute pinned to that one provider.
 
 ## 7. Demo script and build plan
 
-The architecture exists to make one 90-second demo run without a hitch; build in the order that gets that loop working earliest.
+The architecture exists to make one 2-minute demo run without a hitch; build in the order that gets that loop working earliest.
 
-### 7.1 The 90-second demo
+### 7.1 The 2-minute demo
 
-Before the pitch: the October intake is seeded with 6 synthetic hires at Day 13, 5 of whom have already replied. The dashboard is open on the laptop and a phone with Telegram is on the visualiser.
-
-1. **Check-in (20 s).** HR clicks "Advance to Day 14". The phone receives the check-in. The teammate answers in Manglish, for example "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu", and the bot asks one neutral follow-up.
-2. **AI finds the theme (20 s).** The reply appears on the dashboard via Realtime, tagged ROLE_CLARITY with its evidence quote. The cohort card moves to "Role clarity: 4 of 6".
-3. **HR reviews (20 s).** HR opens the summary beside the original text, clicks "Draft action", edits one line, assigns it to the supervisor.
-4. **Manager acts (20 s).** The supervisor's Telegram gets the action; they approve and mark it done: "Weekly priority list every Monday".
-5. **Loop closes (10 s).** The next check-in asks "Are your priorities clearer this week?"
-
-Fallbacks: if the model or gateway fails, the seeded cohort still shows themes and actions; a screen recording of this exact flow sits on the desktop.
+The demo script and seed now live only in [05 "Demo setup" and "Updated 2-minute demo"](05-implementation-spec.md#demo-setup). Do not restate them here. 05's version adds the "top questions" tile, the label confirmation, the private-chat offer, the consent-gated scope ("Raj's team", not Mei Ling), the "Update from HR" notice, and the score change and Impact view at the end.
 
 ### 7.2 Build order
 
@@ -257,9 +249,9 @@ Build days follow an 8-day plan; shift them once the organisers confirm dates. A
 
 | Phase | Build days | Owner | Done when |
 | --- | --- | --- | --- |
-| 1. Foundations: repo from template, Supabase schema and RLS, Telegram bot on Vercel, OmniRoute over Funnel | 1 | Abraham | Bot answers on a phone; one schema-valid Gemini call from Vercel |
+| 1. Foundations: repo from template, Supabase schema and RLS, Telegram bot on Vercel, OmniRoute over a `cloudflared` named tunnel, DeepSeek fallback | 1 | Abraham | Bot answers on a phone; one schema-valid Gemini call from Vercel; DeepSeek answers when the tunnel is stopped |
 | 2. Check-in loop: consent, question bank, scheduler, demo clock, commands | 2–3 | Abraham; A and B write BM/EN consent and question text | A full Day 3 → Day 14 run on a phone |
-| 3. AI pipeline: classify, follow-up, guardrails, escalation | 3–4 | Abraham; B labels the 150-reply eval set | Eval script runs; escalation recall is 100% |
+| 3. AI pipeline: classify, probe choice, guardrails, escalation | 3–4 | Abraham; B labels the 150-reply eval set | Eval script runs; escalation recall reported as "k of n" with a 95% interval and false alarms |
 | 4. Dashboard: cohorts, flags, detail, actions board, manager role, Realtime | 4–6 | Abraham and B (B builds pages on preview branches) | A live reply shows on the dashboard; an action closes the loop |
 | 5. Evidence: synthetic cohort, eval report per language, HR timing test, backup recording | 6–7 | B for data and tests; A for slides and HR interviews | Numbers ready for slide 8 |
 | 6. Freeze and rehearse | 8 | Everyone | Three clean runs under 2 minutes; no new features |
@@ -272,10 +264,10 @@ The biggest risk is the one link that runs from a home server: OmniRoute. Everyt
 
 | Risk | Fallback |
 | --- | --- |
-| Home server, ISP or Funnel down on demo day | Automatic switch to direct Gemini; seeded cohort; backup recording |
+| Home server, ISP or tunnel down on demo day | Automatic switch to DeepSeek V4.1 Flash; then "awaiting AI"; seeded cohort; backup recording |
 | OmniRoute alters JSON-schema requests | Tested on build day 1; JSON mode plus Zod validation instead |
 | Venue Wi-Fi blocks or slows Telegram | Demo phone and laptop on a mobile-data hotspot |
-| Gemini misreads Manglish or BM slang | Per-language eval results; low confidence goes to review; HR can override every tag |
+| Gemini misreads Manglish or BM slang | Per-language eval results; low confidence waits for HR; HR can override any tag |
 | Judges ask "isn't this surveillance?" | Show the consent screen and the enforcement table in section 6 |
 | Supabase free project paused when idle | Open the project the day before and on the morning of the pitch |
 | Late features break the demo | Feature freeze on build day 8 |
@@ -284,10 +276,9 @@ The biggest risk is the one link that runs from a home server: OmniRoute. Everyt
 
 | Tool | Cost | Catch |
 | --- | --- | --- |
-| Telegram Bot API, Next.js, shadcn/ui, AI SDK, Zod, Chat SDK, OmniRoute, GitHub | Free | None |
+| Telegram Bot API, Next.js, shadcn/ui, AI SDK, Zod, Chat SDK, OmniRoute, `cloudflared`, GitHub | Free | None |
 | Supabase Free | Free | 2 projects, 500 MB DB each, pauses after 7 days idle |
-| Vercel Hobby | Free | Non-commercial use only; on private repos only the account owner's commits deploy. Make the repo public or have only Abraham push to `main` |
-| Langfuse Cloud Hobby | Free | 50k units/month, 30-day data access, 2 users; self-host for more |
+| Vercel Hobby | Free | Non-commercial use only; no team members. On a private repo, every push by a non-owner is blocked on every branch, so teammates get no preview URLs. The repo is public; secrets live only in Vercel environment variables, never in `.env` commits |
 | Claude Code | Paid (Pro or above) | Teammate B needs their own plan to use it |
 
 **Open questions**
@@ -301,8 +292,8 @@ The biggest risk is the one link that runs from a home server: OmniRoute. Everyt
 - AIFM 2026 Student Challenge Guide ([organisers' PDF](reference/AIFM_2026_Student_Challenge_Guide_All_Challenges.pdf)) and the [Sapa research and product dossier](03-research-dossier.md)
 - [OmniRoute repository](https://github.com/diegosouzapw/OmniRoute)
 - [Gemini 3.8 Flash model page, Vertex AI](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-8-flash) and [Gemini API latest model guide](https://ai.google.dev/gemini-api/docs/latest-model)
-- [Vercel Chat SDK](https://github.com/vercel/chat), [WhatsApp adapter docs](https://chat-sdk.dev/adapters/whatsapp) and [WhatsApp adapter announcement](https://vercel.com/changelog/chat-sdk-adds-whatsapp-adapter-support)
+- [Vercel Chat SDK](https://github.com/vercel/chat)
 - [Vercel cron limits](https://vercel.com/docs/cron-jobs/usage-and-pricing), [Vercel Hobby plan](https://vercel.com/docs/plans/hobby) and [Vercel Workflow concepts](https://vercel.com/docs/workflows/concepts)
 - [Scheduling with Supabase Cron](https://supabase.com/docs/guides/functions/schedule-functions) and [pg_net](https://supabase.com/docs/guides/database/extensions/pg_net)
 - [Next.js Supabase starter template](https://vercel.com/templates/next.js/supabase) and [Next Shadcn Dashboard Starter](https://github.com/Kiranism/next-shadcn-dashboard-starter)
-- [AI SDK OpenAI-compatible providers](https://ai-sdk.dev/providers/openai-compatible-providers) and [Langfuse for the AI SDK](https://langfuse.com/integrations/frameworks/vercel-ai-sdk)
+- [AI SDK OpenAI-compatible providers](https://ai-sdk.dev/providers/openai-compatible-providers)

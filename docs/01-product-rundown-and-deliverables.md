@@ -6,38 +6,64 @@
 
 Sapa is a chat bot that checks in with new employees during their first six months, plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
 
+**The core loop.**
+
+1. A new hire answers a short check-in in chat. The AI labels the reply and quotes the words it relied on.
+2. HR checks the evidence and assigns a fix.
+3. The manager does the fix and marks it done.
+4. New hires hear what changed, and the next check-in asks the same 1–5 question again.
+
+**Four layers around the loop.** Each adds to the loop. None replaces it. The demo shows the loop and a few rules from each layer. The rest stay ready for Q&A.
+
+- **Reach.** Three language packs (Bahasa Malaysia, English and Chinese, with Manglish accepted), Telegram, voice notes, and handbook Q&A between check-ins.
+- **Care.** A fixed offer of a private chat for one person, serious concerns that go to HR only, and fixed milestone nudges for managers.
+- **Proof.** Score change against other teams, fix evidence, the job-match card, the Impact view and the exit check.
+- **Trust.** The AI quality watch, `/myanswers`, the worker-voice export and the agency view.
+
 **The problem it solves.** Today most companies only learn why a new hire was unhappy at the exit interview, when it is too late. The causes are usually ordinary and fixable: unclear priorities, weak onboarding, little feedback.
+
+**Two signals, one problem.** Sapa reads two kinds of new-hire input about the same pain point, onboarding gaps that make new hires leave:
+
+- **Check-in replies.** Short scheduled check-ins show which problems new hires share.
+- **Questions.** Between check-ins a new hire can ask the bot about the company ("how do I claim OT?"). The bot answers only from the HR handbook and shows the handbook sentence it used. Questions that 3 or more new hires ask, and the handbook cannot answer, go to HR without names. Each one shows HR a gap in onboarding.
+
+Q&A is not a second product. It is a second source of signal for the same fix-the-onboarding loop.
 
 **Who uses it**
 
 | Person | What they do in Sapa | Time it takes |
 | --- | --- | --- |
-| New hire | Answers 3–4 short questions on Telegram at Day 3, 7, 14, 30, 60, 90 and Month 6. Voluntary; can skip, stop or delete at any time | About a minute each time |
-| HR | Sees shared problems across the intake, checks the AI's reading, drafts and assigns a fix | Minutes a week |
-| Manager | Receives the fix, carries it out, marks it done | One task at a time |
+| New hire | Answers 3–4 short questions on Telegram, in Bahasa Malaysia or English, and typed or by voice note, at Day 3, 7, 14, 30, 60, 90 and Month 6. Can ask the bot questions about the company at any time. Can see their own stored replies, with the AI summary and tags, with `/myanswers` (`/jawapansaya`), and flag "this is wrong" to HR. Voluntary; can skip, stop or delete at any time | About a minute each time |
+| HR | Sees shared problems across the intake, reviews the evidence, drafts and assigns a fix, and approves a short "Update from HR" note for new hires. An Impact view shows response rate, days from reply to action done, the score change after fixes against other teams, manager milestones done and, across completed intakes, six-month retention as a trend and not proof | Minutes a week |
+| Manager | Accepts the fix, carries it out, marks it done with a one-line note. Gets fixed Day 1, 7 and 30 nudges for each new hire, and alerts, in Telegram. Sees their own fixes and weekly team snapshots on the web | One task at a time |
 
 **What the AI does, and only this**
 
-1. Reads each answer and labels the problem area it is about: role clarity, manager support, belonging, onboarding and training, or workload. It attaches the exact sentence as proof.
-2. Counts those labels across the intake to show themes, such as "Role clarity: 4 of 6 new hires". Themes appear only when at least 5 people have answered.
-3. Drafts a suggested fix that HR edits before anyone sees it.
-4. Spots serious issues (harassment, bullying, safety, self-harm) and sends them straight to HR.
+1. Suggests a label for each answer: role clarity, manager support, belonging, onboarding and training, or workload. It attaches the exact sentence as proof.
+2. Picks a follow-up question from a fixed probe bank, by ID. It never writes its own follow-up questions.
+3. Writes a short narrative over theme counts. SQL does the counting, such as "Role clarity: 8 of 19 who answered". Themes appear only when at least 5 people have answered.
+4. Drafts a suggested fix that HR edits before anyone sees it.
+5. Answers new hires' questions only from the published HR handbook, with a quote that code checks word for word.
+6. Spots serious issues (harassment, bullying, safety, self-harm, signs of forced labour) and sends them straight to HR.
 
-**What a person still decides.** HR checks every label and chooses the action. The manager carries it out. Nothing happens automatically to an employee.
+**What a person still decides.** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies. HR chooses the action. The manager accepts it and marks it done.
+
+**When one person's reply needs follow-up.** HR may send that person one fixed, HR-approved offer: "Would you like a short private chat with HR?" The manager never sees it.
 
 **What Sapa never does.** No secret monitoring, no reading of emotions, no prediction of who will quit, and no use in performance reviews or probation.
 
 ### One example, start to finish
 
-1. Aisyah (a fictional new hire) gets her Day 14 check-in: "Are your priorities for this week clear?"
+1. Mei Ling (a fictional new hire) gets her Day 14 check-in: "How clear are you on what is expected of you this week? (1–5)"
 2. She types: "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu."
-3. The AI labels it **role clarity** and quotes her sentence as the evidence.
-4. HR's dashboard now reads "Role clarity: 4 of 6 new hires in the October intake".
-5. HR clicks "Draft action" and gets "Agree a weekly priority list with each new hire every Monday", edits it, and assigns it to the supervisor.
-6. The supervisor does it and marks it done.
-7. Next check-in, the bot asks "Are your priorities clearer this week?", so HR can see whether the fix worked.
+3. The bot sends one fixed follow-up from the probe bank. The AI suggests the label **role clarity** and quotes her sentence as the evidence.
+4. HR's dashboard now reads "Role clarity: 8 of 19 who answered, hired in the last 6 months".
+5. HR (Aishah) clicks "Draft action" on the Role clarity card and gets "Agree a weekly priority list with each new hire every Monday". She edits it, sets the scope to the supervisor's team (Mei Ling chose "HR only", so the fix cannot name her), approves a short note for new hires, and assigns it to the supervisor.
+6. The supervisor accepts it, does it and marks it done.
+7. The bot sends Mei Ling the note: "Update from HR: your team now has a weekly priority list every Monday."
+8. Next check-in, the bot asks the same 1–5 question again, with no hint of the fix, so HR can see whether the score moved more than in other teams.
 
-That loop of **feedback, AI themes, human review, support action** is exactly the minimum output the AIFM guide asks for in Challenge 4.
+That loop of **feedback, AI themes, human review, support action**, closed by the update and the recheck, is exactly the minimum output the AIFM guide asks for in Challenge 4.
 
 ## 2. Deliverables and their requirements
 
@@ -82,11 +108,11 @@ The second column is the guide's wording; the third is how Sapa answers it, so y
 | # | What the guide asks | Sapa's answer |
 | --- | --- | --- |
 | 1. The HR problem | What is difficult, slow, unclear or inconsistent today? | HR learns why new hires struggle only at the exit interview, after they have resigned |
-| 2. The user | Who uses your solution? | HR staff, plus line managers who carry out actions; new hires give the feedback |
+| 2. The user | Who uses your solution? | HR staff, plus line managers who carry out actions; new hires give the feedback and ask questions |
 | 3. Current process | What happens today before your solution exists? | Problems surface in exit interviews, matching the guide's own Challenge 4 scenario |
-| 4. Your solution | What exact function did you build? | Telegram check-ins at set milestones, an HR dashboard of shared themes, and action tracking |
-| 5. How AI is used | What information goes in, what does AI do, and what useful output comes out? | In: check-in answers. AI: labels each answer's problem area with a quote, counts themes, drafts an action. Out: themes such as "Role clarity: 4 of 6" and an editable action |
-| 6. Human action | What must a person still review, decide or do? | HR checks labels and chooses the action; the manager carries it out and records the outcome |
+| 4. Your solution | What exact function did you build? | Telegram check-ins at set milestones, handbook Q&A, an HR dashboard of shared themes and unanswered questions, action tracking, an "Update from HR" notice and a neutral recheck question |
+| 5. How AI is used | What information goes in, what does AI do, and what useful output comes out? | In: check-in answers and questions. AI: suggests a label with a quote for each answer, picks a fixed follow-up, drafts an action, answers from the handbook. SQL counts the themes. Out: themes such as "Role clarity: 8 of 19" and an editable action |
+| 6. Human action | What must a person still review, decide or do? | HR reviews the evidence and the labels the AI is unsure about, and chooses the action; the manager accepts it, carries it out and records the outcome |
 | 7. Testing | Did your prototype make the process faster, clearer, more consistent or more useful? | AI accuracy measured on labelled sample replies; HR timed reading raw replies versus using the dashboard |
 
 ### Judging criteria (p.9, total 100%)
@@ -102,14 +128,14 @@ The second column is the guide's wording; the third is how Sapa answers it, so y
 
 ## 4. Not covered by the guide: confirm with the organisers
 
-The guide says nothing about dates, submission mechanics or eligibility, and the official site (aifm.asia) could not be opened when this was written. Nothing below is assumed; each item is a question to settle. The live list is in [`admin/organiser-questions.md`](../admin/organiser-questions.md).
+The guide says nothing about dates, submission mechanics or eligibility. The official site (aifm.asia) opens, and [07 official rules](07-official-rules-and-requirements.md) records what it says: build to 22 Oct, Round 1 online 23–25 Oct, Grand Final in Penang on 7 Nov, teams of 1 to 5, and no file upload (the submission is the live prototype and pitch). Items still open are below. The live list is in [`admin/organiser-questions.md`](../admin/organiser-questions.md) and 07 section 12.
 
-- [ ] Dates: registration close, build period, pitch day, and whether there is more than one judging round
-- [ ] Submission: whether slides, a prototype link, source code, a video or a written report must be uploaded, where, in what format and by when
+- [x] Dates: build 5–22 Oct, Round 1 online 23–25 Oct, Final 7 Nov (07 section 2). Registration close still conflicts (16 Oct or 2 Oct)
+- [ ] Submission: the site lists no upload step (07 section 5). Confirm that only the live demo and pitch count
 - [ ] Demo format: whether a recorded demo is accepted as a fallback (the criteria say "convincing live demo")
 - [ ] Equipment: whether a screen, projector or phone mirroring is provided at the venue
-- [ ] Team and eligibility rules: team size, student status, one entry per person
-- [ ] Topic-selection form: its fields and deadline (the guide does not cover it)
+- [x] Team and eligibility rules: 1 to 5 per team, Malaysian university students (07 section 3). Edge cases still open
+- [x] Topic-selection form: the problem is chosen on the registration form (07 section 3)
 
 **Sources**
 

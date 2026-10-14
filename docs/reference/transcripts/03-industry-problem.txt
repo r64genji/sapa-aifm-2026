@@ -1,0 +1,573 @@
+# lang=en
+[00:18] Hey everyone, good afternoon.
+[00:24] Everyone can hear my voice is clear.
+[00:30] Okay, thank you.
+[00:33] Welcome, welcome.
+[00:36] For those who are already here,
+[00:39] please make sure your name is shown clearly, okay?
+[00:44] We can see who has joined us today.
+[00:48] It's very important, just, okay?
+[00:52] If you have joined, you can also say hi in the chat box,
+[00:59] or give me a thumbs up.
+[01:01] Okay, we are still waiting for a few more students to come join in.
+[01:08] So we will give everyone a little more time, okay?
+[01:13] We will sit together softly.
+[01:46] I can see more students joining now, okay?
+[01:51] We will wait just a little bit more, then we will start now.
+[01:56] We start at more one minute, okay?
+[02:22] I think we can get started now.
+[03:17] Once again, good afternoon everyone,
+[03:20] and thank you for joining us today.
+[03:23] Welcome back to AI Future Book Camp.
+[03:28] Make the book camp 2026.
+[03:31] Okay, before we start workshop three,
+[03:35] I just have three quick updates for everyone.
+[03:40] Do you see my screen?
+[03:45] Okay.
+[03:48] Yeah, okay.
+[03:51] The first,
+[03:53] today workshop recording has already been sent to everyone by email.
+[04:03] Okay, so please, in-boss, when you have time.
+[04:08] Number two, second, after we complete workshop three,
+[04:13] we will take a quick group photo together, okay?
+[04:19] So please, after this section,
+[04:24] number three, regarding the refer-revol,
+[04:28] I know some of you maybe have questions about how it works.
+[04:34] Okay, after we complete workshop four,
+[04:40] I will explain it again clearly to everyone, okay?
+[04:46] Is everyone ready?
+[04:49] Let me say good.
+[04:52] Thanks all for the updates.
+[05:00] Now let's move into our third workshop.
+[05:06] Our third workshop is industry in AI discovery.
+[05:11] This section, we will look at real industry problem,
+[05:17] case and growth.
+[05:19] This will help understand the problem better.
+[05:23] You start building your workshop, okay?
+[05:28] So please welcome Miss Christine Chua,
+[05:31] senior HR consultant from agency Pukajeng,
+[05:36] CKS Sundriba Heart.
+[05:38] Christine, over to you.
+[05:41] Thank you, Josephine.
+[05:47] Good afternoon, everyone.
+[05:49] Before we begin, can you hear me clearly?
+[05:53] So if you can hear me clearly, please type yes in the chat if you can.
+[06:05] Thank you.
+[06:06] So let's get started.
+[06:09] All right, so it is good to have you with us online.
+[06:13] So I'm Christine Chua from CKM,
+[06:16] so one of the co-hosts of AI Future Makers.
+[06:20] So my work is in recruitment and workforce challenges.
+[06:24] So I spend a lot of time with employers
+[06:28] who are trying to solve people problems.
+[06:31] So today, I want to bring the real workplace perspective
+[06:35] into this AI program.
+[06:39] So in the earlier briefing,
+[06:41] I showed you that the competition journey, right?
+[06:45] So whether you enter on your own or your,
+[06:48] with your team, you will eventually build a working prototype
+[06:53] and show it in a live demo.
+[06:55] So in this session, right,
+[06:57] we will focus on understanding the problem
+[07:01] before building a solution.
+[07:03] So today, each of you can be part individually.
+[07:09] So for the short activities, right,
+[07:11] a few words in the chat are enough, okay?
+[07:15] So today, I know you are here to explore AI.
+[07:19] So some of you may already thinking about the chatbot
+[07:23] and apps and algorithm or a platform you could build.
+[07:28] So those ideas are exciting.
+[07:31] But for the next hour,
+[07:34] for the next hour,
+[07:36] I want to ask you to begin somewhere else.
+[07:40] So before we discuss the tool,
+[07:42] let us understand the problem first.
+[07:46] So imagine this,
+[07:48] okay, if you have access to a powerful AI tools
+[07:52] and good data,
+[07:54] so you work hard for weeks,
+[07:56] then your demo looks impressive.
+[07:59] So it works exactly as designed.
+[08:02] Then you meet the people who are supposed to use it.
+[08:07] Then they tell you this,
+[08:09] this is interesting,
+[08:11] but this is not the part of our work
+[08:14] that is causing the problem.
+[08:16] So how would that feel?
+[08:19] So you have the skills here,
+[08:21] the technology work,
+[08:23] the effort was real,
+[08:25] but you started with an assumption, right?
+[08:28] So about what needed fixing.
+[08:30] So that happens in business
+[08:33] more often than we like to admit.
+[08:36] So here you can see a problem appears on the surface.
+[08:40] We recognize something familiar.
+[08:43] Then we jump to a solution
+[08:46] before asking enough questions.
+[08:49] So now let me ask you honestly,
+[08:53] when you hear AI competition,
+[08:56] what do you think about first?
+[08:59] You can type two or problem in the chat.
+[09:03] I will give you a few answer.
+[09:08] I will give you a few seconds here.
+[09:26] All right.
+[09:27] AI give you so many possibilities
+[09:29] that it is easy to fall in love with the possibilities
+[09:33] before we understand the need.
+[09:37] Very good.
+[09:38] So here is the habit
+[09:40] I hope you take from this session.
+[09:42] When somebody give you a challenge,
+[09:46] let us pause first and ask
+[09:49] what is really happening
+[09:51] and who is affected
+[09:54] and what evidence do we have
+[09:57] and what are we only assuming
+[10:00] and what problem
+[10:02] if we understood it properly
+[10:05] will be worth solving.
+[10:09] So this is about spending little more time
+[10:13] at the beginning
+[10:15] so that the work you do later
+[10:17] has a better chance for helping someone.
+[10:20] So in this hour,
+[10:22] we will practice that
+[10:24] habit with a simple story
+[10:27] and a workplace case.
+[10:30] So later, you can see
+[10:32] the same thinking in your competition entry.
+[10:36] So now let me start with the cafe.
+[10:39] So it is a small example
+[10:41] but it shows how easy it is
+[10:44] to fix the wrong things.
+[10:47] So now imagine that you honour busy cafe.
+[10:51] So people like your coffee
+[10:54] but the customers are waiting
+[10:56] about 15 minutes for their drinks.
+[10:59] So some leaves before ordering.
+[11:02] Others complain that they are late
+[11:05] for class or work.
+[11:07] So now you have 20,000 available
+[11:10] to improve the experience.
+[11:13] So what would you do?
+[11:16] One option is to buy a faster coffee machine.
+[11:20] Another is to hire another barista.
+[11:25] Some of you might suggest
+[11:28] an AI ordering system, right?
+[11:31] So those might all be useful eventually.
+[11:35] But what happens?
+[11:37] We have not yet watched what happens
+[11:39] between a customer working in
+[11:42] receiving a drink.
+[11:45] So now let us vote in the chat.
+[11:48] What would you do?
+[11:50] Type 1 for a faster machine.
+[11:53] Type 2 for another barista.
+[11:56] So 3 for a digital ordering tool.
+[12:00] Or 4 for observing the whole process first.
+[12:04] So one number here is enough.
+[12:07] 3, 4, 4.
+[12:20] Thank you.
+[12:24] That is a reasonable starting point.
+[12:27] So now let us see what happens
+[12:30] when the owner chooses the machine.
+[12:33] So all of these choices sound possible.
+[12:37] So we need to know where the waiting actually happens.
+[12:42] So now suppose the owner believes
+[12:46] that the machine is too slow.
+[12:49] It is visible.
+[12:52] It is easy to blam.
+[12:54] So the owner can point to the clear portrays.
+[12:58] So the owner spends the money on a faster machine.
+[13:02] So the new machine makes coffee more quickly.
+[13:06] So for a few days, everyone feels positive.
+[13:10] But what happens?
+[13:12] The queue is still long.
+[13:14] So this time, the owner stands in the cafe
+[13:22] and follows a few orders from beginning to end.
+[13:26] So the owner notice that customers spend a long time deciding what to order
+[13:32] because the menu is unclear.
+[13:36] So sometimes one person takes an order
+[13:39] but the barista does not see immediately.
+[13:43] So at several times, at busy times
+[13:47] even the completed drinks are placed in the wrong area.
+[13:51] So and staff have to call and call the name several times.
+[13:55] So the line at the counter also blocks people
+[13:59] who only need to collect a drink.
+[14:03] So here you can see the machine may have been a little slow
+[14:08] but it was not the man's bottleneck.
+[14:11] Several small hands off and the queue flow
+[14:14] created most of the waiting actually.
+[14:17] So a different response might involve a clear menu,
+[14:21] a better order handoff and a separate correction point also.
+[14:26] So we would test those changes before spending more money.
+[14:31] Can you see that?
+[14:32] So here did the owner solve the real problem
+[14:38] or just egg on an assumption?
+[14:42] You may type problem or assumption in the chat.
+[14:55] Good.
+[14:56] Yes.
+[15:02] So watching where customer waited would have helped the owner
+[15:06] test it before spending the money.
+[15:09] So here is the line.
+[15:11] I want you to remember a fast solution to the wrong problem
+[15:17] is still the wrong solution.
+[15:20] So the first step is to see the full process first.
+[15:25] So now let us use the same thinking
+[15:29] with the bigger workplace problem.
+[15:32] So now you can see you may imagine a factory
+[15:42] where output has fallen for several weeks.
+[15:46] So the first reaction might be our workers are not performing.
+[15:57] So we need to push them harder or replace them.
+[16:02] So that conclusion sounds simple, but it is only one possible.
+[16:08] So output could fall because the machine wraps down
+[16:13] or the materials arrive late.
+[16:16] So work is located unevenly.
+[16:19] So people are learning a new process
+[16:22] or quality rework takes out time.
+[16:27] So if the actual cost is the delay material delivery,
+[16:32] so more pressure on workers will not solve it.
+[16:36] So it might even make the situation worse
+[16:39] by creating fatigue, mistake or the frustration.
+[16:45] So we need to really look at the system around the people,
+[16:49] not just the people we can see.
+[16:54] So now let us think about hiring.
+[16:57] A manager says we cannot find the right talent.
+[17:01] So that is a real frustration.
+[17:04] But what does it mean?
+[17:07] Perhaps the job requirements are too narrow.
+[17:11] Perhaps the capable candidates have skills
+[17:15] that do not show clearly on a CV.
+[17:18] Perhaps the company takes too long to respond.
+[17:22] Or a strong candidate accepts another offer.
+[17:26] So perhaps also the role itself has changed,
+[17:30] but the job description has not.
+[17:33] So here you can see if we assume the problem is CV strengthening,
+[17:40] so we might build an AI screening tool
+[17:43] that rejects candidates faster.
+[17:46] So we have made the original mistake more efficient.
+[17:52] So the visible outcomes, we cannot find talent.
+[17:57] So does not yet tell us which part of process need to change.
+[18:02] So now you can take 30 seconds to think about
+[18:08] two possible reasons that why factory output fell.
+[18:13] Other than workers are not trying hard enough,
+[18:17] then you take one possible reason in the chat.
+[18:20] So I will be quiet while you thinking.
+[18:24] Let's look at these possible explanations.
+[19:04] All data and efficient machine and equipment.
+[19:13] Thank you.
+[19:22] So now we have more than one possible cost.
+[19:25] Workers aren't trained properly.
+[19:28] What evidence would help us to tell which one is true?
+[19:39] For example, it could be machine downtime or lab materials.
+[19:46] So I would check the production records
+[19:49] and speak with the people doing the work before branding performance.
+[19:54] So the point is that we should be curious about more than one explanation.
+[20:00] In a workplace, right?
+[20:02] The cost may seek in one process, a requirement, a handoff,
+[20:08] a decision or the environment people were in.
+[20:12] So we do not need to know the answer immediately.
+[20:15] But we need a good way to find out.
+[20:18] That is what next slide gives us.
+[20:22] So now let us put the thinking into five simple steps.
+[20:27] So can you see the five words on this slide?
+[20:32] R, C, Ask, Challenge, Define and Discover.
+[20:41] So before those steps, there is one mindset.
+[20:46] Think before you solve.
+[20:48] So it sounds obvious, but in a competition or a busy workplace,
+[20:55] people often skip straight to an idea.
+[21:02] So here first see what is actually happening.
+[21:08] So in the cafe, right, you can see that customers wait a long time.
+[21:14] So we can time the wait and wait the journey from order to correction.
+[21:20] So we should describe what we observe before we explain why it happens.
+[21:26] Now we come to second, ask, what do we still need to know?
+[21:33] Does every order take 15 minutes or just only at a certain time?
+[21:41] Is the delay before payment?
+[21:44] While the drink is made or at collection?
+[21:48] So what do customer and staff say?
+[21:52] So here you can see good questions help us find the missing information.
+[21:59] So next is challenge.
+[22:01] So what are we assuming?
+[22:03] The cafe owner assumed that the machine was too slow.
+[22:08] So that might be true, but an assumption is something to test.
+[22:14] Not something to treat as a fact.
+[22:17] So we should ask ourselves what else could expand what I see.
+[22:23] So thought here is defined.
+[22:26] So what is the problem for whom?
+[22:30] And why does it matter?
+[22:32] We might say customer who ordered during the lunch rush
+[22:37] and then wait too long because order get delayed
+[22:41] at the hands off between the counter and the barista, causing some to leave.
+[22:47] So that statement is much more useful than the cafe needs AI.
+[22:53] So it identifies the person, the problem, the possible cause and the impact.
+[23:01] So we will still test the cause.
+[23:04] So last will be discover.
+[23:07] So only now we ask where AI might add value.
+[23:12] So could it help forecast demand to show staff where orders are waiting?
+[23:18] Possibly.
+[23:19] So could a simple process change solve this better?
+[23:23] Also possibly.
+[23:25] So discover means exploring the right role for AI, including the possibility that AI is not needed.
+[23:34] So now let us do a quick check.
+[23:42] So which statement is evidence?
+[23:45] A customer wait 15 minutes.
+[23:49] Or B the coffee machine is too slow.
+[23:53] You may type A or B in the chat.
+[23:57] Exactly.
+[24:14] We can measure the weight, right?
+[24:16] So the machine explanation needs testing.
+[24:19] So that difference between evidence and assumption will matter in your challenge.
+[24:27] Okay.
+[24:28] So next let us practice with a hiring case that has several possible interpretations.
+[24:35] So here this is a simulated graduate hiring campaign.
+[24:44] So the numbers here are challenged data, not the data from a real employer.
+[24:50] So a company receive a 400 applications here.
+[24:55] So initial screening takes six working days.
+[24:59] So of the candidates who are shortlisted, one in four is rejected by the hiring manager before an interview.
+[25:09] And some candidates withdraw after waiting more than a week.
+[25:15] So now if you work in a hiring team, those clues will make you curious about.
+[25:23] So but they do not point to the one automatic diagnosis.
+[25:28] So six days of screening may be too long.
+[25:31] Or the more serious issue might be the HR and the manager are using different criteria.
+[25:40] Or a candidate may withdraw because the process takes too long.
+[25:45] Because communication is unclear.
+[25:48] Or for a reason we have not yet asked about.
+[25:52] Can you see that?
+[25:55] So here is one possible interpretation.
+[25:58] Screening speed is the problem.
+[26:01] We need to process 400 applications more efficiently.
+[26:07] So if that is true, better tools or a clearer workflow might help here.
+[26:14] Then here is another.
+[26:17] The job requirements are unclear.
+[26:20] So HR shortlist people whom the manager later rejects.
+[26:26] So if that is true, speeding up the screening could send more of the wrong candidates forward.
+[26:34] Can you see that?
+[26:36] Those are different problems and they call for different responses.
+[26:42] There may be a third interpretation.
+[26:47] Perhaps candidates are interested.
+[26:50] But the handoff between the shortlist and the interview takes too long.
+[26:56] So better candidate updates for faster scheduling might matter more than screening.
+[27:03] So the crews give us a starting point on it.
+[27:08] Not a hidden answer.
+[27:11] Alright.
+[27:13] So now let us take 30 seconds to think of one likely problem in this hiring case.
+[27:21] And one question you will ask for test it.
+[27:24] So then you type your possible problem or your question in the chat.
+[27:30] It does not need to be perfect.
+[27:32] Okay.
+[28:15] Okay.
+[28:16] One possibility is that HR and the hiring manager disagree on the requirements.
+[28:23] So we would compare the job criteria with the reasons candidates are rejected.
+[28:30] So can anyone type a different interpretation in the chat?
+[28:34] A short face is enough.
+[28:58] So the same crews can support more than one starting point.
+[29:02] We need to test our assumptions.
+[29:05] Alright.
+[29:06] So notice that we can reach different reasonable starting points.
+[29:11] That is good.
+[29:13] Provided we explain our reasoning.
+[29:17] So in this AI future makers, you are not being given the answer.
+[29:22] You are being given a situation and crews.
+[29:26] So your job is to make sense of them.
+[29:29] So notice what is still missing and define a problem you can defend.
+[29:35] So once the problem becomes clearer, only here you ask what AI could contribute.
+[29:44] Okay.
+[29:45] So now let us look at some possible rules.
+[29:53] Here you can see AI can help in different ways.
+[29:57] So it may help discover patterns in information that people cannot easily review one by one.
+[30:05] Right.
+[30:06] So it may match people, skills and opportunities.
+[30:12] It may predict or anticipate a possible future need.
+[30:21] It may also personalize guidance so someone receives support suited to their situation.
+[30:29] And it may automate repetitive work.
+[30:32] It may also support decision by giving a person better information.
+[30:39] So let's take the hiring case.
+[30:42] AI could summarize application information.
+[30:46] But only after we understand what the job really requires,
+[30:52] then it could help spot where candidates drop out of the process.
+[30:58] But someone still needs to ask those candidates why.
+[31:04] It could help schedule interviews but it cannot decide on its own what is fair or what potential a person has.
+[31:15] Can you see that?
+[31:20] So now let's imagine a company wants AI to identify employees who might disengage.
+[31:30] That sounds useful but we need to ask what data the system uses.
+[31:36] So would it treat quiet employees as a problem?
+[31:41] Could it invade privacy?
+[31:45] My manager labelled someone unfairly because the system gives them a risk score.
+[31:53] So who reviews the recommendation?
+[31:57] And can an employee challenge it or not?
+[32:05] So here you can see a good AI idea should improve a real situation without creating a new harm for the people involved.
+[32:15] So I used two checks here.
+[32:18] Is AI generally useful here?
+[32:22] And what new risk could AI create?
+[32:26] So let's have a quick vote in the chat.
+[32:30] Type 1, if you think the bigger risk is the wrong AI recommendation.
+[32:36] And type 2, if you think it is a person trusting that recommendation without checking.
+[32:45] Both are matter but which concerns you more?
+[32:49] You may add a few words about why.
+[32:54] So the system can be wrong.
+[33:29] And the people need to know when to question it.
+[33:32] So that is why human review is part of responsible use.
+[33:38] So the lesson here is to keep people accountable for decisions that affect other people.
+[33:46] So AI can help us see and process information.
+[33:51] But we still need to judge, we still need judgment, evidence and care.
+[34:01] So now I want to show you the five areas you can explore for your competition entry.
+[34:14] So here you can see these are the five challenge areas.
+[34:19] There are not five problems with answer already decided.
+[34:24] The first is beyond the CV.
+[34:28] So what might a traditional CV fail to show?
+[34:32] So the second is better talent matching.
+[34:37] How do we understand fit between a person and an opportunity?
+[34:44] So the third here is fairer and faster hiring.
+[34:49] Where is the process actually breaking down?
+[34:53] The fourth is early employee disengagement.
+[35:00] So what might a change in someone's experience mean?
+[35:04] And how would we find out responsibility?
+[35:08] So the last one is purpose, potential and career growth.
+[35:15] So what helps people make the full decision about their development?
+[35:20] So you can see each area can contain several different problems.
+[35:27] So this slide says choose one because you will choose one area for your competition entry.
+[35:35] So whether you enter solo or with a team, there is no need to make that choice during these short practice.
+[35:43] Okay, today everyone will use the same simulated hiring case we saw earlier.
+[35:50] You already know the cruise, right?
+[35:54] So that you can focus on thinking.
+[35:57] So here just out of my curiosity, which area caught your attention?
+[36:06] Like CV, match, hire, understand or grow in the chat.
+[36:14] So this is only an expression of interest.
+[36:17] You do not have to choose your competition area now.
+[36:57] Okay, we will now practice with the same hiring case.
+[37:01] You are not expected to find the final answer.
+[37:04] So I just want to see how you think about the cruise.
+[37:08] So let us explore a possible problem and identify what we would need to check.
+[37:15] So for these short practice, right?
+[37:27] Everyone will use the simulated hiring case from slide 5.
+[37:32] So you can see here 400 applications, 6 days of initial screening and slide 5 please.
+[37:48] Yeah, here.
+[38:02] So here you can see 400 applications and 6 days of initial screening.
+[38:09] So one in four shortlisted candidates rejected before interview and some candidates withdrawing after a long wait.
+[38:18] So you do not need to choose a new challenge area or agree on a final route course today.
+[38:25] All right.
+[38:26] So you just think about two questions.
+[38:29] First, what might be the problem behind these cruise?
+[38:35] How did the possible problem or a working hypothesis?
+[38:40] Okay.
+[38:41] Second, what one piece of information would you need to check it?
+[38:48] You can write one possible problem and one question.
+[38:52] So if you have two different interpretations, keep both for now.
+[38:58] All right.
+[38:59] So an AI idea is optional today.
+[39:02] So the slides label this as team outputs.
+[39:12] Slide 8.
+[39:15] Yeah.
+[39:16] So here you can see the slide labels this as a team output, but you can complete them on your own.
+[39:29] So in this short practice, focus on the first two possible problem and one evidence.
+[39:37] One evidence gaps.
+[39:39] Again, the AI sentence is optional today.
+[39:43] You will have more time to develop and validate your idea during the competition.
+[39:49] Okay.
+[39:50] So before we begin, I can take two quick questions about the tasks from the chat.
+[39:58] So please now let us spend three quiet minutes thinking about the hiring cruise.
+[41:08] So write one possible problem and one question that would help you test it.
+[41:14] So I would invite you to post after the thinking time.
+[41:18] So you don't again, you do not need an AI idea.
+[41:22] So while you think, let me give you one possible example.
+[41:55] Perhaps there is a delay between shortlist and interview.
+[41:59] So I will first check the time spent at each step and ask candidate why they, why they withdrew.
+[42:07] So that is the starting point.
+[42:10] We still need the evidence to understand the cost.
+[42:28] So let us compare two possible ideas.
+[42:31] The first is slow screening.
+[42:34] The second is unclear job requirements.
+[42:37] Both could fit part of the case, but neither is confirmed.
+[42:42] So for slow screening, I will ask where do those six working days go?
+[42:49] Is the team reading applications or waiting for approval or handling other work?
+[42:56] Six days alone does not tell us why the process takes that long.
+[43:02] All right.
+[43:03] So if for the unclear requirements, I will ask why does the manager reject one in four shortlisted candidates?
+[43:13] Are HR and the manager using the same criteria?
+[43:19] So we could compare the shortlist criteria with the rejection reasons.
+[43:26] So now you can imagine we discover that most of the delay is waiting for the manager to review the shortlist.
+[43:35] So would faster CV screening solve that delay?
+[43:39] It might help once, but the waiting could remain.
+[43:44] So we would need to examine the handoff.
+[43:47] So now you can imagine HR and the manager agree on the criteria,
+[43:56] but manually reviewing 400 applications takes most of the time.
+[44:01] So in that situation, summarizing information or improving the screening workflow might be useful.
+[44:10] These are examples of what we could discover.
+[44:14] Not extra facts in the case.
+[44:16] So you may now take 30 seconds to review your own answer.
+[44:22] You can check does it describe a problem or does it already propose a solution?
+[44:29] So if you wrote build an AI screening tool, ask yourself what difficulty that tool is meant to solve.
+[44:38] If you would like, put your revised problem statement in the chat.
+[45:09] So one sentence is enough.
+[45:11] So a useful problem statements names who is affected.
+[45:37] So what difficulty they face, why it matters.
+[45:41] So you can mention a suspected cause, but make clear that you still need to test it.
+[45:48] For example, applicants face a long wait during the hiring process and some withdraw.
+[45:56] So we need to find out where the delay occurs and why they leave.
+[46:02] So this describes the concern without claiming we already know the cause.
+[46:09] You can start from the same cruise and form different hypotheses.
+[46:16] So the next step is to test what you do not yet know.
+[46:22] You do not need a final answer today, all right?
+[46:25] So these are all leads to the one message I want to leave with you.
+[46:34] So you can see at the beginning I asked what comes to mind when you hear AI competition.
+[46:45] Perhaps your first thought was what can I build?
+[46:50] After this session, I hope you will also ask what problem is worth solving and how do I know?
+[46:59] Let's take 10 seconds quietly.
+[47:02] Think of one assumption you should test before you build.
+[47:06] You do not need to share it now.
+[47:08] All right.
+[47:31] Before you commit to a solution, check five things.
+[47:35] So is the problem real?
+[47:38] Do you understand the person affected?
+[47:41] Are you addressing a cause or only a symptom?
+[47:46] Is AI generally useful?
+[47:49] And what would change for the people and organization if you solve it well?
+[47:56] So in AI Future Makers, you are given evidence, not the answer.
+[48:02] So you need to make sense of it before you build.
+[48:06] So you may find that your first idea changes once you listen to the people involved.
+[48:14] So that is a sign of good discovery, not a failure.
+[48:19] In earlier briefing also show that the competition looks beyond the problem statements, right?
+[48:25] So you will need a working solution, a live demo, a strong page, and a clear explanation of its value and impact.
+[48:35] So a well-defined problem helps you make better choices in every one of those steps.
+[48:43] So let's fall in love with the problems, not the solution.
+[48:47] Okay.
+[48:48] So when you understand the problem deeply, you give your idea a much better chance for helping someone.
+[48:56] So thank you for joining me today.
+[48:59] As you move into the AI solution and creativity lab, keep asking yourself what problem are we solving and what evidence supports it.
+[49:09] All right.
+[49:10] Thank you so much.
+[49:36] Thank you so much, Christine, for your sharing.
+[49:39] I hope everyone has a clear idea about how to look at the real problem, the case and the course before building a solution.
+[49:51] Okay.
+[49:52] Before we move on, does anyone have questions for Christine?
+[49:58] If yes, you can raise your hand and then I'll make yourself, okay, or type your question in the chat box.
+[50:09] Okay.
+[50:13] Before we continue, I just want to tell everyone one important thing.
+[50:21] Okay.
+[50:22] If you are still very not sure what to do for the challenge, don't worry.
+[50:32] After today, we will prepare a clear guide for each problem segment.
+[50:40] We will show you what the problem is, what you should focus on and how you can start.
+[50:53] Okay.
+[50:54] We will send all these to all students after workshop so you do not need to understand anything today.
+[51:04] You just take it step by step.
+[51:08] Okay.
+[51:09] Because very important, understand the problem.
+[51:14] Okay.
+[51:15] Then choose your direction.
+[51:18] Okay.
+[51:19] Then start building your idea.
+[51:23] Later, your mentor will also guide you during the discussion section.
+[51:31] Okay.
+[51:32] So don't worry.
+[51:33] You are not doing this alone.
+[51:36] Okay.
+[51:37] Just start with one clear problem and move forward step by step.
+[51:44] Okay.
+[51:45] So one again.
+[51:46] Thank you so much, Christine, for your time and sharing today.
+[51:51] We really appreciate it.
+[51:56] Okay.
+[51:57] So before we move on workshop for, let's take our group photo first.
+[52:02] Okay.
+[52:03] Everyone, is it possible to turn on?

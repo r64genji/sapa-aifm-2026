@@ -1,6 +1,6 @@
 # Sapa — Adversarial Review of Architecture and Product
 
-*As of 14 Oct 2026. Reviews [01](01-product-rundown-and-deliverables.md), [02](02-prototype-architecture.md) and [03](03-research-dossier.md). Every finding names the claim, why it breaks, and the fix. The fixes are folded into the [build spec](05-build-spec.md).*
+*As of 14 Oct 2026. Reviews [01](01-product-rundown-and-deliverables.md), [02](02-prototype-architecture.md) and [03](03-research-dossier.md). Every finding names the claim, why it breaks, and the fix. The fixes are folded into the [build spec](05-implementation-spec.md).*
 
 **Verdict.** The product idea fits Challenge 4 well, and the privacy thinking is above hackathon level. But the plan has three problems a sharp judge or a bad demo day can expose:
 

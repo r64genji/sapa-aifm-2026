@@ -8,6 +8,6 @@ npx create-next-app -e with-supabase .
 
 Then set Vercel's **Root Directory** to `app`.
 
-Design reference: [docs/02 — Prototype architecture](../docs/02-prototype-architecture.md).
+Design reference: [docs/05 — Implementation spec](../docs/05-implementation-spec.md) (wins over [docs/02](../docs/02-prototype-architecture.md) where they disagree).
 
-Secrets (Supabase keys, Telegram bot token, OmniRoute key, Gemini key, Langfuse keys) go in Vercel environment variables and a local `.env.local`, never in git.
+Secrets (Supabase keys, Telegram bot token, OmniRoute key, DeepSeek key) go in Vercel environment variables and a local `.env.local`, never in git.
