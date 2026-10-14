@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { now } from "@/lib/clock";
-import type { Person } from "@/lib/directory";
+import { audit } from "@/lib/signal";
+import { notReceiving, reachable, type Person } from "@/lib/directory";
+import { packs } from "@/lib/packs";
 import { safeMessage, type Contacts } from "@/lib/safety";
+import { send } from "@/lib/telegram";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const DAY_MS = 24 * 3600 * 1000;
@@ -27,11 +30,13 @@ export async function escalate(person: Person, responseId: string, keyword: stri
   return safeMessage(person.language, category, data.escalation_contacts as Contacts);
 }
 
-function dueAt(created: Date, timeZone: string) {
+export function dueAt(created: Date, timeZone: string, days = 1) {
   const weekday = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone });
   let due = created.getTime();
-  do due += DAY_MS;
-  while (["Sat", "Sun"].includes(weekday.format(due)));
+  for (let i = 0; i < days; i++) {
+    do due += DAY_MS;
+    while (["Sat", "Sun"].includes(weekday.format(due)));
+  }
   return new Date(due);
 }
 
@@ -45,7 +50,7 @@ export async function listEscalations(organisationId: string) {
   if (orgError) throw orgError;
   const { data, error } = await db
     .from("escalations")
-    .select("id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at")
+    .select("id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, closed_at")
     .eq("organisation_id", organisationId)
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -106,4 +111,50 @@ export async function setContacts(organisationId: string, input: unknown, actor:
     .insert({ actor, action: "update_escalation_contacts", target: organisationId, at });
   if (auditError) throw auditError;
   return parsed.data;
+}
+
+export async function setDontContact(organisationId: string, id: string, actor: string) {
+  const db = createAdminClient();
+  const { data, error } = await db
+    .from("escalations")
+    .update({ dont_contact: true })
+    .eq("organisation_id", organisationId)
+    .eq("id", id)
+    .select("id");
+  if (error) throw error;
+  if (data.length === 0) return { error: "Not found", code: 404 };
+  await audit(actor, "record_dont_contact", id);
+  return { dont_contact: true };
+}
+
+export async function closeEscalation(organisationId: string, id: string, actor: string, sendClosure: boolean) {
+  const db = createAdminClient();
+  const at = (await now()).toISOString();
+  const { data, error } = await db
+    .from("escalations")
+    .update({ closed_at: at })
+    .eq("organisation_id", organisationId)
+    .eq("id", id)
+    .is("closed_at", null)
+    .select("dont_contact, responses!inner(person_id)");
+  if (error) throw error;
+  if (data.length === 0) return { error: "Not found or already closed", code: 409 };
+  await audit(actor, "close_escalation", id);
+  if (!sendClosure) return { closed_at: at };
+  const row = data[0] as unknown as { dont_contact: boolean; responses: { person_id: string } };
+  const person = row.dont_contact ? null : await reachable(row.responses.person_id);
+  if (!person) return { closed_at: at, closure: "blocked", reason: notReceiving };
+  const { data: org, error: orgError } = await db
+    .from("organisations")
+    .select("escalation_contacts")
+    .eq("id", organisationId)
+    .single();
+  if (orgError) throw orgError;
+  const contacts = (org.escalation_contacts as Contacts).general;
+  const text = [packs[person.language].closure, ...contacts].join("\n");
+  if (!(await send(person.telegram_chat_id!, { text }))) return { closed_at: at, closure: "blocked", reason: notReceiving };
+  const { error: sentError } = await db.from("escalations").update({ closure_sent_at: at }).eq("id", id);
+  if (sentError) throw sentError;
+  await audit(actor, "send_closure", id);
+  return { closed_at: at, closure: "sent" };
 }

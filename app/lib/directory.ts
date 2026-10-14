@@ -172,3 +172,18 @@ export async function activatePack(organisationId: string, language: string, che
   if (error) throw error;
   return data.length === 1;
 }
+
+export const notReceiving = "This person is not receiving messages from Sapa now";
+
+export async function reachable(personId: string) {
+  const { data, error } = await createAdminClient()
+    .from("people")
+    .select(personColumns)
+    .eq("id", personId)
+    .eq("state", "active")
+    .eq("synthetic", false)
+    .not("telegram_chat_id", "is", null)
+    .maybeSingle<Person>();
+  if (error) throw error;
+  return data;
+}

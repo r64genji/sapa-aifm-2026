@@ -1,4 +1,5 @@
 import { checkinButton, checkinText } from "@/lib/checkin";
+import { answerOffer } from "@/lib/offers";
 import { scheduleFor } from "@/lib/scheduler";
 import {
   liveLanguages,
@@ -110,6 +111,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
   ) {
     await setScope(person, value, pack.consentVersion);
     return { replies: [{ text: pack.visibilitySaved }] };
+  }
+  if (id === "offer" && person.state === "active" && (value === "yes" || value === "no_thanks")) {
+    const replies = await answerOffer(person, value);
+    if (replies) return { replies };
   }
   if (id === "ans" && person.state === "active") {
     const replies = await checkinButton(person, value);
