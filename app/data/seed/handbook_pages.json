@@ -1,0 +1,252 @@
+[
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006001",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/overtime.md",
+    "language": "en",
+    "body": "# Overtime pay\n\nOvertime must be approved by your supervisor before you work it. To claim overtime, fill in the overtime form on the same day and give it to your supervisor for signing. Approved overtime is paid in the next monthly payroll.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006002",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/overtime.md",
+    "language": "ms",
+    "body": "# Waktu lebih masa\n\nKerja lebih masa mesti diluluskan oleh penyelia anda sebelum anda melakukannya. Untuk menuntut bayaran lebih masa, isi borang lebih masa pada hari yang sama dan serahkan kepada penyelia untuk ditandatangani. Lebih masa yang diluluskan dibayar dalam gaji bulan berikutnya.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006003",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/payslip.md",
+    "language": "en",
+    "body": "# Payslips\n\nYour payslip is given to you on the last working day of each month. It lists your basic pay, allowances and deductions. Ask HR if any line on your payslip is not clear.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006004",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/payslip.md",
+    "language": "ms",
+    "body": "# Slip gaji\n\nSlip gaji anda diberikan pada hari bekerja terakhir setiap bulan. Ia menyenaraikan gaji pokok, elaun dan potongan anda. Tanya HR jika mana-mana baris pada slip gaji anda tidak jelas.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006005",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/epf-socso.md",
+    "language": "en",
+    "body": "# EPF and SOCSO\n\nThe company pays EPF and SOCSO contributions for every employee from the first day of work. Your share is deducted from your monthly pay and shown on your payslip.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006006",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/epf-socso.md",
+    "language": "ms",
+    "body": "# KWSP dan PERKESO\n\nSyarikat membayar caruman KWSP dan PERKESO untuk setiap pekerja mulai hari pertama bekerja. Bahagian anda ditolak daripada gaji bulanan dan ditunjukkan pada slip gaji anda.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006007",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/annual-leave.md",
+    "language": "en",
+    "body": "# Annual leave\n\nEmployees with less than two years of service get 8 days of annual leave a year. Apply for annual leave at least three working days before the first day you want to take off.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006008",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/annual-leave.md",
+    "language": "ms",
+    "body": "# Cuti tahunan\n\nPekerja yang berkhidmat kurang daripada dua tahun mendapat 8 hari cuti tahunan setahun. Mohon cuti tahunan sekurang-kurangnya tiga hari bekerja sebelum hari pertama anda mahu bercuti.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006009",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/sick-leave.md",
+    "language": "en",
+    "body": "# Sick leave\n\nIf you are sick, tell your supervisor before your shift starts. You need a medical certificate from a doctor for every day of sick leave.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006010",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/sick-leave.md",
+    "language": "ms",
+    "body": "# Cuti sakit\n\nJika anda sakit, beritahu penyelia anda sebelum syif bermula. Anda perlu menyerahkan sijil cuti sakit daripada doktor untuk setiap hari cuti sakit.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006011",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/public-holidays.md",
+    "language": "en",
+    "body": "# Public holidays\n\nThe company gives 11 paid public holidays a year. The list for the year is on the notice board in the canteen.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006012",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/public-holidays.md",
+    "language": "ms",
+    "body": "# Cuti umum\n\nSyarikat memberikan 11 hari cuti umum bergaji setahun. Senarai untuk tahun ini berada di papan kenyataan di kantin.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006013",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/first-week.md",
+    "language": "en",
+    "body": "# Your first week\n\nOn your first day, report to the HR office at 8:30 in the morning. HR will give you your access card and introduce you to your supervisor.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006014",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/first-week.md",
+    "language": "ms",
+    "body": "# Minggu pertama anda\n\nPada hari pertama, lapor diri di pejabat HR pada pukul 8:30 pagi. HR akan memberikan kad akses anda dan memperkenalkan anda kepada penyelia anda.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006015",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/safety-induction.md",
+    "language": "en",
+    "body": "# Safety induction\n\nEvery new employee must complete the safety induction in the first week. You may not operate any machine until the induction is signed off.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006016",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/safety-induction.md",
+    "language": "ms",
+    "body": "# Induksi keselamatan\n\nSetiap pekerja baharu mesti menamatkan induksi keselamatan dalam minggu pertama. Anda tidak dibenarkan mengendalikan sebarang mesin sehingga induksi itu disahkan.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006017",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/uniform.md",
+    "language": "en",
+    "body": "# Uniform and safety shoes\n\nThe company gives each production employee two sets of uniform and one pair of safety shoes. Collect them from the store room in the first week.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006018",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/uniform.md",
+    "language": "ms",
+    "body": "# Pakaian seragam dan kasut keselamatan\n\nSyarikat memberikan setiap pekerja pengeluaran dua pasang pakaian seragam dan sepasang kasut keselamatan. Ambil di bilik stor dalam minggu pertama.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006019",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/canteen.md",
+    "language": "en",
+    "body": "# Canteen\n\nThe canteen is open from 7:00 to 9:00, 12:00 to 14:00 and 19:00 to 21:00. A meal costs RM3 for employees.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006020",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/canteen.md",
+    "language": "ms",
+    "body": "# Kantin\n\nKantin dibuka pada pukul 7:00 hingga 9:00, 12:00 hingga 14:00 dan 19:00 hingga 21:00. Satu hidangan berharga RM3 untuk pekerja.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006021",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/lockers.md",
+    "language": "en",
+    "body": "# Lockers\n\nEach employee can use one locker beside the changing room. Bring your own padlock and do not leave valuables in the locker overnight.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006022",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/lockers.md",
+    "language": "ms",
+    "body": "# Loker\n\nSetiap pekerja boleh menggunakan satu loker di sebelah bilik persalinan. Bawa mangga sendiri dan jangan tinggalkan barang berharga dalam loker semalaman.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006023",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/shuttle-bus.md",
+    "language": "en",
+    "body": "# Shuttle bus\n\nA free shuttle bus runs from the Rawang train station to the factory gate before each shift. The bus waits ten minutes after the shift starts.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006024",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/shuttle-bus.md",
+    "language": "ms",
+    "body": "# Bas ulang-alik\n\nBas ulang-alik percuma bergerak dari stesen kereta api Rawang ke pintu kilang sebelum setiap syif. Bas menunggu sepuluh minit selepas syif bermula.",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006025",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/bonus.md",
+    "language": "en",
+    "body": "# Annual bonus\n\nEvery employee who has finished probation gets a bonus of two months of basic pay in December.",
+    "status": "draft",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  }
+]
