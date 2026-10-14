@@ -25,5 +25,53 @@
     "myanswers": { "name": "jawapansaya", "description": "Lihat jawapan anda sendiri" },
     "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
   },
-  "typedStop": "berhenti"
+  "typedStop": "berhenti",
+  "checkin": {
+    "intro": "Hai, tiba masanya untuk semakan Sapa anda. Ia mengambil masa kira-kira seminit. Tekan jawapan, atau taip apabila diminta.",
+    "reminder": "Peringatan ringkas: semakan Sapa anda masih terbuka. Sambung di mana anda tinggalkan, atau abaikan dan ia akan ditutup.",
+    "thanks": "Terima kasih, jawapan anda telah disimpan.",
+    "questions": [
+      {
+        "id": "ROLE_CLARITY",
+        "driver": "ROLE_CLARITY",
+        "type": "scale",
+        "text": "Sejauh mana anda jelas tentang apa yang diharapkan daripada anda minggu ini? (1–5)"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "driver": "MANAGER_SUPPORT",
+        "type": "scale",
+        "text": "Sejauh mana anda rasa disokong oleh pengurus anda minggu ini? (1–5)"
+      },
+      {
+        "id": "BELONGING",
+        "driver": "BELONGING",
+        "type": "scale",
+        "text": "Sejauh mana anda rasa menjadi sebahagian daripada pasukan minggu ini? (1–5)"
+      },
+      {
+        "id": "ONBOARDING_TRAINING",
+        "driver": "ONBOARDING_TRAINING",
+        "type": "scale",
+        "text": "Sejauh mana latihan anda menyediakan anda untuk kerja anda minggu ini? (1–5)"
+      },
+      {
+        "id": "WORKLOAD",
+        "driver": "WORKLOAD",
+        "type": "scale",
+        "text": "Sejauh mana beban kerja anda boleh diuruskan minggu ini? (1–5)"
+      },
+      {
+        "id": "OPEN",
+        "type": "open",
+        "text": "Adakah apa-apa tentang minggu-minggu pertama anda yang anda mahu HR tahu? Sila taip jawapan anda."
+      }
+    ],
+    "sequence": [
+      "ROLE_CLARITY",
+      "MANAGER_SUPPORT",
+      "BELONGING",
+      "OPEN"
+    ]
+  }
 }

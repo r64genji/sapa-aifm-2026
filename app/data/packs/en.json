@@ -25,5 +25,53 @@
     "myanswers": { "name": "myanswers", "description": "See your own answers" },
     "help": { "name": "help", "description": "Show help" }
   },
-  "typedStop": "stop"
+  "typedStop": "stop",
+  "checkin": {
+    "intro": "Hi, it's time for your Sapa check-in. It takes about a minute. Tap an answer, or type when asked.",
+    "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",
+    "thanks": "Thank you, your answers are saved.",
+    "questions": [
+      {
+        "id": "ROLE_CLARITY",
+        "driver": "ROLE_CLARITY",
+        "type": "scale",
+        "text": "How clear are you on what is expected of you this week? (1–5)"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "driver": "MANAGER_SUPPORT",
+        "type": "scale",
+        "text": "How supported do you feel by your manager this week? (1–5)"
+      },
+      {
+        "id": "BELONGING",
+        "driver": "BELONGING",
+        "type": "scale",
+        "text": "How much do you feel part of the team this week? (1–5)"
+      },
+      {
+        "id": "ONBOARDING_TRAINING",
+        "driver": "ONBOARDING_TRAINING",
+        "type": "scale",
+        "text": "How well has your training prepared you for your work this week? (1–5)"
+      },
+      {
+        "id": "WORKLOAD",
+        "driver": "WORKLOAD",
+        "type": "scale",
+        "text": "How manageable is your workload this week? (1–5)"
+      },
+      {
+        "id": "OPEN",
+        "type": "open",
+        "text": "Is there anything about your first weeks that you would like HR to know? Please type your answer."
+      }
+    ],
+    "sequence": [
+      "ROLE_CLARITY",
+      "MANAGER_SUPPORT",
+      "BELONGING",
+      "OPEN"
+    ]
+  }
 }

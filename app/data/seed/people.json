@@ -10,6 +10,23 @@
     "language": "en",
     "invite_token": "live-hire-invite",
     "invite_expires_at": "2026-10-28T01:00:00Z",
-    "state": "invited"
+    "state": "invited",
+    "synthetic": false
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000202",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "code_name": "Synthetic hire 1",
+    "team": "Production",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "start_date": "2026-10-02",
+    "role": "Production operator",
+    "language": "en",
+    "telegram_chat_id": 5550009001,
+    "invite_token": "synthetic-hire-1-invite",
+    "invite_expires_at": "2026-10-28T01:00:00Z",
+    "invite_used_at": "2026-10-03T01:00:00Z",
+    "state": "active",
+    "synthetic": true
   }
 ]

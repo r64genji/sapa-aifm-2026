@@ -1,3 +1,5 @@
+import { checkinButton, checkinText } from "@/lib/checkin";
+import { scheduleFor } from "@/lib/scheduler";
 import {
   liveLanguages,
   moveState,
@@ -87,6 +89,7 @@ async function press(person: Person, id: string, value: string, languages: Langu
     }
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
+      await scheduleFor(person.id);
       return {
         replies: [
           {
@@ -107,6 +110,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
   ) {
     await setScope(person, value, pack.consentVersion);
     return { replies: [{ text: pack.visibilitySaved }] };
+  }
+  if (id === "ans" && person.state === "active") {
+    const replies = await checkinButton(person, value);
+    if (replies) return { replies };
   }
   return { replies: prompt(person, languages) };
 }
@@ -131,6 +138,10 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (input.kind === "button") return press(person, input.id, input.value, languages);
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };
+  }
+  if (person.state === "active" && !command && input.kind === "text") {
+    const replies = await checkinText(person, input.text);
+    if (replies) return { replies };
   }
   return { replies: prompt(person, languages) };
 }

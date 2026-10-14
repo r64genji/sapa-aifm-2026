@@ -127,3 +127,25 @@ export async function tapData(chatId: number, data: string) {
   await postUpdate(update("button", { chat_id: chatId, data: data }));
   await settle(800);
 }
+
+export async function dispatch() {
+  return fetch(`${appUrl}/api/dispatch`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${process.env.DISPATCH_SECRET}` },
+  });
+}
+
+export async function hrRequest(path: string, method: string, body?: Record<string, unknown>) {
+  return fetch(`${appUrl}${path}`, {
+    method,
+    headers: { authorization: `Bearer ${await hrToken()}`, "content-type": "application/json" },
+    body: body && JSON.stringify(body),
+  });
+}
+
+export async function joined(chat: number, startDate: string) {
+  const { token } = await addHire({ code_name: `Hire ${chat}`, start_date: startDate });
+  await link(chat, token);
+  await tap(chat, "English");
+  await tap(chat, "I agree");
+}

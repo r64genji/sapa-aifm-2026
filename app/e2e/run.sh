@@ -43,6 +43,7 @@ export DEEPSEEK_BASE_URL=http://127.0.0.1:$FAKE_MODEL_PORT/deepseek
 export DEEPSEEK_API_KEY=test-deepseek-key
 export DISPATCH_SECRET=test-dispatch-secret
 export SEED_USER_PASSWORD=test-seed-password
+export REPLY_ENCRYPTION_KEY=c2FwYS10ZXN0LXJlcGx5LWVuY3J5cHRpb24ta2V5ISE=
 
 npx next build >"$log/build.log" 2>&1 || fail "next build"
 

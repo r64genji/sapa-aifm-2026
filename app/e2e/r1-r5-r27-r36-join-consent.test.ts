@@ -8,6 +8,7 @@ const pack = (language: string) =>
 const en = pack("en");
 const ms = pack("ms");
 const liveInvite = "live-hire-invite";
+const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const frozen = "2026-10-14T01:00:00.000Z";
 
 before(async () => {
@@ -26,7 +27,7 @@ test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and ge
   await tap(chat, en.agree);
   assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
 
-  const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at");
+  const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at").eq("person_id", livePerson);
   assert.deepEqual(consents, [{ text_version: en.consentVersion, scope: "hr_only", withdrawn_at: null }]);
 
   const menus = await telegramCalls("setMyCommands");
@@ -38,7 +39,7 @@ test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and ge
   ]);
 
   await tap(chat, en.visibilityHrManager);
-  const { data: after } = await db.from("consents").select("scope, withdrawn_at").order("granted_at");
+  const { data: after } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", livePerson).order("granted_at");
   assert.deepEqual(
     after!.map((c) => [c.scope, c.withdrawn_at !== null]),
     [["hr_only", true], ["share_with_manager", false]],
