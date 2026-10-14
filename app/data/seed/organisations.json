@@ -7,6 +7,14 @@
     "min_group_size": 5,
     "retention_days": 182,
     "demo_offset_days": 0,
-    "demo_mode": true
+    "demo_mode": true,
+    "escalation_contacts": {
+      "general": [
+        "HR (Nurul Aisyah): 03-5555 0100",
+        "Talian HEAL (mental health): 15555",
+        "Befrienders Kuala Lumpur: 03-7627 2929"
+      ],
+      "forced_labour_indicator": ["HR (Nurul Aisyah), private line: 03-5555 0101"]
+    }
   }
 ]

@@ -3,7 +3,9 @@ import { now } from "@/lib/clock";
 import { encrypt } from "@/lib/crypto";
 import type { Person } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
+import { escalate } from "@/lib/escalations";
 import { packs } from "@/lib/packs";
+import { detect } from "@/lib/safety";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Open = { id: string; progress: number; touchpoint: number; probes_used: number };
@@ -98,10 +100,13 @@ async function openProbe(person: Person) {
 
 async function conclude(person: Person, open: Open, responseId: string, text: string): Promise<Reply[]> {
   const { checkin } = packs[person.language];
+  const keyword = detect(text);
   const result = await tagReply(person.organisation_id, responseId, text);
+  const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
+  if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
   if (result.status === "awaiting_ai") return [{ text: checkin.gotIt }];
   const probe =
-    result.status === "ok" && !result.tag.escalate && open.probes_used < probeCap(open.touchpoint)
+    result.status === "ok" && open.probes_used < probeCap(open.touchpoint)
       ? checkin.probes.find((p) => p.id === result.tag.probe_id)
       : undefined;
   if (!probe) return [{ text: checkin.thanks }];

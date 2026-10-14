@@ -22,7 +22,7 @@ export async function resetDemo() {
 
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
 
-type ModelScript = { kind: "json"; content: unknown } | { kind: "text"; content: string } | { kind: "error"; status: number };
+type ModelScript = { kind: "json"; content: unknown } | { kind: "text"; content: string } | { kind: "error"; status: number } | { kind: "timeout" };
 
 export async function scriptModel(provider: "omniroute" | "deepseek", scripts: ModelScript[]) {
   await fetch(`${modelUrl}/${provider}/script`, { method: "POST", body: JSON.stringify(scripts) });
@@ -90,18 +90,25 @@ export async function blockChat(chatId: number) {
   await fetch(`${telegramUrl}/block/${chatId}`, { method: "POST" });
 }
 
-export async function hrToken() {
+export async function hrToken(email = "hr@contoh.test") {
   const client = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     { auth: { persistSession: false } },
   );
   const { data, error } = await client.auth.signInWithPassword({
-    email: "hr@contoh.test",
+    email,
     password: process.env.SEED_USER_PASSWORD!,
   });
   if (error) throw error;
   return data.session.access_token;
+}
+
+export async function sessionClient(email: string) {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
+    auth: { persistSession: false },
+    global: { headers: { authorization: `Bearer ${await hrToken(email)}` } },
+  });
 }
 
 export async function addHire(fields: Record<string, string>) {

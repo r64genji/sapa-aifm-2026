@@ -82,5 +82,56 @@
       "BELONGING",
       "OPEN"
     ]
+  },
+  "safety": {
+    "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will contact you within 1 working day. If you are in danger now, call 999.\nYou can also reach:",
+    "forcedLabour": "Thank you for telling us. Nobody may keep your passport or ID, make you pay a debt or fee to keep your job, or stop you from leaving where you live. This goes to HR only. Your manager cannot see it. HR will contact you within 1 working day.\nYou can also reach:",
+    "labourAuthority": "Labour Department (Jabatan Tenaga Kerja): [SLOT: contact, verified before launch]",
+    "tribunal": "Tribunal for Anti-Sexual Harassment: [SLOT: contact, verified before launch]",
+    "spellings": { "pasport": "passport", "u": "you", "ur": "your" },
+    "keywords": {
+      "forced_labour_indicator": [
+        "holds my passport",
+        "hold my passport",
+        "has my passport",
+        "kept my passport",
+        "keeps my passport",
+        "took my passport",
+        "taken my passport",
+        "keep my passport",
+        "holding my passport",
+        "passport is with the agent",
+        "passport is with my employer",
+        "debt to the agent",
+        "owe the agent",
+        "pay back the agent",
+        "recruitment fee",
+        "not allowed to leave the hostel",
+        "cannot leave the hostel",
+        "can't leave the hostel",
+        "locked in the hostel"
+      ],
+      "sexual_harassment": [
+        "sexually harassed",
+        "sexual harassment",
+        "touched me",
+        "touch my body",
+        "sent me naked",
+        "asked me for sex"
+      ],
+      "self_harm_crisis": [
+        "kill myself",
+        "end my life",
+        "want to die",
+        "suicide",
+        "hurt myself",
+        "no reason to live"
+      ],
+      "bullying_threats": ["threatened to", "threatens me", "bullied", "bullying me", "hit me", "beat me"],
+      "harassment": ["harassed", "harassing me", "harassment"],
+      "discrimination": ["discriminated", "discrimination"],
+      "safety_hazard": ["unsafe machine", "no safety guard", "fire exit is locked", "fire exit locked", "got injured"],
+      "wage_legal": ["salary not paid", "not paid my salary", "no salary for", "haven't been paid"]
+    }
   }
 }

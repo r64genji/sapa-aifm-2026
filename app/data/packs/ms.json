@@ -82,5 +82,41 @@
       "BELONGING",
       "OPEN"
     ]
+  },
+  "safety": {
+    "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, jadi ia hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda juga boleh menghubungi:",
+    "forcedLabour": "Terima kasih kerana memberitahu kami. Tiada sesiapa boleh menyimpan pasport atau kad pengenalan anda, memaksa anda membayar hutang atau yuran untuk mengekalkan kerja anda, atau menghalang anda keluar dari tempat tinggal anda. Perkara ini hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja.\nAnda juga boleh menghubungi:",
+    "labourAuthority": "Jabatan Tenaga Kerja: [SLOT: contact, verified before launch]",
+    "tribunal": "Tribunal Anti Gangguan Seksual: [SLOT: contact, verified before launch]",
+    "spellings": { "x": "tak", "tk": "tak", "pasport": "pasport", "passport": "pasport", "agen": "ejen", "sy": "saya", "aku": "saya" },
+    "keywords": {
+      "forced_labour_indicator": [
+        "pegang pasport saya",
+        "simpan pasport saya",
+        "ambil pasport saya",
+        "tahan pasport saya",
+        "pasport saya ditahan",
+        "pasport saya disimpan",
+        "pasport saya dengan ejen",
+        "pasport saya dengan majikan",
+        "hutang ejen",
+        "hutang dengan ejen",
+        "bayar balik ejen",
+        "yuran ejen",
+        "yuran pengambilan",
+        "tak boleh keluar asrama",
+        "tidak boleh keluar asrama",
+        "tidak dibenarkan keluar asrama",
+        "tak dibenarkan keluar asrama",
+        "dikurung di asrama"
+      ],
+      "sexual_harassment": ["gangguan seksual", "diganggu secara seksual", "raba saya", "meraba saya", "pegang badan saya"],
+      "self_harm_crisis": ["bunuh diri", "rasa nak mati", "ingin mati", "tamatkan hidup", "cederakan diri", "sakiti diri"],
+      "bullying_threats": ["dibuli", "buli saya", "ugut saya", "diugut", "pukul saya", "dipukul"],
+      "harassment": ["diganggu", "ganggu saya"],
+      "discrimination": ["diskriminasi", "didiskriminasi"],
+      "safety_hazard": ["mesin tak selamat", "mesin tidak selamat", "pintu kecemasan berkunci", "tiada pengadang keselamatan", "cedera di tempat kerja"],
+      "wage_legal": ["gaji tak bayar", "gaji tak dibayar", "gaji tidak dibayar", "tak dapat gaji", "tidak dapat gaji"]
+    }
   }
 }
