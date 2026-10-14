@@ -69,7 +69,7 @@ Phases follow section 7.2 of the architecture doc.
 - [ ] One 1–5 item per driver; neutral score recheck; score change per action against other teams; fix evidence on the draft screen (R26, R43)
 - [ ] AI quality watch with weekly spot checks, calibration and the hold-new-tags setting (R44)
 - [ ] Manager milestone nudges on Telegram (R45)
-- [ ] Language packs (BM, English, Chinese) with checker records and per-pack AI tests (R46); AI translation of Chinese replies for HR (R53); voice notes, transcribe only, for tested packs (R50)
+- [ ] Language packs (BM, English, Chinese) with checker records and per-pack AI tests (R46); AI translation of Chinese replies for HR (R53)
 - [ ] Worker-voice export, agency role, exit question, left flag, job-match card (R47, R48, R49, R1, R52)
 
 ## Definition of done
