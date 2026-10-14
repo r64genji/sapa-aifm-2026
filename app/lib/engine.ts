@@ -1,4 +1,5 @@
 import { checkinButton, checkinText } from "@/lib/checkin";
+import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
   liveLanguages,
@@ -139,9 +140,14 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };
   }
-  if (person.state === "active" && !command && input.kind === "text") {
-    const replies = await checkinText(person, input.text);
-    if (replies) return { replies };
+  if (person.state === "active" && input.kind === "text" && (!command || command === "ask")) {
+    if (!command) {
+      const replies = await checkinText(person, input.text);
+      if (replies) return { replies };
+    }
+    const question = command ? input.text.trim().replace(/^\S+\s*/, "") : input.text;
+    if (!question) return { replies: [{ text: packs[person.language].qa.askPrompt }] };
+    return { replies: await ask(person, question, command === "ask") };
   }
   return { replies: prompt(person, languages) };
 }

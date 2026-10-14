@@ -26,6 +26,14 @@
     "help": { "name": "help", "description": "Show help" }
   },
   "typedStop": "stop",
+  "qa": {
+    "askPrompt": "Type your question after /ask, or just type it here.",
+    "label": "AI answer",
+    "from": "From the handbook:",
+    "hr": "To check with HR:",
+    "unknown": "I don't know yet. I have logged your question for HR, without your name.",
+    "important": "This is an important matter, so I will not answer it. Please speak to HR directly:"
+  },
   "checkin": {
     "intro": "Hi, it's time for your Sapa check-in. It takes about a minute. Tap an answer, or type when asked.",
     "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",

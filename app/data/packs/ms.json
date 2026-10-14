@@ -26,6 +26,14 @@
     "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
   },
   "typedStop": "berhenti",
+  "qa": {
+    "askPrompt": "Taip soalan anda selepas /tanya, atau taip sahaja di sini.",
+    "label": "Jawapan AI",
+    "from": "Daripada buku panduan:",
+    "hr": "Untuk menyemak dengan HR:",
+    "unknown": "Saya belum tahu. Soalan anda telah dicatat untuk HR, tanpa nama anda.",
+    "important": "Ini perkara penting, jadi saya tidak akan menjawabnya. Sila bercakap terus dengan HR:"
+  },
   "checkin": {
     "intro": "Hai, tiba masanya untuk semakan Sapa anda. Ia mengambil masa kira-kira seminit. Tekan jawapan, atau taip apabila diminta.",
     "reminder": "Peringatan ringkas: semakan Sapa anda masih terbuka. Sambung di mana anda tinggalkan, atau abaikan dan ia akan ditutup.",

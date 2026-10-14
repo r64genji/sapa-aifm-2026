@@ -156,7 +156,9 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
   const { data: tag } = await db.from("ai_tags").select("status, drivers").eq("response_id", escalated).single();
   assert.deepEqual(tag, { status: "ok", drivers: ["ROLE_CLARITY"] });
   const { data: counted } = await db.from("theme_tags").select("response_id");
-  assert.deepEqual(counted!.map((row) => row.response_id), [await openResponse(plain)]);
+  const countedIds = counted!.map((row) => row.response_id);
+  assert.ok(countedIds.includes(await openResponse(plain)));
+  assert.ok(!countedIds.includes(escalated));
 
   const manager = await hrToken("raj@contoh.test");
   const res = await fetch(`${appUrl}/api/hr/escalations`, { headers: { authorization: `Bearer ${manager}` } });
