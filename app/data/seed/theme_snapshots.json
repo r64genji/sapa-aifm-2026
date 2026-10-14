@@ -1,0 +1,37 @@
+[
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Production",
+    "respondents": 9,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": { "n": 4, "reviewed": 3, "ai_confident": 1 },
+      "BELONGING": { "n": 3, "reviewed": 2, "ai_confident": 1 },
+      "WORKLOAD": { "n": 2, "reviewed": 2, "ai_confident": 0 },
+      "MANAGER_SUPPORT": { "n": 1, "reviewed": 1, "ai_confident": 0 }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-05",
+    "touchpoint": 14,
+    "team": "Production",
+    "respondents": 8,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": { "n": 6, "reviewed": 5, "ai_confident": 1 },
+      "WORKLOAD": { "n": 4, "reviewed": 3, "ai_confident": 1 }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Packaging",
+    "respondents": 4,
+    "suppressed": true,
+    "counts": null
+  }
+]
