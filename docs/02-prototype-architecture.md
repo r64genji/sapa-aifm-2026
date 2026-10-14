@@ -20,7 +20,7 @@ The AIFM guide sets the hard constraints:
 
 | Area | In the prototype | Pitch only |
 | --- | --- | --- |
-| Employee channel | Telegram check-in bot, Bahasa Malaysia, English and Chinese language packs with Manglish accepted (spec 05 R46), text, button and voice-note replies | More channels |
+| Employee channel | Telegram check-in bot, Bahasa Malaysia, English and Chinese language packs with Manglish accepted (spec 05 R46), text and button replies | More channels |
 | HR view | Cohort themes (k ≥ 5), flag queue, AI summary beside original text, action drafting | HRIS sync, multi-company billing |
 | Manager view | Assigned actions, accept, mark done with a one-line outcome; weekly team snapshots | Calendar booking for 1:1s |
 | Safety | Escalation path, consent and DELETE, audit log | Formal PDPA DPIA |
@@ -30,7 +30,7 @@ The AIFM guide sets the hard constraints:
 
 1. **Existing frameworks first.** Custom code only where it is the product's own logic: prompts, taxonomy, scheduling rules, privacy rules.
 2. **Two platforms, one repo.** Everything deploys as a single Next.js app on Vercel plus a single Supabase project, so a three-person team has few moving parts.
-3. **AI as a fixed pipeline, not a free-roaming agent.** Every AI step has a schema and quotes its evidence. SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies.
+3. **AI as a fixed pipeline, not a free-roaming agent.** Every AI step has a schema and quotes its evidence. SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies.
 4. **Demo-proof.** Every live dependency (gateway, model, chat platform) has a fallback, and the demo clock can be advanced on demand.
 
 ## 2. Architecture overview
@@ -170,7 +170,7 @@ Six pieces are custom because they are the product, not plumbing:
 - **n8n, which the AIFM guide suggests:** good glue, but a second runtime to debug on demo day, and logic in TypeScript is versioned, testable and editable by Claude Code.
 - **Topic clustering (BERTopic):** a cohort gives 5–20 replies, too few to cluster; a fixed taxonomy is also easier for HR to understand and correct.
 - **Lovable or Bolt for the app:** fast screens, but auth and data get locked into their setup. Fine for mock-ups.
-- **Voice notes:** in scope as transcribe-only: audio is deleted at once and no tone or emotion is kept. Voice is on for a pack only after its transcript accuracy is tested (spec 05 R50).
+- **Voice notes:** out of scope. A voice note gets a fixed text that asks the person to type, and nothing from it is stored (spec 05 R50).
 
 ## 5. AI layer
 
@@ -196,7 +196,7 @@ Four narrow AI calls, each with a fixed schema, all going through OmniRoute to G
 
 - **Evidence check:** the evidence quote must be an exact substring of the reply. If not, retry once, then send the reply to human review. This blocks invented evidence.
 - **No emotion fields:** the output schema has no emotion, personality or quit-risk field, so the model cannot return one.
-- **PII masking before the model:** regexes replace NRIC numbers, phone numbers and emails in text with placeholders. Audio cannot be masked, so a voice note goes only to the primary route and is deleted at once (spec 05 R17, R50).
+- **PII masking before the model:** regexes replace NRIC numbers, phone numbers and emails in text with placeholders. (spec 05 R17).
 - **Prompt injection:** the reply is passed as delimited data, the model has no tools, and the schema bounds what it can return.
 - **Escalation:** a keyword match in the person's language pack OR the model's `escalate` flag creates an escalation. HR is alerted at once, the bot sends a fixed supportive message with the contacts HR configured, and managers never see it.
 - **Sampling:** the dossier specified temperature 0. Check Google's Gemini 3.x guidance before lowering temperature; consistency comes mainly from the schema and thinking level, and the eval measures it.

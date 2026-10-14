@@ -15,7 +15,7 @@ Sapa is a chat bot that checks in with new employees during their first six mont
 
 **Four layers around the loop.** Each adds to the loop. None replaces it. The demo shows the loop and a few rules from each layer. The rest stay ready for Q&A.
 
-- **Reach.** Three language packs (Bahasa Malaysia, English and Chinese, with Manglish accepted), Telegram, voice notes, and handbook Q&A between check-ins.
+- **Reach.** Three language packs (Bahasa Malaysia, English and Chinese, with Manglish accepted), Telegram and handbook Q&A between check-ins.
 - **Care.** A fixed offer of a private chat for one person, serious concerns that go to HR only, and fixed milestone nudges for managers.
 - **Proof.** Score change against other teams, fix evidence, the job-match card, the Impact view and the exit check.
 - **Trust.** The AI quality watch, `/myanswers`, the worker-voice export and the agency view.
@@ -33,7 +33,7 @@ Q&A is not a second product. It is a second source of signal for the same fix-th
 
 | Person | What they do in Sapa | Time it takes |
 | --- | --- | --- |
-| New hire | Answers 3–4 short questions on Telegram, in Bahasa Malaysia or English, and typed or by voice note, at Day 3, 7, 14, 30, 60, 90 and Month 6. Can ask the bot questions about the company at any time. Can see their own stored replies, with the AI summary and tags, with `/myanswers` (`/jawapansaya`), and flag "this is wrong" to HR. Voluntary; can skip, stop or delete at any time | About a minute each time |
+| New hire | Answers 3–4 short questions on Telegram, in Bahasa Malaysia or English, at Day 3, 7, 14, 30, 60, 90 and Month 6. Can ask the bot questions about the company at any time. Can see their own stored replies, with the AI summary and tags, with `/myanswers` (`/jawapansaya`), and flag "this is wrong" to HR. Voluntary; can skip, stop or delete at any time | About a minute each time |
 | HR | Sees shared problems across the intake, reviews the evidence, drafts and assigns a fix, and approves a short "Update from HR" note for new hires. An Impact view shows response rate, days from reply to action done, the score change after fixes against other teams, manager milestones done and, across completed intakes, six-month retention as a trend and not proof | Minutes a week |
 | Manager | Accepts the fix, carries it out, marks it done with a one-line note. Gets fixed Day 1, 7 and 30 nudges for each new hire, and alerts, in Telegram. Sees their own fixes and weekly team snapshots on the web | One task at a time |
 
@@ -46,7 +46,7 @@ Q&A is not a second product. It is a second source of signal for the same fix-th
 5. Answers new hires' questions only from the published HR handbook, with a quote that code checks word for word.
 6. Spots serious issues (harassment, bullying, safety, self-harm, signs of forced labour) and sends them straight to HR.
 
-**What a person still decides.** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies. HR chooses the action. The manager accepts it and marks it done.
+**What a person still decides.** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies. HR chooses the action. The manager accepts it and marks it done.
 
 **When one person's reply needs follow-up.** HR may send that person one fixed, HR-approved offer: "Would you like a short private chat with HR?" The manager never sees it.
 

@@ -14,7 +14,7 @@
 
 ## Where humans decide in Sapa
 
-The one sentence to use everywhere: "SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies."
+The one sentence to use everywhere: "SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies."
 
 | Point | Who | What they can do |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ The one sentence to use everywhere: "SQL counts. The AI suggests labels. Labels 
 
 - [ ] Tag override UI on the response detail page
 - [ ] Original text and evidence quote shown beside every AI summary
-- [ ] Every AI word that reaches a new hire is one of three labelled things: a handbook answer that quotes a page HR published, the transcript of their own voice note, or their own `/myanswers` reading (spec 05 R11, R31, R50, R40); action notes and offers are HR-approved or checker-approved fixed text
+- [ ] Every AI word that reaches a new hire is one of two labelled things: a handbook answer that quotes a page HR published, or their own `/myanswers` reading (spec 05 R11, R31, R40); action notes and offers are HR-approved or checker-approved fixed text
 - [ ] Audit log records every override, assignment and acceptance
 - [ ] Screenshot each review point and save here
 
