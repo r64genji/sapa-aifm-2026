@@ -1,0 +1,10 @@
+# Sapa
+
+Sapa, a voluntary new-hire check-in bot plus HR backend, for AIFM 2026 Challenge 4. Start with [README.md](README.md).
+
+- Build spec: [docs/05](docs/05-implementation-spec.md). It wins over docs/02. Its rules R1–R53 and "Testing Decisions" are the test rules for this repo.
+- Overnight build rules and decisions: [docs/11](docs/11-overnight-build-brief.md).
+- How we work and what never to commit: [CONTRIBUTING.md](CONTRIBUTING.md).
+- App code lives in `app/` only. Running it and testing it: [app/README.md](app/README.md).
+
+Check command: `cd app && npm test`. Its last line is `E2E PASS: …` or `E2E FAIL: …`.

@@ -1,0 +1,20 @@
+{
+  "update_id": 731450001,
+  "message": {
+    "message_id": 1,
+    "from": {
+      "id": 5550000001,
+      "is_bot": false,
+      "first_name": "Mei Ling",
+      "language_code": "en"
+    },
+    "chat": {
+      "id": 5550000001,
+      "first_name": "Mei Ling",
+      "type": "private"
+    },
+    "date": 1792018800,
+    "text": "/start",
+    "entities": [{ "offset": 0, "length": 6, "type": "bot_command" }]
+  }
+}
