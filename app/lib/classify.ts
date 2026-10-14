@@ -3,6 +3,7 @@ import { complete } from "@/lib/ai";
 import { now } from "@/lib/clock";
 import { mask } from "@/lib/mask";
 import { packs } from "@/lib/packs";
+import { signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export const PROMPT_VERSION = "classify-v1";
@@ -111,9 +112,41 @@ export async function classify(organisationId: string, text: string): Promise<Re
   return held ?? { status: "awaiting_ai" };
 }
 
+async function countsWithoutReview(organisationId: string, language: string, drivers: string[]) {
+  const db = createAdminClient();
+  const started_at = (await now()).toISOString();
+  const rows = drivers.map((driver) => ({
+    organisation_id: organisationId,
+    driver,
+    language,
+    state: "calibrating",
+    started_at,
+  }));
+  if (rows.length > 0) {
+    const { error } = await db
+      .from("quality_holds")
+      .upsert(rows, { onConflict: "organisation_id,driver,language", ignoreDuplicates: true });
+    if (error) throw error;
+  }
+  const { data, error } = await db
+    .from("quality_holds")
+    .select("driver, state")
+    .eq("organisation_id", organisationId)
+    .eq("language", language)
+    .in("driver", drivers);
+  if (error) throw error;
+  return data.every((row) => row.state === "trusted");
+}
+
 export async function tagReply(organisationId: string, responseId: string, text: string) {
   const result = await classify(organisationId, text);
   const created_at = (await now()).toISOString();
+  const { data: response, error: responseError } = await createAdminClient()
+    .from("responses")
+    .select("language")
+    .eq("id", responseId)
+    .single();
+  if (responseError) throw responseError;
   const row =
     result.status === "awaiting_ai"
       ? { status: result.status }
@@ -123,6 +156,9 @@ export async function tagReply(organisationId: string, responseId: string, text:
           model: result.meta.model,
           prompt_version: PROMPT_VERSION,
           latency_ms: result.meta.latencyMs,
+          counted:
+            result.status === "ok" &&
+            (await countsWithoutReview(organisationId, response.language, result.tag.drivers)),
         };
   const { error } = await createAdminClient()
     .from("ai_tags")
@@ -131,5 +167,6 @@ export async function tagReply(organisationId: string, responseId: string, text:
       { onConflict: "response_id", ignoreDuplicates: result.status === "awaiting_ai" },
     );
   if (error) throw error;
+  await signal(organisationId, "queue");
   return result;
 }

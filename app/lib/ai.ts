@@ -6,12 +6,12 @@ const FALLBACK_CAP = 1.5;
 
 type CallType = "classify" | "answer" | "narrative" | "draft";
 
-const providers = (schema: object) => [
+const providers = (schema: object, medium: boolean) => [
   {
     name: "gemini" as const,
     url: `${process.env.OMNIROUTE_BASE_URL}/chat/completions`,
     key: process.env.OMNIROUTE_API_KEY!,
-    model: process.env.GEMINI_MODEL_ID!,
+    model: (medium ? process.env.GEMINI_MODEL_ID_MEDIUM : process.env.GEMINI_MODEL_ID)!,
     price: { input: 0.75, output: 3.75 },
     extra: { response_format: { type: "json_schema", json_schema: { name: "output", strict: true, schema } } },
   },
@@ -42,7 +42,7 @@ export async function complete(
   user: string,
   schema: object,
 ) {
-  for (const provider of providers(schema)) {
+  for (const provider of providers(schema, callType === "narrative" || callType === "draft")) {
     if (provider.name === "deepseek" && (await fallbackSpend(organisationId)) > FALLBACK_CAP) continue;
     const started = Date.now();
     let content: string | null = null;

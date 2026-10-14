@@ -1,0 +1,11 @@
+[
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "ROLE_CLARITY",
+    "language": "en",
+    "state": "calibrating",
+    "spot_checks_done": 3,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  }
+]

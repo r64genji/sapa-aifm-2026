@@ -4,6 +4,9 @@ import managers from "@/data/seed/managers.json";
 import people from "@/data/seed/people.json";
 import consents from "@/data/seed/consents.json";
 import checkin_schedule from "@/data/seed/checkin_schedule.json";
+import responses from "@/data/seed/responses.json";
+import ai_tags from "@/data/seed/ai_tags.json";
+import quality_holds from "@/data/seed/quality_holds.json";
 import users from "@/data/seed/users.json";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -23,7 +26,7 @@ async function seedUsers() {
 
 export async function resetDemo() {
   const { error } = await createAdminClient().rpc("reset_demo", {
-    seed: { organisations, language_packs, managers, people, consents, checkin_schedule },
+    seed: { organisations, language_packs, managers, people, consents, checkin_schedule, responses, ai_tags, quality_holds },
   });
   if (error) throw error;
   await seedUsers();

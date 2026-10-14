@@ -54,7 +54,7 @@ export async function freezeClock(iso: string) {
   if (error) throw error;
 }
 
-let updateId = 731450100;
+let updateId = Date.now();
 
 export function update(name: string, vars: Record<string, string | number> = {}) {
   updateId += 1;
