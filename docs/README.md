@@ -8,7 +8,15 @@ Read these in order. The `.md` files are snapshots of the live Claude Docs; if y
 | 2 | [Prototype architecture](02-prototype-architecture.md) | How the prototype is built: stack, components, AI layer, privacy enforcement, demo script, build plan | [Claude Doc](https://claude.ai/code/artifact/e40dee12-b432-4053-a659-68b1cc87acda) |
 | 3 | [Research & product dossier](03-research-dossier.md) | The evidence and product spec: statistics, competitors, personas, question bank, taxonomy, testing plan, ROI, ESG, judge Q&A | [Claude Doc](https://claude.ai/code/artifact/8cef3335-cecc-4bce-812e-b8fd6617111e) |
 | 4 | [Adversarial review](04-adversarial-review.md) | What breaks in 01–03, ranked by severity, with the fix for each | — |
-| 5 | [Build spec](05-build-spec.md) | The full app spec: user stories, rules R1–R27, modules, data model, tests. **Wins over 02 where they disagree** | — |
+| 5 | [Implementation spec](05-implementation-spec.md) | Bot, Q&A, AI, rules R1–R53, modules, data model, tests. **Wins over 02 where they disagree** | — |
+| 6 | [Dashboard design spec](06-dashboard-prd.md) | High-level brief for the web app: situation, problem, goal, commitments and user flows. Screens are recommendations only | — |
+| 7 | [Official rules & requirements](07-official-rules-and-requirements.md) | PDF + aifm.asia + workshop videos in one place: dates, eligibility, judging, pitch rules, open questions for the organisers | — |
+| 8 | [Rubric review 1](08-rubric-review.md) | First AI judge review against the rubric (history) | — |
+| 9 | [Cohort size estimate](09-cohort-size-estimate.md) | Sourced estimate of hires a month for a 300-staff company, behind the demo seed. A tracking sheet with open checks | — |
+| 10 | [Rubric review 2](10-rubric-review-2.md) | Second AI judge review: about 67 now, about 80 with its fixes. Fixes 1–7 applied 15 Oct | — |
+| 11 | [Rubric review 3](11-rubric-review-3.md) | Third AI judge review (product only): about 81.5 now, about 95 with its fixes. G1–G23 applied 15 Oct, except G19 (rejected by the team) | — |
+| 12 | [Rubric review 4](12-rubric-review-4.md) | Fourth AI judge review (product only, skeptical judge): about 89 now, about 95 with its fixes. H1–H15 and contradictions K1–K17 applied 15 Oct | — |
+| 13 | [Classifier bake-off](13-classifier-bakeoff.md) | Gemini vs Cloudflare Clef on 150 BM/English/Manglish replies. Why classify stays on Gemini, and the Gemini latency risk | — |
 
 ## Reference
 
@@ -16,5 +24,6 @@ Read these in order. The `.md` files are snapshots of the live Claude Docs; if y
 
 ## Where docs disagree
 
-- **Demo script.** The dossier (section K) has an earlier version with Mei Ling and "3 of 5". The architecture doc (section 7.1) is the current one: demo clock, live reply, "4 of 6". Use the architecture version.
-- **Eval set size.** The dossier says 50–100 labelled replies; the architecture says about 150. Aim for 150, accept 100 if time runs out.
+- **Demo script.** The implementation spec (05, "Updated 2-minute demo" and "Demo setup") is the only source. The dossier (section K) and the architecture doc (section 7.1) have older versions.
+- **Eval set size.** The dossier and the architecture (about 150) are older than the spec. Aim for about 200 (the dossier minimum is 50–100), with at least 40 escalation cases (05 eval method). A smaller escalation set gives an interval too wide to use.
+- **Group size and window.** The dossier (03), review (04) and rubric review (08) are history and still say "intake of 6", "3 of 5" or "rolling 90 days". The current rule is everyone hired in the last six months (about 30 hires), matching the guide's "leave within six months". Specs 01, 02, 05 and 06 are current.

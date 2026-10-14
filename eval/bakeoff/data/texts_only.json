@@ -1,0 +1,752 @@
+[
+{
+"id": "r001",
+"lang": "en",
+"text": "Team lunch on Friday was nice, everyone chill and helpful so far."
+},
+{
+"id": "r002",
+"lang": "manglish",
+"text": "Boss ok je, tapi dia jarang reply WhatsApp so kadang sy tunggu sampai petang nak confirm kerja."
+},
+{
+"id": "r003",
+"lang": "bm",
+"text": "Ok je setakat ni. Gaji tak lama lagi masuk, harap ok."
+},
+{
+"id": "r004",
+"lang": "en",
+"text": "Rota keeps changing every few days and nobody tells us until the night before."
+},
+{
+"id": "r005",
+"lang": "bm",
+"text": "Ada colleague asyik kacau saya dalam group WhatsApp, siap hantar gambar saya tanpa izin. Saya dah lapor tapi takde tindakan."
+},
+{
+"id": "r006",
+"lang": "manglish",
+"text": "Commute jauh gila tapi OK la, yang penting gaji betul-betul masuk."
+},
+{
+"id": "r007",
+"lang": "en",
+"text": "Still don't know how the POS refund process works, nobody showed me and the manual is 80 pages."
+},
+{
+"id": "r008",
+"lang": "bm",
+"text": "Shift malam ni sampai 2 pagi, lepas tu start pagi lagi. Badan dah x larat."
+},
+{
+"id": "r009",
+"lang": "en",
+"text": "My team lead keeps sending me sexual messages at night and says I'd get promoted if I'm nice to him."
+},
+{
+"id": "r010",
+"lang": "manglish",
+"text": "Hari-hari OT sampai malam, mati la kalau macam ni, tapi bos ok je."
+},
+{
+"id": "r011",
+"lang": "bm",
+"text": "Supervisor tak pernah tegur bila saya buat silap, tapi bila dah settle baru tanya kenapa."
+},
+{
+"id": "r012",
+"lang": "en",
+"text": "Ok so far, team friendly, boss is chill, just still settling into the outlet routines."
+},
+{
+"id": "r013",
+"lang": "manglish",
+"text": "Claim OT bulan lepas belum bayar lagi, dah masuk bulan ni, setiap kali tanya kena tunggu je."
+},
+{
+"id": "r014",
+"lang": "bm",
+"text": "Abang supervisor selalu 'tak sengaja' sentuh pinggang saya masa lalu depan stor. Saya rasa tak selesa."
+},
+{
+"id": "r015",
+"lang": "en",
+"text": "Warehouse has a pallet jack with a dodgy brake and the supervisor said 'just be careful'."
+},
+{
+"id": "r016",
+"lang": "manglish",
+"text": "Pelanggan komplain pasal stok habis sampai nak jerit, sabar je la kan."
+},
+{
+"id": "r017",
+"lang": "bm",
+"text": "Kerja dia banyak, tapi jobdesk tak sama dengan yang HR cerita masa interview."
+},
+{
+"id": "r018",
+"lang": "en",
+"text": "Got the store rota but nobody told me which SOP version to follow, so I'm doing it two ways."
+},
+{
+"id": "r019",
+"lang": "manglish",
+"text": "Boss suruh buat stocktake malam ni, pagi esok pulak kena buka outlet, tak faham la deadline sebenar."
+},
+{
+"id": "r020",
+"lang": "bm",
+"text": "Supervisor cakap kalau saya report pasal shift saya, dia akan pastikan saya kena buang. Dia serius."
+},
+{
+"id": "r021",
+"lang": "en",
+"text": "Feeling kinda lonely honestly, everyone already has their lunch group and I just eat at my desk."
+},
+{
+"id": "r022",
+"lang": "manglish",
+"text": "Dah 3 minggu tak dapat training betul, main tengok je cara orang lain buat."
+},
+{
+"id": "r023",
+"lang": "bm",
+"text": "Gudang panas macam sauna pagi tadi, rasa nak rebah tapi gerak juga."
+},
+{
+"id": "r024",
+"lang": "en",
+"text": "Outlet manager is great, always makes time for questions, but he's never been trained on the new system either."
+},
+{
+"id": "r025",
+"lang": "manglish",
+"text": "Mesin cuci lantai dekat outlet tu rosak, wayar terdedah, tapi kami kena guna jugak."
+},
+{
+"id": "r026",
+"lang": "en",
+"text": "Honestly I think the team would manage better without me around, I've been thinking about it a lot at night."
+},
+{
+"id": "r027",
+"lang": "bm",
+"text": "Shift pagi dengan malam dah bertukar tiga kali bulan ni, orang tak tahu jadual sendiri."
+},
+{
+"id": "r028",
+"lang": "manglish",
+"text": "Manager okay je, tapi dia tak pernah bagi feedback so sy tak tau apa yang perlu improve."
+},
+{
+"id": "r029",
+"lang": "en",
+"text": "Pay is fine, the commute to the Shah Alam warehouse is a killer though."
+},
+{
+"id": "r030",
+"lang": "bm",
+"text": "Dah tiga kali minta akses sistem, sampai sekarang belum dapat. Jadi kena pinjam login orang lain."
+},
+{
+"id": "r031",
+"lang": "manglish",
+"text": "Supervisor selalu bagi shift malam kat staff India je, kami yang Melayu dapat pagi je sebab dia kata budak Melayu tak boleh handle malam."
+},
+{
+"id": "r032",
+"lang": "en",
+"text": "Overtime from August still not in my pay, HR keeps saying 'next cycle' and that's been like three cycles."
+},
+{
+"id": "r033",
+"lang": "bm",
+"text": "Supervisor membebel pasal rak tak rapi, lepas tu dia sendiri pun ikut kemas. Okay la."
+},
+{
+"id": "r034",
+"lang": "manglish",
+"text": "Kena ulang training online tiga kali sebab portal tak boleh login, takde siapa nak tolong."
+},
+{
+"id": "r035",
+"lang": "en",
+"text": "Our area manager keeps saying women can't handle the stockroom, so I'm always stuck on the counter."
+},
+{
+"id": "r036",
+"lang": "bm",
+"text": "Ada orang senior gelak-gelak dengan saya tiap kali saya salah sebut nama produk, rasa macam diejek."
+},
+{
+"id": "r037",
+"lang": "manglish",
+"text": "Shift saya tukar tanpa notice, minggu ni dah kena 3 shift lain, plan hidup pun kacau."
+},
+{
+"id": "r038",
+"lang": "en",
+"text": "Customers keep asking for stuff we don't carry and I end up explaining the same thing fifty times."
+},
+{
+"id": "r039",
+"lang": "bm",
+"text": "Ok je, boss kata nanti kena buat presentation. Tak tahu tajuk apa."
+},
+{
+"id": "r040",
+"lang": "manglish",
+"text": "Kepala aku dah serabut sebab 3 jenis kerja serentak, rasa nak cuti sehari je."
+},
+{
+"id": "r041",
+"lang": "en",
+"text": "Sometimes I feel like the dumbest one in the room because nobody explains the stock codes."
+},
+{
+"id": "r042",
+"lang": "bm",
+"text": "Saya dah malas nak hidup. Kadang fikir lebih baik takde je terus daripada susahkan semua orang."
+},
+{
+"id": "r043",
+"lang": "manglish",
+"text": "Dia cakap kalau aku bocorkan apa-apa kat HQ, dia akan kenakan aku dekat semua orang."
+},
+{
+"id": "r044",
+"lang": "en",
+"text": "Pretty happy so far, the outlet crew is friendly and the shift swap process is easy."
+},
+{
+"id": "r045",
+"lang": "bm",
+"text": "Kerja lebih masa sejak bulan lepas tak dibayar, tuntutan dah hantar dua kali tapi tak dilayan."
+},
+{
+"id": "r046",
+"lang": "manglish",
+"text": "Abang tu asyik hantar mesej malam-malam, tanya saya pakai apa, lepas tu suruh rahsiakan."
+},
+{
+"id": "r047",
+"lang": "en",
+"text": "Coworker keeps posting my photo in the group chat with jokes about my weight, even after I asked him to stop."
+},
+{
+"id": "r048",
+"lang": "bm",
+"text": "Forklift kat dock belakang tak ada brek, pemandu baru tu tetap guna. Hampir langgar orang tadi."
+},
+{
+"id": "r049",
+"lang": "manglish",
+"text": "Ada staff lelaki asyik panggil aku dengan nama ejekan depan semua orang dalam grup, dah report tapi takde tindakan."
+},
+{
+"id": "r050",
+"lang": "bm",
+"text": "OT sampai 12 malam hari-hari, rasa letih dah."
+},
+{
+"id": "r051",
+"lang": "en",
+"text": "Can't figure out who I report to for the new outlet, my offer letter says one person and my WhatsApp says another."
+},
+{
+"id": "r052",
+"lang": "manglish",
+"text": "Stock sampai tiga kali kena kira semula, mata dah pedih, nak tidur je."
+},
+{
+"id": "r053",
+"lang": "bm",
+"text": "x jelas arahan, sekejap kata buat ni, sekejap kata buat tu."
+},
+{
+"id": "r054",
+"lang": "en",
+"text": "I'm so tired after the double shift, could honestly sleep on the shop floor right now lol."
+},
+{
+"id": "r055",
+"lang": "manglish",
+"text": "Ok je la, cuma tak ramai orang nak lepak makan dengan saya. Kadang rasa macam outsider."
+},
+{
+"id": "r056",
+"lang": "en",
+"text": "Pay came in on time and the commute is manageable, nothing big to complain about."
+},
+{
+"id": "r057",
+"lang": "bm",
+"text": "Sistem inventori tak dibuka untuk saya lagi, jadi kena tanya orang setiap kali nak order barang."
+},
+{
+"id": "r058",
+"lang": "manglish",
+"text": "Supervisor baru ni tak pernah senyum atau puji, rasa macam tak buat apa-apa pun bagus."
+},
+{
+"id": "r059",
+"lang": "en",
+"text": "Mostly good, the store lead is supportive, though I still get lost in the planogram rules."
+},
+{
+"id": "r060",
+"lang": "bm",
+"text": "Dah okay sikit, boss ajar cara guna mesin tapi tak ada manual, jadi lupa-lupa ingat."
+},
+{
+"id": "r061",
+"lang": "manglish",
+"text": "Shift malam nak kena jaga dua outlet, tak cukup staff, akhirnya aku sorang je."
+},
+{
+"id": "r062",
+"lang": "en",
+"text": "Honestly at this point a single day off would fix my whole life, my feet are cooked."
+},
+{
+"id": "r063",
+"lang": "bm",
+"text": "Tak jelas sapa sepatutnya approve cuti, supervisor cakap tanya HR, HR cakap tanya supervisor."
+},
+{
+"id": "r064",
+"lang": "manglish",
+"text": "Aku dah jarang dapat feedback, kadang-kadang boss tegur depan staf lain je."
+},
+{
+"id": "r065",
+"lang": "en",
+"text": "Team's been really welcoming, though I haven't been added to the outlet WhatsApp group yet so I miss updates."
+},
+{
+"id": "r066",
+"lang": "bm",
+"text": "Setakat ni ok, tapi tak faham kenapa kena isi dua borang sekali untuk stok."
+},
+{
+"id": "r067",
+"lang": "manglish",
+"text": "Kaki dah bengkak, rasa nak tanggal kaki je pun ada."
+},
+{
+"id": "r068",
+"lang": "en",
+"text": "Got a sales target but no one told me how it's measured, so I'm guessing every week."
+},
+{
+"id": "r069",
+"lang": "bm",
+"text": "Commute naik tambang, sewa bilik pun naik, rasa gaji tak cukup."
+},
+{
+"id": "r070",
+"lang": "manglish",
+"text": "Team lead selalu bagi kerja last minute, deadline tak pernah jelas, pening."
+},
+{
+"id": "r071",
+"lang": "en",
+"text": "New hire buddy assigned but he's on leave every other week so I've basically been on my own."
+},
+{
+"id": "r072",
+"lang": "bm",
+"text": "Stok rak hari ni habis, aku kena kemas 3 rak sorang, memang bengang je."
+},
+{
+"id": "r073",
+"lang": "manglish",
+"text": "Sistem POS masih error, jadi kena tulis manual dan jadi lambat untuk closing."
+},
+{
+"id": "r074",
+"lang": "en",
+"text": "The outlet manager ignores my messages for days, I still haven't got my confirmation for the transfer."
+},
+{
+"id": "r075",
+"lang": "bm",
+"text": "Sekarang dah pandai buat stok opname, tapi tak tau ke mana nak lapor kalau ada selisih."
+},
+{
+"id": "r076",
+"lang": "manglish",
+"text": "Macam takde support langsung, bila ada masalah kena cari sendiri dalam group."
+},
+{
+"id": "r077",
+"lang": "en",
+"text": "Shift swaps are a mess, the roster says one thing and the supervisor says another."
+},
+{
+"id": "r078",
+"lang": "bm",
+"text": "Ada dua staff dah mula pulau saya dalam group WhatsApp, selalu tak ajak makan."
+},
+{
+"id": "r079",
+"lang": "manglish",
+"text": "Ketika closing hari ni aku rasa macam lembu kena heret, tapi lega dah siap."
+},
+{
+"id": "r080",
+"lang": "en",
+"text": "Had a customer scream at me about a price, normal retail stuff lol nothing new."
+},
+{
+"id": "r081",
+"lang": "bm",
+"text": "Dekat outlet baru ni banyak sangat benda kena ingat, SOP 40 muka surat, takde masa nak baca."
+},
+{
+"id": "r082",
+"lang": "manglish",
+"text": "Gaji masuk on time, commute dari Klang pun ok la, takde complaint."
+},
+{
+"id": "r083",
+"lang": "en",
+"text": "Shift times keep changing and I've got no idea whether I'm on tomorrow morning or late night."
+},
+{
+"id": "r084",
+"lang": "bm",
+"text": "Dah dua minggu tak dapat pelan kerja, jadi setiap hari tanya boss apa nak buat dulu."
+},
+{
+"id": "r085",
+"lang": "manglish",
+"text": "Sejak pindah outlet, tak ada siapa ajar POS baru, kena main cuba-cuba."
+},
+{
+"id": "r086",
+"lang": "en",
+"text": "Stocktake took the whole night, my back is literally dying but I'll survive."
+},
+{
+"id": "r087",
+"lang": "bm",
+"text": "Boss bising pasal invois salah tadi, dia macam nak ketuk meja, tapi biasa la kan."
+},
+{
+"id": "r088",
+"lang": "en",
+"text": "Honestly the team is lovely, just wish someone would explain our KPIs properly."
+},
+{
+"id": "r089",
+"lang": "manglish",
+"text": "Boss suruh ambil alih kerja kawan yang dah resign, tapi gaji sama je."
+},
+{
+"id": "r090",
+"lang": "en",
+"text": "Still waiting on my system login after two weeks so I'm doing everything on paper."
+},
+{
+"id": "r091",
+"lang": "bm",
+"text": "Kadang dapat kerja bersepadu dekat tiga bahagian, siapa boss sebenar pun tak tau."
+},
+{
+"id": "r092",
+"lang": "manglish",
+"text": "Staf lama asyik sindir aku sebab aku baru, rasa tersisih."
+},
+{
+"id": "r093",
+"lang": "en",
+"text": "Honestly I'm so tired of price checks, could scream but it's fine."
+},
+{
+"id": "r094",
+"lang": "bm",
+"text": "Dah dapat jadual cuti, tapi bila tukar shift kena tunggu kelulusan dua minggu."
+},
+{
+"id": "r095",
+"lang": "manglish",
+"text": "Kerja support HQ ni semua kena buat, tak ada siapa cakap yang mana penting."
+},
+{
+"id": "r096",
+"lang": "en",
+"text": "Supervisor is nice but never gives proper feedback so I'm not sure if I'm doing ok."
+},
+{
+"id": "r097",
+"lang": "bm",
+"text": "Ok je, dah kenal semua orang outlet, lunch sekali-sekala."
+},
+{
+"id": "r098",
+"lang": "manglish",
+"text": "Boss kata apa-apa ada kat dia, tapi bila tanya dia takde masa, kena tunggu minggu depan."
+},
+{
+"id": "r099",
+"lang": "en",
+"text": "Feel like I'm drowning in SOPs and I've been told to 'just ask' but nobody answers."
+},
+{
+"id": "r100",
+"lang": "bm",
+"text": "Tadi ada customer marah sebab stok habis, boss tak ada sebelah, kami tiga orang je."
+},
+{
+"id": "r101",
+"lang": "manglish",
+"text": "Kena cover stor tiga outlet sekaligus, takde leave langsung, letih gila."
+},
+{
+"id": "r102",
+"lang": "en",
+"text": "Still shadowing after 3 months, nobody's given me actual responsibility or a clear sign-off."
+},
+{
+"id": "r103",
+"lang": "bm",
+"text": "Sebulan kat outlet ni, x ada sorang pun ajak lepak, dan SOP pun sy tak pernah dapat taklimat."
+},
+{
+"id": "r104",
+"lang": "en",
+"text": "Nobody has clarified whether I'm supposed to cover the warehouse or the front shop, so I just pick one."
+},
+{
+"id": "r105",
+"lang": "manglish",
+"text": "Supervisor takde masa nak layan, lunch pun geng lama je yang duduk sama, aku sorang kat hujung."
+},
+{
+"id": "r106",
+"lang": "bm",
+"text": "Boleh la, gaji dah masuk, jalan dari rumah ke HQ pun tak sesak sangat."
+},
+{
+"id": "r107",
+"lang": "en",
+"text": "Training was two hours on day one and then I'm running the till alone during peak, which is a bit much."
+},
+{
+"id": "r108",
+"lang": "manglish",
+"text": "Dah dua minggu aku sorang tutup kedai, hari-hari closing lewat, tak ada siapa gantikan."
+},
+{
+"id": "r109",
+"lang": "bm",
+"text": "Tak tau sama ada sy ni sebahagian dari team kedai atau team warehouse, semua orang macam tak pasti."
+},
+{
+"id": "r110",
+"lang": "en",
+"text": "Yeah all good, team's friendly, pay's on time, no real complaints from me yet."
+},
+{
+"id": "r111",
+"lang": "manglish",
+"text": "Sistem clock-in tak boleh login sejak minggu lepas, guna punch card manual jelah."
+},
+{
+"id": "r112",
+"lang": "bm",
+"text": "Boss baik, tapi dia dah pindah dua kali, sekarang kena adapt dengan orang baru dan SOP baru lagi."
+},
+{
+"id": "r113",
+"lang": "en",
+"text": "The office team goes out together every Thursday but nobody mentions it to me, so I just find out after."
+},
+{
+"id": "r114",
+"lang": "manglish",
+"text": "Kerja berubah-ubah tiap minggu, bulan lepas saya jaga stor, minggu ni tiba-tiba jadi cashier, tak ada penjelasan."
+},
+{
+"id": "r115",
+"lang": "bm",
+"text": "Hari ni pelanggan bising pasal diskaun, tapi tu kerja retail la, biasa je."
+},
+{
+"id": "r116",
+"lang": "en",
+"text": "New starters get a buddy but I'm the only one who got no buddy and nobody's really shown me around."
+},
+{
+"id": "r117",
+"lang": "manglish",
+"text": "Manager ni jarang ada kat outlet, bila dia tak ada, aku la kena jadi supervisor dan handle semua benda."
+},
+{
+"id": "r118",
+"lang": "bm",
+"text": "Lepas training, sy ingat kena buat stok je, rupanya kena handle complaint, refund dan order sekali."
+},
+{
+"id": "r119",
+"lang": "en",
+"text": "Pay's decent, the commute to the Puchong outlet is long but I'm used to it."
+},
+{
+"id": "r120",
+"lang": "manglish",
+"text": "Dekat outlet ada geng-geng, kalau kau bukan dari kawasan sama, susah nak masuk."
+},
+{
+"id": "r121",
+"lang": "bm",
+"text": "Tak pernah ada manual untuk mesin penimbang, jadi main ikut ingatan orang lama."
+},
+{
+"id": "r122",
+"lang": "en",
+"text": "Honestly the stock count took forever, my hands are numb from the scanner lol, but whatever."
+},
+{
+"id": "r123",
+"lang": "manglish",
+"text": "Tak jelas KPI aku apa, dan training sistem baru pun tak cukup, jadi aku trial and error."
+},
+{
+"id": "r124",
+"lang": "bm",
+"text": "Supervisor kata ok je, tapi bila nak feedback, dia cakap 'nanti la kita bincang', sampai sekarang tak bincang."
+},
+{
+"id": "r125",
+"lang": "en",
+"text": "I've been covering the Saturday shift every week, and the rest of the team just goes home, feels isolated."
+},
+{
+"id": "r126",
+"lang": "manglish",
+"text": "Aku baru masuk dan bahan training online dalam bahasa Inggeris penuh, susah sikit nak faham."
+},
+{
+"id": "r127",
+"lang": "bm",
+"text": "Okay la semua, cuma sekali-sekala tunggu bas lama masa balik kerja."
+},
+{
+"id": "r128",
+"lang": "en",
+"text": "My area manager's instructions change every other day, and then he's unreachable when I ask which one to follow."
+},
+{
+"id": "r129",
+"lang": "manglish",
+"text": "Hujung minggu aku kena naik lori hantar stok ke outlet lain, cuti langsung takde."
+},
+{
+"id": "r130",
+"lang": "bm",
+"text": "Kerja saya tak sama dengan yang diceritakan masa temuduga, dan rakan sekerja lain pun macam keliru siapa buat apa."
+},
+{
+"id": "r131",
+"lang": "en",
+"text": "Happy with how things are going, the team went out for dinner and I finally feel part of it."
+},
+{
+"id": "r132",
+"lang": "manglish",
+"text": "Dah tanya boss banyak kali pasal proses refund, dia suruh tanya orang lain pulak, takde siapa tahu."
+},
+{
+"id": "r133",
+"lang": "bm",
+"text": "OT hari-hari, sambil tu kena belajar sistem baru yang tak ada siapa ajar betul-betul."
+},
+{
+"id": "r134",
+"lang": "en",
+"text": "Lunch is always the same three people, I'm not sure if I'm supposed to join or just sit quietly."
+},
+{
+"id": "r135",
+"lang": "manglish",
+"text": "Tak jelas kenapa setiap minggu target bertukar, aku sendiri tak tahu apa yang dinilai."
+},
+{
+"id": "r136",
+"lang": "bm",
+"text": "Dah dua minggu shift 12 jam, sampai rumah terus tidur, tak sempat buat apa-apa."
+},
+{
+"id": "r137",
+"lang": "en",
+"text": "Nobody has told me which of the three reporting apps I'm supposed to use for returns."
+},
+{
+"id": "r138",
+"lang": "manglish",
+"text": "Ok je, bos baik, rakan-rakan pun friendly, cuma kena belajar banyak lagi."
+},
+{
+"id": "r139",
+"lang": "bm",
+"text": "Supervisor selalu bercakap dengan orang lama je, kami yang baru ni macam tak wujud dalam mesyuarat."
+},
+{
+"id": "r140",
+"lang": "en",
+"text": "Stock deliveries come in at 6am so I'm literally doing a double, no days off this month."
+},
+{
+"id": "r141",
+"lang": "manglish",
+"text": "Aku masih tak tahu cara nak file cuti dalam sistem, jadi tanya rakan je."
+},
+{
+"id": "r142",
+"lang": "bm",
+"text": "Nak mampus dah dengan inventori ni, banyak sangat kotak. Lepas siap nak tidur 12 jam."
+},
+{
+"id": "r143",
+"lang": "bm",
+"text": "Saya tak pasti nak lapor kat HQ atau kat supervisor outlet, dan yang lain semua macam dah kenal rapat."
+},
+{
+"id": "r144",
+"lang": "manglish",
+"text": "Macam orang luar je kat sini, semua bual pasal kenangan lama, aku tak masuk sekali."
+},
+{
+"id": "r145",
+"lang": "manglish",
+"text": "Ok la, gaji steady, aircond kat outlet sejuk, at least tak panas gila."
+},
+{
+"id": "r146",
+"lang": "bm",
+"text": "Tiap kali saya kena cover shift orang lain, boss cakap ok je, tapi tak pernah bagi apa-apa tenaga tambahan."
+},
+{
+"id": "r147",
+"lang": "manglish",
+"text": "Boss tak pernah marah, tapi jarang juga tegur. Entah la kalau aku buat betul ke tak."
+},
+{
+"id": "r148",
+"lang": "en",
+"text": "Got the handbook but it's written for a different outlet format, so half of it doesn't apply."
+},
+{
+"id": "r149",
+"lang": "bm",
+"text": "Kadang-kadang minta buat dua kerja serentak, satu untuk HQ dan satu untuk outlet, siapa priority pun tak tau."
+},
+{
+"id": "r150",
+"lang": "manglish",
+"text": "Ok je la, takde masalah besar, gaji dan jadual pun jelas."
+}
+]

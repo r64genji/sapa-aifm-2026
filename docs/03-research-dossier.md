@@ -1,12 +1,12 @@
 # Sapa — AIFM 2026 Challenge 4 (RETAIN): Research & Product Dossier
 
-*As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/8cef3335-cecc-4bce-812e-b8fd6617111e)*
+*As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/8cef3335-cecc-4bce-812e-b8fd6617111e). Sections C, D, H, I, K, L and M were updated on 15 Oct to match the [implementation spec (05)](05-implementation-spec.md). Where they disagree, 05 wins.*
 
 **Sapa is a voluntary chat check-in assistant that helps HR and line managers spot new-hire difficulties in the first six months and act on them before they become resignations.** It follows the guide's Challenge 4 brief: one employee group (new hires), voluntary feedback, AI-found themes, human review and a tracked support action.
 
 **One-sentence pitch (guide template):** We are building **Sapa**, a voluntary chat check-in assistant, **for HR teams and line managers at companies that hire continuously**, so they can **understand new-hire difficulties earlier and act on them more clearly**, before disengagement becomes resignation.
 
-**Minimum output chain, as the guide requires:** EMPLOYEE FEEDBACK (short voluntary check-ins) → AI FINDS THEMES (tags each reply, summarises themes across the intake) → HR / MANAGER REVIEWS (flag queue with consent-aware visibility) → SUPPORT ACTION (AI drafts it, a human edits, approves and tracks it to done).
+**Minimum output chain, as the guide requires:** EMPLOYEE FEEDBACK (short voluntary check-ins) → AI FINDS THEMES (tags each reply, summarises themes across the intake) → HR / MANAGER REVIEWS (flag queue with consent-aware visibility) → SUPPORT ACTION (AI drafts it, HR edits and assigns it, the manager accepts it and marks it done).
 
 **Key decisions in this version:**
 
@@ -43,7 +43,7 @@ The guide's scenario sets the frame: "Several new employees leave within six mon
 
 **Primary user (guide step 3):** the HR executive. **Secondary user:** the line manager or supervisor. **Feedback provider:** the new hire.
 
-**Demo scenario used throughout this document:** a 300-staff manufacturer hires about 60 people a year in monthly intakes (operators, technicians, fresh-graduate executives). Its HR team is two people. Last year about 15 new hires left within six months, and exit interviews cited unclear priorities, weak onboarding and little feedback.
+**Demo scenario used throughout this document:** a 300-staff manufacturer hires about 60 people a year in monthly intakes (operators, technicians, fresh-graduate executives). Its HR team is two people. Last year about 12 new hires (2 in 10) left within six months, and exit interviews cited unclear priorities, weak onboarding and little feedback.
 
 ## B. The problem in plain language
 
@@ -86,9 +86,11 @@ Pay is the most common overall reason for leaving (53% cite low pay, Randstad). 
 | 73% feel more connected to their manager than to the company | [Randstad Workmonitor 2026 Malaysia](https://www.randstad.com.my/hr-trends/employer-brand/managers-are-key-source-of-workplace-stability-randstad-workmonitor-2026/) | 750 respondents | Strong-medium; the manager is the key lever |
 | Gen Z average job stint 1.1 years; 22% left a job within a year | [Randstad Gen Z Workplace Blueprint](https://www.randstad.com/press/2025/genz-workplace-blueprint/) (2025) | 11,250 respondents, 15 markets | Medium (global) |
 | 74.3% of workers aged 15–24 in roles below their qualification (Q3 2025) | [PNB Research Institute](https://www.klsescreener.com/v2/news/view/1729373/job-hopping-among-malaysian-gen-z-driven-by-poor-job-quality-not-work-ethic-pnb-research-institute) | Malaysia | Medium-strong; fuels expectation gaps |
-| Replacing an employee costs 0.5× to 2× annual salary | [Gallup](https://www.gallup.com/workplace/247391/fixable-problem-costs-businesses-trillion.aspx) | US | Medium; method unpublished, so use the low end |
+| About 2 in 10 new hires at companies of 200–500 staff leave within six months (reported as 23%) | Employment Hero survey via [Malay Mail](https://www.malaymail.com/news/malaysia/2023/10/25/employment-survey-two-in-10-new-hires-leave-big-companies-within-six-months/98281) (2023); see [cohort estimate](09-cohort-size-estimate.md) | Malaysia | Medium: vendor survey; only the headline was read. Used in the ROI (H1) |
+| Median cost of replacing an employee is about 21% of annual salary | Center for American Progress review, [Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/) | US case studies | Medium: US and older, but the method is published. Used in the ROI (H1) |
+| Replacing an employee costs 0.5× to 2× annual salary | [Gallup](https://www.gallup.com/workplace/247391/fixable-problem-costs-businesses-trillion.aspx) | US | Weak; method unpublished. Not used in the ROI |
 
-The two most defensible Malaysian figures are Aon's 18.2% attrition and Gallup's 25% engagement. Enboarder explains *why* people leave early, but it surveys Western HR leaders; say so if asked.
+The most defensible Malaysian figures are Aon's 18.2% attrition, Gallup's 25% engagement and Employment Hero's 2 in 10 new hires leaving within six months. Enboarder explains *why* people leave early, but it surveys Western HR leaders; say so if asked.
 
 ## C. Current process and where it breaks (slide 3)
 
@@ -106,6 +108,16 @@ Today HR learns why new hires struggled only at the exit interview: one person a
 
 **What to add before the pitch:** 3–5 short quotes from HR practitioners or recruiters on how they check on new hires today, how many early leavers they had last year, and how they find out why. Real quotes are worth more on this slide than any global statistic.
 
+**Practitioner evidence (slot, empty until real interviews happen).** The team must fill this from real interviews. Never invent a quote, a name or a number. If no interview happens, slide 3 says "desk research only". Interview guide: [`deliverables/09-testing-evidence/interview-and-user-test-guide.md`](../deliverables/09-testing-evidence/interview-and-user-test-guide.md).
+
+| # | Role and company type (no name without permission) | Quote | Early leavers last year (their number) | "Would you let Sapa run for three monthly intakes, each until Month 6?" |
+| --- | --- | --- | --- | --- |
+| 1 | *(empty)* | *(empty)* | *(empty)* | *(empty)* |
+| 2 | *(empty)* | *(empty)* | *(empty)* | *(empty)* |
+| 3 | *(empty)* | *(empty)* | *(empty)* | *(empty)* |
+| 4 | *(optional)* | | | |
+| 5 | *(optional)* | | | |
+
 ## D. Answers to the guide's 7 required questions
 
 1. **The HR problem.** New hires disengage in their first months over unclear priorities, weak onboarding, little feedback and low belonging. HR finds out only at the exit interview: late, one person at a time, unstructured, and with no follow-up.
@@ -113,15 +125,17 @@ Today HR learns why new hires struggled only at the exit interview: one person a
 3. **Current process.** Informal check-ins, a probation review at 3–6 months, an occasional annual survey and an exit interview. None gives early, structured, comparable signals (Section C).
 4. **Our solution.** A consent-based chat check-in bot with short scheduled check-ins in Bahasa Malaysia or English, plus a web dashboard showing HR and managers:
     - per-reply driver tags and follow-up flags,
-    - themes across each intake,
-    - an action tracker where AI drafts a support action and a human edits, approves and completes it.
+    - themes across everyone hired in the last six months,
+    - an action tracker where AI drafts a support action, HR edits and assigns it, and the manager accepts it and marks it done,
+    - an "Update from HR" notice to the new hires a fix affects, and the same neutral 1–5 question again at their next check-in,
+    - handbook Q&A for new hires; questions the handbook cannot answer show HR a gap in onboarding.
 5. **How AI is used.**
     - *Input:* short voluntary answers (rating scales plus free text, including Manglish).
     - *AI step A:* tags each reply to the 5 drivers, sets a needs-follow-up flag and writes a neutral one-line summary with an evidence quote.
-    - *AI step B:* summarises themes across an intake ("3 of 5 operations hires mention unclear priorities in week 2").
+    - *AI step B:* writes a short narrative over theme counts that SQL computed ("Role clarity: 8 of 19 who answered"). The AI does not count.
     - *AI step C:* drafts a concrete action from a library (priorities 1:1, buddy introduction, training session).
     - *Output:* a prioritised flag queue and theme summary HR reads in minutes, plus editable action drafts.
-6. **Human action.** HR reviews every flag and decides whether to act; HR can correct any AI tag. The manager edits, approves and carries out the action, then marks it done. HR alone handles serious disclosures; the bot only sends a fixed safe message. No automated decision about anyone's employment is ever made.
+6. **Human action.** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies. HR can correct any AI tag and decides whether to act. The manager accepts the action, carries it out and marks it done with a one-line note. For one person's flagged reply, HR may send one fixed offer of a short private chat (05 R39). HR alone handles serious disclosures; the bot only sends a fixed safe message. No automated decision about anyone's employment is ever made.
 7. **Testing.** We measure AI-vs-human tag agreement on labelled Bahasa Malaysia, English and Manglish replies; time to find the main issues manually vs with Sapa on a synthetic intake; and HR practitioners' ratings and quotes on clarity and usefulness (Section G).
 
 ## E. Competitive landscape and differentiation
@@ -141,7 +155,7 @@ Existing engagement tools are company-wide, email or web based, English-first an
 
 1. **Chat-first in apps people already use.** No login, no company email needed, so it reaches frontline and outlet staff that email surveys miss. In MNCs it complements the corporate engagement tool instead of competing with it.
 2. **Bahasa Malaysia, English and Manglish** understanding, which global vendors do not prioritise.
-3. **Closed action loop.** Competitors stop at a dashboard; Sapa produces a drafted, approved and tracked action, which is the guide's "trigger useful follow-up".
+3. **Closed action loop.** Competitors stop at a dashboard; Sapa produces a drafted, assigned and tracked action, tells the new hires what changed ("Update from HR"), and asks a recheck question. That is the guide's "trigger useful follow-up".
 4. **Consent-tiered visibility** built for real teams, where a supervisor may have only a few new hires.
 5. **Narrow by design:** only the first six months, which makes it cheaper, simpler and easier to trust than a full engagement suite.
 6. **Priced per new hire,** not per employee, so cost scales with hiring volume.
@@ -161,16 +175,16 @@ The product has three parts: a chat check-in bot for new hires, an AI pipeline w
 
 ### F2. User journeys
 
-- **New hire:** On Day 1, HR shares a QR code to the bot. The bot shows a plain-language consent message: what is collected, who sees it, that it is voluntary, that stopping has no effect on employment, how long data is kept, and how to delete it. The hire picks a language and taps "Setuju / I agree". Each check-in takes about 60–90 seconds plus at most one or two follow-ups. The hire chooses "HR only" (default) or "OK to share with my manager", and can type LANGKAU/SKIP, BERHENTI/STOP or PADAM/DELETE at any time.
-- **HR:** On Monday the dashboard shows "October intake: 6 hires, 5 responded" and the theme "Role clarity: 3 of 5 mention unclear priorities in week 2". The flag queue shows routine items, and any escalation in red with its fixed protocol. HR reads the AI summary next to the original text, corrects a tag if needed, clicks "Draft action" and assigns it to the supervisor.
-- **Manager:** Sees the assigned action with theme-level context (an individual's words only if that person consented), edits and approves it, carries it out, and marks it done with a one-line outcome.
-- **Closing the loop:** The next check-in asks "Are your priorities clearer this week?", so HR can see whether the action worked.
+- **New hire:** On Day 1, HR shares a QR code to the bot. The bot shows a plain-language consent message: what is collected, who sees it, that it is voluntary, that stopping has no effect on employment, how long data is kept, and how to delete it. The hire picks a language and taps "Setuju / I agree". Each check-in takes about 60–90 seconds plus at most one or two follow-ups from a fixed probe bank. The hire chooses "HR only" (default) or "OK to share with my manager", and can type LANGKAU/SKIP, BERHENTI/STOP or PADAM/DELETE at any time.
+- **HR:** On Monday the dashboard shows everyone hired in the last six months and the theme "Role clarity: 8 of 19 who answered". The flag queue shows routine items, and any escalation in red with its fixed protocol. HR reads the AI summary next to the original text, corrects a tag if needed, clicks "Draft action" and assigns it to the supervisor.
+- **Manager:** Sees the assigned action with theme-level context (an individual's words only if that person consented), accepts it, carries it out, and marks it done with a one-line outcome.
+- **Closing the loop:** The bot sends the HR-approved "Update from HR" note to the new hires the fix affects. The next check-in asks the same neutral question as before ("How clear are you on what is expected of you this week? (1–5)"), so HR sees the score change after the action.
 
 ### F3. Check-in schedule
 
 Check-ins are densest early, because 86% of new hires decide how long to stay within 6 months (Enboarder) and the guide's scenario is exits within six months.
 
-| Touchpoint | Focus | Core questions | Max AI follow-ups |
+| Touchpoint | Focus | Core questions | Max follow-ups (fixed probes) |
 | --- | --- | --- | --- |
 | Day 3 | Setup, first impressions, who to ask | 3 | 1 |
 | Day 7 | Role clarity, tools and access | 3 | 1 |
@@ -184,22 +198,22 @@ Rules: each check-in takes 2 minutes or less; sent in working hours, never on pu
 
 ### F4. Question bank (BM / English)
 
-Scales are 1–5 unless noted. Native speakers should review the wording and test it.
+Scales are 1–5 unless noted. Each driver has one 1–5 item, so the recheck after a fix (spec 05 R26) always has an earlier score to compare with. Each is asked at the touchpoints where its driver was already asked, so check-ins do not get longer. Native speakers should review the wording and test it.
 
 | Driver | English | Bahasa Malaysia | When |
 | --- | --- | --- | --- |
 | ROLE_CLARITY | How clear are you on what is expected of you this week? (1–5) | Sejauh mana anda jelas tentang apa yang dijangka daripada anda minggu ini? (1–5) | D7, D14, D30 |
 | ROLE_CLARITY | So far, does the job match what was described when you were hired? | Setakat ini, adakah kerja ini sama seperti yang diterangkan semasa anda diambil bekerja? | D14, D30, D90 |
-| MANAGER_SUPPORT | In the past week, did you have a useful conversation with your supervisor about your work? (Yes / Not really) | Dalam seminggu lepas, adakah anda berbincang dengan penyelia tentang kerja anda dengan cara yang membantu? (Ya / Tidak sangat) | D7, D14, D60 |
+| MANAGER_SUPPORT | How much useful help did you get from your supervisor this week? (1–5) | Sejauh mana penyelia anda memberi bantuan yang berguna kepada anda minggu ini? (1–5) | D7, D14, D60 |
 | MANAGER_SUPPORT | Do you know who to ask when you are stuck? | Adakah anda tahu siapa yang boleh ditanya apabila anda tersekat? | D3 |
-| BELONGING | Is there someone at work you feel comfortable going to for help? | Adakah ada seseorang di tempat kerja yang anda selesa untuk minta bantuan? | D3, D30 |
-| ONBOARDING_TRAINING | Do you have the tools, system access and training you need? | Adakah anda mempunyai peralatan, akses sistem dan latihan yang diperlukan? | D3, D7, D30 |
+| BELONGING | How comfortable do you feel going to someone at work for help? (1–5) | Sejauh mana anda selesa untuk meminta bantuan daripada seseorang di tempat kerja? (1–5) | D3, D30 |
+| ONBOARDING_TRAINING | How well do you have the tools, system access and training you need? (1–5) | Sejauh mana anda mempunyai peralatan, akses sistem dan latihan yang diperlukan? (1–5) | D3, D7, D30 |
 | WORKLOAD | How manageable has your workload been this week? (1–5) | Sejauh mana beban kerja anda minggu ini boleh diurus? (1–5) | D14, D60, M6 |
 | GROWTH (context) | Can you see how you could learn and grow here over the next year? | Adakah anda nampak peluang untuk belajar dan berkembang di sini dalam setahun akan datang? | D60, D90, M6 |
 | OPEN | What is one thing that would make next week easier? | Apakah satu perkara yang boleh menjadikan minggu depan lebih mudah? | Every check-in |
 | OPEN (stay) | What would make you want to stay here longer? | Apa yang akan membuatkan anda mahu kekal lebih lama di sini? | D90, M6 |
 
-**Rules for AI follow-ups:** neutral and open ("Could you tell me a bit more?"); never leading; nothing about health, family, religion or colleagues' pay; never ask about intent to resign; no follow-up at all if a reply touches an escalation topic.
+**Rules for the probe bank:** follow-ups are fixed probe texts that people wrote; the AI only picks a probe ID. Probes are neutral and open ("Could you tell me a bit more?"); never leading; nothing about health, family, religion or colleagues' pay; never ask about intent to resign; no follow-up at all if a reply touches an escalation topic.
 
 ### F5. Theme taxonomy (AI step A)
 
@@ -210,14 +224,14 @@ Scales are 1–5 unless noted. Native speakers should review the wording and tes
 - **WORKLOAD:** too much, too little, long hours or shifts, unclear deadlines.
 - **Context tags (to HR only, not manager actions):** PAY_BENEFITS, GROWTH, COMMUTE_LOGISTICS.
 - **POSITIVE:** what is working, so summaries are balanced.
-- **ESCALATE (bypasses the normal flow):** harassment or sexual harassment, discrimination, bullying or threats, self-harm or crisis, safety hazards, wage or legal violations.
+- **ESCALATE (bypasses the normal flow):** harassment or sexual harassment, discrimination, bullying or threats, self-harm or crisis, safety hazards, wage or legal violations, signs of forced labour (passport or ID held by someone else, debt to an agent or a recruitment fee, restricted movement; wage deductions only together with another sign).
 - **Per-reply `concern_level`:** none / low / needs_follow_up, based only on what was written. No emotion labels and no individual "attrition risk" scores.
 
-### F6. Action library (AI drafts from these; a human approves)
+### F6. Action library (AI drafts from these; HR edits and assigns)
 
 | Driver | Suggested actions |
 | --- | --- |
-| ROLE_CLARITY | 15-minute priorities 1:1 with a written "top 3 this week" list; share the written job scope or probation KPIs; agree a 30-60-90 plan |
+| ROLE_CLARITY | 15-minute priorities 1:1 with a written "top 3 this week" list; share the written job scope or probation KPIs; agree a 30-60-90 plan. Each entry stores how it worked here (the score change against other teams, shown at 5 or more people in scope and 5 outside; spec 05 R43). Hiring-side entry, owned by HR or the recruiter and never by a line manager: update the job ad and the interview script for the role (spec 05 R52) |
 | MANAGER_SUPPORT | Weekly 10-minute check-in slot for 8 weeks; feedback template (one strength, one improvement); name a backup contact when the manager is away |
 | BELONGING | Assign a buddy; team lunch or kopi introduction; add to team chat groups; introductions to 3 key colleagues |
 | ONBOARDING_TRAINING | System-access checklist; a shadowing session; a short SOP or video; training plan review |
@@ -228,50 +242,51 @@ Scales are 1–5 unless noted. Native speakers should review the wording and tes
 ### F7. Data model
 
 - `organisations`: settings such as minimum group size (default 5) and retention period.
-- `people`: pseudonymous code, team, manager, start date, language, channel, encrypted chat ID.
+- `people`: pseudonymous code (not the real name), role, team, manager, start date, language, encrypted chat ID.
 - `consents`: version, granted time, scope (`hr_only` or `share_with_manager`), withdrawn time.
 - `checkin_schedule` and `responses`: encrypted raw text, scale value, detected language, visibility.
 - `ai_tags`: drivers, concern level, escalate flag, summary, evidence quote, confidence, model and prompt version, human override, reviewer.
 - `cohort_summaries`: themes, number of respondents, suppressed flag.
-- `actions`: driver, draft text, final text, owner, status (draft → assigned → approved → done or dismissed), outcome note.
+- `actions`: driver, draft text, final text, owner, status (draft → assigned → accepted → done or dismissed), outcome note.
 - `escalations`: restricted, never visible to managers. `audit_log`: every view and change.
 
-Use row-level security so managers see only their own assigned actions and aggregated summaries, and see individual replies only where the employee chose `share_with_manager`.
+Use row-level security so managers see only their own assigned actions and weekly team snapshots, and see individual replies only where the employee chose `share_with_manager`.
 
 ### F8. AI pipeline design
 
 - **Step A (tag each reply).** Prompt defines the drivers, context tags and ESCALATE, with 2–3 examples each in BM, English and Manglish. The model must quote evidence, must not infer emotion or personality, and returns only schema-valid JSON, using "uncertain" when unsure. Run at temperature 0 with structured output; on invalid output, retry once and then send to human review.
-- **Step B (intake themes).** Uses only tags and summaries, not raw text, and only for groups of 5 or more respondents. Outputs counted themes ("3 of 5") plus what is going well.
+- **Step B (narrative).** SQL counts the themes, only for groups of 5 or more respondents. The AI writes a short narrative over those counts ("8 of 19") plus what is going well. It does not count.
 - **Step C (draft action).** Uses the driver, the theme and the action library. Produces a short editable draft that names no individual unless consent allows.
-- **Safety layer.** A BM/English keyword list (for example *ganggu, gangguan seksual, buli, bunuh diri, harassment*) runs alongside the AI ESCALATE flag; either one triggers escalation. Employee text is treated as data, never as instructions.
-- **Why this is credible:** published studies report strong agreement between LLM-assisted coding and human coders: Cohen's κ 0.87 and 0.81 in [Dai et al. 2023](https://arxiv.org/pdf/2310.15100); κ 0.72 in the [LATA pilot](https://www.eecis.udel.edu/~mlm/docs/2025-Wang-CSCW-LATA-Paper.pdf). But a [2025 study](https://arxiv.org/pdf/2501.08167) found LLMs overrate their own summaries, and [Malaysian code-mixed text](https://ieeexplore.ieee.org/abstract/document/11256062/) lowers model accuracy. So humans review every flag, and accuracy is reported separately for BM, English and Manglish.
+- **Safety layer.** A keyword list for each language pack (BM, English and Chinese; for example *ganggu, gangguan seksual, buli, bunuh diri, harassment*) runs alongside the AI ESCALATE flag; either one triggers escalation. The forced-labour list holds only clear phrases; wage deductions alone go to the model. Employee text is treated as data, never as instructions.
+- **Why this is credible:** published studies report strong agreement between LLM-assisted coding and human coders: Cohen's κ 0.87 and 0.81 in [Dai et al. 2023](https://arxiv.org/pdf/2310.15100); κ 0.72 in the [LATA pilot](https://www.eecis.udel.edu/~mlm/docs/2025-Wang-CSCW-LATA-Paper.pdf). But a [2025 study](https://arxiv.org/pdf/2501.08167) found LLMs overrate their own summaries, and [Malaysian code-mixed text](https://ieeexplore.ieee.org/abstract/document/11256062/) lowers model accuracy. So labels the AI is unsure about wait for HR, HR reviews the evidence before any action, and accuracy is reported separately for BM, English and Manglish.
 
 ### F9. Privacy, consent and group-size rules
 
 - **Voluntary:** explicit, versioned consent. Declining or stopping has no effect on employment, and the employer commits to this in writing.
 - **Purpose limit:** onboarding support only, never performance appraisal, probation or discipline.
-- **Data minimisation:** no IC numbers, no health questions, no response-time or activity tracking.
-- **Retention:** raw text deleted or anonymised 6 months after the last check-in; aggregates kept.
-- **Rights:** delete command in chat; export on request.
+- **Data minimisation:** no IC numbers, no health questions. The bot keeps send times only to schedule check-ins. HR never sees per-person response times. Per person, HR sees only "invite used / not used"; declined, stopped and skipped are shown only as intake counts of 5 or more.
+- **Retention:** raw text deleted 6 months after the last check-in; aggregates kept.
+- **Rights:** delete command in chat; export on request; `/myanswers` (`/jawapansaya`) shows a new hire their stored replies with the AI summary and tags, and lets them flag "this is wrong" to HR.
 - **Security:** encryption at rest, access controls, audit log, an AI provider that does not train on the data. Competition demos use synthetic data only, as the guide requires.
 - **Minimum group size:** themes shown only when at least 5 people responded, the common industry default ([Culture Amp](https://support.cultureamp.com/en/articles/7048339-attributed-and-unattributed-survey-formats), [Qualtrics](https://www.qualtrics.com/support/confidentiality-overview-ex/), [Viva Glint](https://learn.microsoft.com/en-us/viva/glint/reports/confidentiality-suppression-reports)). Below 5, data is pooled across intakes or shown only to HR.
+- **Thresholds: 5 for themes, 3 for questions.** Themes need 5 or more people because a theme describes how people feel about their work. A question group shows its text to HR only at 3 or more distinct askers, because a question is lower risk but can still point to one person. Important-topic questions (resignation, health) are counted by topic only.
 - **Honesty:** with very small intakes, true anonymity is impossible. Sapa promises confidentiality with consent, not anonymity.
 
 ### F10. Escalation protocol (serious disclosures)
 
 1. **Detect:** keyword list or AI ESCALATE flag; either is enough.
-2. **Bot reply:** fixed text, never AI-generated. It thanks the employee, says a named HR contact will reach out within 1 working day if they agree, gives emergency and verified helpline numbers (for example 999 and Talian Kasih 15999; verify before launch), and offers "Don't contact me".
+2. **Bot reply:** fixed text, never AI-generated. It thanks the employee, says a named HR contact will reach out within 1 working day if they agree, gives emergency and verified helpline numbers (for example 999 and Talian Kasih 15999; verify before launch), and offers "Don't contact me". The forced-labour text and the sexual-harassment text also always hold one verified outside contact that HR cannot remove: the official labour authority line, and the Tribunal for Anti-Sexual Harassment (spec 05 R14).
 3. **Route:** to the designated HR contact only, never to the manager.
-4. **Sexual harassment:** under the Employment Act 1955 (s.81B), an employer receiving a complaint must inquire or give written reasons for refusing within 30 days; failure can mean a fine of up to RM50,000. Victims can also go to the [Tribunal for Anti-Sexual Harassment](https://www.richardweechambers.com/an-overview-of-the-anti-sexual-harassment-tribunal/). Sapa only routes; HR runs the process.
+4. **Sexual harassment:** under the Employment Act 1955 (s.81B), an employer receiving a complaint must inquire or give written reasons for refusing within 30 days; failure can mean a fine of up to RM50,000. Victims can also go to the [Tribunal for Anti-Sexual Harassment](https://www.richardweechambers.com/an-overview-of-the-anti-sexual-harassment-tribunal/). Sapa only routes; HR runs the process. **Forced labour:** a held passport or ID, debt to an agent, or being kept from leaving also goes to HR only, and the worker is pointed to the outside authority, because the employer or its agent may be the cause.
 5. **Log** in the restricted table and exclude from AI summaries.
 
 ### F11. Product success metrics
 
 - Response rate of at least 60% per check-in; opt-out under 10%.
 - Median time from flag to HR acknowledgement of 2 working days or less; escalations within 1.
-- At least 70% of AI-drafted actions approved with light edits; at least 80% of approved actions completed within 7 days.
-- Tagging agreement with humans κ ≥ 0.6; follow-up flag recall ≥ 0.9; escalation recall 100% on the test set.
-- Long term: 6-month retention of each intake compared with the company's previous baseline.
+- At least 70% of AI-drafted actions assigned unchanged or with light edits; at least 80% of assigned actions completed within 7 days.
+- Tagging agreement with humans κ ≥ 0.6; follow-up flag recall ≥ 0.9; escalation recall reported as "k of n" with a 95% interval, plus false alarms.
+- Long term: 6-month retention compared with the company's previous baseline. HR enters, per intake after Month 6, the number hired and the number still employed (from its own records, whether or not they joined Sapa). Sapa keeps no per-person leaver date for this. The Impact view shows, per intake: response rate and median days from reply to action done; the average score change after done actions, as a difference against other teams; manager milestones done; and, pooled across completed intakes, six-month retention against the baseline ("Too few to tell yet (n of 30)" below 30 people).
 
 ## G. Testing plan (slide 8)
 
@@ -279,45 +294,49 @@ The guide asks whether the prototype made the process faster, clearer, more cons
 
 | Test | Method | Metric | Target |
 | --- | --- | --- | --- |
-| 1. AI tagging accuracy | 50–100 synthetic replies, about one-third each BM, English and Manglish, including 8–10 escalation cases. Two teammates label independently, agree gold labels, then compare Sapa | Cohen's κ per driver; precision and recall on follow-up flags; escalation recall; all split by language | κ ≥ 0.6 overall (≥ 0.5 for Manglish, disclosed); follow-up recall ≥ 0.9; escalation recall 100% |
+| 1. AI tagging accuracy | About 200 synthetic replies (50–100 at the very least), about one-third each BM, English and Manglish, including at least 40 escalation cases (forced-labour cases among them; 8–10 give an interval too wide to use) and 10–15 Manglish hyperbole cases ("OT everyday, mati la") and normal pay deductions (EPF, SOCSO, tax, lateness) that are not escalations. Two teammates label independently, agree gold labels, then compare Sapa | Cohen's κ per driver; precision and recall on follow-up flags; escalation recall as "k of n" with a 95% interval, plus false alarms; all split by language | κ ≥ 0.6 overall (≥ 0.5 for Manglish, disclosed); follow-up recall ≥ 0.9; no missed escalation, with the interval stated |
 | 2. Reliability | 100 runs, plus prompt-injection, gibberish, empty and emoji-only replies | % valid JSON on first try; safe handling rate | ≥ 98% valid; 100% safe |
 | 3. Time to insight | Synthetic intake of 20 hires × 3 check-ins. One person finds the top issues manually in a spreadsheet; another uses Sapa | Minutes to top 3 themes and who needs follow-up; accuracy against an answer key | ≥ 70% faster with equal or better accuracy |
-| 4. HR user value | 3–5 HR practitioners or recruiters complete tasks: find the top issue, approve an action, check consent settings | Task success; 1–5 ratings for clarity, usefulness, trust; quotes | Average ≥ 4/5; at least 2 quotable statements |
+| 4. HR user value | 3–5 HR practitioners or recruiters complete tasks: find the top issue, assign an action, check consent settings | Task success; 1–5 ratings for clarity, usefulness, trust; quotes | Average ≥ 4/5; at least 2 quotable statements |
 | 5. New-hire experience | 5–10 volunteers role-play new hires on the real bot | Time per check-in; "I'd answer honestly" rating; can they explain who sees their answers? | ≤ 2 minutes; ≥ 4/5; 100% correct |
 
-**Presenting results:** one chart of κ by language, one before-and-after time bar, two practitioner quotes, and an honest limitation line: "Synthetic data and a small sample; next step is a 90-day pilot with one company."
+**Presenting results:** one chart of κ by language, one before-and-after time bar, two practitioner quotes, and an honest limitation line: "Synthetic data and a small sample; next step is a pilot with one company: three monthly intakes, each through Month 6."
 
 ## H. Business and economic impact
 
-For the demo company, early resignations cost about RM225,000 a year, so preventing even one pays for Sapa almost three times over.
+For the demo company, about one prevented early exit a year pays for Sapa. A prevented exit cannot be proven per person; the pilot measures retention by intake.
 
 ### H1. Worked ROI example (illustrative, state the assumptions on the slide)
 
 **Assumptions:**
 
-- 300 staff; 60 new hires a year; mixed intake of operators and executives averaging RM2,500 a month (RM30,000 a year).
-- 25% leave within six months, so about 15 early leavers a year. This is consistent with Malaysia's 18.2% overall attrition being concentrated in early tenure; replace it with real figures from interviews.
-- Cost per early leaver = 0.5× annual salary = **RM15,000**, the low end of [Gallup's](https://www.gallup.com/workplace/247391/fixable-problem-costs-businesses-trillion.aspx) 0.5–2× range. It covers re-recruitment (agency fees are often around 15% of annual salary), training the replacement, the vacancy period and the replacement's slower first months.
+- 300 staff; about 60 new hires a year (30 in any six months); mixed intake of operators and executives averaging RM2,500 a month (RM30,000 a year).
+- About 2 in 10 new hires leave within six months, so 60 × 0.2 = **12 early leavers a year**. Source: Employment Hero survey via [Malay Mail](https://www.malaymail.com/news/malaysia/2023/10/25/employment-survey-two-in-10-new-hires-leave-big-companies-within-six-months/98281) (2023), for companies of 200–500 staff (see [cohort estimate](09-cohort-size-estimate.md)). Replace it with real figures from interviews.
+- Cost per early leaver = about 21% of annual salary = 0.21 × RM30,000 = **RM6,300**. This is the median cost in the Center for American Progress review of turnover-cost studies ([Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/)). It covers re-recruitment, training the replacement, the vacancy period and lost output. It is US data; replace it with real figures from interviews.
 
-**Annual cost of early resignations:** 15 × RM15,000 = **RM225,000**.
+**Annual cost of early resignations:** 12 × RM6,300 = **RM75,600**.
 
-**Sapa cost (proposed):** RM90 per new hire, covering their first six months, so 60 hires = **RM5,400 a year**.
+**Sapa cost (proposed):** RM90 per new hire, covering their first six months, so 60 × RM90 = **RM5,400 a year**.
+
+**Break-even:** RM5,400 ÷ RM6,300 = **0.86 prevented exits a year**. One prevented early exit a year pays for Sapa.
 
 | Scenario | Early exits prevented per year | Saving | Return on RM5,400 |
 | --- | --- | --- | --- |
-| Break-even | 0.36 | RM5,400 | 1× |
-| Conservative | 1 of 15 | RM15,000 | ~2.8× |
-| Base | 3 of 15 (20%) | RM45,000 | ~8.3× |
-| Optimistic | 5 of 15 | RM75,000 | ~13.9× |
+| Break-even | 0.86 of 12 | RM5,400 | 1× |
+| Conservative | 1 of 12 | RM6,300 | ~1.2× |
+| Base | 2 of 12 | RM12,600 | ~2.3× |
+| Optimistic | 3 of 12 (25%) | RM18,900 | ~3.5× |
+
+**What this cannot prove.** Nobody can show that one person stayed because of Sapa. The pilot measures retention by intake instead. HR enters the number hired and the number still employed per intake (spec 05 R42). The Impact view shows, per intake: response rate and median days from reply to action done; the average score change after done actions, as a difference against other teams; and, pooled across completed intakes, six-month retention against the company's own baseline, as a trend and not proof.
 
 **HR time:** 60 hires × 7 check-ins × about 4 answers is roughly 1,700 answers a year. Reading, grouping and writing them up by hand would take days of HR time, which is why companies stop doing it. Measure the actual saving in Test 3 instead of claiming a number.
 
 ### H2. Pricing model (proposed)
 
-- **Pilot:** free for one intake (up to 10 new hires) for 90 days, to build evidence.
+- **Pilot:** free, for every new hire in three monthly intakes, each through its own Month 6, to build evidence. One intake (up to 10 hires) is too small: the Impact view needs 30 people for retention and 5 in scope and 5 outside for a score change. Pass marks are set before the pilot starts, from measures the pilot can reach: response rate at least 60%; median days from reply to fix done at most 14; score change against other teams on done fixes [SLOT: pass mark agreed with the pilot company]; manager milestones done [SLOT: pass mark agreed with the pilot company]. Day-90 report: these four measures. Final report, after the last intake passes Month 6: retention says "Too few to tell yet (n of 30)" and gives the date when the pooled figure will be ready.
 - **Standard:** RM90 per new hire for six months of coverage. Companies pay for hiring volume, not total headcount, which is far cheaper than per-employee engagement tools.
-- **Agency plan:** a per-placement fee for agencies to offer "placement care" to their client companies.
-- **Cost to run:** AI cost is a few sen per answer; the main costs are chat messaging fees and support.
+- **Agency plan:** a per-placement fee for agencies to offer "placement care" to their client companies. The employer grants the agency role per agency, for all its placements. The agency sees themes, the job-match card (which roles oversell the job) and retention for its own placements, pooled and at 5 or more people (retention from 30), and never replies, questions, escalations, names or personal data (spec 05 R48). HR enters hired and still-employed numbers per intake and agency.
+- **Cost to run:** AI cost is a few sen per answer; the main cost is support. Telegram messages are free.
 
 ### H3. Go-to-market
 
@@ -329,8 +348,8 @@ For the demo company, early resignations cost about RM225,000 a year, so prevent
 
 - **Technology:** cloud-hosted; AI cost grows in line with usage and stays small per hire.
 - **Configurable:** question bank and action library adjustable by sector (shift work, outlets, offices).
-- **Language:** BM and English first; Mandarin and Tamil next.
-- **Product path:** new hires → internally transferred staff and newly promoted managers → consent-based input to probation conversations.
+- **Language:** Bahasa Malaysia and English are live, and Manglish works in both (spec 05 R46). The intake export of worker-voice themes supports RBA and ESG reporting (R47).
+- **Product path:** new hires → internally transferred staff and newly promoted managers.
 
 ## I. ESG and Responsible AI (slide 9)
 
@@ -353,14 +372,14 @@ Sapa as a vendor is a data processor; each employer is the data controller.
 | Principle | How Sapa meets it |
 | --- | --- |
 | Fairness | No individual risk scores; same questions for all; accuracy checked per language |
-| Reliability, safety & control | Tested tagging; validated outputs; human approval of every action |
+| Reliability, safety & control | Tested tagging; validated outputs; HR assigns every action |
 | Privacy & security | Consent tiers, access controls, encryption, retention limits, synthetic demo data |
 | Inclusiveness | BM, English and Manglish; works on any phone; no company email needed |
 | Transparency | Employees see exactly who sees what; AI summaries show the evidence quote |
 | Accountability | Audit log; a named HR owner for escalations |
 | Human benefit | Purpose is support, never discipline; data barred from performance or probation decisions |
 
-**What humans review:** every flag, every tag override, every action and every escalation.
+**What humans review:** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only three things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published, the transcript of their own voice note, and, with `/myanswers`, the AI's reading of their own replies. HR also handles every escalation and every "this is wrong" flag from a new hire.
 
 **What Sapa never does:** no cameras, keystrokes, message metadata or activity tracking; no emotion inference; no prediction of who will quit; no use in hiring, firing or probation decisions. This follows the guide's rule: "Do not secretly monitor employees or infer emotions from cameras or a single behaviour."
 
@@ -371,35 +390,30 @@ Each judging criterion maps to specific evidence or a feature the team must have
 | Criterion (weight) | What satisfies it | Ready? |
 | --- | --- | --- |
 | Problem identification (15%) | Aon 18.2%, Gallup 25% engaged, Randstad manager and belonging figures; the six-month exit scenario; current-process table (Section C); 3–5 real practitioner quotes | [ ] |
-| AI solution & functionality (20%) | Working bot and dashboard; the three AI steps visible (tag with evidence quote, intake themes, drafted action); human approval; action tracker; tag overrides | [ ] |
+| AI solution & functionality (20%) | Working bot and dashboard; the AI steps visible (label with evidence quote, narrative over SQL counts, drafted action, handbook answer); HR reviews the evidence and assigns; action tracker; tag overrides | [ ] |
 | Innovation & creativity (20%) | Chat-first in BM and Manglish; reaches staff without company email; consent-tiered visibility; closed action loop; per-new-hire pricing; recruitment-agency channel | [ ] |
 | Business & economic impact (15%) | RM ROI table; measured time-to-insight saving; agency use case; pricing and go-to-market | [ ] |
 | ESG impact (10%) | PDPA 2024 alignment; AI ethics principle mapping; minimum group size of 5; escalation protocol; PRisMA link; no-surveillance commitments | [ ] |
-| Pitch, demo & teamwork (20%) | 90-second end-to-end demo; each member owns an area and can answer cross-questions; Q&A rehearsed (Section L) | [ ] |
+| Pitch, demo & teamwork (20%) | 2-minute end-to-end demo; each member owns an area and can answer cross-questions; Q&A rehearsed (Section L) | [ ] |
 
-## K. 10-slide outline and 90-second demo
+## K. 10-slide outline and 2-minute demo
 
 The pitch follows the guide's suggested structure: 8–10 minutes in total including Q&A, so about 5–6 minutes of slides, 1–2 minutes of demo and 1–2 minutes of questions.
 
 1. **Team & challenge.** "Challenge 4 · RETAIN", the one-sentence pitch, team members and roles.
 2. **The real HR problem.** The six-month exit scenario. "18.2% of Malaysian employees left their jobs in 2025 (Aon). Only 25% are engaged (Gallup 2026)." Close on: "When does HR find out? At the exit interview."
-3. **Evidence and current process.** The 7-step process with what is lost at each step; 2 practitioner quotes; the top early-exit reasons (expectations 30.3%, connection 19.5%, onboarding 17.4%); Randstad Malaysia's 57% and 61%.
+3. **Evidence and current process.** The 7-step process with what is lost at each step; 2 practitioner quotes from section C (if no interview happened, say "desk research only"); Employment Hero's 2 in 10 new hires leaving within six months; the top early-exit reasons (expectations 30.3%, connection 19.5%, onboarding 17.4%); Randstad Malaysia's 57% and 61%.
 4. **Our solution.** Sapa: voluntary chat check-ins from Day 3 to Month 6, plus an HR and manager dashboard. Check-in → themes → action.
-5. **How it works.** Input (voluntary replies) → AI (tag 5 drivers, intake themes, draft action) → output (flag queue, theme card, editable action) → human (HR reviews, manager approves and acts, marks done). Show consent tiers and the 5-person minimum.
+5. **How it works.** Input (voluntary replies and questions) → AI (suggest labels for 5 drivers, pick a fixed probe, draft action, answer from the handbook) and SQL (count themes) → output (flag queue, theme card, top questions, editable action) → human (HR reviews the evidence and assigns, manager accepts and marks done) → "Update from HR" and a recheck. Show consent tiers and "5 for themes, 3 for questions".
 6. **How AI adds value.** Manual vs Sapa: minutes to insight (Test 3), consistent coding across BM, English and Manglish, patterns across hires, and an action instead of just data. Accuracy: published κ and the team's own.
 7. **Demo** (script below).
 8. **Testing and results.** κ by language, time-saved bar, practitioner ratings and quotes, limitations.
 9. **Responsible AI.** "What Sapa never does"; consent tiers; minimum 5; escalations go to HR, never handled by AI; PDPA 2024 and Malaysia's AI ethics principles; synthetic data only.
-10. **Impact and next step.** RM225,000 a year lost by the demo company; RM15,000–75,000 saved for RM5,400; ask for a 90-day pilot with one company and one agency.
+10. **Impact and next step.** Break-even first: about one prevented early exit a year pays for Sapa (RM6,300 per early leaver against RM5,400 a year). Early leavers cost the demo company about RM75,600 a year. A prevented exit cannot be proven per person, so the pilot measures retention by intake. Ask for a pilot with one company and one agency: every new hire in three monthly intakes, each through its own Month 6, with pass marks set before it starts, a Day-90 report and a final report where retention honestly says "Too few to tell yet (n of 30)".
 
-### Demo script (90 seconds)
+### Demo script (2 minutes)
 
-- **0:00–0:20, phone.** "This is Mei Ling, a fictional new executive, on Day 14." The bot asks 3 questions. She types: *"Boss always busy, I tak sure which task priority first, everyday change."* One follow-up question; she leaves visibility on "HR only".
-- **0:20–0:45, HR dashboard.** Theme card: *Role clarity: 3 of 5 October hires mention unclear priorities in week 2.* Open the flag: AI summary, evidence quote, tags. "HR can correct any tag."
-- **0:45–1:05, action.** "Draft action" proposes a 15-minute priorities 1:1 with an agenda. HR edits one line and assigns it to the supervisor.
-- **1:05–1:20, manager view.** The supervisor sees theme-level context only (no name, because there was no consent to share), approves it, then marks it done: "Agreed top 3 weekly priorities."
-- **1:20–1:30, close the loop.** The tracker shows Done, and the next check-in asks "Are your priorities clearer this week?" "From silent struggle to a completed action in one week."
-- **Backup:** a screen recording in case the network fails.
+The demo script and seed live only in [05 "Demo setup" and "Updated 2-minute demo"](05-implementation-spec.md#demo-setup). The older script that stood here is removed.
 
 ## L. Likely judge questions
 
@@ -408,15 +422,15 @@ These are the questions HR and recruitment judges are most likely to ask, each w
 1. **"Isn't this surveillance?"** No. It is opt-in and every answer is a deliberate reply. There is no passive data, activity tracking, emotion detection or quit prediction, and stopping has no consequences. That is exactly the guide's "transparent, voluntary information" rule.
 2. **"Why would new hires answer honestly?"** Answers go to HR only by default; the manager sees individual words only with consent. Chat also draws fuller answers than forms: one study of 582 completed surveys found chatbot surveys collected 39% more information than standard web surveys (Xiao et al. 2020). We tested "I'd answer honestly" with role-play users (Test 5).
 3. **"What if the manager is the problem?"** That is why the default is HR-only. Manager-related flags go to HR, never to the manager by name, and HR can choose a skip-level action. Escalations never reach the manager.
-4. **"How is this anonymous in a small team?"** It isn't, and we say so. We promise confidentiality with consent. Themes appear only when at least 5 people have responded, the default used by Culture Amp, Qualtrics and Viva Glint; below that, data is pooled or shown only to HR.
-5. **"Won't people get survey fatigue?"** Seven short check-ins over six months, each 2 minutes or less, with at most 2 follow-ups and one reminder. We track response and opt-out rates.
+4. **"How is this anonymous in a small team?"** It isn't, and we say so. We promise confidentiality with consent. Our rule is "5 for themes, 3 for questions". Themes appear only when at least 5 people have responded, the default used by Culture Amp, Qualtrics and Viva Glint. A question group shows its text to HR only at 3 or more distinct askers. A new hire can see what the AI said about their own replies with `/myanswers` and flag it as wrong.
+5. **"Won't people get survey fatigue?"** Seven short check-ins over six months, each 2 minutes or less, with at most 2 fixed follow-ups and one reminder. We track response and opt-out rates.
 6. **"Why not use Culture Amp or Officevibe?"** They are company-wide, priced per employee or at several thousand US dollars a year, mostly English web surveys, and they stop at insights. Sapa covers only new hires, runs in chat in BM and Manglish, reaches staff without company email, and ends in a tracked action. For an MNC that already uses Glint or Qualtrics, Sapa is an add-on for the frontline new hires those tools don't reach, and its themes can feed into the existing reports.
-7. **"How accurate is the AI, especially with Manglish?"** On our labelled set of [N] replies, agreement with human labels was κ = [x] overall and [y] for Manglish, with follow-up recall of [z]. *(Fill in from Test 1.)* Published studies report κ of 0.72–0.87, but code-mixed text is harder, so a human reviews every flag.
-8. **"What if the AI misses a harassment report?"** Two independent detectors (keyword list and AI), tuned for 100% recall on our test cases even at the cost of false alarms. The bot gives a fixed safe message and HR follows up within one working day. The employer's legal duty to inquire stays with HR.
+7. **"How accurate is the AI, especially with Manglish?"** On our labelled set of [N] replies, agreement with human labels was κ = [x] overall and [y] for Manglish, with follow-up recall of [z]. *(Fill in from Test 1.)* Published studies report κ of 0.72–0.87, but code-mixed text is harder, so labels the AI is unsure about wait for HR, and HR reviews the evidence before any action.
+8. **"What if the AI misses a harassment report?"** Two independent detectors (keyword list and AI), tuned to miss nothing even at the cost of false alarms. We report recall as "k of n" with a 95% interval, plus the false alarms from Manglish hyperbole such as "OT everyday, mati la". The bot gives a fixed safe message and HR follows up within one working day. The employer's legal duty to inquire stays with HR.
 9. **"Is this PDPA-compliant?"** It is designed for it: explicit consent, purpose limits, retention limits, deletion and export, encryption and an audit log. As a vendor we are a data processor; the employer is the controller. We would get a legal review before commercial use.
-10. **"How do you know it reduces turnover?"** Not yet proven. The prototype shows earlier detection and faster action. The next step is a 90-day pilot measuring response rate, time to action, action completion and six-month retention against the company's previous intakes.
-11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. One prevented early leaver (about RM15,000) covers almost three years of hiring at the demo company's volume.
-12. **"Why would a recruitment agency care?"** Agencies commonly guarantee a free replacement for 1–3 months. Early warning inside that window protects their margin and gives clients a reason to choose them.
+10. **"How do you know it reduces turnover?"** Not yet proven. The prototype shows earlier detection and faster action. A prevented exit cannot be proven per person. The next step is a pilot: three monthly intakes, each through its own Month 6, because one intake is too small to show an outcome. The pass marks are set before it starts. At Day 90 the report shows response rate, days from reply to fix, score change after fixes against other teams and manager milestones done. At the end it shows retention against the company's own baseline with the date when the pooled figure will be ready, as a trend and not proof.
+11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. One prevented early leaver (about RM6,300, at 21% of a RM30,000 salary) pays for a full year at the demo company's volume (60 × RM90 = RM5,400).
+12. **"Why would a recruitment agency care?"** Agencies commonly guarantee a free replacement for 1–3 months. Early warning inside that window protects their margin and gives clients a reason to choose them. An agency can log in with the `agency` role: it sees themes, the job-match card and retention for its own placements, pooled and at 5 or more people, and never replies, names or personal data (spec 05 R48). The job-match card shows which roles oversell the job, which is the number an agency most wants.
 13. **"Could managers use this to punish people?"** Managers never see individual answers without consent, the terms forbid disciplinary use, every view is logged, and HR can remove a manager's access.
 
 ## M. Risks, caveats and open questions
@@ -426,7 +440,7 @@ The biggest risks are low participation and managers not following through, and 
 **Product risks:**
 
 - **Low participation.** No replies means no signal. Mitigation: HR introduces the bot in person on Day 1, check-ins stay short, and hires see follow-through.
-- **Managers not acting.** Drafts approved but never done. Mitigation: one-click approval, reminders, HR visibility of overdue actions.
+- **Managers not acting.** Actions accepted but never done. Mitigation: one-tap Accept and Mark done in Telegram, reminders, HR visibility of overdue actions.
 - **Over-trusting the AI.** Tags are suggestions; the interface always shows the original text and evidence quote.
 - **Pay-driven exits** are largely outside Sapa's reach. Say so.
 - **Scope creep.** Emotion scoring, attrition prediction or a chatbot that probes feelings would weaken the ethics case. Keep the conversation bounded.
@@ -441,9 +455,9 @@ The biggest risks are low participation and managers not following through, and 
 
 - Use only Aon's 2025 figure (18.2%); its releases disagree on earlier years.
 - Enboarder (vendor; Western HR leaders) and Insight Global (US) are not Malaysian employee data.
-- Gallup's 0.5–2× replacement cost has no published method; we use the low end.
+- The ROI uses the Center for American Progress median of about 21% of salary. It is US data from 2012. Gallup's 0.5–2× range has no published method, so the ROI does not use it.
 - Competitor prices are mostly third-party estimates.
-- The 25% early-leaver rate and RM2,500 average salary in the ROI example are assumptions; replace them with interview data.
+- The 2-in-10 early-leaver rate comes from one vendor survey, and only its headline was read. The RM2,500 average salary is an assumption. Replace both with interview data.
 - The 3–6 month probation period is common practice, not a legal requirement.
 
 **Open questions before the final:**
@@ -451,5 +465,4 @@ The biggest risks are low participation and managers not following through, and 
 - [ ] What early-leaver rate and cost do interviewed HR practitioners actually report?
 - [ ] Would the co-host recruitment agency share typical guarantee-claim rates?
 - [ ] What agreement (κ) does the AI reach on Manglish, and do more examples in the prompt improve it?
-- [ ] What does WhatsApp Business messaging cost per conversation at this volume?
-- [ ] Which chat app do target frontline workers actually use most?
+- [x] Which chat app? Decided: Telegram only.
