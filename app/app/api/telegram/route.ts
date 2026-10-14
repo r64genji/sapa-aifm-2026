@@ -1,7 +1,10 @@
 import { after } from "next/server";
 import { bot } from "@/lib/bot";
 import { now } from "@/lib/clock";
+import { personByChat } from "@/lib/directory";
+import { packs } from "@/lib/packs";
 import { matchesSecret } from "@/lib/secret";
+import { send } from "@/lib/telegram";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: Request) {
@@ -27,6 +30,14 @@ export async function POST(request: Request) {
     .select();
   if (error) throw error;
   if (data.length === 0) return new Response("OK");
+  const message = update.message;
+  if (message && message.text === undefined && !message.contact) {
+    after(async () => {
+      const person = await personByChat(message.chat.id);
+      await send(message.chat.id, { text: packs[person?.language ?? "en"].typeInstead });
+    });
+    return new Response("OK");
+  }
   return bot.webhooks.telegram(
     new Request(request.url, {
       method: "POST",

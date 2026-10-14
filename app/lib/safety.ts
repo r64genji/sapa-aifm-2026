@@ -20,7 +20,7 @@ export function detect(text: string): string | null {
   for (const { safety } of Object.values(packs)) {
     const said = words(text, safety.spellings);
     for (const [category, phrases] of Object.entries(safety.keywords)) {
-      if (phrases.some((phrase) => said.includes(words(phrase, safety.spellings)))) return category;
+      if (phrases.some((phrase) => said.includes(/\p{Script=Han}/u.test(phrase) ? phrase : words(phrase, safety.spellings)))) return category;
     }
   }
   return null;

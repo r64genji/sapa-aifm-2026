@@ -139,7 +139,7 @@ async function countsWithoutReview(organisationId: string, language: string, dri
 }
 
 export async function tagReply(organisationId: string, responseId: string, text: string) {
-  const result = await classify(organisationId, text);
+  const classified = await classify(organisationId, text);
   const created_at = (await now()).toISOString();
   const { data: response, error: responseError } = await createAdminClient()
     .from("responses")
@@ -147,6 +147,15 @@ export async function tagReply(organisationId: string, responseId: string, text:
     .eq("id", responseId)
     .single();
   if (responseError) throw responseError;
+  const { data: pack, error: packError } = await createAdminClient()
+    .from("language_packs")
+    .select("test_passed_on")
+    .eq("organisation_id", organisationId)
+    .eq("language", response.language)
+    .maybeSingle();
+  if (packError) throw packError;
+  const result: Result =
+    classified.status === "ok" && !pack?.test_passed_on ? { ...classified, status: "needs_review" } : classified;
   const row =
     result.status === "awaiting_ai"
       ? { status: result.status }

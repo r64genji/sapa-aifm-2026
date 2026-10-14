@@ -3,6 +3,7 @@
   "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join.",
   "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
   "languagePrompt": "Please choose your language.",
+  "typeInstead": "Sapa can't handle voice notes, pictures or files yet. Please type your message instead.",
   "consentVersion": "en-2026-10-15",
   "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. You choose who can read your answers, and you can type STOP at any time to end everything. Do you agree to take part?",
   "agree": "I agree",

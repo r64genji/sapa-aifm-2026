@@ -1,0 +1,10 @@
+{
+  "update_id": "{{update_id}}",
+  "message": {
+    "message_id": "{{update_id}}",
+    "from": { "id": "{{chat_id}}", "is_bot": false, "first_name": "Hire", "language_code": "zh" },
+    "chat": { "id": "{{chat_id}}", "first_name": "Hire", "type": "private" },
+    "date": 1792018900,
+    "voice": { "duration": 3, "mime_type": "audio/ogg", "file_id": "voice-file-1", "file_unique_id": "voice-unique-1", "file_size": 12000 }
+  }
+}

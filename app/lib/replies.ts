@@ -2,13 +2,14 @@ import { Tag, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
 import { audit, signal } from "@/lib/signal";
+import { translation } from "@/lib/translate";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function readReplies(organisationId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("id, question_id, text_encrypted, created_at")
+    .select("id, question_id, text_encrypted, language, created_at")
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
@@ -18,12 +19,18 @@ export async function readReplies(organisationId: string, actor: string) {
     .from("audit_log")
     .insert(data.map((row) => ({ actor, action: "read_reply_text", target: row.id, at })));
   if (auditError) throw auditError;
-  return data.map((row) => ({
-    id: row.id,
-    question_id: row.question_id,
-    text: decrypt(row.text_encrypted!),
-    created_at: row.created_at,
-  }));
+  return Promise.all(
+    data.map(async (row) => {
+      const text = decrypt(row.text_encrypted!);
+      return {
+        id: row.id,
+        question_id: row.question_id,
+        text,
+        created_at: row.created_at,
+        ...(await translation(organisationId, row.language, text)),
+      };
+    }),
+  );
 }
 
 export async function retryReply(organisationId: string, responseId: string) {
@@ -55,7 +62,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, created_at, responses!inner(text_encrypted)",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, created_at, responses!inner(text_encrypted, language)",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -64,16 +71,22 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null } })[];
+  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string } })[];
   for (const row of rows) {
     if (row.responses.text_encrypted) await audit(actor, "read_reply_text", row.response_id);
   }
-  return rows.map(({ responses, counted, response_id, ...row }) => ({
-    id: response_id,
-    ...row,
-    text: responses.text_encrypted ? decrypt(responses.text_encrypted) : null,
-    note: row.status === "ok" && !counted ? waiting : null,
-  }));
+  return Promise.all(
+    rows.map(async ({ responses, counted, response_id, ...row }) => {
+      const text = responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
+      return {
+        id: response_id,
+        ...row,
+        text,
+        note: row.status === "ok" && !counted ? waiting : null,
+        ...(text && (await translation(organisationId, responses.language, text))),
+      };
+    }),
+  );
 }
 
 async function ownTag(organisationId: string, responseId: string) {

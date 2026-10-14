@@ -1,0 +1,119 @@
+{
+  "name": "中文",
+  "start": "你好，我是 Sapa，新员工入职问候助手。请使用 HR 发给你的邀请链接加入。",
+  "invalidInvite": "此邀请链接无法使用。请向 HR 索取新的链接。",
+  "languagePrompt": "请选择你的语言。",
+  "typeInstead": "Sapa 暂时无法处理语音、图片或文件。请直接打字发送你的消息。",
+  "consentVersion": "zh-2026-10-15",
+  "consent": "Sapa 会在你入职的前六个月里问你几个简短的问题。参与完全自愿。你可以选择谁能看到你的回答，也可以随时输入 停止 来结束一切。你同意参与吗？",
+  "agree": "我同意",
+  "decline": "不，谢谢",
+  "declined": "没问题。你不会再收到 Sapa 的消息。",
+  "visibilityPrompt": "谢谢。谁可以查看你的回答？默认是仅 HR。",
+  "visibilityHrOnly": "仅 HR",
+  "visibilityHrManager": "HR 和我的主管",
+  "visibilitySaved": "已保存。你以后可以用 /privacy 更改。",
+  "stopped": "你已停止。Sapa 不会再给你发送消息。",
+  "help": "你可以随时输入 /help、/stop 或 停止。Sapa 会在下一次问候时联系你。",
+  "commands": {
+    "start": { "name": "start", "description": "开始使用 Sapa" },
+    "ask": { "name": "ask", "description": "询问有关公司的问题" },
+    "skip": { "name": "skip", "description": "跳过本次问候" },
+    "privacy": { "name": "privacy", "description": "查看谁能看到你的回答" },
+    "language": { "name": "language", "description": "更改语言" },
+    "stop": { "name": "stop", "description": "停止所有消息" },
+    "delete": { "name": "delete", "description": "删除你的回答" },
+    "myanswers": { "name": "myanswers", "description": "查看你自己的回答" },
+    "help": { "name": "help", "description": "显示帮助" }
+  },
+  "typedStop": "停止",
+  "checkin": {
+    "intro": "你好，该做 Sapa 问候了，大约一分钟。请点选答案，或在被问到时打字。",
+    "reminder": "温馨提醒：你的 Sapa 问候还没完成。可以从上次中断的地方继续，也可以忽略，它会自动关闭。",
+    "thanks": "谢谢，你的回答已保存。",
+    "questions": [
+      {
+        "id": "ROLE_CLARITY",
+        "driver": "ROLE_CLARITY",
+        "type": "scale",
+        "text": "本周你对自己被期望做什么有多清楚？（1–5）"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "driver": "MANAGER_SUPPORT",
+        "type": "scale",
+        "text": "本周你觉得主管给你的支持有多少？（1–5）"
+      },
+      {
+        "id": "BELONGING",
+        "driver": "BELONGING",
+        "type": "scale",
+        "text": "本周你有多觉得自己是团队的一员？（1–5）"
+      },
+      {
+        "id": "ONBOARDING_TRAINING",
+        "driver": "ONBOARDING_TRAINING",
+        "type": "scale",
+        "text": "本周的培训对你的工作帮助有多大？（1–5）"
+      },
+      {
+        "id": "WORKLOAD",
+        "driver": "WORKLOAD",
+        "type": "scale",
+        "text": "本周你的工作量是否可以应付？（1–5）"
+      },
+      {
+        "id": "OPEN",
+        "type": "open",
+        "text": "关于你入职头几周，有没有什么想让 HR 知道的？请打字回答。"
+      }
+    ],
+    "gotIt": "好的，收到了。你的回答已保存，HR 会查看。",
+    "probes": [
+      { "id": "GENERIC_MORE", "text": "可以再多说一点吗？" },
+      { "id": "GENERIC_HELP", "text": "怎样做会对这件事有帮助？" },
+      { "id": "ROLE_CLARITY", "text": "现在有哪些任务或优先事项你还不清楚？" },
+      { "id": "MANAGER_SUPPORT", "text": "你希望主管给你什么样的支持？" },
+      { "id": "BELONGING", "text": "怎样做会让你更有团队归属感？" },
+      { "id": "WORKLOAD", "text": "你的工作量中哪一部分最难应付？" }
+    ],
+    "sequence": [
+      "ROLE_CLARITY",
+      "MANAGER_SUPPORT",
+      "BELONGING",
+      "OPEN"
+    ]
+  },
+  "safety": {
+    "message": "谢谢你告诉我们。这件事很严重，所以只会交给 HR，你的主管看不到。HR 会在 1 个工作日内联系你。如果你现在有危险，请拨打 999。\n你也可以联系：",
+    "forcedLabour": "谢谢你告诉我们。任何人都不得扣留你的护照或身份证，不得强迫你为保住工作而偿还债务或缴费，也不得阻止你离开住处。这件事只会交给 HR，你的主管看不到。HR 会在 1 个工作日内联系你。\n你也可以联系：",
+    "labourAuthority": "劳工局 (Jabatan Tenaga Kerja)：[SLOT: contact, verified before launch]",
+    "tribunal": "反性骚扰法庭 (Tribunal Anti Gangguan Seksual)：[SLOT: contact, verified before launch]",
+    "spellings": {},
+    "keywords": {
+      "forced_labour_indicator": [
+        "扣了我的护照",
+        "扣留我的护照",
+        "没收我的护照",
+        "收走我的护照",
+        "护照被扣",
+        "护照被中介拿走",
+        "护照在中介手上",
+        "护照在老板手上",
+        "欠中介的债",
+        "还中介的钱",
+        "中介费",
+        "不准离开宿舍",
+        "不让我离开宿舍",
+        "被关在宿舍"
+      ],
+      "sexual_harassment": ["性骚扰", "被性骚扰", "摸我", "碰我的身体"],
+      "self_harm_crisis": ["自杀", "想死", "不想活", "结束生命", "伤害自己"],
+      "bullying_threats": ["欺负我", "霸凌", "威胁我", "打我", "被打"],
+      "harassment": ["骚扰我", "被骚扰"],
+      "discrimination": ["歧视", "被歧视"],
+      "safety_hazard": ["机器不安全", "没有安全护罩", "消防门被锁", "安全出口被锁", "工伤"],
+      "wage_legal": ["没发工资", "工资没发", "拖欠工资", "没拿到工资", "没有发薪水"]
+    }
+  }
+}

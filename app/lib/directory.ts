@@ -161,3 +161,14 @@ export async function setScope(person: Person, scope: "hr_only" | "share_with_ma
   });
   if (insertError) throw insertError;
 }
+
+export async function activatePack(organisationId: string, language: string, checker: string) {
+  const { data, error } = await createAdminClient()
+    .from("language_packs")
+    .update({ checker_name: checker, checked_on: (await now()).toISOString().slice(0, 10) })
+    .eq("organisation_id", organisationId)
+    .eq("language", language)
+    .select("language");
+  if (error) throw error;
+  return data.length === 1;
+}
