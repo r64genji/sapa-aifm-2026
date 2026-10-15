@@ -8,8 +8,8 @@
     "retention_days": 182,
     "demo_offset_days": 0,
     "demo_mode": true,
-    "retention_baseline_kept": 4,
-    "retention_baseline_of": 5,
+    "retention_baseline_kept": 73,
+    "retention_baseline_of": 100,
     "hold_new_tags": false,
     "snapshot_weekday": 1,
     "holidays": [],
@@ -19,7 +19,9 @@
         "Talian HEAL (mental health): 15555",
         "Befrienders Kuala Lumpur: 03-7627 2929"
       ],
-      "forced_labour_indicator": ["HR (Aishah), private line: 04-5555 0101"]
+      "forced_labour_indicator": [
+        "HR (Aishah), private line: 04-5555 0101"
+      ]
     }
   }
 ]

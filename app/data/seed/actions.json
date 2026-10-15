@@ -3,29 +3,29 @@
     "id": "6f1c2a3e-0000-4000-8000-000000000501",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "driver": "ROLE_CLARITY",
-    "library_entry_id": "6f1c2a3e-0000-4000-8000-000000000401",
-    "draft_reason": "Chosen from the action library.",
+    "library_entry_id": null,
+    "draft_reason": "Written by HR.",
     "source": "theme",
-    "title": "Priorities chat and written top-3 list",
-    "steps": "Hold a ten-minute priorities chat at the start of each week and give each new hire a written list of their top three tasks.",
+    "title": "Share the written job scope",
+    "steps": "Give each new hire the written job scope for their desk, with the daily quota and which country's invoices come first, and go through it with them.",
     "scope_type": "team",
     "scope_team": "Accounts Payable Asia",
     "owner_type": "hr",
     "held": false,
     "status": "done",
     "created_by": "seed",
-    "created_at": "2026-08-17T02:00:00Z",
-    "assigned_at": "2026-08-17T02:00:00Z",
-    "due_on": "2026-08-28",
-    "accepted_at": "2026-08-28T02:00:00Z",
-    "done_at": "2026-08-28T02:00:00Z",
+    "created_at": "2026-08-24T02:00:00Z",
+    "assigned_at": "2026-08-24T02:00:00Z",
+    "due_on": "2026-09-08",
+    "accepted_at": "2026-08-25T02:00:00Z",
+    "done_at": "2026-09-08T02:00:00Z",
     "outcome_note": "Done as planned.",
     "notes": {
-      "en": "HR has asked supervisors to agree your top three tasks with you each week.",
-      "ms": "HR telah meminta penyelia bersetuju dengan anda tentang tiga tugas utama setiap minggu."
+      "en": "Your team lead will give you a written job scope with your daily quota and priorities.",
+      "ms": "Ketua pasukan anda akan memberi skop kerja bertulis dengan kuota harian dan keutamaan anda."
     },
     "note_approved_by": "seed",
-    "note_approved_at": "2026-08-17T02:00:00Z",
+    "note_approved_at": "2026-08-24T02:00:00Z",
     "score_change": {
       "scope": {
         "n": 6,
@@ -50,7 +50,7 @@
     "title": "Priorities chat and written top-3 list",
     "steps": "Hold a ten-minute priorities chat at the start of each week and give each new hire a written list of their top three tasks.",
     "scope_type": "team",
-    "scope_team": "Korean Desk",
+    "scope_team": "Order-to-Cash Asia",
     "owner_type": "hr",
     "held": false,
     "status": "done",
@@ -69,7 +69,7 @@
     "note_approved_at": "2026-07-13T02:00:00Z",
     "score_change": {
       "scope": {
-        "n": 31,
+        "n": 19,
         "before": 2.4,
         "after": 3.5
       },
@@ -159,6 +159,47 @@
         "n": 3,
         "before": 3.2,
         "after": 3.3
+      }
+    },
+    "hiring_side": false
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000505",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "ROLE_CLARITY",
+    "library_entry_id": "6f1c2a3e-0000-4000-8000-000000000401",
+    "draft_reason": "Chosen from the action library.",
+    "source": "theme",
+    "title": "Priorities chat and written top-3 list",
+    "steps": "Hold a ten-minute priorities chat at the start of each week and give each new hire a written list of their top three tasks.",
+    "scope_type": "team",
+    "scope_team": "Record-to-Report",
+    "owner_type": "hr",
+    "held": false,
+    "status": "done",
+    "created_by": "seed",
+    "created_at": "2026-08-10T02:00:00Z",
+    "assigned_at": "2026-08-10T02:00:00Z",
+    "due_on": "2026-08-21",
+    "accepted_at": "2026-08-11T02:00:00Z",
+    "done_at": "2026-08-21T02:00:00Z",
+    "outcome_note": "Done as planned.",
+    "notes": {
+      "en": "HR has asked supervisors to agree your top three tasks with you each week.",
+      "ms": "HR telah meminta penyelia bersetuju dengan anda tentang tiga tugas utama setiap minggu."
+    },
+    "note_approved_by": "seed",
+    "note_approved_at": "2026-08-10T02:00:00Z",
+    "score_change": {
+      "scope": {
+        "n": 18,
+        "before": 2.5,
+        "after": 3.7
+      },
+      "other": {
+        "n": 44,
+        "before": 2.8,
+        "after": 2.9
       }
     },
     "hiring_side": false

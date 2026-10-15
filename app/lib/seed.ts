@@ -16,6 +16,9 @@ import theme_snapshots from "@/data/seed/theme_snapshots.json";
 import action_library from "@/data/seed/action_library.json";
 import actions from "@/data/seed/actions.json";
 import users from "@/data/seed/users.json";
+import escalations from "@/data/seed/escalations.json";
+import milestone_nudges from "@/data/seed/milestone_nudges.json";
+import { encrypt } from "@/lib/crypto";
 import { inviteLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -43,16 +46,28 @@ async function seedUsers() {
   }
 }
 
+const DAY_MS = 86400000;
+
+function liveDates(timeZone: string) {
+  if (process.env.SAPA_TEST === "1") return {};
+  const start = new Date(Date.now() - 13 * DAY_MS).toLocaleDateString("en-CA", { timeZone });
+  return { start_date: start, invite_expires_at: new Date(Date.parse(start) + 26 * DAY_MS).toISOString() };
+}
+
 export async function resetDemo() {
   const db = createAdminClient();
   const { data: live, error: modeError } = await db.from("organisations").select("id").eq("demo_mode", false).limit(1);
   if (modeError) throw modeError;
   if (live.length > 0) return { error: "Demo mode is off", code: 409 };
+  const liveStart = liveDates(organisations[0].time_zone);
   const invited = people.map((person) =>
-    person.synthetic || person.invite_used_at ? person : { ...person, invite_token: randomBytes(16).toString("base64url") },
+    person.synthetic || person.invite_used_at
+      ? person
+      : { ...person, ...liveStart, invite_token: randomBytes(16).toString("base64url") },
   );
+  const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs, managers, people: invited, consents, checkin_schedule, responses, ai_tags, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes },
+    seed: { organisations, language_packs, managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedUsers();
