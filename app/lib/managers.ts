@@ -132,6 +132,7 @@ export async function sharedReplies(managerId: string, actor: string) {
     .eq("people.consents.scope", "share_with_manager")
     .is("people.consents.withdrawn_at", null)
     .not("text_encrypted", "is", null)
+    .neq("kind", "exit")
     .order("created_at");
   if (error) throw error;
   const rows = data as unknown as { id: string; created_at: string; text_encrypted: string; people: { code_name: string } }[];

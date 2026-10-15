@@ -35,4 +35,5 @@ Run before each rehearsal, not on every commit. It runs required journey 2 again
 ## Data and secrets
 
 - Seed and pack texts are data files in `data/`. The seed is loaded only by the demo reset.
+- `POST /api/demo/reset` needs its own `DEMO_RESET_SECRET`, never the dispatch secret, and refuses while any organisation has demo mode off. The seed holds no unused invite token: each reset makes a new one for the live hire and returns its link only to the caller.
 - Secrets live in a git-ignored `.env.local` and in Vercel. Names are in `.env.example`.
