@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
+import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap, liveInvite } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const organisation = "6f1c2a3e-0000-4000-8000-000000000001";
@@ -75,7 +75,7 @@ test("R44: a new driver and language waits for HR until 20 spot checks with at m
 });
 
 test("R44: once calibrated, a new AI-confident tag counts without review, and the hold-new-tags setting (HR admin only) holds it", async () => {
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   await joined(second, "2026-10-02");

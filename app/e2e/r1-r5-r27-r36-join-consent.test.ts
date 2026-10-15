@@ -1,13 +1,12 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, db, hrRequest, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl } from "./helpers.ts";
+import { addHire, db, hrRequest, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
 const en = pack("en");
 const ms = pack("ms");
-const liveInvite = "live-hire-invite";
 const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const frozen = "2026-10-14T01:00:00.000Z";
 
@@ -17,6 +16,12 @@ before(async () => {
 });
 
 const texts = async (chatId: number) => (await sentTo(chatId)).map((m) => m.text);
+
+test("Bug fix: the live hire's invite token written in the public seed file binds no chat after a reset", async () => {
+  const chat = 5550000006;
+  await link(chat, "live-hire-invite");
+  assert.deepEqual(await texts(chat), [en.invalidInvite]);
+});
 
 test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and gets an English menu", async () => {
   const chat = 5550000001;

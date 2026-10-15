@@ -9,6 +9,7 @@ import {
   hrRequest,
   hrToken,
   link,
+  liveInvite,
   modelCalls,
   resetDemo,
   say,
@@ -49,7 +50,7 @@ test("R44, R8, R25: the live reply waits for HR, the card moves from 7 of 18 to 
     note: "New labels wait for HR during calibration",
   });
 
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);

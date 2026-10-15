@@ -134,6 +134,7 @@ export async function sharedReplies(managerId: string, actor: string) {
     .neq("people.state", "left")
     .eq("kind", "checkin")
     .not("text_encrypted", "is", null)
+    .neq("kind", "exit")
     .order("created_at");
   if (error) throw error;
   const rows = data as unknown as { id: string; created_at: string; text_encrypted: string; people: { code_name: string } }[];
