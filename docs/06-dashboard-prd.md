@@ -194,7 +194,7 @@ None of this is decided. It is here so the first conversation does not start fro
 - **The moment that probably matters most:** a single reply shown with the person's words, the AI's reading and evidence, and HR's decision, all in one view. It answers the judges' "what goes in, what AI does, what comes out, what a person does" in one look.
 - **Tone:** calm, warm and trustworthy, a support tool rather than a security console. Red could be reserved for serious concerns only. AI output could carry one consistent marker that changes once a person has reviewed it.
 - **Devices:** HR on a laptop (about 1280–1440 px). Managers see only Telegram on a phone. The demo on a 1280×720 projector.
-- **Build context:** the app is planned on Next.js with shadcn/ui and Tailwind, so designs that map to standard shadcn components are fastest to build. This is a build convenience, not a limit on design thinking.
+- **Build context:** HR pages live in the same Next.js 16 app as the API (`app/`), one Vercel project and one login. Tailwind 3 with the Sapa tokens as CSS variables, Lucide icons, Plus Jakarta Sans, Newsreader and JetBrains Mono through `next/font`, light mode only. Pages are client components that read only the `/api/hr/*` routes with the HR access token (SWR), so privacy rules stay in the tested routes. They refresh on a `change_signals` Realtime insert and poll every 5 s. Managers and new hires get no web pages.
 - **If time runs short:** design the moments in the demo first (flows A, B, D and E), then serious concerns, then the rest.
 
 ## 9. Sample data (fictional)
