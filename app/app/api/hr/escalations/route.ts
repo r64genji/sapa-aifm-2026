@@ -1,8 +1,9 @@
 import { listEscalations } from "@/lib/escalations";
-import { hrOrganisation } from "@/lib/hr";
+import { hrUser } from "@/lib/hr";
 
 export async function GET(request: Request) {
-  const organisation = await hrOrganisation(request);
-  if (!organisation) return new Response("Unauthorized", { status: 401 });
-  return Response.json(await listEscalations(organisation));
+  const user = await hrUser(request);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+  const preview = new URL(request.url).searchParams.has("preview") ? user.actor : undefined;
+  return Response.json(await listEscalations(user.organisationId, preview));
 }

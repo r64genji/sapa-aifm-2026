@@ -248,3 +248,19 @@ test("R13, R15: a model escalation with a bad quote still escalates when the ret
   assert.ok(replies[0].includes(en.safety.message));
   assert.equal((await escalationFor(held)).category, "bullying_threats");
 });
+
+test("R25, R7: opening a case returns the reply and what the bot sent and writes an audit row, and a manager is refused", async () => {
+  const alert = await escalationFor(passport);
+  const res = await hrRequest(`/api/hr/escalations/${alert.id}`, "GET");
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.text, "The agent holds my passport");
+  assert.equal(body.category, "forced_labour_indicator");
+  assert.ok(body.sent_by_bot.includes(en.safety.forcedLabour));
+  const { data: rows } = await db.from("audit_log").select("action, at").eq("target", alert.response_id);
+  assert.deepEqual(rows, [{ action: "read_reply_text", at: "2026-10-15T15:00:00+00:00" }]);
+
+  const manager = await hrToken("raj@contoh.test");
+  const denied = await fetch(`${appUrl}/api/hr/escalations/${alert.id}`, { headers: { authorization: `Bearer ${manager}` } });
+  assert.equal(denied.status, 401);
+});

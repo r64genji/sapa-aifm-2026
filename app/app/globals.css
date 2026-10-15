@@ -183,6 +183,7 @@ textarea.sp-input { min-height: 84px; resize: vertical; }
 
 .sp-waiting { display: inline-flex; align-items: center; gap: 6px; color: var(--waiting); font-weight: 600; font-size: 13px; line-height: 18px; }
 
+.sp-case-row:hover { background: var(--surface-sunken); }
 .sp-tabs { display: inline-flex; padding: 4px; gap: 4px; background: var(--track-empty); border-radius: 10px; flex-wrap: wrap; }
 .sp-tab { font: inherit; font-size: 13px; font-weight: 600; min-height: 36px; padding: 0 16px; border: 0; border-radius: var(--radius-control); cursor: pointer; background: transparent; color: var(--ink-muted); }
 .sp-tab[aria-pressed="true"] { background: var(--surface-raised); color: var(--ink); box-shadow: 0 1px 2px rgba(28, 34, 38, 0.12); }
