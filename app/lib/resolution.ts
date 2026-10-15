@@ -167,7 +167,11 @@ export async function scoreCard(action: Resolvable) {
 
 export async function libraryWithEvidence(organisationId: string, driver?: string) {
   const db = createAdminClient();
-  let query = db.from("action_library").select("id, driver, title, text").eq("organisation_id", organisationId);
+  let query = db
+    .from("action_library")
+    .select("id, driver, title, text, created_by")
+    .eq("organisation_id", organisationId)
+    .is("deleted_at", null);
   if (driver) query = query.eq("driver", driver);
   const { data: entries, error } = await query;
   if (error) throw error;
@@ -205,7 +209,17 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
         used.length === 0
           ? text.notEnoughEvidence
           : `${fill(text.evidenceUsed, { times: `${used.length} ${used.length === 1 ? "time" : "times"}` })} ${verdict}`;
-      return { ...entry, used: used.length, difference, evidence };
+      const times = `${used.length} ${used.length === 1 ? "time" : "times"}`;
+      const result =
+        used.length === 0
+          ? entry.created_by
+            ? "New · no result yet"
+            : "Not used here yet"
+          : difference === null
+            ? `Used ${times} here · no result yet`
+            : `Used ${times} here. ${signed(difference)} vs other teams, ${scope.n} people`;
+      const { created_by, ...shown } = entry;
+      return { ...shown, custom: created_by !== null, used: used.length, difference, evidence, result };
     }),
   );
   return ranked.sort(
