@@ -22,7 +22,8 @@ export async function resetDemo() {
 
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
 
-type ModelScript = { kind: "json"; content: unknown } | { kind: "text"; content: string } | { kind: "error"; status: number } | { kind: "timeout" };
+type Usage = { prompt_tokens: number; completion_tokens: number };
+type ModelScript = { kind: "json"; content: unknown; usage?: Usage } | { kind: "text"; content: string; usage?: Usage } | { kind: "error"; status: number } | { kind: "timeout" };
 
 export async function scriptModel(provider: "omniroute" | "deepseek", scripts: ModelScript[]) {
   await fetch(`${modelUrl}/${provider}/script`, { method: "POST", body: JSON.stringify(scripts) });

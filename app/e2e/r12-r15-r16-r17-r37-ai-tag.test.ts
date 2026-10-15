@@ -19,7 +19,7 @@ import {
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const probe = (id: string) => en.checkin.probes.find((p: { id: string }) => p.id === id).text;
 const live = 5550000201;
-const [wrongTwice, wrongOnce, badJson, down, fallback, capped] = [301, 302, 303, 304, 305, 306].map(
+const [wrongTwice, wrongOnce, badJson, down, fallback, capped, spender] = [301, 302, 303, 304, 305, 306, 307].map(
   (n) => 5550000000 + n,
 );
 const quote = "tak tahu mana nak buat dulu";
@@ -52,9 +52,9 @@ before(async () => {
   await link(live, "live-hire-invite");
   await tap(live, "English");
   await tap(live, en.agree);
-  for (const chat of [wrongTwice, wrongOnce, badJson, down, fallback, capped]) await joined(chat, "2026-10-02");
+  for (const chat of [wrongTwice, wrongOnce, badJson, down, fallback, capped, spender]) await joined(chat, "2026-10-02");
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
-  assert.equal((await res.json()).sent, 7);
+  assert.equal((await res.json()).sent, 8);
 });
 
 test("R17, R16, R12: the model gets masked text, extra fields are not stored, and probes stop at the cap", async () => {
@@ -159,16 +159,10 @@ test("DeepSeek answers when OmniRoute is down, and both calls are recorded", asy
 });
 
 test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
-  const { data: org } = await db.from("organisations").select("id").single();
-  await db.from("ai_usage").insert({
-    organisation_id: org!.id,
-    provider: "deepseek",
-    model: "test-deepseek",
-    call_type: "classify",
-    cost: 1.51,
-    ok: true,
-    at: "2026-10-15T15:00:00Z",
-  });
+  await reachOpenQuestion(spender);
+  await scriptModel("deepseek", [{ kind: "json", content: classifierTag(), usage: { prompt_tokens: 5_100_000, completion_tokens: 0 } }]);
+  await say(spender, reply);
+  assert.equal((await storedTag(spender)).tag.status, "ok");
   await reachOpenQuestion(capped);
   await scriptModel("deepseek", [{ kind: "json", content: classifierTag() }]);
   const before = (await modelCalls("deepseek")).length;

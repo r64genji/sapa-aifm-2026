@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, blockChat, db, freezeClock, link, resetDemo, say, sentTo, tap, telegramCalls } from "./helpers.ts";
+import { addHire, blockChat, db, dispatch, freezeClock, link, resetDemo, say, sentTo, tap, telegramCalls } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -53,6 +53,19 @@ test("R2, R3: typed BERHENTI and /berhenti stop a Bahasa Malaysia hire", async (
   await say(slash, "/berhenti");
   assert.equal((await texts(typed)).at(-1), ms.stopped);
   assert.equal((await texts(slash)).at(-1), ms.stopped);
+});
+
+test("R3: after STOP, dispatch at the hire's next due check-in sends nothing to that hire", async () => {
+  const stopped = 5550000016;
+  const control = 5550000017;
+  await activeHire(stopped, "English", en.agree);
+  await activeHire(control, "English", en.agree);
+  await say(stopped, "STOP");
+  const before = { stopped: (await texts(stopped)).length, control: (await texts(control)).length };
+  await freezeClock("2026-10-28T02:00:00.000Z");
+  assert.equal((await dispatch()).status, 200);
+  assert.ok((await texts(control)).length > before.control);
+  assert.equal((await texts(stopped)).length, before.stopped);
 });
 
 test("R36, R3: a bot-was-blocked error counts as STOP", async () => {

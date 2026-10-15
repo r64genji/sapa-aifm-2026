@@ -277,7 +277,8 @@
     "invite_expires_at": "2026-08-30T01:00:00Z",
     "invite_used_at": "2026-08-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002219",
@@ -292,7 +293,8 @@
     "invite_expires_at": "2026-08-30T01:00:00Z",
     "invite_used_at": "2026-08-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002220",
@@ -307,7 +309,8 @@
     "invite_expires_at": "2026-08-30T01:00:00Z",
     "invite_used_at": "2026-08-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002221",
@@ -352,7 +355,8 @@
     "invite_expires_at": "2026-10-01T01:00:00Z",
     "invite_used_at": "2026-09-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002224",
