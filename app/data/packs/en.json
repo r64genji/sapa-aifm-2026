@@ -68,7 +68,8 @@
     "from": "From the handbook:",
     "hr": "To check with HR:",
     "unknown": "I don't know yet. I have logged your question for HR, without your name.",
-    "important": "This is an important matter, so I will not answer it. Please speak to HR directly:"
+    "important": "This is an important matter, so I will not answer it. Please speak to HR directly:",
+    "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },
   "checkin": {
     "intro": "Hi, it's time for your Sapa check-in. It takes about a minute. Tap an answer, or type when asked.",
@@ -109,6 +110,11 @@
         "id": "OPEN",
         "type": "open",
         "text": "Is there anything about your first weeks that you would like HR to know? Please type your answer."
+      },
+      {
+        "id": "JOB_MATCH",
+        "type": "scale",
+        "text": "How much does the job match what you were told when you were hired? (1–5)"
       }
     ],
     "gotIt": "Got it. Your answer is saved and HR will look at it.",

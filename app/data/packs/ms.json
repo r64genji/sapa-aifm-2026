@@ -35,7 +35,8 @@
     "from": "Daripada buku panduan:",
     "hr": "Untuk menyemak dengan HR:",
     "unknown": "Saya belum tahu. Soalan anda telah dicatat untuk HR, tanpa nama anda.",
-    "important": "Ini perkara penting, jadi saya tidak akan menjawabnya. Sila bercakap terus dengan HR:"
+    "important": "Ini perkara penting, jadi saya tidak akan menjawabnya. Sila bercakap terus dengan HR:",
+    "fallback": "Jawapan ini dalam {language}. Tanya HR jika tidak jelas."
   },
   "checkin": {
     "intro": "Hai, tiba masanya untuk semakan Sapa anda. Ia mengambil masa kira-kira seminit. Tekan jawapan, atau taip apabila diminta.",
@@ -76,6 +77,11 @@
         "id": "OPEN",
         "type": "open",
         "text": "Adakah apa-apa tentang minggu-minggu pertama anda yang anda mahu HR tahu? Sila taip jawapan anda."
+      },
+      {
+        "id": "JOB_MATCH",
+        "type": "scale",
+        "text": "Sejauh mana kerja ini sepadan dengan apa yang diberitahu kepada anda semasa diambil bekerja? (1–5)"
       }
     ],
     "gotIt": "Baik, difahami. Jawapan anda telah disimpan dan HR akan melihatnya.",

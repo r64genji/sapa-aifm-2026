@@ -35,6 +35,24 @@ export async function publishedPages(organisationId: string, language: string) {
   return data as { path: string; body: string }[];
 }
 
+export async function answerPages(organisationId: string, language: string) {
+  const own: { path: string; body: string; fallback?: "en" | "ms" }[] = await publishedPages(organisationId, language);
+  const { data, error } = await createAdminClient()
+    .from("handbook_pages")
+    .select("path, body, language")
+    .eq("organisation_id", organisationId)
+    .eq("status", "published")
+    .in("language", ["en", "ms"])
+    .neq("language", language)
+    .order("path")
+    .order("language");
+  if (error) throw error;
+  const fallback = data
+    .filter((page, i) => !own.some((o) => o.path === page.path) && !data.slice(0, i).some((o) => o.path === page.path))
+    .map(({ language, ...page }) => ({ ...page, fallback: language as "en" | "ms" }));
+  return [...own, ...fallback].sort((x, y) => x.path.localeCompare(y.path));
+}
+
 export async function listPages(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("handbook_pages")
