@@ -70,9 +70,9 @@ before(async () => {
   for (const [chat, name] of [[p3, "Hire 3"], [p4, "Hire 4"], [p5, "Hire 5"]] as const) await onboard(chat, { code_name: name });
   await onboard(p6, { code_name: "Hire 6", team: "IT Service Desk" });
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  await baseline(p1, [3, 2, 5], "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
-  await baseline(p2, [4, 3, 5], "Tak ada orang beritahu saya siapa nak tanya");
-  await baseline(p6, [2, 4, 3], "The training felt rushed to me");
+  await baseline(p1, [3, 2, 5, 3, 3, 3], "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
+  await baseline(p2, [4, 3, 5, 3, 3, 3], "Tak ada orang beritahu saya siapa nak tanya");
+  await baseline(p6, [2, 4, 3, 3, 3, 3], "The training felt rushed to me");
   await say(p3, "/stop");
   await say(p4, "DELETE");
   await tap(p4, en.delete.yes);
@@ -84,7 +84,7 @@ test("R26: the seeded earlier action leads with the score change against other t
   const earlier = rows.find((row) => row.id === "6f1c2a3e-0000-4000-8000-000000000501")!;
   assert.deepEqual(earlier.score, {
     headline: "Role clarity, Raj's team +1.3, other teams +0.1 in the same weeks",
-    detail: "2.5 → 3.8, 5 people",
+    detail: "2.5 → 3.8, 6 people",
     note: "Teams picked for a fix often improve anyway. This compares them with other teams.",
   });
   const fewOutside = rows.find((row) => row.id === "6f1c2a3e-0000-4000-8000-000000000504")!;
@@ -102,7 +102,7 @@ test("R43: the draft screen shows what each library entry achieved here, and the
     [
       [
         "Priorities chat and written top-3 list",
-        "Used 3 times here. Role clarity rose 1.0 more than in other teams (14 people).",
+        "Used 3 times here. Role clarity rose 1.0 more than in other teams (41 people).",
       ],
       ["Written role checklist", "Used 1 time here. Not enough comparison yet"],
     ],

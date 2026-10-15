@@ -116,6 +116,8 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
     [en.myAnswers.challenged],
   );
   assert.deepEqual(await card("ROLE_CLARITY"), { n: 7, m: 18 });
+  const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");
+  assert.deepEqual(challengeAudit, [{ actor: "new_hire", target: queued.id }]);
   const challenged = (await (await hrRequest("/api/hr/queue", "GET")).json()).find((r: { id: string }) => r.id === queued.id);
   assert.equal(challenged.note, "Challenged by new hire");
   assert.equal(challenged.status, "needs_review");

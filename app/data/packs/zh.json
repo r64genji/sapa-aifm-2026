@@ -13,6 +13,7 @@
   "visibilityHrOnly": "仅 HR",
   "visibilityHrManager": "HR 和我的主管",
   "visibilitySaved": "已保存。你以后可以用 /privacy 更改。",
+  "skipped": "已跳过。本次问候已关闭。Sapa 会在下一次问候时联系你。",
   "stopped": "你已停止。Sapa 不会再给你发送消息。",
   "help": "你可以随时输入 /help、/stop 或 停止。Sapa 会在下一次问候时联系你。",
   "commands": {
@@ -98,7 +99,6 @@
       "BELONGING",
       "ONBOARDING_TRAINING",
       "WORKLOAD",
-      "JOB_MATCH",
       "OPEN"
     ]
   },

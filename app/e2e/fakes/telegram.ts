@@ -4,6 +4,7 @@ type Call = { method: string; body: Record<string, unknown> };
 
 const calls: Call[] = [];
 const blocked = new Set<string>();
+const failing = new Set<string>();
 let messageId = 0;
 
 function result(method: string, body: Record<string, unknown>) {
@@ -31,6 +32,7 @@ createServer(async (req, res) => {
     if (req.method === "DELETE") {
       calls.length = 0;
       blocked.clear();
+      failing.clear();
     }
     res.end(JSON.stringify(calls));
     return;
@@ -40,12 +42,23 @@ createServer(async (req, res) => {
     res.end("{}");
     return;
   }
+  if (req.url?.startsWith("/fail/")) {
+    failing.add(req.url.split("/")[2]);
+    res.end("{}");
+    return;
+  }
   const method = req.url?.split("/").pop() ?? "";
   const body = raw ? JSON.parse(raw) : {};
   if (method === "sendMessage" && blocked.has(String(body.chat_id))) {
     calls.push({ method: "sendMessage.blocked", body });
     res.statusCode = 403;
     res.end(JSON.stringify({ ok: false, error_code: 403, description: "Forbidden: bot was blocked by the user" }));
+    return;
+  }
+  if (method === "sendMessage" && failing.has(String(body.chat_id))) {
+    calls.push({ method: "sendMessage.failed", body });
+    res.statusCode = 429;
+    res.end(JSON.stringify({ ok: false, error_code: 429, description: "Too Many Requests: retry after 5", parameters: { retry_after: 5 } }));
     return;
   }
   calls.push({ method, body });

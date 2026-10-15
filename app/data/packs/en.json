@@ -2,8 +2,7 @@
   "name": "English",
   "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join.",
   "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
-  "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you. Send /whatican to see what you can see in Sapa.",
-  "whatICanSee": "What I can see: the words of a new hire, only if they chose HR and my manager, and never a serious concern. A weekly count of what your team's new hires named, shown as fewer than 3 when the count is small. Sapa never ranks or compares teams or managers, and shows a team's themes only for one team at a time, from 5 people.",
+  "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you.",
   "action": {
     "alert": "New action from HR: {title}",
     "due": "Due {date}.",
@@ -48,6 +47,7 @@
   "visibilityHrOnly": "HR only",
   "visibilityHrManager": "HR and my manager",
   "visibilitySaved": "Saved. You can change this later with /privacy.",
+  "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
   "help": "You can type /help, /stop, or STOP at any time. Sapa will message you for your next check-in.",
   "commands": {
@@ -133,7 +133,6 @@
       "BELONGING",
       "ONBOARDING_TRAINING",
       "WORKLOAD",
-      "JOB_MATCH",
       "OPEN"
     ]
   },

@@ -509,7 +509,7 @@ export async function releaseAlerts() {
   const { data, error } = await createAdminClient().rpc("alerts_claim", { at: (await now()).toISOString() });
   if (error) throw error;
   const ids = data as { id: string }[];
-  for (const { id } of ids) await sendAlert(id);
+  for (const { id } of ids) await sendAlert(id).catch((error) => console.error(error));
   return ids.length;
 }
 
