@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
+import { Translation } from "@/components/sapa/reply";
 import {
   AiMark,
   Button,
@@ -40,7 +41,7 @@ type Escalation = { id: string; category: string; created_at: string; closed_at:
 type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; note?: string | null; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
-type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; translation?: { label: string; text: string } | null };
+type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string };
 type Offer = { id: string; answer: string | null; contact_due_at: string | null; contact_done_at: string | null; overdue: boolean };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Score = { headline: string; detail: string | null; note: string };
@@ -86,14 +87,10 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
     >
       <div className="sp-caption" style={{ color: "var(--ai)", fontWeight: 600 }}>
         {shortDate(row.created_at)}
-        {row.translation ? " · Chinese" : ""}
+        {row.language === "zh" ? " · Chinese" : ""}
       </div>
       {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
-      {row.translation ? (
-        <div className="sp-meta mt-1">
-          <AiMark state="suggested" label="Translation" /> {row.translation.text}
-        </div>
-      ) : null}
+      <Translation id={row.id} language={row.language} />
       {row.note ? <div className="sp-row-meta">{row.note}</div> : null}
       {error ? <div className="sp-row-meta" style={{ color: "var(--serious)" }}>{error}</div> : null}
       {picking ? (

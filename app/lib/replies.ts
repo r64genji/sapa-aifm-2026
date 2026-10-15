@@ -13,11 +13,14 @@ export async function readReplies(organisationId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("id, question_id, text_encrypted, language, created_at")
+    .select(
+      "id, question_id, text_encrypted, language, created_at, people(team), checkin_schedule(touchpoint), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr)",
+    )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;
+  type Joined = { people: { team: string }; checkin_schedule: { touchpoint: number } | null; ai_tags: object | null };
   const at = (await now()).toISOString();
   const { error: auditError } = await db
     .from("audit_log")
@@ -26,12 +29,16 @@ export async function readReplies(organisationId: string, actor: string) {
   return Promise.all(
     data.map(async (row) => {
       const text = decrypt(row.text_encrypted!);
+      const joined = row as unknown as Joined;
       return {
         id: row.id,
         question_id: row.question_id,
         text,
         language: row.language,
         created_at: row.created_at,
+        team: joined.people.team,
+        touchpoint: joined.checkin_schedule?.touchpoint ?? null,
+        ...joined.ai_tags,
       };
     }),
   );
@@ -86,7 +93,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, created_at, responses!inner(text_encrypted, language)",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -95,7 +102,7 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string } })[];
+  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string }; checkin_schedule: { touchpoint: number } | null } })[];
   const { data: held, error: heldError } = await db
     .from("quality_holds")
     .select("driver, language, reason")
@@ -106,17 +113,19 @@ export async function readQueue(organisationId: string, actor: string) {
     if (row.responses.text_encrypted) await audit(actor, "read_reply_text", row.response_id);
   }
   return Promise.all(
-    rows.map(async ({ responses, counted, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
+    rows.map(async ({ responses, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
       const text = responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
       return {
         id: response_id,
         ...row,
         text,
         language: responses.language,
+        team: responses.people.team,
+        touchpoint: responses.checkin_schedule?.touchpoint ?? null,
         note:
           challenged_at && !challenge_resolved_at
             ? challenged
-            : row.status === "ok" && !counted
+            : row.status === "ok" && !row.counted
               ? (held.find((hold) => hold.language === responses.language && row.drivers.includes(hold.driver))?.reason ?? waiting)
               : row.status === "ok" && spot_check_at
                 ? spotCheck
@@ -141,16 +150,17 @@ export async function reviewReply(
   organisationId: string,
   actor: string,
   responseId: string,
-  change: { drivers?: Tag["drivers"]; context_tags?: Tag["context_tags"] },
+  change: { drivers?: Tag["drivers"]; context_tags?: Tag["context_tags"]; serious?: boolean },
 ) {
   const tag = await ownTag(organisationId, responseId);
   if (!tag) return { error: "Not found", code: 404 };
-  if (tag.status === "awaiting_ai") return { error: "Nothing to review", code: 409 };
+  if (tag.status === "awaiting_ai" && !change.drivers && !change.context_tags) return { error: "Nothing to review", code: 409 };
+  const { serious, ...labels } = change;
   const at = (await now()).toISOString();
   const { error } = await createAdminClient()
     .from("ai_tags")
     .update({
-      ...change,
+      ...labels,
       ...((change.drivers || change.context_tags) && { changed_by_hr: true }),
       status: "reviewed",
       reviewed_by: actor,
@@ -173,10 +183,43 @@ export async function reviewReply(
       if (checkError) throw checkError;
     }
   }
+  if (serious) {
+    const { data: response, error: responseError } = await createAdminClient()
+      .from("responses")
+      .select("person_id, language, escalations(id)")
+      .eq("id", responseId)
+      .single();
+    if (responseError) throw responseError;
+    if (!response.escalations) {
+      const person = await reachable(response.person_id);
+      const text = await escalate(person ?? ({ organisation_id: organisationId, language: response.language } as Person), responseId, null, "none");
+      if (person) await send(person.telegram_chat_id!, { text });
+    }
+  }
   await resolveChallenge(responseId);
   await signal(organisationId, "cohort");
   await signal(organisationId, "queue");
   return { status: "reviewed" };
+}
+
+export async function undoReview(
+  organisationId: string,
+  actor: string,
+  responseId: string,
+  before: { status: "ok" | "needs_review" | "awaiting_ai"; drivers: Tag["drivers"]; context_tags: Tag["context_tags"]; changed_by_hr: boolean },
+) {
+  const tag = await ownTag(organisationId, responseId);
+  if (!tag) return { error: "Not found", code: 404 };
+  if (tag.status !== "reviewed") return { error: "Nothing to undo", code: 409 };
+  const { error } = await createAdminClient()
+    .from("ai_tags")
+    .update({ ...before, reviewed_by: null, reviewed_at: null })
+    .eq("response_id", responseId);
+  if (error) throw error;
+  await audit(actor, "undo_review", responseId);
+  await signal(organisationId, "cohort");
+  await signal(organisationId, "queue");
+  return { status: before.status };
 }
 
 export async function setFollowUp(organisationId: string, actor: string, responseId: string, value: boolean) {
