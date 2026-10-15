@@ -1,3 +1,4 @@
+import { managerChat } from "@/lib/actions";
 import { checkinButton, checkinText } from "@/lib/checkin";
 import { exitButton, exitText, exitTickPrompt, needsExitTick, setExitTick } from "@/lib/exit";
 import { answerOffer } from "@/lib/offers";
@@ -156,7 +157,7 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
         };
       }
     }
-    return { replies: [{ text: packs.en.start }] };
+    return (await managerChat(chatId, input)) ?? { replies: [{ text: packs.en.start }] };
   }
   const languages = await liveLanguages(person.organisation_id);
   const command = input.kind === "text" ? commandId(input.text, languages) : undefined;

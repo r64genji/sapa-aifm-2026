@@ -25,7 +25,7 @@ export async function managerUser(request: Request) {
     .maybeSingle();
   if (error) throw error;
   if (!manager) return null;
-  return { token, managerId: manager.id as string, actor: data.user!.id };
+  return { token, managerId: manager.id as string, organisationId: metadata.organisation_id as string, actor: data.user!.id };
 }
 
 export async function inviteManager(organisationId: string, actor: string, invite: { display_name: string; email: string }) {
