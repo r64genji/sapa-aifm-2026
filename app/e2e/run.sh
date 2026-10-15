@@ -45,6 +45,7 @@ export GEMINI_MODEL_ID=test-gemini
 export GEMINI_MODEL_ID_MEDIUM=test-gemini-medium
 export DEEPSEEK_MODEL_ID=test-deepseek
 export DISPATCH_SECRET=test-dispatch-secret
+export DEMO_RESET_SECRET=test-demo-reset-secret
 export SEED_USER_PASSWORD=test-seed-password
 export REPLY_ENCRYPTION_KEY=c2FwYS10ZXN0LXJlcGx5LWVuY3J5cHRpb24ta2V5ISE=
 
