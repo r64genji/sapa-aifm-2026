@@ -25,7 +25,7 @@ export const providers = (schema: object, medium: boolean) => [
   },
 ];
 
-async function fallbackSpend() {
+export async function fallbackSpend() {
   const { data, error } = await createAdminClient()
     .from("ai_usage")
     .select("cost")

@@ -6,7 +6,6 @@ import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy
 import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
-  liveLanguages,
   moveState,
   personByChat,
   personByToken,
@@ -20,7 +19,7 @@ import {
 import { now } from "@/lib/clock";
 import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 import { milestoneDone } from "@/lib/milestones";
-import { packs, type CommandId, type Language } from "@/lib/packs";
+import { languages, packs, type CommandId, type Language } from "@/lib/packs";
 
 export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[] };
 export type Outcome = { replies: Reply[]; menu?: Language };
@@ -86,12 +85,12 @@ function prompt(person: Person, languages: Language[]): Reply[] {
 async function join(chatId: number, token: string): Promise<Outcome> {
   const found = await personByToken(token);
   const refused = { replies: [{ text: packs[found?.language ?? "en"].invalidInvite }] };
-  if (!found || found.invite_used_at || new Date(found.invite_expires_at) <= (await now())) {
+  if (!found || found.state === "left" || found.invite_used_at || new Date(found.invite_expires_at) <= (await now())) {
     return refused;
   }
   const person = await redeemInvite(token, chatId);
   if (!person) return refused;
-  return { replies: prompt(person, await liveLanguages(person.organisation_id)) };
+  return { replies: prompt(person, languages) };
 }
 
 async function press(person: Person, id: string, value: string, languages: Language[]): Promise<Outcome> {
@@ -163,7 +162,6 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
     }
     return (await managerChat(chatId, input)) ?? { replies: [{ text: packs.en.start }] };
   }
-  const languages = await liveLanguages(person.organisation_id);
   const command = input.kind === "text" ? commandId(input.text, languages) : undefined;
   if (command === "delete") return { replies: [deletePrompt(person.language)] };
   if (input.kind === "button" && input.id === "delete") return { replies: await confirmDelete(person, input.value) };

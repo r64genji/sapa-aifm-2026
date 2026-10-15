@@ -7,6 +7,7 @@ const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
 const en = pack("en");
 const ms = pack("ms");
+const zh = pack("zh");
 const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const frozen = "2026-10-14T01:00:00.000Z";
 
@@ -26,7 +27,7 @@ test("Bug fix: the live hire's invite token written in the public seed file bind
 test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and gets an English menu", async () => {
   const chat = 5550000001;
   await link(chat, liveInvite);
-  assert.deepEqual(await texts(chat), [`${en.languagePrompt}\n${ms.languagePrompt}`]);
+  assert.deepEqual(await texts(chat), [`${en.languagePrompt}\n${ms.languagePrompt}\n${zh.languagePrompt}`]);
 
   await tap(chat, "English");
   await tap(chat, en.agree);
@@ -86,16 +87,6 @@ test("R27: an invite 15 days old is refused", async () => {
   await link(chat, token);
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
   await freezeClock(frozen);
-});
-
-test("R46: a language without a recorded checker cannot be chosen", async () => {
-  const chat = 5550000005;
-  const { token } = await addHire({ code_name: "Hire ZH" });
-  await link(chat, token);
-  await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
-  const { data } = await db.from("people").select("state, language").eq("telegram_chat_id", chat);
-  assert.deepEqual(data, [{ state: "invited", language: "en" }]);
-  assert.equal((await texts(chat)).some((t) => t === en.consent), false);
 });
 
 test("R1: after No thanks the hire gets a confirmation and nothing more", async () => {

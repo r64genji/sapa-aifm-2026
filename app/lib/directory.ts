@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { now } from "@/lib/clock";
-import { packs, type Language } from "@/lib/packs";
+import { type Language } from "@/lib/packs";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -122,16 +122,6 @@ export async function setLanguage(person: Person, language: Language) {
   if (error) throw error;
 }
 
-export async function liveLanguages(organisationId: string) {
-  const { data, error } = await createAdminClient()
-    .from("language_packs")
-    .select("language")
-    .eq("organisation_id", organisationId)
-    .not("checker_name", "is", null);
-  if (error) throw error;
-  return data.map((row) => row.language).filter((language): language is Language => language in packs);
-}
-
 export async function recordConsent(person: Person, textVersion: string) {
   const { error } = await createAdminClient().from("consents").insert({
     organisation_id: person.organisation_id,
@@ -169,10 +159,10 @@ export async function setScope(person: Person, scope: "hr_only" | "share_with_ma
   await audit("new_hire", "change_consent_scope", person.id);
 }
 
-export async function activatePack(organisationId: string, language: string, checker: string) {
+export async function passPackTest(organisationId: string, language: string, resultsFile: string) {
   const { data, error } = await createAdminClient()
     .from("language_packs")
-    .update({ checker_name: checker, checked_on: (await now()).toISOString().slice(0, 10) })
+    .update({ test_passed_on: (await now()).toISOString().slice(0, 10), test_results_file: resultsFile })
     .eq("organisation_id", organisationId)
     .eq("language", language)
     .select("language");

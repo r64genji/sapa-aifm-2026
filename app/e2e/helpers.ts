@@ -12,7 +12,7 @@ export const db = createClient(
 
 export let liveInvite = "";
 
-export async function resetDemo() {
+export async function resetSeed() {
   await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
   const res = await fetch(`${appUrl}/api/demo/reset`, {
     method: "POST",
@@ -25,9 +25,15 @@ export async function resetDemo() {
   await fetch(`${modelUrl}/calls`, { method: "DELETE" });
 }
 
+export async function resetDemo() {
+  await resetSeed();
+  await db.from("language_packs").update({ test_passed_on: "2026-10-15" }).in("language", ["en", "ms"]);
+}
+
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
 
-type ModelScript = { kind: "json"; content: unknown } | { kind: "text"; content: string } | { kind: "error"; status: number } | { kind: "timeout" };
+type Usage = { prompt_tokens: number; completion_tokens: number };
+type ModelScript = { kind: "json"; content: unknown; usage?: Usage } | { kind: "text"; content: string; usage?: Usage } | { kind: "error"; status: number } | { kind: "timeout" };
 
 export async function scriptModel(provider: "omniroute" | "deepseek", scripts: ModelScript[]) {
   await fetch(`${modelUrl}/${provider}/script`, { method: "POST", body: JSON.stringify(scripts) });
