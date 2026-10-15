@@ -168,13 +168,14 @@ export async function scoreCard(action: Resolvable) {
 export function pooled(scores: Score[]) {
   const total = (pick: (score: Score) => Side) => {
     const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
-    const moved = scores.reduce((sum, score) => sum + pick(score).n * change(pick(score)), 0);
-    return { n, change: moved / (n || 1) };
+    const mean = (value: (side: Side) => number) =>
+      scores.reduce((sum, score) => sum + pick(score).n * value(pick(score)), 0) / (n || 1);
+    return { n, before: mean((side) => side.before), after: mean((side) => side.after), change: mean(change) };
   };
   const scope = total((score) => score.scope);
   const other = total((score) => score.other);
   const difference = scope.n >= ENOUGH && other.n >= ENOUGH ? scope.change - other.change : null;
-  return { scope, difference };
+  return { scope, other, difference };
 }
 
 export async function libraryWithEvidence(organisationId: string, driver?: string) {
@@ -198,7 +199,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
     entries.map(async (entry) => {
       const used = done.filter((action) => action.library_entry_id === entry.id);
       const scores = await Promise.all(used.map((action) => scoreOf(action as Resolvable)));
-      const { scope, difference } = pooled(scores);
+      const { scope, other, difference } = pooled(scores);
       const verdict =
         scope.n < ENOUGH
           ? text.notEnoughEvidence
@@ -224,7 +225,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
             ? `Used ${times} here · no result yet`
             : `Used ${times} here. ${signed(difference)} vs other teams, ${scope.n} people`;
       const { created_by, ...shown } = entry;
-      return { ...shown, custom: created_by !== null, used: used.length, difference, evidence, result };
+      return { ...shown, custom: created_by !== null, used: used.length, difference, evidence, result, scope, other };
     }),
   );
   return ranked.sort(

@@ -70,3 +70,18 @@ export async function milestoneShare(organisationId: string) {
         : { intake, enough: true, hires: hires.size, share_done: Math.round((done / sent) * 100) / 100 },
     );
 }
+
+export async function milestoneSteps(organisationId: string) {
+  const db = createAdminClient();
+  const { data: org, error: orgError } = await db
+    .from("organisations")
+    .select("min_group_size")
+    .eq("id", organisationId)
+    .single();
+  if (orgError) throw orgError;
+  const { data, error } = await db.from("milestone_nudges").select("person_id, done_at").eq("organisation_id", organisationId);
+  if (error) throw error;
+  return new Set(data.map((row) => row.person_id)).size < org.min_group_size
+    ? null
+    : { done: data.filter((row) => row.done_at).length, of: data.length };
+}
