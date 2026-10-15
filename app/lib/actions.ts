@@ -6,6 +6,7 @@ import { packs } from "@/lib/packs";
 import { audit, signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
+import { jobMatchCards } from "@/lib/jobmatch";
 import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
@@ -17,7 +18,8 @@ type Action = {
   id: string;
   organisation_id: string;
   driver: string;
-  source: "theme" | "reply";
+  source: "theme" | "reply" | "job_match";
+  hiring_side: boolean;
   source_response_id: string | null;
   title: string;
   steps: string;
@@ -184,6 +186,47 @@ export async function draftAction(
   return { id: data.id };
 }
 
+export async function draftHiringAction(
+  organisationId: string,
+  actor: string,
+  role: string,
+): Promise<{ id: string } | Failure> {
+  const db = createAdminClient();
+  const card = (await jobMatchCards(organisationId)).find((candidate) => candidate.role === role);
+  if (!card) return { error: "Not found", code: 404 };
+  if (!card.enough) return { error: card.message, code: 422 };
+  const { data: entry, error: entryError } = await db
+    .from("action_library")
+    .select("id, title, text")
+    .eq("organisation_id", organisationId)
+    .eq("type", "hiring_side")
+    .order("id")
+    .limit(1)
+    .maybeSingle();
+  if (entryError) throw entryError;
+  if (!entry) return { error: "The action library has no hiring-side entry", code: 409 };
+  const { data, error } = await db
+    .from("actions")
+    .insert({
+      organisation_id: organisationId,
+      driver: "JOB_MATCH",
+      library_entry_id: entry.id,
+      draft_reason: card.label,
+      source: "job_match",
+      hiring_side: true,
+      title: `${entry.title} (${role})`,
+      steps: entry.text,
+      created_by: actor,
+      created_at: (await now()).toISOString(),
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  await audit(actor, "draft_action", data.id);
+  await signal(organisationId, "action");
+  return { id: data.id };
+}
+
 type Scope =
   | { type: "person"; code_name: string }
   | { type: "team"; team: string }
@@ -228,6 +271,7 @@ export async function editAction(
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
   if (action.status !== "draft") return { error: "Only a draft can be edited", code: 409 };
+  if (action.hiring_side && change.scope) return { error: "A hiring-side action has no scope", code: 422 };
   const fields = change.scope ? await scopeFields(action, change.scope) : {};
   if ("error" in fields) return fields as Failure;
   const { error } = await createAdminClient()
@@ -266,8 +310,9 @@ export async function assignAction(
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
   if (action.status !== "draft") return { error: "Only a draft can be assigned", code: 409 };
-  if (!action.scope_type) return { error: "Choose a scope first", code: 422 };
-  const held = await isHeld(action);
+  if (action.hiring_side && managerId) return { error: "A hiring-side action stays with HR", code: 422 };
+  if (!action.scope_type && !action.hiring_side) return { error: "Choose a scope first", code: 422 };
+  const held = !action.hiring_side && (await isHeld(action));
   if (held && action.scope_type === "person") {
     return { error: "An action that rests on replies from people who did not share must name nobody", code: 422 };
   }
@@ -434,7 +479,7 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, driver, source, library_entry_id, draft_reason, title, steps, scope_type, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, outcome_note, dismiss_reason, created_at, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
+      "id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, scope_type, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, outcome_note, dismiss_reason, created_at, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");
