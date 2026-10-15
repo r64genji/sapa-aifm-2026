@@ -12,6 +12,7 @@
     "retention_baseline_of": 5,
     "hold_new_tags": false,
     "snapshot_weekday": 1,
+    "holidays": [],
     "escalation_contacts": {
       "general": [
         "HR (Aishah): 04-5555 0100",

@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { now } from "@/lib/clock";
 import { packs, type Language } from "@/lib/packs";
+import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const INVITE_DAYS = 14;
@@ -106,12 +107,14 @@ export async function moveState(person: Person, from: Person["state"], to: Perso
 
 export async function stopPerson(chatId: number) {
   const at = (await now()).toISOString();
-  const { error } = await createAdminClient()
+  const { data, error } = await createAdminClient()
     .from("people")
     .update({ state: "stopped", stopped_at: at })
     .eq("telegram_chat_id", chatId)
-    .neq("state", "stopped");
+    .neq("state", "stopped")
+    .select("id");
   if (error) throw error;
+  for (const row of data) await audit("new_hire", "stop", row.id);
 }
 
 export async function setLanguage(person: Person, language: Language) {
@@ -137,6 +140,7 @@ export async function recordConsent(person: Person, textVersion: string) {
     granted_at: (await now()).toISOString(),
   });
   if (error) throw error;
+  await audit("new_hire", "grant_consent", person.id);
 }
 
 export async function setScope(person: Person, scope: "hr_only" | "share_with_manager", textVersion: string) {
@@ -162,6 +166,7 @@ export async function setScope(person: Person, scope: "hr_only" | "share_with_ma
     granted_at: at,
   });
   if (insertError) throw insertError;
+  await audit("new_hire", "change_consent_scope", person.id);
 }
 
 export async function activatePack(organisationId: string, language: string, checker: string) {
