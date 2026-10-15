@@ -28,6 +28,7 @@
     "help": { "name": "help", "description": "Show help" }
   },
   "typedStop": "stop",
+  "typedDelete": "delete",
   "qa": {
     "askPrompt": "Type your question after /ask, or just type it here.",
     "label": "AI answer",
@@ -151,5 +152,39 @@
       "safety_hazard": ["unsafe machine", "no safety guard", "fire exit is locked", "fire exit locked", "got injured"],
       "wage_legal": ["salary not paid", "not paid my salary", "no salary for", "haven't been paid"]
     }
+  },
+  "delete": {
+    "confirm": "This deletes all your answers, your questions and your link to Sapa. It cannot be undone. Delete everything?",
+    "yes": "Delete everything",
+    "no": "Keep my answers",
+    "done": "Done. Your answers and questions are deleted, and Sapa will not message you again.",
+    "kept": "Nothing was deleted."
+  },
+  "myAnswers": {
+    "none": "You have no stored answers.",
+    "aiReading": "AI reading",
+    "changedByHr": "Changed by HR",
+    "labels": "Problem areas",
+    "noLabels": "none",
+    "pending": "The AI has not read this answer yet.",
+    "wrong": "This is wrong",
+    "challenged": "Thank you. HR will check this label. It is not counted until HR has checked it.",
+    "resolved": "HR checked your note. The label now reads:"
+  },
+  "labels": {
+    "ROLE_CLARITY": "Role clarity",
+    "MANAGER_SUPPORT": "Support from your manager",
+    "BELONGING": "Feeling part of the team",
+    "ONBOARDING_TRAINING": "Training",
+    "WORKLOAD": "Workload",
+    "PAY_BENEFITS": "Pay and benefits",
+    "GROWTH": "Growth",
+    "COMMUTE_LOGISTICS": "Travel and transport"
+  },
+  "export": {
+    "intro": "HR asked Sapa to send you the data Sapa holds about you. Here it is.",
+    "visibility": "Who may read your answers:",
+    "question": "Your question:",
+    "answer": "Answer sent:"
   }
 }

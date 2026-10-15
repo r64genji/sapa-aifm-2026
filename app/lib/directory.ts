@@ -9,7 +9,7 @@ export type Person = {
   id: string;
   organisation_id: string;
   language: Language;
-  state: "invited" | "consent_shown" | "declined" | "active" | "stopped";
+  state: "invited" | "consent_shown" | "declined" | "active" | "stopped" | "deleted";
   telegram_chat_id: number | null;
   invite_expires_at: string;
   invite_used_at: string | null;

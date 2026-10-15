@@ -1,5 +1,6 @@
 import { checkinButton, checkinText } from "@/lib/checkin";
 import { answerOffer } from "@/lib/offers";
+import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy";
 import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
@@ -38,6 +39,9 @@ function commandId(text: string, languages: Language[]): CommandId | undefined {
   }
   if (rest.length === 0 && languages.some((language) => packs[language].typedStop === word)) {
     return "stop";
+  }
+  if (rest.length === 0 && languages.some((language) => packs[language].typedDelete === word)) {
+    return "delete";
   }
   return undefined;
 }
@@ -118,6 +122,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
     const replies = await answerOffer(person, value);
     if (replies) return { replies };
   }
+  if (id === "wrong" && person.state === "active") {
+    const replies = await challenge(person, value);
+    if (replies) return { replies };
+  }
   if (id === "ans" && person.state === "active") {
     const replies = await checkinButton(person, value);
     if (replies) return { replies };
@@ -139,15 +147,18 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
     }
     return { replies: [{ text: packs.en.start }] };
   }
-  if (person.state === "stopped") return none;
   const languages = await liveLanguages(person.organisation_id);
   const command = input.kind === "text" ? commandId(input.text, languages) : undefined;
+  if (command === "delete") return { replies: [deletePrompt(person.language)] };
+  if (input.kind === "button" && input.id === "delete") return { replies: await confirmDelete(person, input.value) };
+  if (person.state === "stopped") return none;
   if (command === "stop") {
     await stopPerson(chatId);
     return { replies: [{ text: packs[person.language].stopped }] };
   }
   if (person.state === "declined") return none;
   if (input.kind === "button") return press(person, input.id, input.value, languages);
+  if (command === "myanswers") return { replies: await myAnswers(person) };
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };
   }
