@@ -57,7 +57,7 @@ export const instructions = `You answer one message from a new hire, using only 
 
 Rules:
 - kind is question when the message asks something, feedback when it only shares an opinion or experience of work.
-- important_topic is set when the message is about: harassment, bullying or discrimination; safety hazards; self-harm or crisis; pay that is missing, wrong or disputed; probation, warnings, dismissal or resignation; medical or health matters; legal questions. Otherwise none. How pay or overtime normally works is not a pay problem.
+- important_topic is set when the message is about: harassment, bullying or discrimination; safety hazards; self-harm or crisis; pay that is missing, wrong or disputed; probation, warnings, dismissal or resignation; medical or health matters; legal questions. Otherwise none. Questions about how pay, a bonus, overtime or sick leave works, or how much or how many days, are handbook questions and are not important topics. Asking whom to tell or what to bring when sick is also a handbook question. Medical is only for the person's own illness, injury or treatment.
 - answer is at most 80 words, in the language of the message (or in the page language shown in the heading of the page you cite), based only on the handbook. Leave it empty when the handbook does not cover the question. Never use general knowledge.
 - cited_path is the path of the one handbook page you used, or empty.
 - supporting_quote is one sentence copied word for word from that page, or empty.
