@@ -56,14 +56,14 @@ export async function listEscalations(organisationId: string, preview?: string) 
   const { data, error } = await db
     .from("escalations")
     .select(
-      "id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, closed_at, responses!inner(text_encrypted, people!inner(team), checkin_schedule(touchpoint))",
+      "id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, closed_at, responses!inner(text_encrypted, checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .order("created_at", { ascending: false });
   if (error) throw error;
   const at = await now();
   const rows = data as unknown as ((typeof data)[number] & {
-    responses: { text_encrypted: string | null; people: { team: string }; checkin_schedule: { touchpoint: number } | null };
+    responses: { text_encrypted: string | null; checkin_schedule: { touchpoint: number } | null };
   })[];
   const result = [];
   for (const { responses, ...row } of rows) {
@@ -74,7 +74,6 @@ export async function listEscalations(organisationId: string, preview?: string) 
     if (text && preview) await audit(preview, "read_reply_text", row.response_id);
     result.push({
       ...row,
-      team: responses.people.team,
       touchpoint: responses.checkin_schedule?.touchpoint ?? null,
       first_line: text?.split("\n")[0] ?? null,
       due_at: due.toISOString(),
@@ -92,11 +91,11 @@ export async function getEscalation(organisationId: string, id: string, actor: s
   if (!found) return { error: "Not found", code: 404 };
   const { data, error } = await db
     .from("escalations")
-    .select("closure_sent_at, responses!inner(text_encrypted, language, person_id)")
+    .select("closure_sent_at, responses!inner(text_encrypted, language, person_id, people!inner(team))")
     .eq("id", id)
     .single();
   if (error) throw error;
-  const reply = data.responses as unknown as { text_encrypted: string | null; language: Language; person_id: string };
+  const reply = data.responses as unknown as { text_encrypted: string | null; language: Language; person_id: string; people: { team: string } };
   await audit(actor, "read_reply_text", found.response_id);
   const { data: org, error: orgError } = await db
     .from("organisations")
@@ -121,6 +120,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
   return {
     ...found,
     closure_sent_at: data.closure_sent_at,
+    team: reply.people.team,
     text: reply.text_encrypted ? decrypt(reply.text_encrypted) : null,
     language: reply.language,
     can_send_closure: !found.dont_contact && !!(await reachable(reply.person_id)),

@@ -24,8 +24,7 @@ function OpenRow({ c }: { c: Concern }) {
         <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
           <span className="text-[15px] font-bold leading-5">{categoryName(c.category)}</span>
           <span className="text-[13px] sp-muted">
-            {c.team}
-            {c.touchpoint !== null ? ` · ${dayLabel(c.touchpoint)}` : ""}
+            {c.touchpoint !== null ? dayLabel(c.touchpoint) : ""}
           </span>
           {c.category === "sexual_harassment" ? (
             <span className="inline-flex min-h-[22px] items-center px-2 text-xs font-semibold" style={{ borderRadius: "var(--radius-tag)", background: "var(--serious-soft)", color: "var(--serious-ink)" }}>
@@ -59,8 +58,7 @@ function ClosedRow({ c }: { c: Concern }) {
       <span className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1" style={{ flex: "999 1 280px" }}>
         <span className="font-semibold">{categoryName(c.category)}</span>
         <span className="text-[13px] sp-muted">
-          {c.team}
-          {c.touchpoint !== null ? ` · ${dayLabel(c.touchpoint)}` : ""}
+          {c.touchpoint !== null ? dayLabel(c.touchpoint) : ""}
         </span>
       </span>
       <span className="w-full sm:w-[180px] sm:shrink-0">{c.dont_contact ? "Closed, not contacted" : contactedAt(c) ? "Closed, contacted" : "Closed"}</span>

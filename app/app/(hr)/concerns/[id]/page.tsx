@@ -8,6 +8,7 @@ import { ApiError, apiSend, useApi } from "@/components/sapa/data";
 import { Button, Card, Loading, Quote, dayLabel } from "@/components/sapa/ui";
 
 type Case = Concern & {
+  team: string;
   text: string | null;
   language: string;
   closure_sent_at: string | null;

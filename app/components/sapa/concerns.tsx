@@ -9,7 +9,6 @@ export type Concern = {
   contact_recorded_at: string | null;
   dont_contact: boolean;
   closed_at: string | null;
-  team: string;
   touchpoint: number | null;
   first_line: string | null;
   minutes_left: number;

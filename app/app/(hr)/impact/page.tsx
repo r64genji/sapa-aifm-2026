@@ -3,7 +3,7 @@
 import { useApi } from "@/components/sapa/data";
 import { Card, CountBar, driverName, Empty, LaneSection, Loading, PageHeader, Row, Waiting } from "@/components/sapa/ui";
 
-type Retention = { enough: true; k: number; n: number; note: string } | { enough: false; message: string; note: string };
+type Retention = { enough: true; k: number; n: number; text: string; note: string } | { enough: false; message: string; note: string };
 type Intake =
   | { intake: string; enough: false; message: string }
   | { intake: string; enough: true; response_rate: number; median_days_reply_to_done: number | null };
@@ -177,7 +177,7 @@ export default function Page() {
               ) : null}
             </div>
             <span className="sp-num sp-meta">
-              {retention.k} of {retention.n} new hires{baseline ? ` · before Sapa: ${baseline.kept} of ${baseline.of}` : ""} · target {target}%
+              {retention.text} · target {target}%
             </span>
             <div role="img" aria-label={`${keptPct}% now${basePct !== null ? `. ${basePct}% before Sapa` : ""}. Target ${target}%.`} className="relative h-3.5 rounded-[7px]" style={{ background: "var(--track-empty)" }}>
               <div className="absolute inset-y-0 left-0 rounded-[7px]" style={{ width: `${keptPct}%`, background: "var(--fixes)" }} />
