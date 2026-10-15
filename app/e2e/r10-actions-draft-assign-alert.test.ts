@@ -37,7 +37,9 @@ const asManager = (path: string, token: string, method = "GET", body?: Record<st
 
 const draftJson = (id: string, title: string) => ({
   kind: "json" as const,
-  content: { library_entry_id: id, reason: "Fits the unclear priorities.", title, steps: "Talk through the top three tasks each Monday." },
+  content: { library_entry_id: id, reason: "Fits the unclear priorities.", title, steps: "Talk through the top three tasks each Monday.",
+    notes: { en: "Your supervisor will agree priorities with you.", ms: "Penyelia anda akan bersetuju tentang keutamaan.", zh: "你的主管会和你确认工作重点。" },
+  },
 });
 const library = (n: number) => `6f1c2a3e-0000-4000-8000-0000000004${String(n).padStart(2, "0")}`;
 
@@ -58,11 +60,14 @@ async function replyId(text: string) {
 async function draft(title: string, driver: string, libraryNumber: number, responseId?: string) {
   await scriptModel("omniroute", [draftJson(library(libraryNumber), title)]);
   const res = await hrRequest("/api/hr/actions", "POST", { driver, ...(responseId && { response_id: responseId }) });
-  return { status: res.status, body: await res.json() };
+  const body = await res.json();
+  if (res.status === 201) await hrRequest(`/api/hr/actions/${body.id}/notice`, "POST", { no_notice_reason: "Not needed for this test" });
+  return { status: res.status, body };
 }
 
 async function board() {
-  return (await (await hrRequest("/api/hr/actions", "GET")).json()) as Record<string, unknown>[];
+  const rows = (await (await hrRequest("/api/hr/actions", "GET")).json()) as Record<string, unknown>[];
+  return rows.filter((row) => String(row.created_at) >= "2026-10-15");
 }
 
 async function alertTo(chat: number, title: string) {

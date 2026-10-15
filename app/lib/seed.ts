@@ -12,6 +12,7 @@ import question_groups from "@/data/seed/question_groups.json";
 import asked_questions from "@/data/seed/asked_questions.json";
 import theme_snapshots from "@/data/seed/theme_snapshots.json";
 import action_library from "@/data/seed/action_library.json";
+import actions from "@/data/seed/actions.json";
 import users from "@/data/seed/users.json";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -31,7 +32,7 @@ async function seedUsers() {
 
 export async function resetDemo() {
   const { error } = await createAdminClient().rpc("reset_demo", {
-    seed: { organisations, language_packs, managers, people, consents, checkin_schedule, responses, ai_tags, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library },
+    seed: { organisations, language_packs, managers, people, consents, checkin_schedule, responses, ai_tags, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions },
   });
   if (error) throw error;
   await seedUsers();
