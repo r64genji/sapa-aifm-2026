@@ -42,7 +42,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002204",
@@ -57,7 +58,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002205",
@@ -72,7 +74,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002206",
@@ -102,7 +105,8 @@
     "invite_expires_at": "2026-07-01T01:00:00Z",
     "invite_used_at": "2026-06-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002208",
@@ -117,7 +121,8 @@
     "invite_expires_at": "2026-07-01T01:00:00Z",
     "invite_used_at": "2026-06-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002209",
@@ -132,7 +137,8 @@
     "invite_expires_at": "2026-07-01T01:00:00Z",
     "invite_used_at": "2026-06-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002210",
@@ -162,7 +168,8 @@
     "invite_expires_at": "2026-07-01T01:00:00Z",
     "invite_used_at": "2026-06-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002212",
@@ -177,7 +184,8 @@
     "invite_expires_at": "2026-08-01T01:00:00Z",
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002213",
@@ -207,7 +215,8 @@
     "invite_expires_at": "2026-08-01T01:00:00Z",
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002215",
@@ -222,7 +231,8 @@
     "invite_expires_at": "2026-08-01T01:00:00Z",
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Maju Staffing"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000002216",

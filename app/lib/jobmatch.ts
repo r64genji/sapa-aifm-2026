@@ -1,7 +1,7 @@
 import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export async function jobMatchCards(organisationId: string) {
+export async function jobMatchCards(organisationId: string, agency: string | null = null) {
   const db = createAdminClient();
   const { data: org, error: orgError } = await db
     .from("organisations")
@@ -9,7 +9,7 @@ export async function jobMatchCards(organisationId: string) {
     .eq("id", organisationId)
     .single();
   if (orgError) throw orgError;
-  const { data, error } = await db.rpc("job_match", { org: organisationId, at: (await now()).toISOString() });
+  const { data, error } = await db.rpc("job_match", { org: organisationId, at: (await now()).toISOString(), agency });
   if (error) throw error;
   const rows = data as { role: string; respondents: number; not_really: number }[];
   return rows.map((row) =>

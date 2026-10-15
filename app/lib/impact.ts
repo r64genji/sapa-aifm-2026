@@ -45,29 +45,37 @@ const median = (values: number[]) => {
   return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 };
 
+export async function retention(organisationId: string, agency: string | null = null) {
+  const db = createAdminClient();
+  const { data: org, error } = await db
+    .from("organisations")
+    .select("retention_baseline_kept, retention_baseline_of")
+    .eq("id", organisationId)
+    .single();
+  if (error) throw error;
+  const query = db.from("intake_outcomes").select("hired, employed").eq("organisation_id", organisationId);
+  const { data: outcomes, error: outcomesError } = await (agency ? query.eq("agency", agency) : query);
+  if (outcomesError) throw outcomesError;
+  const n = outcomes.reduce((sum, row) => sum + row.hired, 0);
+  const k = outcomes.reduce((sum, row) => sum + row.employed, 0);
+  const against =
+    agency || org.retention_baseline_of === null
+      ? ""
+      : `, against a usual ${org.retention_baseline_kept} of ${org.retention_baseline_of}`;
+  return n >= POOL
+    ? { enough: true, k, n, text: `${k} of ${n} still employed at Month 6${against}`, note: TREND }
+    : { enough: false, message: `Too few to tell yet (${n} of ${POOL})`, note: TREND };
+}
+
 export async function impact(organisationId: string) {
   const db = createAdminClient();
   const at = await now();
   const { data: org, error } = await db
     .from("organisations")
-    .select("min_group_size, retention_baseline_kept, retention_baseline_of")
+    .select("min_group_size")
     .eq("id", organisationId)
     .single();
   if (error) throw error;
-  const { data: outcomes, error: outcomesError } = await db
-    .from("intake_outcomes")
-    .select("hired, employed")
-    .eq("organisation_id", organisationId);
-  if (outcomesError) throw outcomesError;
-  const n = outcomes.reduce((sum, row) => sum + row.hired, 0);
-  const k = outcomes.reduce((sum, row) => sum + row.employed, 0);
-  const against =
-    org.retention_baseline_of === null ? "" : `, against a usual ${org.retention_baseline_kept} of ${org.retention_baseline_of}`;
-  const retention =
-    n >= POOL
-      ? { enough: true, k, n, text: `${k} of ${n} still employed at Month 6${against}`, note: TREND }
-      : { enough: false, message: `Too few to tell yet (${n} of ${POOL})`, note: TREND };
-
   const { data: sent, error: sentError } = await db
     .from("checkin_schedule")
     .select("person_id, status, people!inner(start_date)")
@@ -142,5 +150,5 @@ export async function impact(organisationId: string) {
             .sort((a, b) => b.n - a.n),
         };
 
-  return { retention, intakes, fixes, fixes_note: TREND, milestones: await milestoneShare(organisationId), leavers };
+  return { retention: await retention(organisationId), intakes, fixes, fixes_note: TREND, milestones: await milestoneShare(organisationId), leavers };
 }

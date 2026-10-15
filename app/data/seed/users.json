@@ -1,5 +1,6 @@
 [
   { "email": "hr@contoh.test", "app_metadata": { "role": "hr", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001" } },
   { "email": "admin@contoh.test", "app_metadata": { "role": "hr_admin", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001" } },
-  { "email": "raj@contoh.test", "app_metadata": { "role": "manager", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "manager_id": "6f1c2a3e-0000-4000-8000-000000000101" } }
+  { "email": "raj@contoh.test", "app_metadata": { "role": "manager", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "manager_id": "6f1c2a3e-0000-4000-8000-000000000101" } },
+  { "email": "agency@maju.test", "agency": "Maju Staffing", "app_metadata": { "role": "agency", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001" } }
 ]

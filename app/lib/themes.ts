@@ -15,19 +15,20 @@ type Counts = {
   calibrating?: string[];
 };
 
-async function counts(organisationId: string, touchpoint: number, month: string | null) {
+async function counts(organisationId: string, touchpoint: number, month: string | null, agency: string | null) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
     touch: touchpoint,
     month,
     at: (await now()).toISOString(),
+    agency,
   });
   if (error) throw error;
   return data as Counts;
 }
 
-export async function themeCards(organisationId: string, touchpoint: number, month: string | null) {
-  const c = await counts(organisationId, touchpoint, month);
+export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null) {
+  const c = await counts(organisationId, touchpoint, month, agency);
   if (!c.enough) {
     const message = `Not enough people yet (${c.respondents} of ${c.min_group_size} needed)`;
     return {
