@@ -10,6 +10,7 @@ import {
   hrToken,
   joined,
   link,
+  liveInvite,
   resetDemo,
   say,
   scriptModel,
@@ -63,7 +64,7 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   rajToken = await hrToken("raj@contoh.test");
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   await tap(live, en.visibilityHrManager);

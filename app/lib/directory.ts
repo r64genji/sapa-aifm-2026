@@ -47,8 +47,10 @@ export async function addHire(
       invite_expires_at: expires.toISOString(),
     });
   if (error) return { error: error.message };
-  return { invite_link: `https://t.me/${process.env.TELEGRAM_BOT_USERNAME}?start=${token}` };
+  return { invite_link: inviteLink(token) };
 }
+
+export const inviteLink = (token: string) => `https://t.me/${process.env.TELEGRAM_BOT_USERNAME}?start=${token}`;
 
 export async function listHires(organisationId: string) {
   const { data, error } = await createAdminClient()
