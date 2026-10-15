@@ -69,7 +69,7 @@ test("R27: a used invite is refused with the ask-HR text, and HR sees only that 
     code_name: "Live hire",
     team: "Production",
     start_date: "2026-10-02",
-    role: "Production operator",
+    role: "Production executive",
     invite_used: true,
   });
 });
