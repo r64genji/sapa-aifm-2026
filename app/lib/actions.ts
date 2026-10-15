@@ -7,7 +7,7 @@ import { audit, signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 import { jobMatchCards } from "@/lib/jobmatch";
-import { libraryWithEvidence, queueResolution, scoreCard } from "@/lib/resolution";
+import { libraryWithEvidence, members, queueResolution, scoreCard, scoreOf } from "@/lib/resolution";
 import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
@@ -294,7 +294,7 @@ export async function approveNotice(
 ): Promise<{ id: string } | Failure> {
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
-  if (action.status !== "draft") return { error: "Only a draft can be changed", code: 409 };
+  if (!["draft", "assigned", "accepted"].includes(action.status)) return { error: "Only an open action can be changed", code: 409 };
   let fields: Record<string, unknown>;
   if ("no_notice_reason" in body) {
     if (!body.no_notice_reason.trim()) return { error: "A reason is needed for no notice", code: 422 };
@@ -515,7 +515,7 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");
@@ -560,9 +560,37 @@ export async function listActions(organisationId: string) {
             : null,
         },
         score: row.status === "done" ? await scoreCard(row) : null,
+        result: row.status === "done" ? await scoreOf(row) : null,
       };
     }),
   );
+}
+
+export async function actionDetail(organisationId: string, id: string) {
+  const row = (await listActions(organisationId)).find((action) => action.id === id);
+  if (!row) return null;
+  const db = createAdminClient();
+  const ranked = await libraryWithEvidence(organisationId, row.driver);
+  const library = ranked.findIndex((entry) => entry.id === row.library_entry_id);
+  const entry = ranked[library];
+  const { count: asked, error: askedError } = await db
+    .from("checkin_schedule")
+    .select("id", { count: "exact", head: true })
+    .eq("recheck_action_id", id);
+  if (askedError) throw askedError;
+  const { count: answered, error: answeredError } = await db
+    .from("responses")
+    .select("id", { count: "exact", head: true })
+    .eq("action_id", id);
+  if (answeredError) throw answeredError;
+  const question = packs.en.checkin.questions.find((candidate) => candidate.id === row.driver)?.text.replace(/\s*\(1–5\)$/, "") ?? null;
+  return {
+    ...row,
+    library: library < 0 ? null : { title: entry.title, rank: library + 1, used: entry.used, difference: entry.difference },
+    hires: row.hiring_side || !row.scope_type ? null : (await members(row, false)).length,
+    recheck: { asked: asked ?? 0, answered: answered ?? 0 },
+    question,
+  };
 }
 
 export async function managerActions(organisationId: string, managerId: string) {
