@@ -67,3 +67,12 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   const { data: audit } = await db.from("audit_log").select("action, target");
   assert.deepEqual(audit, [{ action: "read_reply_text", target: body[0].id }]);
 });
+
+test("R19: Advance to Day 30 sends the Day 30 check-in although Day 30 falls on a Sunday", async () => {
+  const before = (await sentTo(live)).length;
+  const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 30 });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { offset: 18, sent: 1 });
+  const texts = (await sentTo(live)).map((m) => m.text).slice(before);
+  assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
+});

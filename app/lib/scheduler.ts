@@ -91,8 +91,9 @@ export async function advanceDemo(organisationId: string, day?: number) {
       .single();
     if (liveError) throw liveError;
     const today = localDay(await now(), org.time_zone);
-    const current = Math.round((today - Date.parse(live.start_date)) / 86400000);
-    offset = Math.max(org.demo_offset_days, day - current);
+    const due = Date.parse(live.start_date) + day * 86400000;
+    const weekend = ({ 6: 2, 0: 1 } as Record<number, number>)[new Date(due).getUTCDay()] ?? 0;
+    offset = Math.max(org.demo_offset_days, Math.round((due - today) / 86400000) + weekend);
   }
   const { error: updateError } = await db
     .from("organisations")
