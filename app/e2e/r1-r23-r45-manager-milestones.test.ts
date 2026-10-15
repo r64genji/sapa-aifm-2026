@@ -16,7 +16,7 @@ import {
 
 const raj = 5550000801;
 const [invited, active, stopped, left, extra, fifth] = [811, 812, 813, 815, 816, 817].map((n) => 5550000000 + n);
-const names = [invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`);
+const names = [...[invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`), "Live hire"];
 const mondayMorning = "2026-10-05T03:00:00.000Z";
 const mondayEvening = "2026-10-05T12:00:00.000Z";
 
@@ -69,12 +69,12 @@ test("R1, R23, R45: the supervisor gets the same Day 1 nudge for every hire stil
 
 test("R45: a second dispatch sends nothing again", async () => {
   await dispatch();
-  assert.equal((await nudgesTo()).length, 5);
+  assert.equal((await nudgesTo()).length, 6);
 });
 
 test("R45: Day 7 and Day 30 nudges follow on their days with the fixed text", async () => {
   await addHire({ code_name: "Week old", start_date: "2026-09-28" });
-  await addHire({ code_name: "Month old", start_date: "2026-09-15" });
+  await addHire({ code_name: "Month old", start_date: "2026-09-05" });
   await dispatch();
   const texts = (await nudgesTo()).map((m) => m.text);
   assert.ok(texts.includes("Day 7 for Week old: Book a 15-minute priorities chat."));
@@ -94,6 +94,6 @@ test("R45, R51: Done is recorded, and HR sees the share done per intake with no 
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), [
     { intake: "2026-09", enough: false, message: "Not enough people yet" },
-    { intake: "2026-10", enough: true, hires: 5, share_done: 0.4 },
+    { intake: "2026-10", enough: true, hires: 6, share_done: 0.33 },
   ]);
 });

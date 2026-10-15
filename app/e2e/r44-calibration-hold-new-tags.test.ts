@@ -16,7 +16,7 @@ async function onboard(chat: number) {
 
 async function answer(chat: number, drivers: string[]) {
   for (const score of ["4", "3", "5"]) await tap(chat, score);
-  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers }) }]);
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers, evidence_quote: reply }) }]);
   await say(chat, reply);
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();
   const { data: response } = await db.from("responses").select("id").eq("person_id", who!.id).eq("question_id", "OPEN").single();

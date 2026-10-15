@@ -232,7 +232,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
 
 test("R47: concerns show their number from 5, counting only those acknowledged within 1 working day", async () => {
   const second = [];
-  for (const chat of askers.slice(3)) second.push(await raiseConcern(chat));
+  for (const chat of answerers) second.push(await raiseConcern(chat));
   const [one, two, late] = second;
   await acknowledge(one);
   await acknowledge(two);
@@ -300,7 +300,7 @@ test("R51: no HR or export endpoint returns teams or managers side by side", asy
   const voice = await post("/api/hr/exports/worker-voice", { intake: "2026-05" });
   assert.equal(voice.status, 200);
   bodies.push(["worker-voice", await voice.json()]);
-  const person = await post("/api/hr/exports", { code_name: "Synthetic hire 2", reason: "Subject access request" });
+  const person = await post("/api/hr/exports", { code_name: `Export hire ${exportChats[0]}`, reason: "Subject access request" });
   assert.equal(person.status, 200);
   bodies.push(["person export", await person.json()]);
 
