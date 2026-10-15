@@ -100,7 +100,12 @@ export async function listOffers(organisationId: string) {
     .eq("organisation_id", organisationId)
     .order("queued_at");
   if (error) throw error;
-  return data.map(({ closed_at, ...row }) => ({ ...row, open: closed_at === null }));
+  const at = await now();
+  return data.map(({ closed_at, ...row }) => ({
+    ...row,
+    open: closed_at === null,
+    overdue: row.contact_due_at !== null && row.contact_done_at === null && new Date(row.contact_due_at) < at,
+  }));
 }
 
 export async function finishContact(organisationId: string, actor: string, id: string) {
