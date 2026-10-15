@@ -58,33 +58,47 @@ export async function retryReply(organisationId: string, responseId: string) {
 
 const waiting = "New labels wait for HR during calibration";
 const challenged = "Challenged by new hire";
+const spotCheck = "Spot check";
 
 export async function readQueue(organisationId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, challenged_at, challenge_resolved_at, created_at, responses!inner(text_encrypted, language)",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, created_at, responses!inner(text_encrypted, language)",
     )
     .eq("organisation_id", organisationId)
     .or(
-      "escalate.eq.true,concern_level.eq.needs_follow_up,status.in.(awaiting_ai,needs_review),and(status.eq.ok,counted.eq.false)",
+      "escalate.eq.true,concern_level.eq.needs_follow_up,status.in.(awaiting_ai,needs_review),and(status.eq.ok,counted.eq.false),and(status.eq.ok,spot_check_at.not.is.null)",
     )
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
   const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string } })[];
+  const { data: held, error: heldError } = await db
+    .from("quality_holds")
+    .select("driver, language, reason")
+    .eq("organisation_id", organisationId)
+    .eq("state", "held");
+  if (heldError) throw heldError;
   for (const row of rows) {
     if (row.responses.text_encrypted) await audit(actor, "read_reply_text", row.response_id);
   }
   return Promise.all(
-    rows.map(async ({ responses, counted, response_id, challenged_at, challenge_resolved_at, ...row }) => {
+    rows.map(async ({ responses, counted, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
       const text = responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
       return {
         id: response_id,
         ...row,
         text,
-        note: challenged_at && !challenge_resolved_at ? challenged : row.status === "ok" && !counted ? waiting : null,
+        note:
+          challenged_at && !challenge_resolved_at
+            ? challenged
+            : row.status === "ok" && !counted
+              ? (held.find((hold) => hold.language === responses.language && row.drivers.includes(hold.driver))?.reason ?? waiting)
+              : row.status === "ok" && spot_check_at
+                ? spotCheck
+                : null,
         ...(text && (await translation(organisationId, responses.language, text))),
       };
     }),
@@ -94,12 +108,12 @@ export async function readQueue(organisationId: string, actor: string) {
 async function ownTag(organisationId: string, responseId: string) {
   const { data, error } = await createAdminClient()
     .from("ai_tags")
-    .select("status")
+    .select("status, drivers, context_tags, counted, spot_check_at, responses!inner(language)")
     .eq("organisation_id", organisationId)
     .eq("response_id", responseId)
     .maybeSingle();
   if (error) throw error;
-  return data;
+  return data as unknown as NonNullable<typeof data> & { responses: { language: string } };
 }
 
 export async function reviewReply(
@@ -124,6 +138,20 @@ export async function reviewReply(
     .eq("response_id", responseId);
   if (error) throw error;
   await audit(actor, change.drivers || change.context_tags ? "change_tag" : "confirm_tag", responseId);
+  if (tag.status === "ok" && (tag.spot_check_at || !tag.counted)) {
+    const differs = (was: string[], now?: string[]) => now !== undefined && [...was].sort().join() !== [...now].sort().join();
+    const changed = differs(tag.drivers, change.drivers) || differs(tag.context_tags, change.context_tags);
+    for (const driver of tag.drivers) {
+      const { error: checkError } = await createAdminClient().rpc("record_spot_check", {
+        org: organisationId,
+        drv: driver,
+        lang: tag.responses.language,
+        was_changed: changed,
+        at,
+      });
+      if (checkError) throw checkError;
+    }
+  }
   await resolveChallenge(responseId);
   await signal(organisationId, "cohort");
   await signal(organisationId, "queue");

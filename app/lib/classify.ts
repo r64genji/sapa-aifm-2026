@@ -128,6 +128,12 @@ async function countsWithoutReview(organisationId: string, language: string, dri
       .upsert(rows, { onConflict: "organisation_id,driver,language", ignoreDuplicates: true });
     if (error) throw error;
   }
+  const { data: org, error: orgError } = await db
+    .from("organisations")
+    .select("hold_new_tags")
+    .eq("id", organisationId)
+    .single();
+  if (orgError) throw orgError;
   const { data, error } = await db
     .from("quality_holds")
     .select("driver, state")
@@ -135,7 +141,7 @@ async function countsWithoutReview(organisationId: string, language: string, dri
     .eq("language", language)
     .in("driver", drivers);
   if (error) throw error;
-  return data.every((row) => row.state === "trusted");
+  return !org.hold_new_tags && data.every((row) => row.state === "trusted");
 }
 
 export async function tagReply(organisationId: string, responseId: string, text: string) {
