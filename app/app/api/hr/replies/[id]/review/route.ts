@@ -3,7 +3,7 @@ import { Tag } from "@/lib/classify";
 import { hrUser } from "@/lib/hr";
 import { reviewReply } from "@/lib/replies";
 
-const Change = z.object({ drivers: Tag.shape.drivers.optional(), context_tags: Tag.shape.context_tags.optional() });
+const Change = z.object({ drivers: Tag.shape.drivers.optional(), context_tags: Tag.shape.context_tags.optional(), serious: z.boolean().optional() });
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await hrUser(request);
