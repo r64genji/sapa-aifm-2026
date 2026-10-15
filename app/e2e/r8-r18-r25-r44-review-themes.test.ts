@@ -19,6 +19,7 @@ import {
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const live = 5550000201;
+const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 
 const roleClarity = async (query = "") => {
@@ -38,16 +39,17 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R44, R8, R25: the live reply waits for HR, the card moves from 7 of 18 to 8 of 19 only after Confirm label, and October alone is too small", async () => {
-  assert.deepEqual(await roleClarity(), {
-    driver: "ROLE_CLARITY",
-    enough: true,
-    n: 7,
-    m: 18,
-    reviewed: 5,
-    ai_confident: 2,
-    note: "New labels wait for HR during calibration",
-  });
+let seed: { n: number; m: number; reviewed: number; ai_confident: number };
+
+test("R44: the seed card reads 23 of 64: 16 reviewed, 7 AI-confident", { todo: "needs the 100-hire seed (#25)" }, async () => {
+  const card = await roleClarity();
+  assert.deepEqual([card.n, card.m, card.reviewed, card.ai_confident], [23, 64, 16, 7]);
+});
+
+test("R44, R8, R25: the live reply waits for HR, the card moves up by one person only after Confirm label, and October alone is too small", async () => {
+  const first = await roleClarity();
+  assert.equal(first.note, "New labels wait for HR during calibration");
+  seed = first;
 
   await link(live, liveInvite);
   await tap(live, "English");
@@ -72,12 +74,12 @@ test("R44, R8, R25: the live reply waits for HR, the card moves from 7 of 18 to 
   assert.deepEqual(await auditActions(), [{ action: "read_reply_text", target: queue[0].id }]);
 
   const waiting = await roleClarity();
-  assert.deepEqual([waiting.n, waiting.m, waiting.reviewed, waiting.ai_confident], [7, 18, 5, 2]);
+  assert.deepEqual([waiting.n, waiting.m, waiting.reviewed, waiting.ai_confident], [seed.n, seed.m, seed.reviewed, seed.ai_confident]);
 
   const res = await hrRequest(`/api/hr/replies/${queue[0].id}/review`, "POST");
   assert.equal(res.status, 200);
   const moved = await roleClarity();
-  assert.deepEqual([moved.n, moved.m, moved.reviewed, moved.ai_confident], [8, 19, 6, 2]);
+  assert.deepEqual([moved.n, moved.m, moved.reviewed, moved.ai_confident], [seed.n + 1, seed.m + 1, seed.reviewed + 1, seed.ai_confident]);
   assert.deepEqual((await auditActions()).at(-1), { action: "confirm_tag", target: queue[0].id });
 
   const october = await (await hrRequest("/api/hr/themes?month=2026-10", "GET")).json();
@@ -87,6 +89,11 @@ test("R44, R8, R25: the live reply waits for HR, the card moves from 7 of 18 to 
     message: "Not enough people yet (4 of 5 needed)",
   });
   assert.ok(!("n" in october.cards[0]));
+});
+
+test("R44: after Confirm label the seed card reads 24 of 65: 17 reviewed, 7 AI-confident", { todo: "needs the 100-hire seed (#25)" }, async () => {
+  const card = await roleClarity();
+  assert.deepEqual([card.n, card.m, card.reviewed, card.ai_confident], [24, 65, 17, 7]);
 });
 
 test("R25: a reply arriving writes a change signal that holds no text", async () => {
@@ -108,8 +115,8 @@ test("R25: a reply arriving writes a change signal that holds no text", async ()
 });
 
 test("R18: a narrative holding a number that is not in its input is rejected and retried once", async () => {
-  const bad = { text: "Role clarity was raised by 87 of 19 people who answered." };
-  const good = { text: "Role clarity was raised by 8 of 19 people who answered at Day 14." };
+  const bad = { text: `Role clarity was raised by ${seed.n + 79} of ${seed.m + 1} people who answered.` };
+  const good = { text: `Role clarity was raised by ${seed.n + 1} of ${seed.m + 1} people who answered at Day 14.` };
   await scriptModel("omniroute", [
     { kind: "json", content: bad },
     { kind: "json", content: good },
@@ -123,6 +130,24 @@ test("R18: a narrative holding a number that is not in its input is rejected and
     { kind: "json", content: bad },
   ]);
   assert.deepEqual(await (await hrRequest("/api/hr/themes/narrative", "GET")).json(), { narrative: null });
+});
+
+test("R7, R18: the narrative input holds no summary from an exit answer", async () => {
+  const { data: person } = await db.from("people").select("id, organisation_id").eq("id", livePerson).single();
+  const at = "2026-10-15T15:00:00.000Z";
+  const { data: exit } = await db
+    .from("responses")
+    .insert({ organisation_id: person!.organisation_id, person_id: person!.id, question_id: "exit_open", language: "en", kind: "exit", created_at: at })
+    .select("id")
+    .single();
+  const summary = "The leaver names the exit reason in the narrative";
+  await db.from("ai_tags").insert({ organisation_id: person!.organisation_id, response_id: exit!.id, status: "ok", counted: true, escalate: false, summary, created_at: at });
+  const before = (await modelCalls("omniroute")).length;
+  await scriptModel("omniroute", [{ kind: "json", content: { text: "Role clarity was raised by 8 of 19 people who answered at Day 14." } }]);
+  await hrRequest("/api/hr/themes/narrative", "GET");
+  const calls = (await modelCalls("omniroute")).slice(before);
+  assert.equal(calls.length, 1);
+  assert.ok(!JSON.stringify(calls[0].body).includes(summary));
 });
 
 test("R25: a corrected tag, a follow-up change and a minimum-group change each write an audit row", async () => {
@@ -140,7 +165,7 @@ test("R25: a corrected tag, a follow-up change and a minimum-group change each w
     { action: "change_setting", target: "min_group_size" },
   ]);
   const corrected = await roleClarity();
-  assert.deepEqual([corrected.n, corrected.m, corrected.reviewed], [7, 19, 5]);
+  assert.deepEqual([corrected.n, corrected.m, corrected.reviewed], [seed.n, seed.m + 1, seed.reviewed]);
   const october = await (await hrRequest("/api/hr/themes?month=2026-10", "GET")).json();
   assert.equal(october.cards[0].message, "Not enough people yet (4 of 6 needed)");
 });

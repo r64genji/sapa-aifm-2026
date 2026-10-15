@@ -15,20 +15,21 @@ type Counts = {
   calibrating?: string[];
 };
 
-async function counts(organisationId: string, touchpoint: number, month: string | null, agency: string | null) {
+async function counts(organisationId: string, touchpoint: number, month: string | null, agency: string | null, team: string | null) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
     touch: touchpoint,
     month,
     at: (await now()).toISOString(),
     agency,
+    team,
   });
   if (error) throw error;
   return data as Counts;
 }
 
-export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null) {
-  const c = await counts(organisationId, touchpoint, month, agency);
+export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null, team: string | null = null) {
+  const c = await counts(organisationId, touchpoint, month, agency, team);
   if (!c.enough) {
     const message = `Not enough people yet (${c.respondents} of ${c.min_group_size} needed)`;
     return {
@@ -87,16 +88,26 @@ export async function themeNarrative(organisationId: string, touchpoint: number,
     .select("response_id")
     .eq("organisation_id", organisationId);
   if (escalatedError) throw escalatedError;
-  const { data, error } = await db
+  let query = db
     .from("ai_tags")
-    .select("summary")
+    .select("summary, responses!inner(kind, checkin_schedule!inner(touchpoint, people!inner(start_date)))")
     .eq("organisation_id", organisationId)
+    .eq("responses.kind", "checkin")
+    .eq("responses.checkin_schedule.touchpoint", touchpoint)
     .eq("escalate", false)
     .not("response_id", "in", `(${escalated.map((row) => row.response_id).join(",")})`)
     .not("summary", "is", null)
     .or("status.eq.reviewed,counted.eq.true")
     .order("created_at", { ascending: false })
     .limit(5);
+  if (month) {
+    const next = new Date(`${month}T00:00:00Z`);
+    next.setUTCMonth(next.getUTCMonth() + 1);
+    query = query
+      .gte("responses.checkin_schedule.people.start_date", month)
+      .lt("responses.checkin_schedule.people.start_date", next.toISOString().slice(0, 10));
+  }
+  const { data, error } = await query;
   if (error) throw error;
   const input = JSON.stringify({ touchpoint, themes: shown, summaries: data.map((row) => row.summary) });
   const allowed = new Set(numbersIn(input));
