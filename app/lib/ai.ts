@@ -6,7 +6,7 @@ const FALLBACK_CAP = 1.5;
 
 type CallType = "classify" | "answer" | "narrative" | "draft" | "translate";
 
-const providers = (schema: object, medium: boolean) => [
+export const providers = (schema: object, medium: boolean) => [
   {
     name: "gemini" as const,
     url: `${process.env.OMNIROUTE_BASE_URL}/chat/completions`,
@@ -35,6 +35,44 @@ async function fallbackSpend(organisationId: string) {
   return data.reduce((sum, row) => sum + Number(row.cost), 0);
 }
 
+export async function request(provider: ReturnType<typeof providers>[number], system: string, user: string) {
+  const started = Date.now();
+  let content: string | null = null;
+  let usage = { prompt_tokens: 0, completion_tokens: 0, prompt_tokens_details: { cached_tokens: 0 } };
+  try {
+    const res = await fetch(provider.url, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${provider.key}` },
+      body: JSON.stringify({
+        model: provider.model,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ],
+        ...provider.extra,
+      }),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+    if (res.ok) {
+      const body = await res.json();
+      content = body.choices?.[0]?.message?.content ?? null;
+      usage = { ...usage, ...body.usage };
+    }
+  } catch {
+    content = null;
+  }
+  const input = usage.prompt_tokens;
+  const cost = (input * provider.price.input + usage.completion_tokens * provider.price.output) / 1e6;
+  return {
+    content,
+    input,
+    cached: usage.prompt_tokens_details?.cached_tokens ?? 0,
+    output: usage.completion_tokens,
+    cost,
+    latencyMs: Date.now() - started,
+  };
+}
+
 export async function complete(
   organisationId: string,
   callType: CallType,
@@ -44,33 +82,7 @@ export async function complete(
 ) {
   for (const provider of providers(schema, callType === "narrative" || callType === "draft")) {
     if (provider.name === "deepseek" && (await fallbackSpend(organisationId)) > FALLBACK_CAP) continue;
-    const started = Date.now();
-    let content: string | null = null;
-    let usage = { prompt_tokens: 0, completion_tokens: 0, prompt_tokens_details: { cached_tokens: 0 } };
-    try {
-      const res = await fetch(provider.url, {
-        method: "POST",
-        headers: { "content-type": "application/json", authorization: `Bearer ${provider.key}` },
-        body: JSON.stringify({
-          model: provider.model,
-          messages: [
-            { role: "system", content: system },
-            { role: "user", content: user },
-          ],
-          ...provider.extra,
-        }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-      if (res.ok) {
-        const body = await res.json();
-        content = body.choices?.[0]?.message?.content ?? null;
-        usage = { ...usage, ...body.usage };
-      }
-    } catch {
-      content = null;
-    }
-    const input = usage.prompt_tokens;
-    const cached = usage.prompt_tokens_details?.cached_tokens ?? 0;
+    const { content, input, cached, output, cost, latencyMs } = await request(provider, system, user);
     const { error } = await createAdminClient()
       .from("ai_usage")
       .insert({
@@ -80,13 +92,13 @@ export async function complete(
         call_type: callType,
         input_tokens: input,
         cached_input_tokens: cached,
-        output_tokens: usage.completion_tokens,
-        cost: (input * provider.price.input + usage.completion_tokens * provider.price.output) / 1e6,
+        output_tokens: output,
+        cost,
         ok: content !== null,
         at: (await now()).toISOString(),
       });
     if (error) throw error;
-    if (content !== null) return { content, model: provider.model, latencyMs: Date.now() - started };
+    if (content !== null) return { content, model: provider.model, latencyMs };
   }
   return null;
 }
