@@ -184,8 +184,9 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
       const scores = await Promise.all(used.map((action) => scoreOf(action as Resolvable)));
       const total = (pick: (score: Score) => Side) => {
         const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
-        const moved = scores.reduce((sum, score) => sum + pick(score).n * change(pick(score)), 0);
-        return { n, change: moved / (n || 1) };
+        const mean = (value: (side: Side) => number) =>
+          scores.reduce((sum, score) => sum + pick(score).n * value(pick(score)), 0) / (n || 1);
+        return { n, before: mean((side) => side.before), after: mean((side) => side.after), change: mean(change) };
       };
       const scope = total((score) => score.scope);
       const other = total((score) => score.other);
@@ -205,7 +206,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
         used.length === 0
           ? text.notEnoughEvidence
           : `${fill(text.evidenceUsed, { times: `${used.length} ${used.length === 1 ? "time" : "times"}` })} ${verdict}`;
-      return { ...entry, used: used.length, difference, evidence };
+      return { ...entry, used: used.length, difference, evidence, scope, other };
     }),
   );
   return ranked.sort(
