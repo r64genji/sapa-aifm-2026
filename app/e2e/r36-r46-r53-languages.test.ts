@@ -44,22 +44,10 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R46, R36: a pack without a recorded checker cannot be picked; once HR records one, a Chinese hire gets the Chinese consent and English commands with Chinese descriptions", async () => {
+test("R46, R36: all three languages are offered from the start; a Chinese hire gets the Chinese consent and English commands with Chinese descriptions", async () => {
   const { token } = await addHire({ code_name: "Hire ZH", language: "zh", start_date: "2026-10-02" });
   await link(chat, token);
-  assert.deepEqual(await labels(), ["English", "Bahasa Malaysia"]);
-
-  await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
-  const { data: refused } = await db.from("people").select("state").eq("telegram_chat_id", chat).single();
-  assert.equal(refused!.state, "invited");
-  assert.equal((await texts()).includes(zh.consent), false);
-
-  const blank = await hrRequest("/api/hr/language-packs/zh/activate", "POST", { checker_name: " " });
-  assert.equal(blank.status, 400);
-  const activated = await hrRequest("/api/hr/language-packs/zh/activate", "POST", { checker_name: "Li Wei" });
-  assert.equal(activated.status, 200);
-  const { data: row } = await db.from("language_packs").select("checker_name, checked_on").eq("language", "zh").single();
-  assert.deepEqual(row, { checker_name: "Li Wei", checked_on: "2026-10-15" });
+  assert.deepEqual(await labels(), ["English", "Bahasa Malaysia", zh.name]);
 
   await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
   assert.equal((await texts()).at(-1), zh.consent);
