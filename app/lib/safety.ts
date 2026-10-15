@@ -17,10 +17,10 @@ function words(text: string, spellings: Record<string, string>) {
 }
 
 export function detect(text: string): string | null {
-  for (const { safety } of Object.values(packs)) {
-    const said = words(text, safety.spellings);
-    for (const [category, phrases] of Object.entries(safety.keywords)) {
-      if (phrases.some((phrase) => said.includes(/\p{Script=Han}/u.test(phrase) ? phrase : words(phrase, safety.spellings)))) return category;
+  for (const category of Object.keys(packs.en.safety.keywords) as (keyof typeof packs.en.safety.keywords)[]) {
+    for (const { safety } of Object.values(packs)) {
+      const said = words(text, safety.spellings);
+      if (safety.keywords[category].some((phrase) => said.includes(/\p{Script=Han}/u.test(phrase) ? phrase : words(phrase, safety.spellings)))) return category;
     }
   }
   return null;
