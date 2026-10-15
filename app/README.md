@@ -24,6 +24,14 @@ npm run measure -- classify|qa|reliability --model gemini|deepseek [--split dev|
 
 Not part of `npm test`: these call the real model and need real keys in `.env.local`. Exactly one `--model` is required and there is no fallback (R38); a failed call is recorded as failed. The sets are hand-written data in `../eval/sets/` (`classify.jsonl` with a dev/test `split` per item, `qa.jsonl`, `reliability-adversarial.jsonl`). Results, with every response, are written to `../eval/results/`. Set `EVAL_ORGANISATION_ID` to also write `ai_usage` rows tagged with the run ID. Run the test split once per prompt version.
 
+## Rehearsal
+
+```bash
+REHEARSAL_CHAT_ID=<your Telegram chat ID> npm run rehearsal
+```
+
+Run before each rehearsal, not on every commit. It runs required journey 2 against the deployed app (`APP_URL`, default https://sapa-aifm-2026.vercel.app) with the real model and the real Telegram Bot API: it resets the demo seed, binds the live hire to your chat (message the bot once first, so Telegram lets it write to you), sends scripted updates to the real webhook, then does the HR and manager steps through the real routes. It ends when the action is done, the notice is sent and the Day 30 check-in carries the neutral 1-5 question, then resets the seed again and checks it is restored. The last line is `REHEARSAL PASS: ...` or `REHEARSAL FAIL: ...`. Needs `.env.local`.
+
 ## Data and secrets
 
 - Seed and pack texts are data files in `data/`. The seed is loaded only by the demo reset.
