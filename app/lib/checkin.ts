@@ -117,6 +117,7 @@ async function openProbe(person: Person) {
 async function conclude(person: Person, open: Open, responseId: string, text: string): Promise<Reply[]> {
   const { checkin } = packs[person.language];
   const keyword = detect(text);
+  if (keyword) await escalate(person, responseId, keyword, null);
   const result = await tagReply(person.organisation_id, responseId, text);
   const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
   if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
@@ -152,7 +153,11 @@ export async function checkinText(person: Person, text: string): Promise<Reply[]
   if (!open) return answerProbe(person, text);
   const { checkin } = packs[person.language];
   const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver)[open.progress])!;
-  if (question.type !== "open") return [questionReply(person, open.progress, open.recheck_driver)];
+  if (question.type !== "open") {
+    const keyword = detect(text);
+    if (!keyword) return [questionReply(person, open.progress, open.recheck_driver)];
+    return [{ text: await escalate(person, await insertResponse(person, null, "QA", null, text, "unprompted"), keyword, null) }];
+  }
   const responseId = await store(person, open, null, text);
   if (!responseId) return null;
   return conclude(person, open, responseId, text);

@@ -25,11 +25,10 @@ export const providers = (schema: object, medium: boolean) => [
   },
 ];
 
-async function fallbackSpend(organisationId: string) {
+async function fallbackSpend() {
   const { data, error } = await createAdminClient()
     .from("ai_usage")
     .select("cost")
-    .eq("organisation_id", organisationId)
     .eq("provider", "deepseek");
   if (error) throw error;
   return data.reduce((sum, row) => sum + Number(row.cost), 0);
@@ -81,7 +80,7 @@ export async function complete(
   schema: object,
 ) {
   for (const provider of providers(schema, callType === "narrative" || callType === "draft")) {
-    if (provider.name === "deepseek" && (await fallbackSpend(organisationId)) > FALLBACK_CAP) continue;
+    if (provider.name === "deepseek" && (await fallbackSpend()) > FALLBACK_CAP) continue;
     const { content, input, cached, output, cost, latencyMs } = await request(provider, system, user);
     const { error } = await createAdminClient()
       .from("ai_usage")
