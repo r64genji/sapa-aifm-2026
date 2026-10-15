@@ -27,11 +27,23 @@ export async function readReplies(organisationId: string, actor: string) {
         id: row.id,
         question_id: row.question_id,
         text,
+        language: row.language,
         created_at: row.created_at,
-        ...(await translation(organisationId, row.language, text)),
       };
     }),
   );
+}
+
+export async function translateReply(organisationId: string, responseId: string) {
+  const { data, error } = await createAdminClient()
+    .from("responses")
+    .select("text_encrypted, language")
+    .eq("organisation_id", organisationId)
+    .eq("id", responseId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data?.text_encrypted) return { error: "Not found", code: 404 };
+  return translation(organisationId, data.language, decrypt(data.text_encrypted));
 }
 
 export async function retryReply(organisationId: string, responseId: string) {
@@ -91,6 +103,7 @@ export async function readQueue(organisationId: string, actor: string) {
         id: response_id,
         ...row,
         text,
+        language: responses.language,
         note:
           challenged_at && !challenge_resolved_at
             ? challenged
@@ -99,7 +112,6 @@ export async function readQueue(organisationId: string, actor: string) {
               : row.status === "ok" && spot_check_at
                 ? spotCheck
                 : null,
-        ...(text && (await translation(organisationId, responses.language, text))),
       };
     }),
   );

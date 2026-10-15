@@ -93,7 +93,7 @@ test("R44: once calibrated, a new AI-confident tag counts without review, and th
       }),
     );
   assert.equal((await admin(true)).status, 200);
-  for (const answer of ["4", "3", "5"]) await tap(live, answer);
+  for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   assert.deepEqual(await counted(live), { status: "ok", counted: false });
@@ -101,7 +101,7 @@ test("R44: once calibrated, a new AI-confident tag counts without review, and th
   assert.deepEqual([held.n, held.m], [7, 18]);
 
   assert.equal((await admin(false)).status, 200);
-  for (const answer of ["4", "3", "5"]) await tap(second, answer);
+  for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(second, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(second, reply);
   assert.deepEqual(await counted(second), { status: "ok", counted: true });

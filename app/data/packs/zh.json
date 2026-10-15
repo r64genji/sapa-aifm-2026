@@ -96,6 +96,9 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
+      "ONBOARDING_TRAINING",
+      "WORKLOAD",
+      "JOB_MATCH",
       "OPEN"
     ]
   },

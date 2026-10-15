@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
 import {
+  appUrl,
   classifierTag,
   db,
   freezeClock,
@@ -30,6 +32,9 @@ async function reachOpenQuestion(chat: number) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
 }
 
 async function storedTag(chat: number) {
@@ -167,6 +172,7 @@ test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
     call_type: "classify",
     cost: 1.51,
     ok: true,
+    eval_run_id: randomUUID(),
     at: "2026-10-15T15:00:00Z",
   });
   await reachOpenQuestion(capped);
@@ -176,4 +182,22 @@ test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
   assert.equal((await modelCalls("deepseek")).length, before);
   assert.equal(await lastText(capped), en.checkin.gotIt);
   assert.equal((await storedTag(capped)).tag.status, "awaiting_ai");
+});
+
+test("R37: a demo reset does not give the fallback its $1.50 back", async () => {
+  const res = await fetch(`${appUrl}/api/demo/reset`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${process.env.DISPATCH_SECRET}` },
+  });
+  assert.equal(res.status, 200);
+  await link(live, "live-hire-invite");
+  await tap(live, "English");
+  await tap(live, en.agree);
+  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  await reachOpenQuestion(live);
+  await scriptModel("deepseek", [{ kind: "json", content: classifierTag() }]);
+  const before = (await modelCalls("deepseek")).length;
+  await say(live, reply);
+  assert.equal((await modelCalls("deepseek")).length, before);
+  assert.equal(await lastText(live), en.checkin.gotIt);
 });

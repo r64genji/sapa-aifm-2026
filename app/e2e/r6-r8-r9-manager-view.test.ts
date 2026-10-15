@@ -34,6 +34,9 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, ...tag }) }]);
   await say(chat, text);
   await settle();
@@ -184,6 +187,8 @@ test("Telegram link: HR invites a manager, the one-time link binds one chat, and
   const chat = 5550000701;
   await link(chat, token);
   assert.deepEqual((await sentTo(chat)).map((m) => m.text), [en.managerLinked]);
+  await say(chat, "/whatican");
+  assert.equal((await sentTo(chat)).at(-1)!.text, en.whatICanSee);
   await link(5550000702, token);
   assert.deepEqual((await sentTo(5550000702)).map((m) => m.text), [en.invalidInvite]);
   const { data: manager } = await db.from("managers").select("telegram_chat_id").eq("id", invite.manager_id).single();

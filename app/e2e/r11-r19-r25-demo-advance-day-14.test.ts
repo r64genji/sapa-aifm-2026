@@ -36,12 +36,18 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   await tap(live, "4");
   await tap(live, "3");
   await tap(live, "5");
+  await tap(live, "2");
+  await tap(live, "4");
+  await tap(live, "1");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [
     question("MANAGER_SUPPORT"),
     question("BELONGING"),
+    question("ONBOARDING_TRAINING"),
+    question("WORKLOAD"),
+    question("JOB_MATCH"),
     question("OPEN"),
     en.checkin.thanks,
   ]);
@@ -52,8 +58,8 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
     .eq("person_id", "6f1c2a3e-0000-4000-8000-000000000201");
   const byQuestion = Object.fromEntries(rows!.map((r) => [r.question_id, r]));
   assert.deepEqual(
-    ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING"].map((id) => byQuestion[id].scale_value),
-    [4, 3, 5],
+    ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD", "JOB_MATCH"].map((id) => byQuestion[id].scale_value),
+    [4, 3, 5, 2, 4, 1],
   );
   assert.ok(byQuestion.OPEN.text_encrypted);
   assert.ok(!byQuestion.OPEN.text_encrypted.includes("urgent"));

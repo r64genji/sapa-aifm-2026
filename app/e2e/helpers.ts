@@ -10,14 +10,20 @@ export const db = createClient(
   { auth: { persistSession: false } },
 );
 
-export async function resetDemo() {
+export async function resetSeed() {
   const res = await fetch(`${appUrl}/api/demo/reset`, {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.DISPATCH_SECRET}` },
   });
   if (!res.ok) throw new Error(`demo reset failed: ${res.status}`);
+  await db.from("ai_usage").delete().neq("id", "00000000-0000-0000-0000-000000000000");
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
   await fetch(`${modelUrl}/calls`, { method: "DELETE" });
+}
+
+export async function resetDemo() {
+  await resetSeed();
+  await db.from("language_packs").update({ test_passed_on: "2026-10-15" }).in("language", ["en", "ms"]);
 }
 
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;

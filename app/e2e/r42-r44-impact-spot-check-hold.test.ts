@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { appUrl, db, freezeClock, hrRequest, hrToken, joined, resetDemo, say, tap } from "./helpers.ts";
+import { addHire, appUrl, db, freezeClock, hrRequest, hrToken, joined, resetDemo, say, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const organisation = "6f1c2a3e-0000-4000-8000-000000000001";
@@ -179,4 +179,24 @@ test("R44: HR changing 3 of 10 ROLE_CLARITY spot checks in one language holds th
 
   await db.from("ai_tags").update({ challenged_at: `${mondays[3]}T01:00:00Z` }).eq("response_id", zh[0]);
   assert.equal((await panel("ROLE_CLARITY", "zh")).challenges, 1);
+});
+
+test("R42: an intake of 5 shows its response rate with lapsed check-ins counted, and its score change against other teams from the seeded fix", async () => {
+  const statuses = ["answered", "answered", "answered", "skipped", "reminded"];
+  for (const [index, status] of statuses.entries()) {
+    assert.equal((await addHire({ code_name: `April hire ${index}`, start_date: "2026-04-06" })).status, 201);
+    const { data: person } = await db.from("people").select("id").eq("code_name", `April hire ${index}`).single();
+    const { error } = await db
+      .from("checkin_schedule")
+      .upsert({ organisation_id: organisation, person_id: person!.id, touchpoint: 3, due_at: "2026-04-09T01:00:00Z", status }, { onConflict: "person_id,touchpoint" });
+    if (error) throw error;
+  }
+  const { intakes } = await (await hrRequest("/api/hr/impact", "GET")).json();
+  assert.deepEqual(intakes.find((row: { intake: string }) => row.intake === "2026-04"), {
+    intake: "2026-04",
+    enough: true,
+    response_rate: 0.6,
+    median_days_reply_to_done: 11,
+    score_change_against_others: 1.2,
+  });
 });

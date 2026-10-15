@@ -173,6 +173,17 @@ export async function activatePack(organisationId: string, language: string, che
   return data.length === 1;
 }
 
+export async function passPackTest(organisationId: string, language: string, resultsFile: string) {
+  const { data, error } = await createAdminClient()
+    .from("language_packs")
+    .update({ test_passed_on: (await now()).toISOString().slice(0, 10), test_results_file: resultsFile })
+    .eq("organisation_id", organisationId)
+    .eq("language", language)
+    .select("language");
+  if (error) throw error;
+  return data.length === 1;
+}
+
 export const notReceiving = "This person is not receiving messages from Sapa now";
 
 export async function reachable(personId: string) {
