@@ -132,7 +132,7 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   const raj = { authorization: `Bearer ${await hrToken("raj@contoh.test")}` };
   const snapshots = async () => (await fetch(`${appUrl}/api/manager/snapshots`, { headers: raj })).json();
   const published = await snapshots();
-  const production = published.find((s: { team: string }) => s.team === "Production");
+  const production = published.find((s: { team: string }) => s.team === "Accounts Payable Asia");
   assert.equal(production.respondents, 9);
   assert.equal(production.drivers.ROLE_CLARITY, 4);
 

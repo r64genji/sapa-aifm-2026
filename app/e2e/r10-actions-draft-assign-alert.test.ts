@@ -137,7 +137,7 @@ test("R10: scope one person is refused for a non-sharing author, and for any act
   assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 422);
   await tap(sharer, en.visibilityHrManager);
   assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 200);
-  assert.equal((await patch(fromCard.body.id, { scope: { type: "team", team: "Production" } })).status, 200);
+  assert.equal((await patch(fromCard.body.id, { scope: { type: "team", team: "Accounts Payable Asia" } })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${fromCard.body.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${fromReply.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);
 });
@@ -145,7 +145,7 @@ test("R10: scope one person is refused for a non-sharing author, and for any act
 test("R10: in demo mode the alert goes at once, says it normally waits until Monday, and a snapshot count of 2 is not called several", async () => {
   const made = await draft("Workload check", "WORKLOAD", 9);
   assert.equal(
-    (await hrRequest(`/api/hr/actions/${made.body.id}`, "PATCH", { scope: { type: "team", team: "Production" } })).status,
+    (await hrRequest(`/api/hr/actions/${made.body.id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } })).status,
     200,
   );
   const res = await hrRequest(`/api/hr/actions/${made.body.id}/assign`, "POST", { owner: { manager_id: aisha }, due_in_days: 7 });
@@ -155,7 +155,7 @@ test("R10: in demo mode the alert goes at once, says it normally waits until Mon
   assert.equal(body.alert_label, "In real use this alert waits until Monday");
 
   const [message] = await alertTo(aishaChat, "Workload check");
-  assert.match(String(message.text), /Fewer than 3 new hires in Production named workload in the last weekly snapshot\./);
+  assert.match(String(message.text), /Fewer than 3 new hires in Accounts Payable Asia named workload in the last weekly snapshot\./);
   assert.doesNotMatch(String(message.text), /several/i);
   assert.doesNotMatch(String(message.text), /\b2\b/);
   assert.deepEqual(
@@ -168,7 +168,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
   const made = await draft("Weekly priorities talk", "ROLE_CLARITY", 1);
   const id = made.body.id as string;
-  await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Production" } });
+  await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
 
   const tooFew = await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: { manager_id: budi } });
   assert.equal(tooFew.status, 422);
@@ -182,7 +182,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
   assert.equal(body.alert_label, null);
 
   const rajAction = await draft("Weekly one-to-one", "MANAGER_SUPPORT", 3);
-  await hrRequest(`/api/hr/actions/${rajAction.body.id}`, "PATCH", { scope: { type: "team", team: "Production" } });
+  await hrRequest(`/api/hr/actions/${rajAction.body.id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
   assert.equal((await hrRequest(`/api/hr/actions/${rajAction.body.id}/assign`, "POST", { owner: { manager_id: raj } })).status, 200);
 
   assert.equal((await (await nightly()).json()).alerts, 0);
@@ -197,7 +197,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
   const [message] = await alertTo(aishaChat, "Weekly priorities talk");
   assert.match(
     String(message.text),
-    /Several new hires in Production named role clarity in the last weekly snapshot \(5 of 6 who answered\)\./,
+    /Several new hires in Accounts Payable Asia named role clarity in the last weekly snapshot \(5 of 6 who answered\)\./,
   );
   assert.match(String(message.text), /Due 2026-10-26\./);
   assert.equal((await (await nightly()).json()).alerts, 0);
@@ -242,7 +242,7 @@ test("R10: the supervisor's web card shows the released action with the snapshot
 test("R10: only HR assigns or dismisses, dismiss needs a reason, and an action HR owns is moved by HR", async () => {
   const made = await draft("Welcome round", "BELONGING", 6);
   const id = made.body.id as string;
-  await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Production" } });
+  await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
 
   assert.equal((await asManager(`/api/hr/actions/${id}/assign`, rajToken, "POST", { owner: "hr" })).status, 401);
   assert.equal((await asManager(`/api/hr/actions/${id}/dismiss`, rajToken, "POST", { reason: "No" })).status, 401);
@@ -255,7 +255,7 @@ test("R10: only HR assigns or dismisses, dismiss needs a reason, and an action H
   assert.equal((await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: "hr" })).status, 409);
 
   const own = await draft("Team lunch", "BELONGING", 5);
-  await hrRequest(`/api/hr/actions/${own.body.id}`, "PATCH", { scope: { type: "team", team: "Production" } });
+  await hrRequest(`/api/hr/actions/${own.body.id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
   assert.equal((await hrRequest(`/api/hr/actions/${own.body.id}/assign`, "POST", { owner: "hr" })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${own.body.id}/done`, "POST", { outcome: "Too early" })).status, 409);
   assert.equal((await hrRequest(`/api/hr/actions/${own.body.id}/accept`, "POST")).status, 200);

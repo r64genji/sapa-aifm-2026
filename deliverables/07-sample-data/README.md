@@ -15,7 +15,7 @@
 
 | File | What it is | Used by |
 | --- | --- | --- |
-| `cohort/` | Synthetic intake: 30 fictional hires × six monthly intakes, with planted themes (e.g. role clarity in week 2) | Demo seed, Test 3 |
+| `cohort/` | Synthetic intake: 100 fictional hires across six monthly intakes, with planted themes (e.g. role clarity in week 2) | Demo seed, Test 3 |
 | `eval-set.csv` | About 200 labelled replies (dossier asks for 50–100 minimum): one-third each BM, English, Manglish, including at least 40 escalation cases (forced-labour cases in BM and English among them) and 10–15 hyperbole cases and normal pay deductions (EPF, SOCSO, tax, lateness) that must not escalate. | Test 1 |
 | `labelling-guide.md` | How to label: the 5 drivers, context tags, POSITIVE, ESCALATE, concern level (dossier F5) | Labellers |
 | `answer-key.md` | The "right answers" for the Test 3 timing exercise | Test 3 |

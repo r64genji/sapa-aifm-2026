@@ -22,6 +22,8 @@ Sapa is a chat bot that checks in with new employees during their first six mont
 
 **The problem it solves.** Today most companies only learn why a new hire was unhappy at the exit interview, when it is too late. The causes are usually ordinary and fixable: unclear priorities, weak onboarding, little feedback.
 
+**Who it is for (the reference customer).** Contoh GBS, a fictional 650-staff shared services centre in Penang. It hires 15–18 people a month, more than 1 in 4 leave before Month 6, and its parent group will only send it new work if that changes. The full story is in [09](09-client-story.md).
+
 **Two signals, one problem.** Sapa reads two kinds of new-hire input about the same pain point, onboarding gaps that make new hires leave:
 
 - **Check-in replies.** Short scheduled check-ins show which problems new hires share.
@@ -35,13 +37,13 @@ Q&A is not a second product. It is a second source of signal for the same fix-th
 | --- | --- | --- |
 | New hire | Answers 3–4 short questions on Telegram, in Bahasa Malaysia or English, at Day 3, 7, 14, 30, 60, 90 and Month 6. Can ask the bot questions about the company at any time. Can see their own stored replies, with the AI summary and tags, with `/myanswers` (`/jawapansaya`), and flag "this is wrong" to HR. Voluntary; can skip, stop or delete at any time | About a minute each time |
 | HR | Sees shared problems across the intake, reviews the evidence, drafts and assigns a fix, and approves a short "Update from HR" note for new hires. An Impact view shows response rate, days from reply to action done, the score change after fixes against other teams, manager milestones done and, across completed intakes, six-month retention as a trend and not proof | Minutes a week |
-| Manager | Accepts the fix, carries it out, marks it done with a one-line note. Gets fixed Day 1, 7 and 30 nudges for each new hire, and alerts, in Telegram. Sees their own fixes and weekly team snapshots on the web | One task at a time |
+| Manager | Accepts the fix, carries it out, marks it done with a one-line note. Gets fixed Day 1, 7 and 30 nudges for each new hire, and alerts, in Telegram. Gets their weekly team snapshots in Telegram too. Uses only Telegram, with no web pages | One task at a time |
 
 **What the AI does, and only this**
 
 1. Suggests a label for each answer: role clarity, manager support, belonging, onboarding and training, or workload. It attaches the exact sentence as proof.
 2. Picks a follow-up question from a fixed probe bank, by ID. It never writes its own follow-up questions.
-3. Writes a short narrative over theme counts. SQL does the counting, such as "Role clarity: 8 of 19 who answered". Themes appear only when at least 5 people have answered.
+3. Writes a short narrative over theme counts. SQL does the counting, such as "Role clarity: 24 of 65 who answered". Themes appear only when at least 5 people have answered.
 4. Drafts a suggested fix that HR edits before anyone sees it.
 5. Answers new hires' questions only from the published HR handbook, with a quote that code checks word for word.
 6. Spots serious issues (harassment, bullying, safety, self-harm, signs of forced labour) and sends them straight to HR.
@@ -54,12 +56,12 @@ Q&A is not a second product. It is a second source of signal for the same fix-th
 
 ### One example, start to finish
 
-1. Mei Ling (a fictional new hire) gets her Day 14 check-in: "How clear are you on what is expected of you this week? (1–5)"
+1. Mei Ling (a fictional new AP analyst at Contoh GBS) gets her Day 14 check-in: "How clear are you on what is expected of you this week? (1–5)"
 2. She types: "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu."
 3. The bot sends one fixed follow-up from the probe bank. The AI suggests the label **role clarity** and quotes her sentence as the evidence.
-4. HR's dashboard now reads "Role clarity: 8 of 19 who answered, hired in the last 6 months".
-5. HR (Aishah) clicks "Draft action" on the Role clarity card and gets "Agree a weekly priority list with each new hire every Monday". She edits it, sets the scope to the supervisor's team (Mei Ling chose "HR only", so the fix cannot name her), approves a short note for new hires, and assigns it to the supervisor.
-6. The supervisor accepts it, does it and marks it done.
+4. HR's dashboard now reads "Role clarity: 24 of 65 who answered, hired in the last 6 months".
+5. HR (Aishah) clicks "Draft action" on the Role clarity card and gets "Agree a weekly priority list with each new hire every Monday". She edits it, sets the scope to her team lead Raj's team (Mei Ling chose "HR only", so the fix cannot name her), approves a short note for new hires, and assigns it to Raj.
+6. Raj accepts it in Telegram, does it and marks it done.
 7. The bot sends Mei Ling the note: "Update from HR: your team now has a weekly priority list every Monday."
 8. Next check-in, the bot asks the same 1–5 question again, with no hint of the fix, so HR can see whether the score moved more than in other teams.
 
@@ -111,7 +113,7 @@ The second column is the guide's wording; the third is how Sapa answers it, so y
 | 2. The user | Who uses your solution? | HR staff, plus line managers who carry out actions; new hires give the feedback and ask questions |
 | 3. Current process | What happens today before your solution exists? | Problems surface in exit interviews, matching the guide's own Challenge 4 scenario |
 | 4. Your solution | What exact function did you build? | Telegram check-ins at set milestones, handbook Q&A, an HR dashboard of shared themes and unanswered questions, action tracking, an "Update from HR" notice and a neutral recheck question |
-| 5. How AI is used | What information goes in, what does AI do, and what useful output comes out? | In: check-in answers and questions. AI: suggests a label with a quote for each answer, picks a fixed follow-up, drafts an action, answers from the handbook. SQL counts the themes. Out: themes such as "Role clarity: 8 of 19" and an editable action |
+| 5. How AI is used | What information goes in, what does AI do, and what useful output comes out? | In: check-in answers and questions. AI: suggests a label with a quote for each answer, picks a fixed follow-up, drafts an action, answers from the handbook. SQL counts the themes. Out: themes such as "Role clarity: 24 of 65" and an editable action |
 | 6. Human action | What must a person still review, decide or do? | HR reviews the evidence and the labels the AI is unsure about, and chooses the action; the manager accepts it, carries it out and records the outcome |
 | 7. Testing | Did your prototype make the process faster, clearer, more consistent or more useful? | AI accuracy measured on labelled sample replies; HR timed reading raw replies versus using the dashboard |
 

@@ -9,7 +9,7 @@ Our plan, not an organiser rule. The AIFM guide only asks for evidence (slide 3)
 - Slide 3, "Evidence / Current Process": "Show what you learned from users, research or the existing workflow."
 - Slide 8, "Testing / Result": "What did you test? What improved? What did users say?"
 - Judging, Problem criterion (15%): "evidence or root cause behind the problem."
-- Our dossier uses made-up numbers (25% early leavers, RM2,500 salary). Replace them with what interviewees tell us.
+- Our client story uses made-up company numbers (27% early leavers, RM3,850 average salary; see `docs/09-client-story.md`). Replace them with what interviewees tell us.
 
 ## Part 1. HR interviews
 

@@ -15,9 +15,9 @@
 
 | Guide step | Our decision | Where it shows in the demo | Source |
 | --- | --- | --- | --- |
-| 1. One employee group | New hires, Day 1 to Month 6 | Group card: "Hired in the last 6 months: 30 hires" | Dossier A |
+| 1. One employee group | New hires, Day 1 to Month 6 | Group card: "Hired in the last 6 months: 100 hires" | Dossier A |
 | 2. Voluntary feedback | 7 check-ins (Day 3 → Month 6), 3–4 questions each, in language packs (BM, English and Chinese), consent first | Phone: consent screen, then the Day 14 check-in | Dossier F3, F4 |
-| 3. AI summarises themes | Step A suggests a label for each reply; SQL counts themes across the last six months of hires (5+ only); step B writes a short narrative over the counts | Theme card: "Role clarity: 8 of 19" | Spec 05 |
+| 3. AI summarises themes | Step A suggests a label for each reply; SQL counts themes across the last six months of hires (5+ only); step B writes a short narrative over the counts | Theme card: "Role clarity: 24 of 65" | Spec 05 |
 | 4. Highlight follow-up | `concern_level = needs_follow_up` → flag queue; escalations in red | Flag queue | Dossier F5 |
 | 5. Show and track an action | AI drafts, HR edits and assigns, manager accepts and marks done with a one-line note; the new hire gets "Update from HR" and a recheck question | Actions board → Done; phone gets the update | Spec 05 |
 

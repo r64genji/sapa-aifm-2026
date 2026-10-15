@@ -39,29 +39,29 @@ before(async () => {
   await joined(asker, "2026-10-14");
 });
 
-test("R52: the seeded Production operator card reads 6 of 11 said 'not really' at Day 14", async () => {
-  const card = (await cards()).find((c) => c.role === "Production operator")!;
+test("R52: the seeded Accounts payable analyst card reads 6 of 11 said 'not really' at Day 14", async () => {
+  const card = (await cards()).find((c) => c.role === "Accounts payable analyst")!;
   assert.deepEqual(card, {
-    role: "Production operator",
+    role: "Accounts payable analyst",
     enough: true,
     n: 6,
     m: 11,
-    label: "Production operator: 6 of 11 said 'not really' at Day 14",
+    label: "Accounts payable analyst: 6 of 11 said 'not really' at Day 14",
   });
 });
 
 test("R52: a role with fewer than 5 people shows 'Not enough people yet' and no count", async () => {
   const all = await cards();
   assert.deepEqual(
-    all.filter((c) => c.role !== "Production operator").map((c) => [c.role, c.enough, c.message]),
+    all.filter((c) => c.role !== "Accounts payable analyst").map((c) => [c.role, c.enough, c.message]),
     [
-      ["Packaging operator", false, "Not enough people yet (2 of 5 needed)"],
-      ["Production executive", false, "Not enough people yet (0 of 5 needed)"],
-      ["Quality checker", false, "Not enough people yet (2 of 5 needed)"],
-      ["Warehouse assistant", false, "Not enough people yet (3 of 5 needed)"],
+      ["AP analyst (Mandarin)", false, "Not enough people yet (0 of 5 needed)"],
+      ["Customer care agent (Korean)", false, "Not enough people yet (2 of 5 needed)"],
+      ["IT service desk analyst", false, "Not enough people yet (3 of 5 needed)"],
+      ["Order-to-Cash analyst", false, "Not enough people yet (2 of 5 needed)"],
     ],
   );
-  const refused = await hrRequest("/api/hr/job-match/actions", "POST", { role: "Warehouse assistant" });
+  const refused = await hrRequest("/api/hr/job-match/actions", "POST", { role: "IT service desk analyst" });
   assert.equal(refused.status, 422);
   assert.equal(((await refused.json()) as { error: string }).error, "Not enough people yet (3 of 5 needed)");
 });
@@ -72,18 +72,18 @@ test("R52: a manager is refused on the card and on drafting from it", async () =
   const draft = await fetch(`${appUrl}/api/hr/job-match/actions`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ role: "Production operator" }),
+    body: JSON.stringify({ role: "Accounts payable analyst" }),
   });
   assert.equal(draft.status, 401);
 });
 
 test("R52, R28: the hiring-side action stays with HR, names nobody and completing it sends no notice", async () => {
-  const res = await hrRequest("/api/hr/job-match/actions", "POST", { role: "Production operator" });
+  const res = await hrRequest("/api/hr/job-match/actions", "POST", { role: "Accounts payable analyst" });
   assert.equal(res.status, 201);
   const { id } = (await res.json()) as { id: string };
 
   const drafted = (await board()).find((a) => a.id === id)!;
-  assert.equal(drafted.title, "Update the job ad and the interview script for this role (Production operator)");
+  assert.equal(drafted.title, "Update the job ad and the interview script for this role (Accounts payable analyst)");
   assert.equal(drafted.hiring_side, true);
   assert.equal(drafted.status, "draft");
 
@@ -91,7 +91,7 @@ test("R52, R28: the hiring-side action stays with HR, names nobody and completin
   assert.equal(toManager.status, 422);
   const named = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "person", code_name: "Live hire" } });
   assert.equal(named.status, 422);
-  const team = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Production" } });
+  const team = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
   assert.equal(team.status, 422);
   assert.equal((await board()).find((a) => a.id === id)!.status, "draft");
 

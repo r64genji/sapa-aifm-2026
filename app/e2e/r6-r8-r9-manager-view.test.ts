@@ -40,7 +40,7 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
 }
 
 const production = {
-  team: "Production",
+  team: "Accounts Payable Asia",
   week: "2026-10-12",
   enough: true,
   respondents: 9,
@@ -52,7 +52,7 @@ const production = {
     WORKLOAD: "fewer than 3",
   },
 };
-const packaging = { team: "Packaging", week: "2026-10-12", enough: false, message: "Not enough people yet" };
+const packaging = { team: "Korean Desk", week: "2026-10-12", enough: false, message: "Not enough people yet" };
 
 let rajToken: string;
 
@@ -75,7 +75,7 @@ before(async () => {
 test("R9: the supervisor sees only the last weekly snapshot, with counts under 3 shown as fewer than 3", async () => {
   const res = await asManager("/api/manager/snapshots", rajToken);
   assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), [packaging, production]);
+  assert.deepEqual(await res.json(), [production, packaging]);
 
   const hr = await hrToken();
   assert.equal((await asManager("/api/manager/snapshots", hr)).status, 401);
@@ -116,16 +116,15 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
   assert.equal((await fetch(`${appUrl}/api/nightly`, { method: "POST" })).status, 401);
   const thursday = await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key });
   assert.equal((await thursday.json()).snapshots, 0);
-  assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [packaging, production]);
+  assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [production, packaging]);
 
   await freezeClock("2026-10-19T10:00:00.000Z");
   const monday = await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key });
   assert.equal((await monday.json()).snapshots, 4);
   assert.equal((await (await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key })).json()).snapshots, 0);
   assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [
-    { team: "Packaging", week: "2026-10-19", enough: false, message: "Not enough people yet" },
     {
-      team: "Production",
+      team: "Accounts Payable Asia",
       week: "2026-10-19",
       enough: true,
       respondents: 5,
@@ -137,9 +136,8 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
         WORKLOAD: "fewer than 3",
       },
     },
-    { team: "Quality", week: "2026-10-19", enough: false, message: "Not enough people yet" },
     {
-      team: "Warehouse",
+      team: "IT Service Desk",
       week: "2026-10-19",
       enough: true,
       respondents: 6,
@@ -151,6 +149,8 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
         WORKLOAD: "fewer than 3",
       },
     },
+    { team: "Korean Desk", week: "2026-10-19", enough: false, message: "Not enough people yet" },
+    { team: "Order-to-Cash Asia", week: "2026-10-19", enough: false, message: "Not enough people yet" },
   ]);
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
@@ -162,11 +162,11 @@ test("R6, R7, R8, R9: the supervisor's own session reads no reply, tag, escalati
     assert.equal(error, null);
     assert.deepEqual(data, [], table);
   }
-  const { data, error } = await client.from("manager_snapshots").select("team, week, drivers").eq("team", "Production");
+  const { data, error } = await client.from("manager_snapshots").select("team, week, drivers").eq("team", "Accounts Payable Asia");
   assert.equal(error, null);
   assert.deepEqual(data, [
     {
-      team: "Production",
+      team: "Accounts Payable Asia",
       week: "2026-10-19",
       drivers: { ROLE_CLARITY: 4, BELONGING: "fewer than 3" },
     },

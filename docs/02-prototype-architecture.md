@@ -43,14 +43,15 @@ flowchart TB
     deepseek["DeepSeek V4.1 Flash<br/>fallback, direct"]
     hire["New hire<br/>Telegram,<br/>language packs"]
     omni["OmniRoute<br/>on home server<br/>behind cloudflared tunnel"]
-    hr["HR and managers<br/>web app, Telegram"]
+    hr["HR<br/>web app"]
+    mgr["Managers<br/>Telegram"]
 
     subgraph vercel["Vercel: one Next.js app"]
         direction LR
         disp["Dispatcher<br/>/api/dispatch<br/>demo clock offset"]
         bot["Bot webhook<br/>Chat SDK + Telegram<br/>check-in script"]
         ai["AI pipeline<br/>AI SDK + Zod<br/>evidence + safety"]
-        dash["Dashboard<br/>Next.js + shadcn/ui<br/>HR and manager views"]
+        dash["Dashboard<br/>Next.js + shadcn/ui<br/>HR views"]
         disp --> bot --> ai
     end
 
@@ -62,7 +63,8 @@ flowchart TB
     end
 
     hire <-->|check-ins, replies| bot
-    hr <-->|web, alerts| dash
+    hr <-->|web| dash
+    mgr <-->|alerts, buttons, snapshots| bot
     ai <-->|API calls| omni
     omni <--> gemini
     ai -.->|fallback| deepseek
@@ -78,7 +80,7 @@ One check-in, end to end:
 2. The hire replies by text or button; the bot stores the reply and calls the AI pipeline.
 3. The pipeline masks personal details, calls Gemini through OmniRoute (or DeepSeek if OmniRoute fails), checks the schema and evidence quote, and writes tags.
 4. Realtime pushes new tags and flags to the dashboard; HR reviews the evidence and assigns a drafted action.
-5. The bot alerts the manager, who accepts the action and marks it done from Telegram or the web app. The bot then sends the HR-approved "Update from HR" note to the new hires it affects.
+5. The bot alerts the manager, who accepts the action and marks it done in Telegram. The bot then sends the HR-approved "Update from HR" note to the new hires it affects.
 
 Every AI call writes one `ai_usage` row (model, tokens, cost). There is no Langfuse in the competition build.
 
@@ -127,20 +129,20 @@ Check-ins are rows, not sleeping processes, so the demo can jump to Day 14 on co
 
 The demo clock is one setting, `organisations.demo_offset_days`. An "Advance to Day 14" button raises it and calls the dispatcher immediately. Durable-sleep engines (Vercel Workflow, Inngest) are elegant but cannot be fast-forwarded like this.
 
-### 4.3 HR and manager web app
+### 4.3 HR web app
 
 Start from `create-next-app -e with-supabase`, then add shadcn blocks for the sidebar layout, data tables and charts.
 
 | Page | Who | What it shows |
 | --- | --- | --- |
-| Cohorts | HR | Intake overview, theme cards ("Role clarity: 8 of 19"), weekly theme trend; hidden below 5 respondents |
+| Cohorts | HR | Intake overview, theme cards ("Role clarity: 24 of 65"), weekly theme trend; hidden below 5 respondents |
 | Flag queue | HR | Replies marked `needs_follow_up`, escalations pinned in red with the fixed protocol |
 | Response detail | HR | AI summary and evidence quote beside the original text; tag override |
-| Actions board | HR, manager | Draft → assigned → accepted → done or dismissed, with outcome note |
+| Actions board | HR | Draft → assigned → accepted → done or dismissed, with outcome note |
 | Settings | HR | Minimum group size, retention period, question bank, demo clock |
 | Audit log | HR admin | Every view and change |
 
-Managers log into the same app with a `manager` role and see their own fixes on the Actions board, weekly team snapshots (never live counts), and an individual's words only where that person consented. Supabase Realtime pushes new tags and flags to the open dashboard, so a judge's reply appears on screen within seconds.
+Managers have no pages. They use only Telegram: action alerts with Accept and Mark done buttons, weekly team snapshots (never live counts), and an individual's words only where that person consented. Supabase Realtime pushes new tags and flags to the open dashboard, so a judge's reply appears on screen within seconds.
 
 ### 4.4 Data layer: Supabase
 
@@ -161,7 +163,7 @@ Six pieces are custom because they are the product, not plumbing:
 3. **Safety keyword list (one per language pack: BM, English and Chinese):** deterministic and auditable, running beside the model.
 4. **RLS policies and the group-size view.**
 5. **Eval script:** computes Cohen's κ and escalation recall against the labelled set (about 60 lines) and writes results files.
-6. **Synthetic seed files:** 30 fictional hires across six monthly intakes with planted themes, written as files by the coding agents. No model call makes seed or test data.
+6. **Synthetic seed files:** 100 fictional hires across six monthly intakes with planted themes, written as files by the coding agents. No model call makes seed or test data.
 
 ### 4.6 Considered and left out
 
@@ -189,7 +191,7 @@ Four narrow AI calls, each with a fixed schema, all going through OmniRoute to G
 | Step | Trigger | Input | Output | Thinking | Human gate |
 | --- | --- | --- | --- | --- | --- |
 | A. Classify | Every reply | Masked reply, touchpoint | Drivers, context tags, `concern_level`, `escalate`, verbatim evidence quote, summary, confidence, and one `probe_id` from the fixed probe bank or none | low | Unsure labels wait for HR; HR can override any tag; probes capped at 1–2 per touchpoint |
-| B. Narrative | Nightly and on demand | Counts that SQL already computed, cohorts ≥ 5 | A short narrative over the counts ("8 of 19") plus what is going well | medium | HR reads before acting |
+| B. Narrative | Nightly and on demand | Counts that SQL already computed, cohorts ≥ 5 | A short narrative over the counts ("24 of 65") plus what is going well | medium | HR reads before acting |
 | C. Draft action | HR clicks "Draft action" | Driver, theme, action library | Short editable action, no individual named unless consented | medium | HR edits and assigns; manager accepts and marks done |
 
 ### 5.3 Guardrails, in code rather than in the prompt

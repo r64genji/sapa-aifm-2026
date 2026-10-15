@@ -16,14 +16,14 @@
 | --- | --- | --- | --- |
 | 1 | Team & Challenge | Team name, Challenge 4 · RETAIN, one-sentence idea | [02](../02-one-sentence-idea/) |
 | 2 | The Real HR Problem | Six-month exit scenario; Aon 18.2%, Gallup 25% engaged | Dossier B, K |
-| 3 | Evidence / Current Process | 7-step current process; Employment Hero's 2 in 10 new hires leave within six months; practitioner quotes from real interviews only, else "desk research only" | Dossier C, [09](../09-testing-evidence/) evidence slot |
+| 3 | Evidence / Current Process | 7-step current process; Employment Hero: leaders expect to lose about 2 in 10 new hires within six months (an expectation, not a measured rate); practitioner quotes from real interviews only, else "desk research only" | Dossier C, [09](../09-testing-evidence/) evidence slot |
 | 4 | Your Solution | Sapa: check-ins, handbook Q&A, dashboard, "Update from HR" and a neutral recheck | Rundown 1, [04](../04-challenge-4-build-steps/) |
 | 5 | How It Works | Input → AI → output → human action; "SQL counts. The AI suggests labels…" | Spec 05 Solution, [06](../06-human-review/) |
 | 6 | How AI Adds Value | Manual vs Sapa; accuracy | [09](../09-testing-evidence/) Test 1, 3 |
 | 7 | Demo | Live demo | [11](../11-live-demo/) |
 | 8 | Testing / Result | κ by language, time bar, quotes, limitation | [09](../09-testing-evidence/) |
 | 9 | Responsible AI | What Sapa never does, consent, "5 for themes, 3 for questions", `/myanswers`, escalation | [05](../05-responsible-ai-rule/), Dossier I |
-| 10 | Impact & Next Step | Break-even first: about one prevented early exit a year pays for Sapa (RM6,300 per leaver vs RM5,400 a year); ROI table; a prevented exit cannot be proven per person, so the pilot measures retention by intake (Impact view, a trend and not proof); pilot ask: every new hire in three monthly intakes, each through its own Month 6, with pass marks set first, a Day-90 report and a final report where retention honestly reads "Too few to tell yet"; retention is one line on the demo's last beat and is shown here | Dossier H |
+| 10 | Impact & Next Step | Break-even first: about two prevented early exits a year, of 54, pay for Sapa at Contoh GBS (about RM9,700 per leaver vs RM18,000 a year; [client story](../../docs/09-client-story.md)); ROI table; a prevented exit cannot be proven per person, so the pilot measures retention by intake (Impact view, a trend and not proof); pilot ask: every new hire in three monthly intakes, each through its own Month 6, with pass marks set first, a Day-90 report and a final report where retention honestly reads "Too few to tell yet"; retention is one line on the demo's last beat and is shown here | Dossier H |
 
 ## What goes in this folder
 
