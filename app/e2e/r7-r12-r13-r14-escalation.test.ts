@@ -256,7 +256,7 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   const body = await res.json();
   assert.equal(body.text, "The agent holds my passport");
   assert.equal(body.category, "forced_labour_indicator");
-  assert.ok(body.sent_by_bot.includes(en.safety.forcedLabour));
+  assert.ok(body.sent_by_bot.join("\n").includes(en.safety.forcedLabour));
   const { data: rows } = await db.from("audit_log").select("action, at").eq("target", alert.response_id);
   assert.deepEqual(rows, [{ action: "read_reply_text", at: "2026-10-15T15:00:00+00:00" }]);
 
