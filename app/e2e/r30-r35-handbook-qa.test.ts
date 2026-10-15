@@ -334,7 +334,6 @@ test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese han
   const chat = 5550001313;
   const { token } = await addHire({ code_name: "Hire ZH ask", language: "zh", start_date: "2026-10-14" });
   await link(chat, token);
-  await hrRequest("/api/hr/language-packs/zh/activate", "POST", { checker_name: "Li Wei" });
   await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
   await tap(chat, zh.agree);
   const quote = "申请加班费时，请在当天填写加班表格，并交给主管签字。";
@@ -350,5 +349,5 @@ test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese han
   ]);
   const prompt = await answerPrompt();
   assert.ok(prompt.includes("加班前必须获得主管批准"));
-  assert.ok(!prompt.includes("(page language:"));
+  assert.ok(prompt.includes("## pay/overtime.md\n"));
 });
