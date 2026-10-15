@@ -67,9 +67,9 @@ test("R27: a used invite is refused with the ask-HR text, and HR sees only that 
   const live = (await res.json()).find((h: any) => h.code_name === "Live hire");
   assert.deepEqual(live, {
     code_name: "Live hire",
-    team: "Production",
+    team: "Accounts Payable Asia",
     start_date: "2026-10-02",
-    role: "Production executive",
+    role: "AP analyst (Mandarin)",
     invite_used: true,
   });
 });

@@ -164,7 +164,7 @@
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "path": "onboarding/uniform.md",
     "language": "en",
-    "body": "# Uniform and safety shoes\n\nThe company gives each production employee two sets of uniform and one pair of safety shoes. Collect them from the store room in the first week.",
+    "body": "# Laptop and access card\n\nThe company gives each new employee a laptop and a building access card. IT hands them over in the first week, usually by Day 5. Until then, use the training room computers.",
     "status": "published",
     "updated_by": "Contoh HR demo seed",
     "updated_at": "2026-10-01T02:00:00Z"
@@ -174,7 +174,7 @@
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "path": "onboarding/uniform.md",
     "language": "ms",
-    "body": "# Pakaian seragam dan kasut keselamatan\n\nSyarikat memberikan setiap pekerja pengeluaran dua pasang pakaian seragam dan sepasang kasut keselamatan. Ambil di bilik stor dalam minggu pertama.",
+    "body": "# Komputer riba dan kad akses\n\nSyarikat memberikan setiap pekerja baharu komputer riba dan kad akses bangunan. IT menyerahkannya dalam minggu pertama, biasanya sebelum Hari ke-5. Sebelum itu, gunakan komputer di bilik latihan.",
     "status": "published",
     "updated_by": "Contoh HR demo seed",
     "updated_at": "2026-10-01T02:00:00Z"
@@ -224,7 +224,7 @@
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "path": "facilities/shuttle-bus.md",
     "language": "en",
-    "body": "# Shuttle bus\n\nA free shuttle bus runs from the Rawang train station to the factory gate before each shift. The bus waits ten minutes after the shift starts.",
+    "body": "# Shuttle bus\n\nA free shuttle bus runs from the Sungai Nibong bus terminal to the office before each shift. The bus waits ten minutes after the shift starts.",
     "status": "published",
     "updated_by": "Contoh HR demo seed",
     "updated_at": "2026-10-01T02:00:00Z"
@@ -234,7 +234,7 @@
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "path": "facilities/shuttle-bus.md",
     "language": "ms",
-    "body": "# Bas ulang-alik\n\nBas ulang-alik percuma bergerak dari stesen kereta api Rawang ke pintu kilang sebelum setiap syif. Bas menunggu sepuluh minit selepas syif bermula.",
+    "body": "# Bas ulang-alik\n\nBas ulang-alik percuma bergerak dari terminal bas Sungai Nibong ke pejabat sebelum setiap syif. Bas menunggu sepuluh minit selepas syif bermula.",
     "status": "published",
     "updated_by": "Contoh HR demo seed",
     "updated_at": "2026-10-01T02:00:00Z"

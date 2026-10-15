@@ -43,19 +43,19 @@ The guide's scenario sets the frame: "Several new employees leave within six mon
 
 **Primary user (guide step 3):** the HR executive. **Secondary user:** the line manager or supervisor. **Feedback provider:** the new hire.
 
-**Demo scenario used throughout this document:** a 300-staff manufacturer hires about 60 people a year in monthly intakes (operators, technicians, fresh-graduate executives). Its HR team is two people. Last year about 12 new hires (2 in 10) left within six months, and exit interviews cited unclear priorities, weak onboarding and little feedback.
+**Demo scenario used throughout this document:** Contoh GBS, a fictional 650-staff shared services centre in Bayan Lepas, Penang, hires about 200 people a year in monthly intakes of 15–18 (finance analysts, IT service desk, language-desk customer care). Site HR is five people, and only one works on new hires. Of the 200 people in its 2024–25 intakes, 54 (27%) left before Month 6: 32 inside the first 90 days and 22 more just after probation ended. Exit interviews cited unclear priorities, weak onboarding and little feedback. The full story, and which of its numbers are sourced or fictional, is in [09](09-client-story.md).
 
 ## B. The problem in plain language
 
 New hires usually show signs of difficulty weeks before they resign, but HR has no structured way to hear them, so the reasons only surface at the exit interview.
 
-**The situation.** The demo manufacturer takes on 5 operations executives in January. By June, 2 have resigned. Their exit interviews say: "I was never sure what my priorities were," "My supervisor was always busy," "Nobody showed me the system properly." HR heard none of this while it was happening, because nobody asked in a way that felt safe. Hiring starts again.
+**The situation.** Contoh GBS takes on 17 new hires in January. By June, 5 have resigned. Their exit interviews say: "I was never sure what to do first, every country said their invoices were urgent," "My team lead was always on calls with the country controllers," "Nobody showed me SAP properly." HR heard none of this while it was happening. The Group's engagement survey only goes to staff with six months' service, and nobody asked in a way that felt safe. Hiring starts again.
 
 **Who is affected:**
 
 - **New hires.** They struggle silently; many are fresh graduates unsure whether raising problems will hurt their probation.
 - **Line managers.** Usually promoted for technical skill, not trained in onboarding. They lose output and must restart training.
-- **HR.** One to three people covering hundreds of staff. They pay for repeated hiring and cannot explain it with data.
+- **HR.** A handful of people covering hundreds of staff, often with only one on new hires. They pay for repeated hiring and cannot explain it with data.
 - **Recruitment agencies.** If a placed candidate leaves inside the guarantee period, the agency must find a free replacement.
 
 **Why it matters.** Malaysia's attrition is among the highest in Southeast Asia, engagement is low, and the reasons people give for leaving are mostly things a manager could fix early.
@@ -86,11 +86,11 @@ Pay is the most common overall reason for leaving (53% cite low pay, Randstad). 
 | 73% feel more connected to their manager than to the company | [Randstad Workmonitor 2026 Malaysia](https://www.randstad.com.my/hr-trends/employer-brand/managers-are-key-source-of-workplace-stability-randstad-workmonitor-2026/) | 750 respondents | Strong-medium; the manager is the key lever |
 | Gen Z average job stint 1.1 years; 22% left a job within a year | [Randstad Gen Z Workplace Blueprint](https://www.randstad.com/press/2025/genz-workplace-blueprint/) (2025) | 11,250 respondents, 15 markets | Medium (global) |
 | 74.3% of workers aged 15–24 in roles below their qualification (Q3 2025) | [PNB Research Institute](https://www.klsescreener.com/v2/news/view/1729373/job-hopping-among-malaysian-gen-z-driven-by-poor-job-quality-not-work-ethic-pnb-research-institute) | Malaysia | Medium-strong; fuels expectation gaps |
-| About 2 in 10 new hires at companies of 200–500 staff leave within six months (reported as 23%) | Employment Hero survey via [Malay Mail](https://www.malaymail.com/news/malaysia/2023/10/25/employment-survey-two-in-10-new-hires-leave-big-companies-within-six-months/98281) (2023); see [cohort estimate](09-cohort-size-estimate.md) | Malaysia | Medium: vendor survey; only the headline was read. Used in the ROI (H1) |
-| Median cost of replacing an employee is about 21% of annual salary | Center for American Progress review, [Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/) | US case studies | Medium: US and older, but the method is published. Used in the ROI (H1) |
+| Business leaders at Malaysian and Singapore firms of 200–500 staff **expect** to lose 23% of new hires within six months; 36% of all respondents expect to lose 21–50% | Employment Hero survey via [Malay Mail](https://www.malaymail.com/news/malaysia/2023/10/25/employment-survey-two-in-10-new-hires-leave-big-companies-within-six-months/98281) (June 2023); see [client story](09-client-story.md) | 515 business leaders, Malaysia and Singapore | Medium: vendor survey, read only in a summary. **An expectation, not a measured rate.** Do not say "23% of new hires leave" |
+| Median cost of replacing an employee is about 21% of annual salary across all jobs, and about 16% for jobs paying under US$30,000 | Center for American Progress review, [Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/) | US case studies | Medium: US and older, but the method is published. A cross-check for the ROI (H1) |
 | Replacing an employee costs 0.5× to 2× annual salary | [Gallup](https://www.gallup.com/workplace/247391/fixable-problem-costs-businesses-trillion.aspx) | US | Weak; method unpublished. Not used in the ROI |
 
-The most defensible Malaysian figures are Aon's 18.2% attrition, Gallup's 25% engagement and Employment Hero's 2 in 10 new hires leaving within six months. Enboarder explains *why* people leave early, but it surveys Western HR leaders; say so if asked.
+The most defensible Malaysian figures are Aon's 18.2% attrition, Gallup's 25% engagement and Employment Hero's finding that leaders expect to lose about 2 in 10 new hires within six months. Enboarder explains *why* people leave early, but it surveys Western HR leaders; say so if asked.
 
 ## C. Current process and where it breaks (slide 3)
 
@@ -132,7 +132,7 @@ Today HR learns why new hires struggled only at the exit interview: one person a
 5. **How AI is used.**
     - *Input:* short voluntary answers (rating scales plus free text, including Manglish).
     - *AI step A:* tags each reply to the 5 drivers, sets a needs-follow-up flag and writes a neutral one-line summary with an evidence quote.
-    - *AI step B:* writes a short narrative over theme counts that SQL computed ("Role clarity: 8 of 19 who answered"). The AI does not count.
+    - *AI step B:* writes a short narrative over theme counts that SQL computed ("Role clarity: 24 of 65 who answered"). The AI does not count.
     - *AI step C:* drafts a concrete action from a library (priorities 1:1, buddy introduction, training session).
     - *Output:* a prioritised flag queue and theme summary HR reads in minutes, plus editable action drafts.
 6. **Human action.** SQL counts. The AI suggests labels. Labels the AI is unsure about wait for HR. HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies. HR can correct any AI tag and decides whether to act. The manager accepts the action, carries it out and marks it done with a one-line note. For one person's flagged reply, HR may send one fixed offer of a short private chat (05 R39). HR alone handles serious disclosures; the bot only sends a fixed safe message. No automated decision about anyone's employment is ever made.
@@ -168,15 +168,16 @@ The product has three parts: a chat check-in bot for new hires, an AI pipeline w
 
 | Persona | Profile | Goal | Pain today | What Sapa gives them |
 | --- | --- | --- | --- | --- |
-| **Aishah, HR Executive** | One of 2 HR staff at a 300-staff manufacturer; hires ~5 people a month | Fewer early resignations; evidence to show management | Cannot call every new hire; exit interviews arrive too late | Weekly theme summary, flag queue, action tracker |
-| **Raj, Production Supervisor** | Leads 25 people; promoted for technical skill | New hires productive fast | Does not know what new hires struggle with | 2–3 concrete suggested actions a month, ready to use |
-| **Hafiz, new operator** | 20, first factory job, phone only, prefers BM | Know what is expected; someone to ask | Afraid complaining will affect his probation | 1–2 minute check-ins in BM, private to HR by default |
-| **Mei Ling, new graduate executive** | 23, first job, writes in Manglish | Learn and be noticed | Unclear priorities, little feedback | Same check-ins; option to share with her manager |
+| **Kavitha, site HR manager** (buyer) | Runs a 5-person site HR team for 650 staff at Contoh GBS, where only Aishah works on new hires; answers to Group HR | Show the Group that six-month retention is turning by its September 2027 review | Knows the number, not the reason or the action | Impact view and an export for the Group report |
+| **Aishah, HR Executive** | Onboards 15–18 people a month; does every exit interview | Fewer early resignations; evidence to show management | Cannot reach every new hire; the Europe shift works while she is off; exit interviews arrive too late | Weekly theme summary, flag queue, action tracker |
+| **Raj, team lead, Accounts Payable Asia** | 29; promoted from senior analyst in 2025 with no people-lead training; his team doubled to 22 with new Vietnam and Thailand work; 12 new hires in six months | New hires productive fast | Does not know what new hires struggle with; on calls with country controllers much of the day | 2–3 concrete suggested actions a month, ready to use, in Telegram |
+| **Hafiz, new IT service desk analyst** | 22, diploma, from Sungai Petani; Europe shift; prefers BM; laptop arrived on Day 5 | Know what is expected; someone to ask | Has not seen HR since Day 1; afraid complaining will affect his probation | 1–2 minute check-ins in BM, private to HR by default |
+| **Mei Ling, new Mandarin-speaking AP analyst** | 23, first job, joined through an agency, writes in Manglish | Learn and be noticed | Three country controllers each say their invoices are urgent; little feedback | Same check-ins; option to share with her manager |
 
 ### F2. User journeys
 
 - **New hire:** On Day 1, HR shares a QR code to the bot. The bot shows a plain-language consent message: what is collected, who sees it, that it is voluntary, that stopping has no effect on employment, how long data is kept, and how to delete it. The hire picks a language and taps "Setuju / I agree". Each check-in takes about 60–90 seconds plus at most one or two follow-ups from a fixed probe bank. The hire chooses "HR only" (default) or "OK to share with my manager", and can type LANGKAU/SKIP, BERHENTI/STOP or PADAM/DELETE at any time.
-- **HR:** On Monday the dashboard shows everyone hired in the last six months and the theme "Role clarity: 8 of 19 who answered". The flag queue shows routine items, and any escalation in red with its fixed protocol. HR reads the AI summary next to the original text, corrects a tag if needed, clicks "Draft action" and assigns it to the supervisor.
+- **HR:** On Monday the dashboard shows everyone hired in the last six months and the theme "Role clarity: 24 of 65 who answered". The flag queue shows routine items, and any escalation in red with its fixed protocol. HR reads the AI summary next to the original text, corrects a tag if needed, clicks "Draft action" and assigns it to the supervisor.
 - **Manager:** Sees the assigned action with theme-level context (an individual's words only if that person consented), accepts it, carries it out, and marks it done with a one-line outcome.
 - **Closing the loop:** The bot sends the HR-approved "Update from HR" note to the new hires the fix affects. The next check-in asks the same neutral question as before ("How clear are you on what is expected of you this week? (1–5)"), so HR sees the score change after the action.
 
@@ -255,7 +256,7 @@ Use row-level security so managers see only their own assigned actions and weekl
 ### F8. AI pipeline design
 
 - **Step A (tag each reply).** Prompt defines the drivers, context tags and ESCALATE, with 2–3 examples each in BM, English and Manglish. The model must quote evidence, must not infer emotion or personality, and returns only schema-valid JSON, using "uncertain" when unsure. Run at temperature 0 with structured output; on invalid output, retry once and then send to human review.
-- **Step B (narrative).** SQL counts the themes, only for groups of 5 or more respondents. The AI writes a short narrative over those counts ("8 of 19") plus what is going well. It does not count.
+- **Step B (narrative).** SQL counts the themes, only for groups of 5 or more respondents. The AI writes a short narrative over those counts ("24 of 65") plus what is going well. It does not count.
 - **Step C (draft action).** Uses the driver, the theme and the action library. Produces a short editable draft that names no individual unless consent allows.
 - **Safety layer.** A keyword list for each language pack (BM, English and Chinese; for example *ganggu, gangguan seksual, buli, bunuh diri, harassment*) runs alongside the AI ESCALATE flag; either one triggers escalation. The forced-labour list holds only clear phrases; wage deductions alone go to the model. Employee text is treated as data, never as instructions.
 - **Why this is credible:** published studies report strong agreement between LLM-assisted coding and human coders: Cohen's κ 0.87 and 0.81 in [Dai et al. 2023](https://arxiv.org/pdf/2310.15100); κ 0.72 in the [LATA pilot](https://www.eecis.udel.edu/~mlm/docs/2025-Wang-CSCW-LATA-Paper.pdf). But a [2025 study](https://arxiv.org/pdf/2501.08167) found LLMs overrate their own summaries, and [Malaysian code-mixed text](https://ieeexplore.ieee.org/abstract/document/11256062/) lowers model accuracy. So labels the AI is unsure about wait for HR, HR reviews the evidence before any action, and accuracy is reported separately for BM, English and Manglish.
@@ -304,36 +305,23 @@ The guide asks whether the prototype made the process faster, clearer, more cons
 
 ## H. Business and economic impact
 
-For the demo company, about one prevented early exit a year pays for Sapa. A prevented exit cannot be proven per person; the pilot measures retention by intake.
+For Contoh GBS, about two prevented early exits a year, out of 54, pay for Sapa. A prevented exit cannot be proven per person; the pilot measures retention by intake.
 
 ### H1. Worked ROI example (illustrative, state the assumptions on the slide)
 
-**Assumptions:**
+The full table, with each input marked sourced or fictional, is in the [client story](09-client-story.md#money-for-slide-10). In short:
 
-- 300 staff; about 60 new hires a year (30 in any six months); mixed intake of operators and executives averaging RM2,500 a month (RM30,000 a year).
-- About 2 in 10 new hires leave within six months, so 60 × 0.2 = **12 early leavers a year**. Source: Employment Hero survey via [Malay Mail](https://www.malaymail.com/news/malaysia/2023/10/25/employment-survey-two-in-10-new-hires-leave-big-companies-within-six-months/98281) (2023), for companies of 200–500 staff (see [cohort estimate](09-cohort-size-estimate.md)). Replace it with real figures from interviews.
-- Cost per early leaver = about 21% of annual salary = 0.21 × RM30,000 = **RM6,300**. This is the median cost in the Center for American Progress review of turnover-cost studies ([Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/)). It covers re-recruitment, training the replacement, the vacancy period and lost output. It is US data; replace it with real figures from interviews.
-
-**Annual cost of early resignations:** 12 × RM6,300 = **RM75,600**.
-
-**Sapa cost (proposed):** RM90 per new hire, covering their first six months, so 60 × RM90 = **RM5,400 a year**.
-
-**Break-even:** RM5,400 ÷ RM6,300 = **0.86 prevented exits a year**. One prevented early exit a year pays for Sapa.
-
-| Scenario | Early exits prevented per year | Saving | Return on RM5,400 |
-| --- | --- | --- | --- |
-| Break-even | 0.86 of 12 | RM5,400 | 1× |
-| Conservative | 1 of 12 | RM6,300 | ~1.2× |
-| Base | 2 of 12 | RM12,600 | ~2.3× |
-| Optimistic | 3 of 12 (25%) | RM18,900 | ~3.5× |
+- 200 hires a year at an average RM46,200 salary; 54 leave before Month 6 (fictional).
+- Cost per early leaver about **RM9,700**, our estimate built from Contoh's own numbers: pay during training that never came back as work, plus a second agency fee for agency hires who leave after the 90-day free replacement. Cross-check: the Center for American Progress review ([Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/)) gives about 16% of salary for jobs under US$30,000 and 21% across all jobs, so RM7,400–9,700. The Malaysian Employers Federation's older RM25,000–30,000 is the high case.
+- Early leavers cost about **RM522,000 a year**. Sapa costs 200 × RM90 = **RM18,000 a year**. Break-even is **1.9 prevented exits a year**. Base case 8 of 54 prevented: about RM77,600, about 4.3×.
 
 **What this cannot prove.** Nobody can show that one person stayed because of Sapa. The pilot measures retention by intake instead. HR enters the number hired and the number still employed per intake (spec 05 R42). The Impact view shows, per intake: response rate and median days from reply to action done; the average score change after done actions, as a difference against other teams; and, pooled across completed intakes, six-month retention against the company's own baseline, as a trend and not proof.
 
-**HR time:** 60 hires × 7 check-ins × about 4 answers is roughly 1,700 answers a year. Reading, grouping and writing them up by hand would take days of HR time, which is why companies stop doing it. Measure the actual saving in Test 3 instead of claiming a number.
+**HR time:** about 200 hires × 7 check-ins × 2–3 answers is 3,000–4,000 answers a year. Reading, grouping and writing them up by hand would take days of HR time, which is why companies stop doing it. Measure the actual saving in Test 3 instead of claiming a number.
 
 ### H2. Pricing model (proposed)
 
-- **Pilot:** free, for every new hire in three monthly intakes, each through its own Month 6, to build evidence. One intake (up to 10 hires) is too small: the Impact view needs 30 people for retention and 5 in scope and 5 outside for a score change. Pass marks are set before the pilot starts, from measures the pilot can reach: response rate at least 60%; median days from reply to fix done at most 14; score change against other teams on done fixes [SLOT: pass mark agreed with the pilot company]; manager milestones done [SLOT: pass mark agreed with the pilot company]. Day-90 report: these four measures. Final report, after the last intake passes Month 6: retention says "Too few to tell yet (n of 30)" and gives the date when the pooled figure will be ready.
+- **Pilot:** free, for every new hire in three monthly intakes, each through its own Month 6, to build evidence. At a smaller company one intake is too small: the Impact view needs 30 people for retention and 5 in scope and 5 outside for a score change. At Contoh GBS the three intakes (November 2026 to January 2027) are about 50 people, and the last reaches Month 6 in July 2027, before the Group's September review. Pass marks are set before the pilot starts, from measures the pilot can reach: response rate at least 60%; median days from reply to fix done at most 14; score change against other teams on done fixes [SLOT: pass mark agreed with the pilot company]; manager milestones done [SLOT: pass mark agreed with the pilot company]. Day-90 report: these four measures. Final report, after the last intake passes Month 6: pooled retention against the company's usual rate, as a trend and not proof, or "Too few to tell yet (n of 30)" with the date when it will be ready if fewer than 30 people are pooled.
 - **Standard:** RM90 per new hire for six months of coverage. Companies pay for hiring volume, not total headcount, which is far cheaper than per-employee engagement tools.
 - **Agency plan:** a per-placement fee for agencies to offer "placement care" to their client companies. The employer grants the agency role per agency, for all its placements. The agency sees themes, the job-match card (which roles oversell the job) and retention for its own placements, pooled and at 5 or more people (retention from 30), and never replies, questions, escalations, names or personal data (spec 05 R48). HR enters hired and still-employed numbers per intake and agency.
 - **Cost to run:** AI cost is a few sen per answer; the main cost is support. Telegram messages are free.
@@ -409,7 +397,7 @@ The pitch follows the guide's suggested structure: 8–10 minutes in total inclu
 7. **Demo** (script below).
 8. **Testing and results.** κ by language, time-saved bar, practitioner ratings and quotes, limitations.
 9. **Responsible AI.** "What Sapa never does"; consent tiers; minimum 5; escalations go to HR, never handled by AI; PDPA 2024 and Malaysia's AI ethics principles; synthetic data only.
-10. **Impact and next step.** Break-even first: about one prevented early exit a year pays for Sapa (RM6,300 per early leaver against RM5,400 a year). Early leavers cost the demo company about RM75,600 a year. A prevented exit cannot be proven per person, so the pilot measures retention by intake. Ask for a pilot with one company and one agency: every new hire in three monthly intakes, each through its own Month 6, with pass marks set before it starts, a Day-90 report and a final report where retention honestly says "Too few to tell yet (n of 30)".
+10. **Impact and next step.** Break-even first: about two prevented early exits a year, out of 54, pay for Sapa (about RM9,700 per early leaver against RM18,000 a year). Early leavers cost Contoh GBS about RM522,000 a year, and the Group's September 2027 review asks for 85% six-month retention, against 73% today. A prevented exit cannot be proven per person, so the pilot measures retention by intake. Ask for a pilot with one company and one agency: every new hire in three monthly intakes, each through its own Month 6, with pass marks set before it starts, a Day-90 report and a final report that shows pooled retention as a trend, not proof.
 
 ### Demo script (2 minutes)
 
@@ -429,7 +417,7 @@ These are the questions HR and recruitment judges are most likely to ask, each w
 8. **"What if the AI misses a harassment report?"** Two independent detectors (keyword list and AI), tuned to miss nothing even at the cost of false alarms. We report recall as "k of n" with a 95% interval, plus the false alarms from Manglish hyperbole such as "OT everyday, mati la". The bot gives a fixed safe message and HR follows up within one working day. The employer's legal duty to inquire stays with HR.
 9. **"Is this PDPA-compliant?"** It is designed for it: explicit consent, purpose limits, retention limits, deletion and export, encryption and an audit log. As a vendor we are a data processor; the employer is the controller. We would get a legal review before commercial use.
 10. **"How do you know it reduces turnover?"** Not yet proven. The prototype shows earlier detection and faster action. A prevented exit cannot be proven per person. The next step is a pilot: three monthly intakes, each through its own Month 6, because one intake is too small to show an outcome. The pass marks are set before it starts. At Day 90 the report shows response rate, days from reply to fix, score change after fixes against other teams and manager milestones done. At the end it shows retention against the company's own baseline with the date when the pooled figure will be ready, as a trend and not proof.
-11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. One prevented early leaver (about RM6,300, at 21% of a RM30,000 salary) pays for a full year at the demo company's volume (60 × RM90 = RM5,400).
+11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. At Contoh GBS's volume a year costs 200 × RM90 = RM18,000. Two prevented early leavers (about RM9,700 each, our estimate from lost training pay and second agency fees) pay for it.
 12. **"Why would a recruitment agency care?"** Agencies commonly guarantee a free replacement for 1–3 months. Early warning inside that window protects their margin and gives clients a reason to choose them. An agency can log in with the `agency` role: it sees themes, the job-match card and retention for its own placements, pooled and at 5 or more people, and never replies, names or personal data (spec 05 R48). The job-match card shows which roles oversell the job, which is the number an agency most wants.
 13. **"Could managers use this to punish people?"** Managers never see individual answers without consent, the terms forbid disciplinary use, every view is logged, and HR can remove a manager's access.
 
@@ -455,9 +443,9 @@ The biggest risks are low participation and managers not following through, and 
 
 - Use only Aon's 2025 figure (18.2%); its releases disagree on earlier years.
 - Enboarder (vendor; Western HR leaders) and Insight Global (US) are not Malaysian employee data.
-- The ROI uses the Center for American Progress median of about 21% of salary. It is US data from 2012. Gallup's 0.5–2× range has no published method, so the ROI does not use it.
+- The ROI's cost per leaver is the team's own estimate from fictional company numbers ([09](09-client-story.md#money-for-slide-10)). The Center for American Progress figures (16–21% of salary) are only a cross-check. They are US data from 2012. Gallup's 0.5–2× range has no published method, so the ROI does not use it.
 - Competitor prices are mostly third-party estimates.
-- The 2-in-10 early-leaver rate comes from one vendor survey, and only its headline was read. The RM2,500 average salary is an assumption. Replace both with interview data.
+- The Employment Hero 23% is what business leaders expect to lose, not a measured rate, and only a summary was read. Contoh GBS's 27%, its salaries and its other company numbers are fictional, chosen inside sourced ranges ([09](09-client-story.md)). Replace them with interview data.
 - The 3–6 month probation period is common practice, not a legal requirement.
 
 **Open questions before the final:**

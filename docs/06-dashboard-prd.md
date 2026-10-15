@@ -1,4 +1,4 @@
-# Design spec — Sapa web app (HR and manager)
+# Design spec — Sapa web app (HR)
 
 *As of 15 Oct 2026. This is the high-level design brief for the Sapa web app. It explains the situation, the problem, the goal, the people who use the app and the main user flows. It does not fix screens, layouts or components. Those are worked out later in conversation between Abraham and the design agent, and section 8 only gives a starting point for that conversation. Behaviour and data rules come from the [implementation spec](05-implementation-spec.md); rule IDs (R1–R53) point there. The earlier screen-by-screen draft is kept in [archive/06-dashboard-prd-detailed-v1.md](archive/06-dashboard-prd-detailed-v1.md) as a source of ideas, not as a requirement.*
 
@@ -27,7 +27,7 @@ Where something is unclear or two goals pull against each other, ask. Detail is 
 
 The guide's success question for Challenge 4 is: *"Can HR understand emerging employee problems earlier and take a useful action before the issue becomes more serious?"* The guide also says judges should immediately understand what goes in, what AI does, what comes out and what a person does next.
 
-**The real-world setting.** The prototype is built as if for a real Malaysian company. The reference customer is a 300-person factory that hires every month. HR is two people. Many new hires work on the shop floor with no company email. They write in Bahasa Malaysia, English or a mix of both (Manglish). Supervisors were promoted for technical skill and are rarely trained in onboarding.
+**The real-world setting.** The prototype is built as if for a real Malaysian company: Contoh GBS, a fictional 650-staff shared services centre in Bayan Lepas, Penang ([09](09-client-story.md)). It hires 15–18 people every month, and more than 1 in 4 leave before Month 6. Site HR is five people, and only one works on new hires. New hires get company email and system access only on Day 3–5, and about 40% work the Europe shift while HR works days. They write in English, Bahasa Malaysia, Manglish and Chinese. Team leads were promoted for being good at the work and are rarely trained to onboard.
 
 ## 2. The HR problem
 
@@ -43,7 +43,7 @@ Sapa is a chat bot (Telegram) plus a web app. The core loop is: *check-in → AI
 
 - **The bot (not part of this spec).** A new hire scans a QR code on Day 1, agrees to take part, and chooses who may read their words: HR only (the default) or HR and their manager. Over six months the bot sends seven short check-ins. Each takes about a minute. The new hire can skip, stop or delete everything at any time, from Telegram's `/` command menu. Between check-ins the new hire can ask the bot questions about the company.
 - **The AI.** It reads each reply and labels the problem area it is about (role clarity, manager support, belonging, onboarding and training, workload), with the exact words it used as evidence. It spots serious matters (harassment, bullying, safety, self-harm, signs of forced labour) and sends them to HR. It writes short summaries over counts the database already made, and drafts suggested fixes. It answers new hires' questions only from the HR handbook, labelled as AI and with the handbook sentence it used; for important matters it gives only the right contact. It never scores people, reads emotions, predicts who will quit, or writes any other words to an employee. It writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies (R31, R40).
-- **The web app (this spec).** It is where people turn replies into action. HR uses it to see what new hires share, check the AI's reading, decide a fix and follow it through. Managers use it, alongside Telegram, to receive and complete fixes. New hires never use it; they see its results only as messages from the bot.
+- **The web app (this spec).** It is where people turn replies into action. HR uses it to see what new hires share, check the AI's reading, decide a fix and follow it through. Managers and new hires never use it. Managers receive and complete fixes in Telegram. New hires see its results only as messages from the bot.
 
 The full loop, from the new hire's side: *I answer a check-in → later the bot tells me "Update from HR: your team now agrees a priority list every Monday" → at my next check-in it asks the same 1–5 question as before, and HR sees whether the score moved.* That closing message and recheck are what make Sapa different from a survey tool, and the web app is what makes them happen.
 
@@ -55,15 +55,15 @@ Collecting replies is worth nothing unless HR can see the pattern, trust it, act
 - **Patterns against people.** The app has to show shared problems while protecting individuals. In a small team, a count of 1 or a quoted sentence can reveal who said it.
 - **Action against exposure.** Most fixes go through a manager. Asking a manager to fix something must not tell them who complained, unless that person chose to share.
 - **Calm against urgent.** Most replies are routine. A few are serious and need fast, careful handling. The two must not blur.
-- **Real product against stage demo.** The app must suit a real two-person HR team, and also tell its story to judges on a projector in about 2 minutes.
+- **Real product against stage demo.** The app must suit a real HR team where one person handles every new hire, and also tell its story to judges on a projector in about 2 minutes.
 
 ## 5. The people
 
-**HR (sample persona: Aishah, HR executive).** Desktop, busy, not a data analyst. Comes to the app to find out what needs her, not to explore data. Needs to understand the state of new hires in under a minute, trust what the AI says, and get a fix assigned without a separate privacy checklist. Must never feel she is spying on people.
+**HR (sample persona: Aishah, HR executive).** Desktop, busy, not a data analyst. Onboards 15–18 people a month and does every exit interview. Comes to the app to find out what needs her, not to explore data. Needs to understand the state of new hires in under a minute, trust what the AI says, and get a fix assigned without a separate privacy checklist. Must never feel she is spying on people. Her manager, Kavitha (site HR manager), uses the Impact view to show the Group a trend.
 
-**Manager (sample persona: Raj, production supervisor).** On the shop floor, phone in hand, already in Telegram. Needs to know what to do, why, and by when, and to close it in seconds. Should not be able to work out who said what. Needs to trust that Sapa is not a tool to judge him.
+**Manager (sample persona: Raj, team lead, Accounts Payable Asia).** Promoted from senior analyst; his team doubled to 22 with new Vietnam and Thailand work; on calls with country controllers much of the day, phone in hand, already in Telegram. Needs to know what to do, why, and by when, and to close it in seconds. Should not be able to work out who said what. Needs to trust that Sapa is not a tool to judge him.
 
-**New hire (sample persona: Mei Ling, graduate executive).** Never opens the web app, but is the person the app most affects. Every message she gets from Sapa passes through HR in the web app, and her privacy choices decide what everyone else can see.
+**New hire (sample persona: Mei Ling, Mandarin-speaking AP analyst).** Never opens the web app, but is the person the app most affects. Every message she gets from Sapa passes through HR in the web app, and her privacy choices decide what everyone else can see.
 
 **Judges.** See the app on a projector for about 2 minutes, then may ask to see more during Q&A. They are checking whether the AI is useful, whether people stay in charge, and whether the privacy claims are real.
 
@@ -74,8 +74,8 @@ Collecting replies is worth nothing unless HR can see the pattern, trust it, act
 These hold regardless of layout or flow. Each reflects a promise made to new hires or a judging criterion.
 
 1. **Shared problems, not people.** No per-person score, mood, risk, rank or colour-coding anywhere. No side-by-side ranking of teams or managers. A team's themes show only for one chosen team at 5 or more people (R51), and managers are told this in their "What I can see" note. *Why:* the moment the app can rank people, it becomes a watch list, new hires stop answering honestly, and the responsible-AI case collapses.
-2. **Numbers carry their base.** A count always shows how many people it is out of and over what period ("8 of 19 who answered, hired in the last 6 months"). Groups below the minimum size (5, R8) show an honest "not enough people yet" instead of a number. Managers see weekly snapshots only, with small counts shown as "fewer than 3" (R9). Impact figures say "Too few to tell yet" below 30 people and "a trend, not proof" (R42). *Why:* a bare number overclaims, and a small one identifies people.
-3. **AI output is always recognisable as AI, sits next to its evidence, and has a human control beside it.** HR can confirm or correct any label, and the record shows who decided. Each count shows how much of it HR reviewed ("8 of 19: 6 reviewed, 2 AI-confident"). The one sentence to use everywhere: SQL counts; the AI suggests labels; labels the AI is unsure about wait for HR; HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies. *Why:* this is the core of the "AI solution" and "human review" criteria, and it is how HR learns how far to trust the AI. A panel shows how often HR changed the AI's labels, so HR sees if it gets worse (R44).
+2. **Numbers carry their base.** A count always shows how many people it is out of and over what period ("24 of 65 who answered, hired in the last 6 months"). Groups below the minimum size (5, R8) show an honest "not enough people yet" instead of a number. Managers see weekly snapshots only, with small counts shown as "fewer than 3" (R9). Impact figures say "Too few to tell yet" below 30 people and "a trend, not proof" (R42). *Why:* a bare number overclaims, and a small one identifies people.
+3. **AI output is always recognisable as AI, sits next to its evidence, and has a human control beside it.** HR can confirm or correct any label, and the record shows who decided. Each count shows how much of it HR reviewed ("24 of 65: 17 reviewed, 7 AI-confident"). The one sentence to use everywhere: SQL counts; the AI suggests labels; labels the AI is unsure about wait for HR; HR reviews the evidence before any action. The AI writes to a new hire only two things, each labelled and each about something they asked for: a handbook answer that quotes a page HR published and, with `/myanswers`, the AI's reading of their own replies. *Why:* this is the core of the "AI solution" and "human review" criteria, and it is how HR learns how far to trust the AI. A panel shows how often HR changed the AI's labels, so HR sees if it gets worse (R44).
 4. **Who can see what is visible where it matters.** A manager reads a new hire's words only if that person chose to share (R6). An action that came from someone who did not share must not reveal them, and the app prevents it rather than relying on HR to notice (R10). The manager's alert also waits for the weekly snapshot day, so its timing cannot point to one person (R10). *Why:* this is the promise that makes new hires willing to answer.
 5. **Serious concerns are HR-only and kept apart from routine work** (R7). They never reach managers, never count in themes, and get a calm, careful treatment with a clear response clock. *Why:* someone reporting harassment by their supervisor must be able to trust that the supervisor will not see it.
 6. **Every message a new hire receives is approved by HR, or is a fixed text a named checker approved with its language pack (R46), and HR sees exactly what it will look like** (R11, R28). There are two exceptions, each labelled as AI and each about something the person asked for: a handbook answer, which quotes a page HR published (R31); and the AI's reading of a person's own replies, which only that person sees, on request (R40). *Why:* the AI never speaks to employees in words HR has not stood behind.
@@ -96,12 +96,12 @@ These flows describe what each person is trying to get done, and in roughly what
 - **Review serves decisions, not inbox zero.** Two HR staff cannot read and approve every reply. They should check the evidence behind a pattern when they are about to act on it, and handle the cases the AI flagged as uncertain. Everything else can stay as an AI suggestion until it matters.
 - **Pattern to fix is one continuous path.** Seeing a problem, checking it, drafting a fix, choosing who does it, and approving what new hires will hear should feel like one motion. Privacy checks happen inside that motion, not as a separate step.
 - **The end of the loop comes to HR.** HR should not have to go looking to learn that a manager finished a fix, that new hires were told, or that the recheck shows improvement.
-- **Managers live in chat (Telegram).** The web app is the fallback and the place to look back, not the place managers must go.
+- **Managers live in chat (Telegram).** They have no web pages. Everything a manager needs comes to them in Telegram.
 
 ### Flow A — HR's regular check (the core loop)
 
 1. **Arrive.** HR sees what needs them and a one-glance sense of how the current new hires are doing.
-2. **Notice a shared problem.** For example: role clarity at Day 14, 8 of 19 who answered (19 people in the group answered Day 14; 8 of them were labelled role clarity), rising.
+2. **Notice a shared problem.** For example: role clarity at Day 14, 24 of 65 who answered (65 people in the group answered Day 14; 24 of them were labelled role clarity), rising.
 3. **Check it is real.** HR looks at the replies behind the count, with the AI's evidence highlighted in each person's own words. They correct any label that is wrong, and the count reflects the correction.
 4. **Decide a fix.** HR starts from an AI draft based on a library of actions that shows how each worked here against other teams (R43), edits it, and chooses how wide it goes (one person who agreed to share, a manager's team, or a whole intake) and who owns it. The app shows who will see what, and stops choices that would reveal someone.
 5. **Approve what new hires will hear.** HR approves a short note, in Bahasa Malaysia, English and Chinese, that new hires will receive when the fix is done, and sees it as they will. Or HR chooses no note and records why.
@@ -125,7 +125,7 @@ A reply mentions harassment, bullying, a safety risk, self-harm, or a sign of fo
 3. He does the work.
 4. He marks it done with one line on what he did. He is told that only HR sees that line.
 
-Raj can do all of this in Telegram. The web app gives him the same actions, a list of his fixes, a weekly team snapshot, and a plain note on what he can and cannot see.
+Raj does all of this in Telegram. The bot also sends him a weekly team snapshot and a plain note on what he can and cannot see. He has no web pages.
 
 ### Flow E — The loop closes for new hires
 
@@ -143,7 +143,7 @@ Low frequency, but visible to judges as proof of governance. HR can answer "who 
 
 New hires ask the bot things like "how do I claim OT?". The bot answers from the handbook HR wrote, or says "I don't know yet" and logs the question. HR never sees who asked or their exact words. Once 3 different new hires ask the same thing within 30 days, HR sees it as a neutral line, with how many asked and whether the handbook answered it. Smaller groups show only as one total ("5 other questions from fewer than 3 people"). Questions on important matters are counted only by topic (R34). The privacy story: 5 people for themes, 3 for questions, because a question is not about the asker.
 
-1. **Notice a gap.** A group reaches 3 different askers in 30 days and comes to HR's attention, for example "Where can I park my motorbike? 3 asked, not in the handbook". Groups the handbook already answers are shown too, as proof the handbook is working.
+1. **Notice a gap.** A group reaches 3 different askers in 30 days and comes to HR's attention, for example "Where can I park my motorbike? 7 asked, not in the handbook". Groups the handbook already answers are shown too, as proof the handbook is working.
 2. **Fill it.** HR writes or edits a handbook page in English and Bahasa Malaysia, sees it as a draft the bot cannot use, and publishes it. The next new hire who asks gets an answer.
 3. **Keep it tidy.** HR sees the handbook as a short folder of pages (pay, leave, onboarding, facilities), and which pages answer which groups.
 
@@ -178,11 +178,11 @@ The demo should be the real flows A, B, D, E and J, compressed, not a separate s
 | Beat | About | What judges must see |
 | --- | --- | --- |
 | 1. Check-in | 20 s | The driver jumps to Day 14; the phone gets the check-in; a teammate answers in Manglish |
-| 2. One reply, one person | 30 s | The reply appears on HR's screen within seconds with its evidence highlighted, the AI label and the note "New labels wait for HR during calibration". HR clicks "Confirm label", and role clarity at Day 14 moves from 7 of 18 (5 reviewed, 2 AI-confident) to 8 of 19 (6 reviewed, 2 AI-confident). On the same reply HR marks follow-up and offers Mei Ling a private chat; beside it, the top unanswered question ("Where can I park my motorbike? 3 asked") |
+| 2. One reply, one person | 30 s | The reply appears on HR's screen within seconds with its evidence highlighted, the AI label and the note "New labels wait for HR during calibration". HR clicks "Confirm label", and role clarity at Day 14 moves from 23 of 64 (16 reviewed, 7 AI-confident) to 24 of 65 (17 reviewed, 7 AI-confident). On the same reply HR marks follow-up and offers Mei Ling a private chat; beside it, the top unanswered question ("Where can I park my motorbike? 7 asked") |
 | 3. The pattern | 20 s | She taps Yes on the phone; HR sees a contact task and closes it. HR drafts a fix from the Role clarity card, which shows how the fix worked against other teams. "Mei Ling only" is blocked because she chose HR only, so HR picks "Raj's team", approves the pre-filled note and assigns it to Raj |
 | 4. Manager acts | 15 s | Raj accepts and marks it done; HR's screen shows it happen |
 | 5. Loop closes | 15 s | The "Update from HR" note arrives on the phone; the clock jumps to the Day 30 check-in, whose first question is the neutral 1–5 one; the teammate taps 4 |
-| 6. Outcome | 15 s | An earlier fix shows "Role clarity, Raj's team +1.3, other teams +0.1 in the same weeks". The Impact view shows "Top reasons leavers gave: role clarity 2 of 5" beside "Sapa found role clarity at Day 14", and pooled retention as one line, "a trend, not proof" |
+| 6. Outcome | 15 s | An earlier fix shows "Role clarity, Raj's team +1.3, other teams +0.1 in the same weeks". The Impact view shows "Top reasons leavers gave: role clarity 5 of 12" beside "Sapa found role clarity at Day 14", and pooled retention as one line, "a trend, not proof" |
 
 Demo controls (move the clock, reset, link status lights, a live log of the AI steps) exist only in demo mode. A short "How Sapa works" explanation (the loop, what AI does versus what people decide, who sees what, what Sapa never does) helps judges during Q&A.
 
@@ -191,25 +191,27 @@ Demo controls (move the clock, reset, link status lights, a live log of the AI s
 None of this is decided. It is here so the first conversation does not start from nothing.
 
 - **Possible areas of the HR app:** a home that leads with what needs attention; shared problems (themes) with their evidence; replies; serious concerns; fixes and their progress; people and invites; impact, job match per role, manager milestones and AI-quality numbers (useful for pitch slides 8 and 10); questions new hires ask; the handbook; language packs; agency access and the worker-voice export; how Sapa works; settings; audit log. Some of these could merge. For example, replies might live inside themes rather than in a separate inbox.
-- **Possible areas of the manager app:** my fixes; my milestone nudges; weekly team snapshot; what I can and cannot see; link Telegram. Phone-first.
 - **The moment that probably matters most:** a single reply shown with the person's words, the AI's reading and evidence, and HR's decision, all in one view. It answers the judges' "what goes in, what AI does, what comes out, what a person does" in one look.
 - **Tone:** calm, warm and trustworthy, a support tool rather than a security console. Red could be reserved for serious concerns only. AI output could carry one consistent marker that changes once a person has reviewed it.
-- **Devices:** HR on a laptop (about 1280–1440 px). Managers on a phone. The demo on a 1280×720 projector.
+- **Devices:** HR on a laptop (about 1280–1440 px). Managers see only Telegram on a phone. The demo on a 1280×720 projector.
 - **Build context:** the app is planned on Next.js with shadcn/ui and Tailwind, so designs that map to standard shadcn components are fastest to build. This is a build convenience, not a limit on design thinking.
 - **If time runs short:** design the moments in the demo first (flows A, B, D and E), then serious concerns, then the rest.
 
 ## 9. Sample data (fictional)
 
-- **Organisation:** Contoh Manufacturing Sdn Bhd, 300 staff, Kuala Lumpur time.
-- **People:** HR: Aishah (HR executive), Daniel (HR admin). Managers: Raj (Production), Siti (Quality). New hires in the October intake (Production): Mei Ling (the live demo hire, writes Manglish), Hafiz, Arif, Priya, Nurul, Kumar.
-- **Demo starting point:** 30 hires (29 synthetic and the live hire) from the last six monthly intakes (about 5 a month; an estimate: about 4–5 a month from nearby datasets, see [09](09-cohort-size-estimate.md). Check it with one real HR contact); 18 have answered Day 14; role clarity is 7 of 18 (5 reviewed, 2 AI-confident). After Mei Ling replies (her label waits for HR during calibration) and HR confirms it, the card becomes 8 of 19 (6 reviewed, 2 AI-confident). Raj's team (Production) has a weekly snapshot, taken before her reply, of 4 of 9 who answered naming role clarity. Her October intake alone has only 4 answers, so its own view shows "Not enough people yet (4 of 5 needed)".
-- **Mei Ling's reply:** "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu." Evidence: "tak tahu mana nak buat dulu". AI summary: "Has several urgent tasks and is unsure which to do first."
-- **Other replies:** "Saya belum dapat akses sistem SAP lagi." (onboarding). "My buddy has been really helpful this week." (going well). "Every day OT until 9pm, very tired lah." (workload).
-- **The fix:** "Weekly priority list every Monday", owned by Raj, for Raj's team. HR starts it from the Role clarity card and not from Mei Ling's reply. The library shows "Used 3 times here. Role clarity rose 1.0 more than in other teams (14 people)". Note to new hires (EN): "Your team now agrees a top-3 priority list with your supervisor every Monday." (BM): "Pasukan anda kini menetapkan 3 keutamaan utama bersama penyelia setiap Isnin."
-- **Recheck:** "How clear are you on what is expected of you this week? (1–5)" Mei Ling taps 4. The live fix shows "Not enough answers yet (1 of 5)". An earlier fix, "Share the written job scope" (Raj's team, done 8 September), shows Role clarity 2.5 → 3.8 for 5 people in scope and 2.7 → 2.8 for 7 new hires outside it (+1.3 against +0.1).
-- **Job match:** Production operator, 6 of 11 said "not really" at Day 14. Other roles have fewer than 5 answers, so they show "Not enough people yet". Mei Ling is a Production executive.
-- **Questions:** "How do I claim overtime?" 5 asked, answered by `pay/overtime.md`. "Where can I park my motorbike?" 3 asked, not in the handbook, brought to HR's attention. "When is my first payday?" 2 asked, so it shows only inside the "fewer than 3" total.
-- **Impact:** six completed intakes, November 2025 to April 2026 (March 6 hired, April 5 hired, 31 hired in all): 26 of 31 still employed at Month 6, against a usual 4 of 5, shown as "a trend, not proof". Median 9 days from reply to fix done. Manager milestones done: 70 of 93. Top reasons leavers gave (5 answers): role clarity 2, onboarding and training 2, workload 1, beside role clarity as the top Day 14 theme Sapa found. Numbers are fictional.
+The company and its people are in [09](09-client-story.md). The demo numbers are in [05 "Demo setup"](05-implementation-spec.md#demo-setup); the points below are the ones the screens show.
+
+- **Future year:** the demo shows a year that has not happened yet. Every HR screen in demo mode carries the banner "This is a future year: what HR would see one year into Sapa. These numbers are fictional."
+- **Organisation:** Contoh GBS (Contoh Global Business Services (Penang) Sdn Bhd), 650 staff, Kuala Lumpur time.
+- **People:** HR: Kavitha (site HR manager), Aishah (HR executive, the only one on new hires), Daniel (HR admin), Farah (recruiter), Jason (HR business partner). Managers: Raj (Accounts Payable Asia), Siti (Order-to-Cash Asia). New hires in the October intake: Mei Ling (the live demo hire, Mandarin-speaking AP analyst in Raj's team, writes Manglish), Hafiz (IT service desk, Europe shift, writes BM), Arif, Priya, Nurul, Kumar.
+- **Demo starting point:** 100 hires (99 synthetic and the live hire) from the last six monthly intakes; 64 have answered Day 14; role clarity is 23 of 64 (16 reviewed, 7 AI-confident). After Mei Ling replies (her label waits for HR during calibration) and HR confirms it, the card becomes 24 of 65 (17 reviewed, 7 AI-confident). Raj's team has a weekly snapshot, taken before her reply, of 5 of 9 who answered naming role clarity. The Korean desk has only 3 answers, so its team view shows "Not enough people yet (3 of 5 needed)".
+- **Mei Ling's reply:** "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu." Evidence: "tak tahu mana nak buat dulu". AI summary: "Has several urgent tasks and is unsure which to do first." (Three country controllers each marked their invoices urgent.)
+- **Other replies:** "Saya belum dapat akses sistem SAP lagi." (onboarding). "My buddy has been really helpful this week." (going well). "Month-end close, OT until 11pm every day, very tired lah." (workload). "Europe shift, I never see my team lead free." (manager support).
+- **The fix:** "Weekly priority list every Monday", owned by Raj, for Raj's team. HR starts it from the Role clarity card and not from Mei Ling's reply. The library shows "Used 3 times here. Role clarity rose 1.0 more than in other teams (41 people)". Note to new hires (EN): "Your team now agrees a top-3 priority list with your team lead every Monday." (BM): "Pasukan anda kini menetapkan 3 keutamaan utama bersama ketua pasukan setiap Isnin."
+- **Recheck:** "How clear are you on what is expected of you this week? (1–5)" Mei Ling taps 4. The live fix shows "Not enough answers yet (1 of 5)". An earlier fix, "Share the written job scope" (Raj's team, done 8 September), shows Role clarity 2.5 → 3.8 for 6 people in scope and 2.7 → 2.8 for 44 new hires outside it (+1.3 against +0.1).
+- **Job match:** Accounts payable analyst, 12 of 26 said "not really" at Day 14 (the agency advert said "Finance Analyst"). Other roles have fewer than 5 answers, so they show "Not enough people yet". Mei Ling's role is "AP analyst (Mandarin)", a different role.
+- **Questions:** "How do I claim overtime?" 11 asked, answered by `pay/overtime.md`. "Where can I park my motorbike?" 7 asked, not in the handbook, brought to HR's attention. "When is my first payday?" 2 asked, so it shows only inside the "fewer than 3" total.
+- **Impact:** six completed intakes, November 2025 to April 2026 (99 hired in all): 80 of 99 still employed at Month 6, against a usual 73 in 100, shown as "a trend, not proof". The Group's target is 85. Median 9 days from reply to fix done. Manager milestones done: 231 of 297. Top reasons leavers gave (12 answers): role clarity 5, onboarding and training 4, workload 2, belonging 1, beside role clarity as the top Day 14 theme Sapa found. Numbers are fictional.
 
 ## 10. Out of scope
 
@@ -222,8 +224,7 @@ None of this is decided. It is here so the first conversation does not start fro
 
 ## 11. Open questions for the design discussion
 
-1. Does Raj close fixes in Telegram, in the web app, or both? The demo currently uses Telegram.
-2. How much must HR review before a theme counts? The implementation spec counts labels that HR reviewed or that the AI was confident about. The design should make that difference visible without making HR review everything.
-3. Should the HR home lead with "what needs you", with the loop numbers as support (recommended above), or lead with the loop numbers?
-4. How live should HR's view be outside the demo: instant updates, or a calmer daily summary?
-5. Do managers see the full "How Sapa works" explanation or a shorter version?
+1. How much must HR review before a theme counts? The implementation spec counts labels that HR reviewed or that the AI was confident about. The design should make that difference visible without making HR review everything.
+2. Should the HR home lead with "what needs you", with the loop numbers as support (recommended above), or lead with the loop numbers?
+3. How live should HR's view be outside the demo: instant updates, or a calmer daily summary?
+4. Do managers see the full "How Sapa works" explanation or a shorter version?

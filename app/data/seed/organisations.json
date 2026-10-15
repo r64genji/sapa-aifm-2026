@@ -1,7 +1,7 @@
 [
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "name": "Contoh Manufacturing Sdn Bhd",
+    "name": "Contoh Global Business Services (Penang) Sdn Bhd",
     "time_zone": "Asia/Kuala_Lumpur",
     "hr_language": "en",
     "min_group_size": 5,
@@ -11,11 +11,11 @@
     "snapshot_weekday": 1,
     "escalation_contacts": {
       "general": [
-        "HR (Nurul Aisyah): 03-5555 0100",
+        "HR (Aishah): 04-5555 0100",
         "Talian HEAL (mental health): 15555",
         "Befrienders Kuala Lumpur: 03-7627 2929"
       ],
-      "forced_labour_indicator": ["HR (Nurul Aisyah), private line: 03-5555 0101"]
+      "forced_labour_indicator": ["HR (Aishah), private line: 04-5555 0101"]
     }
   }
 ]

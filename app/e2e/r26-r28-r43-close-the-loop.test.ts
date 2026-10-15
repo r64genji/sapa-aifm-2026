@@ -68,7 +68,7 @@ before(async () => {
   await onboard(p1, { code_name: "Hire 1" });
   await onboard(p2, { code_name: "Hire 2", language: "ms" }, "Bahasa Malaysia", ms.agree);
   for (const [chat, name] of [[p3, "Hire 3"], [p4, "Hire 4"], [p5, "Hire 5"]] as const) await onboard(chat, { code_name: name });
-  await onboard(p6, { code_name: "Hire 6", team: "Warehouse" });
+  await onboard(p6, { code_name: "Hire 6", team: "IT Service Desk" });
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
   await baseline(p1, [3, 2, 5], "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
   await baseline(p2, [4, 3, 5], "Tak ada orang beritahu saya siapa nak tanya");
@@ -126,7 +126,7 @@ test("R28: an action is not assigned without an approved note in English and Bah
   main = await draft("MANAGER_SUPPORT", 3, "Weekly one-to-one", mainNote);
   const row = await card(main);
   assert.deepEqual(row.draft_notes, mainNote);
-  assert.equal((await setTeam(main, "Production")).status, 200);
+  assert.equal((await setTeam(main, "Accounts Payable Asia")).status, 200);
 
   assert.equal((await action(main, "/assign", { owner: "hr" })).status, 422);
   assert.equal((await action(main, "/notice", { notes: { en: mainNote.en, ms: " " } })).status, 422);
@@ -134,7 +134,7 @@ test("R28: an action is not assigned without an approved note in English and Bah
   assert.equal((await action(main, "/assign", { owner: "hr" })).status, 422);
 
   noNotice = await draft("WORKLOAD", 9, "Workload check", droppedNote);
-  assert.equal((await setTeam(noNotice, "Warehouse")).status, 200);
+  assert.equal((await setTeam(noNotice, "IT Service Desk")).status, 200);
   assert.equal((await action(noNotice, "/notice", { no_notice_reason: "The team already knows" })).status, 200);
   assert.equal((await action(noNotice, "/assign", { owner: "hr" })).status, 200);
 
@@ -144,7 +144,7 @@ test("R28: an action is not assigned without an approved note in English and Bah
 
 test("R28: a dismissed action sends nothing", async () => {
   const dismissed = await draft("BELONGING", 5, "Team lunch", droppedNote);
-  await setTeam(dismissed, "Production");
+  await setTeam(dismissed, "Accounts Payable Asia");
   assert.equal((await action(dismissed, "/notice", { notes: droppedNote })).status, 200);
   assert.equal((await action(dismissed, "/assign", { owner: "hr" })).status, 200);
   assert.equal((await action(dismissed, "/dismiss", { reason: "Handled at orientation" })).status, 200);

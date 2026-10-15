@@ -117,10 +117,10 @@ export async function addHire(fields: Record<string, string>) {
     headers: { authorization: `Bearer ${await hrToken()}`, "content-type": "application/json" },
     body: JSON.stringify({
       code_name: "New hire",
-      team: "Production",
+      team: "Accounts Payable Asia",
       manager_id: "6f1c2a3e-0000-4000-8000-000000000101",
       start_date: "2026-10-14",
-      role: "Production operator",
+      role: "Accounts payable analyst",
       language: "en",
       ...fields,
     }),
