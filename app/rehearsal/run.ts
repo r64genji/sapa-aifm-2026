@@ -28,9 +28,10 @@ async function json(res: Response, expected: number, label: string) {
 async function resetDemo() {
   const res = await fetch(`${appUrl}/api/demo/reset`, {
     method: "POST",
-    headers: { authorization: `Bearer ${process.env.DISPATCH_SECRET}` },
+    headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
-  await json(res, 200, "demo reset");
+  const { invites } = await json(res, 200, "demo reset");
+  return String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1];
 }
 
 const roleClarity = async () => {
@@ -41,8 +42,7 @@ const roleClarity = async () => {
 const board = async () => (await json(await hrRequest("/api/hr/actions", "GET"), 200, "action board")) as Record<string, any>[];
 
 async function run() {
-  await resetDemo();
-  await link(chat, "live-hire-invite");
+  await link(chat, await resetDemo());
   await tapData(chat, button("lang", "en"));
   await tapData(chat, button("consent", "yes"));
   await tapData(chat, button("visibility", "share_with_manager"));

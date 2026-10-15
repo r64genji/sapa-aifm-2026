@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import organisations from "@/data/seed/organisations.json";
 import language_packs from "@/data/seed/language_packs.json";
 import managers from "@/data/seed/managers.json";
@@ -15,6 +16,7 @@ import theme_snapshots from "@/data/seed/theme_snapshots.json";
 import action_library from "@/data/seed/action_library.json";
 import actions from "@/data/seed/actions.json";
 import users from "@/data/seed/users.json";
+import { inviteLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 async function seedUsers() {
@@ -42,9 +44,21 @@ async function seedUsers() {
 }
 
 export async function resetDemo() {
-  const { error } = await createAdminClient().rpc("reset_demo", {
-    seed: { organisations, language_packs, managers, people, consents, checkin_schedule, responses, ai_tags, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes },
+  const db = createAdminClient();
+  const { data: live, error: modeError } = await db.from("organisations").select("id").eq("demo_mode", false).limit(1);
+  if (modeError) throw modeError;
+  if (live.length > 0) return { error: "Demo mode is off", code: 409 };
+  const invited = people.map((person) =>
+    person.synthetic || person.invite_used_at ? person : { ...person, invite_token: randomBytes(16).toString("base64url") },
+  );
+  const { error } = await db.rpc("reset_demo", {
+    seed: { organisations, language_packs, managers, people: invited, consents, checkin_schedule, responses, ai_tags, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes },
   });
   if (error) throw error;
   await seedUsers();
+  return {
+    invites: invited
+      .filter((person) => person.invite_token && !person.invite_used_at)
+      .map((person) => ({ code_name: person.code_name, invite_link: inviteLink(person.invite_token!) })),
+  };
 }
