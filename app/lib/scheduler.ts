@@ -17,14 +17,16 @@ export async function dispatch() {
   const claims = data as Claim[];
   const { data: rechecks, error: rechecksError } = await createAdminClient()
     .from("checkin_schedule")
-    .select("id, recheck_driver")
+    .select("id, recheck_driver, touchpoint")
     .in("id", claims.map((claim) => claim.schedule_id));
   if (rechecksError) throw rechecksError;
   for (const claim of claims) {
     const person = { language: claim.language };
-    const driver = rechecks.find((row) => row.id === claim.schedule_id)?.recheck_driver ?? null;
+    const row = rechecks.find((r) => r.id === claim.schedule_id)!;
     const replies =
-      claim.kind === "reminder" ? checkinReminder(person, claim.progress, driver) : checkinStart(person, driver);
+      claim.kind === "reminder"
+        ? checkinReminder(person, claim.progress, row.recheck_driver, row.touchpoint)
+        : checkinStart(person, row.recheck_driver, row.touchpoint);
     for (const reply of replies) {
       if (!(await send(claim.chat_id, reply))) break;
     }

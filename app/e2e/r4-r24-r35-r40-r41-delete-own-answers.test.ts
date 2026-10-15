@@ -84,6 +84,9 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await tap(live, "4");
   await tap(live, "3");
   await tap(live, "5");
+  await tap(live, "3");
+  await tap(live, "3");
+  await tap(live, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const [queued] = await (await hrRequest("/api/hr/queue", "GET")).json();
@@ -112,6 +115,8 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
     [en.myAnswers.challenged],
   );
   assert.deepEqual(await card("ROLE_CLARITY"), { n: 7, m: 18 });
+  const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");
+  assert.deepEqual(challengeAudit, [{ actor: "new_hire", target: queued.id }]);
   const challenged = (await (await hrRequest("/api/hr/queue", "GET")).json()).find((r: { id: string }) => r.id === queued.id);
   assert.equal(challenged.note, "Challenged by new hire");
   assert.equal(challenged.status, "needs_review");
@@ -199,6 +204,9 @@ test("R41: only an HR admin can send a hire's data, only to that hire, only with
   await tap(exported, "4");
   await tap(exported, "3");
   await tap(exported, "5");
+  await tap(exported, "3");
+  await tap(exported, "3");
+  await tap(exported, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(exported, reply);
   await scriptModel("omniroute", [

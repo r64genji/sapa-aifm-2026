@@ -69,6 +69,9 @@ before(async () => {
     await tap(chat, "4");
     await tap(chat, "3");
     await tap(chat, "5");
+    await tap(chat, "3");
+    await tap(chat, "3");
+    await tap(chat, "3");
   }
   for (const chat of [yes, noThanks, silent]) await twoReplies(chat);
   for (const chat of [plain, stopper]) {

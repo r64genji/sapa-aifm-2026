@@ -273,6 +273,9 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
   await tap(memo, "4");
   await tap(memo, "3");
   await tap(memo, "5");
+  await tap(memo, "3");
+  await tap(memo, "3");
+  await tap(memo, "3");
   await script(classifierTag());
   await ask(memo, checkinReply);
 

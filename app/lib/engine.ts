@@ -1,5 +1,5 @@
 import { managerChat } from "@/lib/actions";
-import { checkinButton, checkinText } from "@/lib/checkin";
+import { checkinButton, checkinText, skipCheckin } from "@/lib/checkin";
 import { exitButton, exitText, exitTickPrompt, needsExitTick, setExitTick } from "@/lib/exit";
 import { answerOffer } from "@/lib/offers";
 import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy";
@@ -49,16 +49,25 @@ function commandId(text: string, languages: Language[]): CommandId | undefined {
   return undefined;
 }
 
+const languageReply = (languages: Language[]): Reply => ({
+  text: languages.map((language) => packs[language].languagePrompt).join("\n"),
+  buttons: languages.map((language) => ({ label: packs[language].name, id: "lang", value: language })),
+});
+
+const visibilityReply = (language: Language): Reply => {
+  const pack = packs[language];
+  return {
+    text: pack.visibilityPrompt,
+    buttons: [
+      { label: pack.visibilityHrOnly, id: "visibility", value: "hr_only" },
+      { label: pack.visibilityHrManager, id: "visibility", value: "share_with_manager" },
+    ],
+  };
+};
+
 function prompt(person: Person, languages: Language[]): Reply[] {
   const pack = packs[person.language];
-  if (person.state === "invited") {
-    return [
-      {
-        text: languages.map((language) => packs[language].languagePrompt).join("\n"),
-        buttons: languages.map((language) => ({ label: packs[language].name, id: "lang", value: language })),
-      },
-    ];
-  }
+  if (person.state === "invited") return [languageReply(languages)];
   if (person.state === "consent_shown") {
     return [
       {
@@ -93,6 +102,11 @@ async function press(person: Person, id: string, value: string, languages: Langu
     await moveState(person, "invited", "consent_shown");
     return { replies: prompt({ ...person, language, state: "consent_shown" }, languages), menu: language };
   }
+  if (id === "lang" && person.state === "active" && languages.includes(value as Language)) {
+    const language = value as Language;
+    await setLanguage(person, language);
+    return { replies: [{ text: packs[language].help }], menu: language };
+  }
   if (id === "consent" && person.state === "consent_shown") {
     if (value === "no" && (await moveState(person, "consent_shown", "declined"))) {
       return { replies: [{ text: pack.declined }] };
@@ -100,17 +114,7 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      return {
-        replies: [
-          {
-            text: pack.visibilityPrompt,
-            buttons: [
-              { label: pack.visibilityHrOnly, id: "visibility", value: "hr_only" },
-              { label: pack.visibilityHrManager, id: "visibility", value: "share_with_manager" },
-            ],
-          },
-        ],
-      };
+      return { replies: [visibilityReply(person.language)] };
     }
   }
   if (
@@ -180,6 +184,11 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "declined") return none;
   if (input.kind === "button") return press(person, input.id, input.value, languages);
   if (command === "myanswers") return { replies: await myAnswers(person) };
+  if (person.state === "active" && command === "skip") {
+    return { replies: (await skipCheckin(person)) ? [{ text: packs[person.language].skipped }] : prompt(person, languages) };
+  }
+  if (person.state === "active" && command === "privacy") return { replies: [visibilityReply(person.language)] };
+  if (person.state === "active" && command === "language") return { replies: [languageReply(languages)] };
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };
   }

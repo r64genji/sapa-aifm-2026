@@ -34,6 +34,9 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, ...tag }) }]);
   await say(chat, text);
   await settle();

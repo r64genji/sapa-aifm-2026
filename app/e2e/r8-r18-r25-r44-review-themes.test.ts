@@ -28,7 +28,7 @@ const roleClarity = async (query = "") => {
 };
 
 const auditActions = async () => {
-  const { data } = await db.from("audit_log").select("action, target").order("at");
+  const { data } = await db.from("audit_log").select("action, target").neq("action", "grant_consent").order("at");
   return data!;
 };
 
@@ -55,6 +55,9 @@ test("R44, R8, R25: the live reply waits for HR, the card moves from 7 of 18 to 
   await tap(live, "4");
   await tap(live, "3");
   await tap(live, "5");
+  await tap(live, "3");
+  await tap(live, "3");
+  await tap(live, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 

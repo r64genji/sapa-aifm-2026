@@ -3,7 +3,7 @@ import { decrypt } from "@/lib/crypto";
 import { notReceiving, reachable, type Person } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
 import { packs, type Language } from "@/lib/packs";
-import { signal } from "@/lib/signal";
+import { audit, signal } from "@/lib/signal";
 import { send } from "@/lib/telegram";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -124,6 +124,7 @@ export async function challenge(person: Person, responseId: string): Promise<Rep
     .update({ status: "needs_review", challenged_at: (await now()).toISOString(), challenge_resolved_at: null })
     .eq("response_id", responseId);
   if (updateError) throw updateError;
+  await audit("new_hire", "challenge_tag", responseId);
   await signal(person.organisation_id, "cohort");
   await signal(person.organisation_id, "queue");
   return [{ text: packs[person.language].myAnswers.challenged }];

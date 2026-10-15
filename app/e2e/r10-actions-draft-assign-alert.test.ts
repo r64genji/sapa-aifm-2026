@@ -47,6 +47,9 @@ async function reply(chat: number, text: string) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text }) }]);
   await say(chat, text);
   await settle();
