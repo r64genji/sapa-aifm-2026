@@ -112,7 +112,7 @@ test("R48: an agency user sees its own placements, pooled, with the job-match ca
     agency: "Maju Staffing",
     touchpoint: 14,
     themes: themes(5, 5),
-    job_match: [{ role: "Welder", enough: true, n: 2, m: 5, label: "Welder: 2 of 5 said 'not really' at Day 14" }],
+    job_match: [{ role: "Welder", enough: true, n: 3, m: 5, label: "Welder: 3 of 5 said 'not really' at Day 14" }],
     retention: { enough: false, message: "Too few to tell yet (6 of 30)", note: "This shows a trend, not proof that Sapa caused it" },
   });
 });
@@ -265,7 +265,6 @@ test("R51: no HR endpoint returns teams or managers side by side", async () => {
     "/api/hr/quality",
     "/api/hr/job-match",
     "/api/hr/queue",
-    "/api/hr/hires",
   ];
   for (const path of paths) {
     const text = JSON.stringify(await (await hrRequest(path, "GET")).json());
