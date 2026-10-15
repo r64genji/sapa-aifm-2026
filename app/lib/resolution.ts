@@ -30,7 +30,7 @@ const label = (driver: string) => {
 const signed = (value: number) => `${value < 0 ? "-" : "+"}${Math.abs(value).toFixed(1)}`;
 const change = (side: Side) => side.after - side.before;
 
-async function members(action: Resolvable, eligible: boolean) {
+export async function members(action: Resolvable, eligible: boolean) {
   const db = createAdminClient();
   let query = db.from("people").select("id, language").eq("organisation_id", action.organisation_id);
   if (action.scope_type === "person") query = query.eq("id", action.scope_person_id!);
@@ -118,7 +118,7 @@ async function liveScore(action: Resolvable): Promise<Score> {
   return { scope: side(scope), other: side(other) };
 }
 
-const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
+export const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
 
 async function scopeLabel(action: Resolvable) {
   const db = createAdminClient();

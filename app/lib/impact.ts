@@ -107,6 +107,7 @@ export async function impact(organisationId: string) {
       );
     }
   }
+  const allDays = [...groups.values()].flatMap((entry) => entry.days);
   const intakes = [...groups.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([intake, entry]) =>
@@ -150,5 +151,5 @@ export async function impact(organisationId: string) {
             .sort((a, b) => b.n - a.n),
         };
 
-  return { retention: await retention(organisationId), intakes, fixes, fixes_note: TREND, milestones: await milestoneShare(organisationId), leavers };
+  return { retention: await retention(organisationId), typical_days_reply_to_done: allDays.length ? Math.round(median(allDays)) : null, intakes, fixes, fixes_note: TREND, milestones: await milestoneShare(organisationId), leavers };
 }
