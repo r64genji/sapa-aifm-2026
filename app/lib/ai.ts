@@ -26,7 +26,10 @@ export const providers = (schema: object, medium: boolean) => [
 ];
 
 export async function fallbackSpend() {
-  const { data, error } = await createAdminClient().from("ai_usage").select("cost").eq("provider", "deepseek");
+  const { data, error } = await createAdminClient()
+    .from("ai_usage")
+    .select("cost")
+    .eq("provider", "deepseek");
   if (error) throw error;
   return data.reduce((sum, row) => sum + Number(row.cost), 0);
 }

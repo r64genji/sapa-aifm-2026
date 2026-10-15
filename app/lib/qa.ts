@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { complete } from "@/lib/ai";
-import { tagReply } from "@/lib/classify";
+import { classify, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { encrypt } from "@/lib/crypto";
 import type { Person } from "@/lib/directory";
@@ -105,7 +105,9 @@ async function storeUnprompted(person: Person, text: string) {
 
 async function important(person: Person, known: Awaited<ReturnType<typeof groupList>>, text: string, topic: string, keyword: string | null) {
   const pack = packs[person.language];
-  const category = keyword ?? categoryOfTopic[topic] ?? null;
+  const classified = keyword ? null : await classify(person.organisation_id, text);
+  const model = classified && classified.status !== "awaiting_ai" && classified.tag.escalate ? classified.tag.escalate_category : null;
+  const category = keyword ?? model ?? categoryOfTopic[topic] ?? null;
   await recordQuestion(person, known, { text, outcome: "important", topic });
   if (category) {
     const responseId = await storeUnprompted(person, text);

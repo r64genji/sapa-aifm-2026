@@ -108,6 +108,7 @@ export async function exitText(person: Person, text: string): Promise<Reply[] | 
   if (!answers.driver) return [exitQuestion(person.language)];
   const responseId = await insertResponse(person, null, "exit_open", null, text, "exit");
   const keyword = detect(text);
+  if (keyword) await escalate(person, responseId, keyword, null);
   const result = await tagReply(person.organisation_id, responseId, text).catch((error) => {
     console.error(error);
     return { status: "awaiting_ai" as const };

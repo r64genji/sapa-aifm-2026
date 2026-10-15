@@ -127,7 +127,9 @@ export async function sharedReplies(managerId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("id, created_at, text_encrypted, people!inner(code_name, manager_id, consents!inner(scope, withdrawn_at))")
+    .select("id, created_at, text_encrypted, ai_tags!inner(escalate), people!inner(code_name, manager_id, consents!inner(scope, withdrawn_at))")
+    .eq("kind", "checkin")
+    .not("ai_tags.escalate", "is", true)
     .eq("people.manager_id", managerId)
     .eq("people.consents.scope", "share_with_manager")
     .is("people.consents.withdrawn_at", null)
@@ -135,14 +137,7 @@ export async function sharedReplies(managerId: string, actor: string) {
     .neq("kind", "exit")
     .order("created_at");
   if (error) throw error;
-  const rows = data as unknown as { id: string; created_at: string; text_encrypted: string; people: { code_name: string } }[];
-  const { data: escalated, error: escalatedError } = await db
-    .from("escalations")
-    .select("response_id")
-    .in("response_id", rows.map((row) => row.id));
-  if (escalatedError) throw escalatedError;
-  const hidden = new Set(escalated.map((row) => row.response_id));
-  const visible = rows.filter((row) => !hidden.has(row.id));
+  const visible = data as unknown as { id: string; created_at: string; text_encrypted: string; people: { code_name: string } }[];
   for (const row of visible) await audit(actor, "manager_read_reply_text", row.id);
   return visible.map((row) => ({
     id: row.id,

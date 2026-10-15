@@ -13,14 +13,18 @@ const fixedFirst = ["forced_labour_indicator", "sexual_harassment"];
 export async function escalate(person: Person, responseId: string, keyword: string | null, model: string | null) {
   const db = createAdminClient();
   const category = fixedFirst.find((c) => c === keyword || c === model) ?? keyword ?? model!;
-  const { error } = await db.from("escalations").insert({
-    organisation_id: person.organisation_id,
-    response_id: responseId,
-    source: keyword && model ? "both" : keyword ? "keyword" : "model",
-    category,
-    created_at: (await now()).toISOString(),
-  });
-  if (error) throw error;
+  const found = { source: keyword && model ? "both" : keyword ? "keyword" : "model", category };
+  const { data: open, error: openError } = await db.from("escalations").update(found).eq("response_id", responseId).select("id");
+  if (openError) throw openError;
+  if (open.length === 0) {
+    const { error } = await db.from("escalations").insert({
+      organisation_id: person.organisation_id,
+      response_id: responseId,
+      ...found,
+      created_at: (await now()).toISOString(),
+    });
+    if (error) throw error;
+  }
   const { data, error: orgError } = await db
     .from("organisations")
     .select("escalation_contacts")
