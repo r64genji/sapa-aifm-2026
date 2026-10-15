@@ -177,10 +177,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     ) : null}
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: true })}>
+                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: true, not_serious: outcome?.kind === "not_serious" })}>
                       Close and send
                     </Button>
-                    <Button onClick={() => act("close", { send_closure: false })}>Close without message</Button>
+                    <Button onClick={() => act("close", { send_closure: false, not_serious: outcome?.kind === "not_serious" })}>Close without message</Button>
                   </div>
                 </div>
               ) : (
@@ -190,7 +190,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <div className="sp-muted">{REASON}</div>
                   </div>
                   <div>
-                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: false })}>
+                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: false, not_serious: outcome?.kind === "not_serious" })}>
                       Close without message
                     </Button>
                   </div>
