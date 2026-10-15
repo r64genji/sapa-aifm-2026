@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
 import {
+  addHire,
   appUrl,
   classifierTag,
   db,
@@ -9,6 +10,7 @@ import {
   hrRequest,
   hrToken,
   joined,
+  link,
   modelCalls,
   resetDemo,
   say,
@@ -16,10 +18,12 @@ import {
   sentTo,
   settle,
   tap,
+  tapData,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const en = read("../data/packs/en.json");
+const zh = read("../data/packs/zh.json");
 const [organisation] = read("../data/seed/organisations.json");
 const hrLine = organisation.escalation_contacts.general[0];
 const groups: { id: string; text: string }[] = read("../data/seed/question_groups.json");
@@ -324,4 +328,26 @@ test("R32, R13, R14: forced labour or sexual harassment that only the model sees
 
   const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[];
   assert.deepEqual(escalations.map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
+});
+
+test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese handbook page", async () => {
+  const chat = 5550001313;
+  const { token } = await addHire({ code_name: "Hire ZH ask", language: "zh", start_date: "2026-10-14" });
+  await link(chat, token);
+  await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
+  await tap(chat, zh.agree);
+  const quote = "申请加班费时，请在当天填写加班表格，并交给主管签字。";
+  await script(
+    overtimeOutput({
+      answer: "请在当天填写加班表格，并交给主管签字。",
+      supporting_quote: quote,
+    }),
+  );
+  const replies = await ask(chat, "怎么申请加班费？");
+  assert.deepEqual(replies, [
+    [zh.qa.label, "请在当天填写加班表格，并交给主管签字。", `${zh.qa.from} "${quote}" (pay/overtime.md)`, `${zh.qa.hr} ${hrLine}`].join("\n"),
+  ]);
+  const prompt = await answerPrompt();
+  assert.ok(prompt.includes("加班前必须获得主管批准"));
+  assert.ok(prompt.includes("## pay/overtime.md\n"));
 });
