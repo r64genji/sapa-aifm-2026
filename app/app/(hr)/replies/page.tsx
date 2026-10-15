@@ -60,7 +60,7 @@ export default function Page() {
       : undefined,
   });
 
-  const todo = (queue.data ?? []).filter((item) => item.status !== "reviewed" && !done[item.id]);
+  const todo = (queue.data ?? []).filter((item) => !item.escalate && item.status !== "reviewed" && !done[item.id]);
   const checked = order.length;
   const total = todo.length + checked;
   const last = order.length ? done[order[order.length - 1]] : null;

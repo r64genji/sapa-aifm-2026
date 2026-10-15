@@ -142,7 +142,9 @@ export default function Page() {
   const openFixes = fixes.filter((a) => a.status !== "done" && a.status !== "dismissed");
   const finished = fixes.filter((a) => a.status === "done" && a.score).sort((a, b) => (b.done_at ?? "").localeCompare(a.done_at ?? ""));
   const latest = finished[0];
-  const intakes = [...new Set((hires.data ?? []).map((h) => h.start_date.slice(0, 7)))].sort();
+  const since = me.data ? new Date(new Date(me.data.today.slice(0, 10)).setUTCMonth(new Date(me.data.today.slice(0, 10)).getUTCMonth() - 6)).toISOString().slice(0, 10) : "";
+  const group = (hires.data ?? []).filter((h) => h.start_date >= since);
+  const intakes = [...new Set(group.map((h) => h.start_date.slice(0, 7)))].sort();
   const activity = [
     ...(escalations.data ?? []).map((e) => ({ at: e.created_at, what: "A serious concern arrived" })),
     ...fixes.flatMap((a) => [
@@ -363,7 +365,7 @@ export default function Page() {
         </div>
 
         <aside aria-label="Group, impact and activity" className="flex min-w-0 flex-col gap-4">
-          <Card title="This group" meta={hires.data ? `${hires.data.length} new hires` : undefined}>
+          <Card title="This group" meta={hires.data && me.data ? `${group.length} new hires` : undefined}>
             {intakes.length ? (
               <div className="sp-meta">
                 {intakes.length} {intakes.length === 1 ? "intake" : "intakes"}, {monthName(`${intakes[0]}-01`)} to {monthName(`${intakes[intakes.length - 1]}-01`)} · each leaves at their own Month 6

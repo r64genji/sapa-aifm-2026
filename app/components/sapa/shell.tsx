@@ -26,7 +26,7 @@ export function Shell({ children }: { children: ReactNode }) {
   useLiveRefresh();
   const me = useApi<Me>("/api/hr/me", 60000);
   const escalations = useApi<Escalation[]>(me.data ? "/api/hr/escalations" : null);
-  const queue = useApi<unknown[]>(me.data ? "/api/hr/queue" : null);
+  const queue = useApi<{ escalate: boolean | null; status: string | null }[]>(me.data ? "/api/hr/queue" : null);
 
   if (me.error instanceof ApiError && me.error.status !== 401) {
     return (
@@ -42,7 +42,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
   const open = (escalations.data ?? []).filter((e) => !e.closed_at);
   const oldest = open.reduce((max, e) => Math.max(max, e.waited_hours), 0);
-  const toCheck = queue.data?.length ?? 0;
+  const toCheck = (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed").length;
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
