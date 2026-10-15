@@ -3,10 +3,10 @@ import { complete } from "@/lib/ai";
 import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+export const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
 const CONTEXT = ["PAY_BENEFITS", "GROWTH", "COMMUTE_LOGISTICS"];
 
-type Counts = {
+export type Counts = {
   respondents: number;
   min_group_size: number;
   enough: boolean;
@@ -15,20 +15,29 @@ type Counts = {
   calibrating?: string[];
 };
 
-async function counts(organisationId: string, touchpoint: number, month: string | null, agency: string | null) {
+export async function counts(
+  organisationId: string,
+  touchpoint: number,
+  month: string | null,
+  agency: string | null = null,
+  team: string | null = null,
+  role: string | null = null,
+) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
     touch: touchpoint,
     month,
     at: (await now()).toISOString(),
     agency,
+    team,
+    person_role: role,
   });
   if (error) throw error;
   return data as Counts;
 }
 
-export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null) {
-  const c = await counts(organisationId, touchpoint, month, agency);
+export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null, team: string | null = null) {
+  const c = await counts(organisationId, touchpoint, month, agency, team);
   if (!c.enough) {
     const message = `Not enough people yet (${c.respondents} of ${c.min_group_size} needed)`;
     return {
