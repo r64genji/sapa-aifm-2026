@@ -1,6 +1,7 @@
 import { Tag, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
+import { resolveChallenge } from "@/lib/privacy";
 import { audit, signal } from "@/lib/signal";
 import { translation } from "@/lib/translate";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -56,13 +57,14 @@ export async function retryReply(organisationId: string, responseId: string) {
 }
 
 const waiting = "New labels wait for HR during calibration";
+const challenged = "Challenged by new hire";
 
 export async function readQueue(organisationId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, created_at, responses!inner(text_encrypted, language)",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, challenged_at, challenge_resolved_at, created_at, responses!inner(text_encrypted, language)",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -76,13 +78,13 @@ export async function readQueue(organisationId: string, actor: string) {
     if (row.responses.text_encrypted) await audit(actor, "read_reply_text", row.response_id);
   }
   return Promise.all(
-    rows.map(async ({ responses, counted, response_id, ...row }) => {
+    rows.map(async ({ responses, counted, response_id, challenged_at, challenge_resolved_at, ...row }) => {
       const text = responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
       return {
         id: response_id,
         ...row,
         text,
-        note: row.status === "ok" && !counted ? waiting : null,
+        note: challenged_at && !challenge_resolved_at ? challenged : row.status === "ok" && !counted ? waiting : null,
         ...(text && (await translation(organisationId, responses.language, text))),
       };
     }),
@@ -112,10 +114,17 @@ export async function reviewReply(
   const at = (await now()).toISOString();
   const { error } = await createAdminClient()
     .from("ai_tags")
-    .update({ ...change, status: "reviewed", reviewed_by: actor, reviewed_at: at })
+    .update({
+      ...change,
+      ...((change.drivers || change.context_tags) && { changed_by_hr: true }),
+      status: "reviewed",
+      reviewed_by: actor,
+      reviewed_at: at,
+    })
     .eq("response_id", responseId);
   if (error) throw error;
   await audit(actor, change.drivers || change.context_tags ? "change_tag" : "confirm_tag", responseId);
+  await resolveChallenge(responseId);
   await signal(organisationId, "cohort");
   await signal(organisationId, "queue");
   return { status: "reviewed" };

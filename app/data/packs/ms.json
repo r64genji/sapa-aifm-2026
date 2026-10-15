@@ -28,6 +28,7 @@
     "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
   },
   "typedStop": "berhenti",
+  "typedDelete": "padam",
   "qa": {
     "askPrompt": "Taip soalan anda selepas /tanya, atau taip sahaja di sini.",
     "label": "Jawapan AI",
@@ -156,5 +157,39 @@
     "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Rasa diterima", "ONBOARDING_TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
     "open": "Adakah anda mahu menambah apa-apa? Sila taip.",
     "thanks": "Terima kasih. Sapa tidak akan menghantar mesej lagi."
+  },
+  "delete": {
+    "confirm": "Ini akan memadam semua jawapan anda, soalan anda dan pautan anda kepada Sapa. Ia tidak boleh dibatalkan. Padam semuanya?",
+    "yes": "Padam semuanya",
+    "no": "Simpan jawapan saya",
+    "done": "Selesai. Jawapan dan soalan anda telah dipadam, dan Sapa tidak akan menghantar mesej lagi kepada anda.",
+    "kept": "Tiada apa-apa yang dipadam."
+  },
+  "myAnswers": {
+    "none": "Tiada jawapan anda yang disimpan.",
+    "aiReading": "Bacaan AI",
+    "changedByHr": "Diubah oleh HR",
+    "labels": "Bidang masalah",
+    "noLabels": "tiada",
+    "pending": "AI belum membaca jawapan ini.",
+    "wrong": "Ini salah",
+    "challenged": "Terima kasih. HR akan menyemak label ini. Ia tidak dikira sehingga HR selesai menyemaknya.",
+    "resolved": "HR telah menyemak nota anda. Label kini berbunyi:"
+  },
+  "labels": {
+    "ROLE_CLARITY": "Kejelasan tugas",
+    "MANAGER_SUPPORT": "Sokongan daripada pengurus",
+    "BELONGING": "Rasa sebahagian daripada pasukan",
+    "ONBOARDING_TRAINING": "Latihan",
+    "WORKLOAD": "Beban kerja",
+    "PAY_BENEFITS": "Gaji dan faedah",
+    "GROWTH": "Peluang berkembang",
+    "COMMUTE_LOGISTICS": "Perjalanan dan pengangkutan"
+  },
+  "export": {
+    "intro": "HR meminta Sapa menghantar kepada anda data yang Sapa simpan tentang anda. Ini dia.",
+    "visibility": "Siapa boleh membaca jawapan anda:",
+    "question": "Soalan anda:",
+    "answer": "Jawapan yang dihantar:"
   }
 }

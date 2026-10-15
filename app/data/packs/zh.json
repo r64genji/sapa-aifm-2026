@@ -27,6 +27,7 @@
     "help": { "name": "help", "description": "显示帮助" }
   },
   "typedStop": "停止",
+  "typedDelete": "删除",
   "qa": {
     "askPrompt": "请在 /ask 后输入你的问题，或直接在这里输入。",
     "label": "AI 回答",
@@ -151,5 +152,39 @@
     "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "归属感", "ONBOARDING_TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
     "open": "您还有什么想补充的吗？请输入。",
     "thanks": "谢谢。Sapa 不会再给您发消息了。"
+  },
+  "delete": {
+    "confirm": "这会删除你所有的回答、你的问题以及你与 Sapa 的连接。删除后无法恢复。要删除全部吗？",
+    "yes": "全部删除",
+    "no": "保留我的回答",
+    "done": "已完成。你的回答和问题已删除，Sapa 不会再给你发送消息。",
+    "kept": "没有删除任何内容。"
+  },
+  "myAnswers": {
+    "none": "没有保存你的回答。",
+    "aiReading": "AI 解读",
+    "changedByHr": "已由 HR 修改",
+    "labels": "问题方面",
+    "noLabels": "无",
+    "pending": "AI 还没有读过这条回答。",
+    "wrong": "这不对",
+    "challenged": "谢谢。HR 会检查这个标签。在 HR 检查之前，它不会被计入。",
+    "resolved": "HR 已查看你的反馈。标签现在是："
+  },
+  "labels": {
+    "ROLE_CLARITY": "工作职责是否清楚",
+    "MANAGER_SUPPORT": "主管的支持",
+    "BELONGING": "融入团队",
+    "ONBOARDING_TRAINING": "培训",
+    "WORKLOAD": "工作量",
+    "PAY_BENEFITS": "薪酬和福利",
+    "GROWTH": "发展机会",
+    "COMMUTE_LOGISTICS": "通勤和交通"
+  },
+  "export": {
+    "intro": "HR 请 Sapa 把 Sapa 保存的关于你的数据发给你。内容如下。",
+    "visibility": "谁可以看你的回答：",
+    "question": "你的问题：",
+    "answer": "发给你的回答："
   }
 }
