@@ -238,6 +238,78 @@ export async function draftOwnFix(
   return { id, title, steps: draft.steps, notes: draft.notes };
 }
 
+type Option = { type: "team" | "intake" | "person"; key: string; label: string; n: number; managers: { id: string; name: string }[]; lines: string[]; counts: { n: number; m: number; week: string } | null; why: string | null };
+
+export async function draftView(organisationId: string, id: string) {
+  const action = (await loadAction(organisationId, id)) as (Action & { draft_reason: string | null; draft_notes: Record<string, string> | null }) | null;
+  if (!action) return { error: "Not found", code: 404 };
+  const db = createAdminClient();
+  const org = await organisation(organisationId);
+  const today = localDate(await now(), org.time_zone);
+  const held = await isHeld(action);
+  const [people, consents, snapshots, cards] = await Promise.all([
+    db.from("people").select("id, code_name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).order("start_date"),
+    db.from("consents").select("person_id, scope").is("withdrawn_at", null),
+    db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }),
+    themeCards(organisationId, 14, null),
+  ]);
+  for (const { error } of [people, consents, snapshots]) if (error) throw error;
+  const driver = text.drivers[action.driver as keyof typeof text.drivers];
+  const snapshot = (team: string) => snapshots.data!.find((row) => row.team === team && !row.suppressed);
+  const line = (team: string) => {
+    const row = snapshot(team);
+    if (!row) return [];
+    const n = row.counts?.[action.driver]?.n ?? 0;
+    return [(n >= 3 ? text.several : text.fewer).replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))];
+  };
+  const rows = people.data as unknown as { id: string; code_name: string; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
+  const group = (match: (row: (typeof rows)[number]) => boolean) => {
+    const members = rows.filter(match);
+    const managers = new Map(members.flatMap((row) => (row.manager_id && row.managers ? [[row.manager_id, row.managers.display_name] as const] : [])));
+    return { members, managers: [...managers].map(([id, name]) => ({ id, name })), lines: [...new Set(members.map((row) => row.team))].sort().flatMap(line) };
+  };
+  const teams: Option[] = [...new Set(rows.map((row) => row.team))].map((team) => {
+    const { members, managers, lines } = group((row) => row.team === team);
+    const row = snapshot(team);
+    const counts = row ? { n: row.counts?.[action.driver]?.n ?? 0, m: row.respondents as number, week: row.week as string } : null;
+    return { type: "team", key: team, label: managers.length === 1 ? `${managers[0].name}'s team (${team})` : `${team} team`, n: members.length, managers, lines, counts, why: null };
+  });
+  teams.sort((a, b) => (b.counts?.n ?? -1) - (a.counts?.n ?? -1));
+  const intakes: Option[] = [...new Set(rows.map((row) => row.start_date.slice(0, 7)))].sort().reverse().map((month) => {
+    const { members, managers, lines } = group((row) => row.start_date.startsWith(month));
+    const label = new Date(`${month}-01`).toLocaleString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+    return { type: "intake", key: month, label: `${label} intake`, n: members.length, managers, lines, counts: null, why: null };
+  });
+  const people_options: Option[] = rows.flatMap((row) => {
+    const scope = consents.data!.find((consent) => consent.person_id === row.id)?.scope;
+    if (!scope) return [];
+    const why = scope !== "share_with_manager" ? "She chose HR only" : held ? "This fix rests on replies that were not shared, so it cannot name one person" : null;
+    const { managers, lines } = group((other) => other.id === row.id);
+    return [{ type: "person", key: row.code_name, label: `${row.code_name} only`, n: 1, managers, lines, counts: null, why } as Option];
+  });
+  const card = cards.cards.find((candidate) => candidate.driver === action.driver);
+  const alertOn = held && !org.demo_mode ? nextSnapshotDay(today, org.snapshot_weekday) : today;
+  return {
+    id,
+    driver: action.driver,
+    status: action.status,
+    title: action.title,
+    steps: action.steps,
+    own_fix: action.own_fix,
+    library_entry_id: action.library_entry_id,
+    reason: action.draft_reason,
+    notes: action.draft_notes,
+    held,
+    demo_mode: org.demo_mode,
+    today,
+    alert_on: alertOn,
+    alert_label: demoLabel(org, held),
+    scopes: [...teams, ...intakes, ...people_options],
+    all_counts: card && "n" in card ? { n: card.n, m: card.m } : null,
+    telegram: { alert: text.alert, due: text.due, accept: text.accept, done: text.done },
+  };
+}
+
 export async function deleteLibraryEntry(organisationId: string, actor: string, id: string): Promise<{ id: string } | Failure> {
   const { data, error } = await createAdminClient()
     .from("action_library")

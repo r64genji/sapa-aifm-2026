@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { editAction } from "@/lib/actions";
+import { draftView, editAction } from "@/lib/actions";
 import { hrUser } from "@/lib/hr";
 
 const Body = z.object({
@@ -21,6 +21,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const body = Body.safeParse(await request.json().catch(() => null));
   if (!body.success) return Response.json({ error: "Invalid title, steps or scope" }, { status: 400 });
   const result = await editAction(user.organisationId, user.actor, (await params).id, body.data);
+  if ("error" in result) return Response.json(result, { status: result.code });
+  return Response.json(result);
+}
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await hrUser(request);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+  const result = await draftView(user.organisationId, (await params).id);
   if ("error" in result) return Response.json(result, { status: result.code });
   return Response.json(result);
 }
