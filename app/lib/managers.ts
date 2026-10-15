@@ -131,6 +131,8 @@ export async function sharedReplies(managerId: string, actor: string) {
     .eq("people.manager_id", managerId)
     .eq("people.consents.scope", "share_with_manager")
     .is("people.consents.withdrawn_at", null)
+    .neq("people.state", "left")
+    .eq("kind", "checkin")
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;

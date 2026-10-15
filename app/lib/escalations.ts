@@ -21,6 +21,8 @@ export async function escalate(person: Person, responseId: string, keyword: stri
     created_at: (await now()).toISOString(),
   });
   if (error) throw error;
+  const { error: tagError } = await db.from("ai_tags").update({ escalate: true }).eq("response_id", responseId);
+  if (tagError) throw tagError;
   const { data, error: orgError } = await db
     .from("organisations")
     .select("escalation_contacts")

@@ -23,7 +23,7 @@ const en = read("../data/packs/en.json");
 const [organisation] = read("../data/seed/organisations.json");
 const contacts = organisation.escalation_contacts;
 const probes: string[] = en.checkin.probes.map((p: { text: string }) => p.text);
-const [crisis, passport, epf, modelOnly, plain] = [401, 402, 403, 404, 405].map((n) => 5550000000 + n);
+const [crisis, passport, epf, modelOnly, plain, late] = [401, 402, 403, 404, 405, 406].map((n) => 5550000000 + n);
 
 async function reachOpenQuestion(chat: number) {
   await tap(chat, "4");
@@ -64,10 +64,10 @@ async function escalationFor(chat: number) {
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
-  for (const chat of [crisis, passport, epf, modelOnly, plain]) await joined(chat, "2026-10-02");
+  for (const chat of [crisis, passport, epf, modelOnly, plain, late]) await joined(chat, "2026-10-02");
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
-  assert.equal((await res.json()).sent, 5);
-  for (const chat of [crisis, passport, epf, modelOnly, plain]) await reachOpenQuestion(chat);
+  assert.equal((await res.json()).sent, 6);
+  for (const chat of [crisis, passport, epf, modelOnly, plain, late]) await reachOpenQuestion(chat);
 });
 
 test("R13, R14: a crisis reply escalates by keyword while the model times out, with the configured contacts, and HR is alerted", async () => {
@@ -153,12 +153,16 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
   assert.deepEqual(await answer(plain, "Too many tasks, not sure what to do first"), [en.checkin.thanks]);
 
   const escalated = await openResponse(passport);
-  const { data: tag } = await db.from("ai_tags").select("status, drivers").eq("response_id", escalated).single();
-  assert.deepEqual(tag, { status: "ok", drivers: ["ROLE_CLARITY"] });
-  const { data: counted } = await db.from("theme_tags").select("response_id");
-  const countedIds = counted!.map((row) => row.response_id);
-  assert.ok(countedIds.includes(await openResponse(plain)));
-  assert.ok(!countedIds.includes(escalated));
+  const card = async () => {
+    const body = await (await hrRequest("/api/hr/themes?touchpoint=14", "GET")).json();
+    const { n, m } = body.cards.find((c: { driver: string }) => c.driver === "ROLE_CLARITY");
+    return { n, m };
+  };
+  assert.deepEqual(await card(), { n: 7, m: 18 });
+  assert.equal((await hrRequest(`/api/hr/replies/${await openResponse(plain)}/review`, "POST")).status, 200);
+  assert.deepEqual(await card(), { n: 8, m: 19 });
+  assert.equal((await hrRequest(`/api/hr/replies/${escalated}/review`, "POST")).status, 200);
+  assert.deepEqual(await card(), { n: 8, m: 19 });
 
   const manager = await hrToken("raj@contoh.test");
   const res = await fetch(`${appUrl}/api/hr/escalations`, { headers: { authorization: `Bearer ${manager}` } });
@@ -176,4 +180,28 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
   const asHr = await sessionClient("hr@contoh.test");
   const { data: hrRows } = await asHr.from("escalations").select("category").order("created_at");
   assert.equal(hrRows!.length, 3);
+});
+
+test("R13, R14: a reply stored while the model was down escalates when HR retries and the model flags it", async () => {
+  await scriptModel("omniroute", [{ kind: "timeout" }]);
+  await scriptModel("deepseek", [{ kind: "timeout" }]);
+  assert.deepEqual(await answer(late, "My supervisor shouts at me every day and says I will regret it"), [en.checkin.gotIt]);
+  const responseId = await openResponse(late);
+  assert.equal((await escalations()).some((row) => row.response_id === responseId), false);
+
+  await scriptModel("omniroute", [
+    {
+      kind: "json",
+      content: classifierTag({ escalate: true, escalate_category: "bullying_threats", evidence_quote: "shouts at me every day" }),
+    },
+  ]);
+  const before = (await sentTo(late)).length;
+  assert.equal((await hrRequest(`/api/hr/replies/${responseId}/retry`, "POST")).status, 200);
+  await settle();
+  const alert = (await escalations()).find((row) => row.response_id === responseId);
+  assert.equal(alert!.category, "bullying_threats");
+  assert.equal(alert!.source, "model");
+  const sent = (await sentTo(late)).slice(before).map((m) => String(m.text));
+  assert.equal(sent.length, 1);
+  assert.ok(sent[0].includes(en.safety.message));
 });

@@ -1,8 +1,11 @@
 import { Tag, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
+import { reachable, type Person } from "@/lib/directory";
+import { escalate } from "@/lib/escalations";
 import { resolveChallenge } from "@/lib/privacy";
 import { audit, signal } from "@/lib/signal";
+import { send } from "@/lib/telegram";
 import { translation } from "@/lib/translate";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -38,10 +41,10 @@ export async function retryReply(organisationId: string, responseId: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("text_encrypted")
+    .select("text_encrypted, person_id, people!inner(language)")
     .eq("organisation_id", organisationId)
     .eq("id", responseId)
-    .maybeSingle();
+    .maybeSingle<{ text_encrypted: string | null; person_id: string; people: { language: Person["language"] } }>();
   if (error) throw error;
   if (!data?.text_encrypted) return { error: "Not found", code: 404 };
   const { data: tag, error: tagError } = await db
@@ -53,7 +56,27 @@ export async function retryReply(organisationId: string, responseId: string) {
   if (tag?.status !== "awaiting_ai" && tag?.status !== "needs_review") {
     return { error: "Nothing to retry", code: 409 };
   }
-  return { status: (await tagReply(organisationId, responseId, decrypt(data.text_encrypted))).status };
+  const result = await tagReply(organisationId, responseId, decrypt(data.text_encrypted));
+  const { data: opened, error: openedError } = await db
+    .from("escalations")
+    .select("id")
+    .eq("response_id", responseId)
+    .maybeSingle();
+  if (openedError) throw openedError;
+  if (opened) {
+    const { error: flagError } = await db.from("ai_tags").update({ escalate: true }).eq("response_id", responseId);
+    if (flagError) throw flagError;
+  } else if (result.status !== "awaiting_ai" && result.tag.escalate) {
+    const person = await reachable(data.person_id);
+    const text = await escalate(
+      { organisation_id: organisationId, language: data.people.language } as Person,
+      responseId,
+      null,
+      result.tag.escalate_category,
+    );
+    if (person) await send(person.telegram_chat_id!, { text });
+  }
+  return { status: result.status };
 }
 
 const waiting = "New labels wait for HR during calibration";

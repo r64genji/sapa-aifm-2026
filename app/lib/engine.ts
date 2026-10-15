@@ -77,7 +77,7 @@ function prompt(person: Person, languages: Language[]): Reply[] {
 async function join(chatId: number, token: string): Promise<Outcome> {
   const found = await personByToken(token);
   const refused = { replies: [{ text: packs[found?.language ?? "en"].invalidInvite }] };
-  if (!found || found.invite_used_at || new Date(found.invite_expires_at) <= (await now())) {
+  if (!found || found.state === "left" || found.invite_used_at || new Date(found.invite_expires_at) <= (await now())) {
     return refused;
   }
   const person = await redeemInvite(token, chatId);

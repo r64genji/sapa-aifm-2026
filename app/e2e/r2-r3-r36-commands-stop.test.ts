@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, blockChat, db, freezeClock, link, resetDemo, say, sentTo, tap, telegramCalls } from "./helpers.ts";
+import { addHire, blockChat, db, freezeClock, link, postUpdate, resetDemo, say, sentTo, settle, tap, telegramCalls, update } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -42,6 +42,20 @@ test("R2, R3: typed STOP ends everything and nothing more is sent after the conf
   assert.equal((await texts(chat)).length, count);
   const { data } = await db.from("people").select("state").eq("telegram_chat_id", chat);
   assert.deepEqual(data, [{ state: "stopped" }]);
+});
+
+test("R3: a voice note after STOP gets no reply, while an active hire still gets the type-instead text", async () => {
+  const stopped = 5550000016;
+  const active = 5550000017;
+  await activeHire(stopped, "English", en.agree);
+  await activeHire(active, "English", en.agree);
+  await say(stopped, "STOP");
+  const count = (await texts(stopped)).length;
+  await postUpdate(update("voice", { chat_id: stopped }));
+  await postUpdate(update("voice", { chat_id: active }));
+  await settle();
+  assert.equal((await texts(stopped)).length, count);
+  assert.equal((await texts(active)).at(-1), en.typeInstead);
 });
 
 test("R2, R3: typed BERHENTI and /berhenti stop a Bahasa Malaysia hire", async () => {

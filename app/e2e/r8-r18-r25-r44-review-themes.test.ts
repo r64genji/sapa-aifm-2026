@@ -18,6 +18,7 @@ import {
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const live = 5550000201;
+const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 
 const roleClarity = async (query = "") => {
@@ -119,6 +120,24 @@ test("R18: a narrative holding a number that is not in its input is rejected and
     { kind: "json", content: bad },
   ]);
   assert.deepEqual(await (await hrRequest("/api/hr/themes/narrative", "GET")).json(), { narrative: null });
+});
+
+test("R7, R18: the narrative input holds no summary from an exit answer", async () => {
+  const { data: person } = await db.from("people").select("id, organisation_id").eq("id", livePerson).single();
+  const at = "2026-10-15T15:00:00.000Z";
+  const { data: exit } = await db
+    .from("responses")
+    .insert({ organisation_id: person!.organisation_id, person_id: person!.id, question_id: "exit_open", language: "en", kind: "exit", created_at: at })
+    .select("id")
+    .single();
+  const summary = "The leaver names the exit reason in the narrative";
+  await db.from("ai_tags").insert({ organisation_id: person!.organisation_id, response_id: exit!.id, status: "ok", counted: true, escalate: false, summary, created_at: at });
+  const before = (await modelCalls("omniroute")).length;
+  await scriptModel("omniroute", [{ kind: "json", content: { text: "Role clarity was raised by 8 of 19 people who answered at Day 14." } }]);
+  await hrRequest("/api/hr/themes/narrative", "GET");
+  const calls = (await modelCalls("omniroute")).slice(before);
+  assert.equal(calls.length, 1);
+  assert.ok(!JSON.stringify(calls[0].body).includes(summary));
 });
 
 test("R25: a corrected tag, a follow-up change and a minimum-group change each write an audit row", async () => {

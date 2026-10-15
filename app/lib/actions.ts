@@ -318,7 +318,9 @@ async function inScopeHires(action: Action, managerId: string) {
     .from("people")
     .select("id", { count: "exact", head: true })
     .eq("organisation_id", action.organisation_id)
-    .eq("manager_id", managerId);
+    .eq("manager_id", managerId)
+    .not("state", "in", "(left,deleted)")
+    .eq("synthetic", false);
   if (action.scope_type === "team") query = query.eq("team", action.scope_team!);
   if (action.scope_type === "intake") {
     query = query.gte("start_date", action.scope_intake!).lt("start_date", addDays(action.scope_intake!, 31).slice(0, 7) + "-01");

@@ -81,15 +81,25 @@ export async function themeNarrative(organisationId: string, touchpoint: number,
   const { cards } = await themeCards(organisationId, touchpoint, month);
   const shown = cards.filter((card) => card.enough);
   if (shown.length === 0) return { narrative: null };
-  const { data, error } = await createAdminClient()
+  let query = createAdminClient()
     .from("ai_tags")
-    .select("summary")
+    .select("summary, responses!inner(kind, checkin_schedule!inner(touchpoint, people!inner(start_date)))")
     .eq("organisation_id", organisationId)
+    .eq("responses.kind", "checkin")
+    .eq("responses.checkin_schedule.touchpoint", touchpoint)
     .eq("escalate", false)
     .not("summary", "is", null)
     .or("status.eq.reviewed,counted.eq.true")
     .order("created_at", { ascending: false })
     .limit(5);
+  if (month) {
+    const next = new Date(`${month}T00:00:00Z`);
+    next.setUTCMonth(next.getUTCMonth() + 1);
+    query = query
+      .gte("responses.checkin_schedule.people.start_date", month)
+      .lt("responses.checkin_schedule.people.start_date", next.toISOString().slice(0, 10));
+  }
+  const { data, error } = await query;
   if (error) throw error;
   const input = JSON.stringify({ touchpoint, themes: shown, summaries: data.map((row) => row.summary) });
   const allowed = new Set(numbersIn(input));
