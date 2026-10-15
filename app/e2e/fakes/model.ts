@@ -1,8 +1,8 @@
 import { createServer } from "node:http";
 
 type Script =
-  | { kind: "json"; content: unknown }
-  | { kind: "text"; content: string }
+  | { kind: "json"; content: unknown; usage?: { prompt_tokens: number; completion_tokens: number } }
+  | { kind: "text"; content: string; usage?: { prompt_tokens: number; completion_tokens: number } }
   | { kind: "error"; status: number }
   | { kind: "timeout" };
 
@@ -47,7 +47,7 @@ createServer(async (req, res) => {
       created: Math.floor(Date.now() / 1000),
       model: body.model,
       choices: [{ index: 0, message: { role: "assistant", content }, finish_reason: "stop" }],
-      usage: { prompt_tokens: 100, completion_tokens: 50, total_tokens: 150 },
+      usage: script.usage ?? { prompt_tokens: 100, completion_tokens: 50, total_tokens: 150 },
     }),
   );
 }).listen(Number(process.env.FAKE_MODEL_PORT), "127.0.0.1");

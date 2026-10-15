@@ -31,5 +31,13 @@
       "role": "agency",
       "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
     }
+  },
+  {
+    "email": "agency@bintang.test",
+    "agency": "Bintang Resource",
+    "app_metadata": {
+      "role": "agency",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+    }
   }
 ]

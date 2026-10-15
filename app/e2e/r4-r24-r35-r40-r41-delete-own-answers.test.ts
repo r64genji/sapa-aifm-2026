@@ -30,7 +30,8 @@ const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 const summary = "The employee does not know which task to do first.";
 const threat = "My supervisor threatened to cut my pay if I complain";
 const question = "Where do I park my motorbike?";
-let seedWorkload = 0;
+let seedWorkload = { n: 0, m: 0 };
+let seedRole = { n: 0, m: 0 };
 
 type Message = { text: string; reply_markup?: { inline_keyboard: { text: string; callback_data: string }[][] } };
 
@@ -77,7 +78,8 @@ before(async () => {
 });
 
 test("R40: /myanswers shows own replies, escalated ones with date and text only, and This is wrong takes the tags out of counts until HR reviews", async () => {
-  seedWorkload = (await card("WORKLOAD")).n;
+  seedWorkload = await card("WORKLOAD");
+  seedRole = await card("ROLE_CLARITY");
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
@@ -92,7 +94,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await say(live, reply);
   const [queued] = await (await hrRequest("/api/hr/queue", "GET")).json();
   assert.equal((await hrRequest(`/api/hr/replies/${queued.id}/review`, "POST")).status, 200);
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: 8, m: 19 });
+  assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n + 1, m: seedRole.m + 1 });
   await freezeClock("2026-10-15T15:01:00.000Z");
   await say(live, threat);
 
@@ -109,13 +111,13 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   assert.deepEqual(await newMessages(other, () => say(other, "/jawapansaya")).then((m) => m.map((x) => x.text)), [en.myAnswers.none]);
   const wrongButton = shown[0].reply_markup!.inline_keyboard.flat()[0];
   await tapData(other, wrongButton.callback_data);
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: 8, m: 19 });
+  assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n + 1, m: seedRole.m + 1 });
 
   assert.deepEqual(
     await newMessages(live, () => tapData(live, wrongButton.callback_data)).then((m) => m.map((x) => x.text)),
     [en.myAnswers.challenged],
   );
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: 7, m: 18 });
+  assert.deepEqual(await card("ROLE_CLARITY"), seedRole);
   const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");
   assert.deepEqual(challengeAudit, [{ actor: "new_hire", target: queued.id }]);
   const challenged = (await (await hrRequest("/api/hr/queue", "GET")).json()).find((r: { id: string }) => r.id === queued.id);
@@ -126,8 +128,8 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
     assert.equal((await hrRequest(`/api/hr/replies/${queued.id}/review`, "POST", { drivers: ["WORKLOAD"] })).status, 200);
   });
   assert.deepEqual(resolved.map((m) => m.text), [`${en.myAnswers.resolved} ${en.labels.WORKLOAD}`]);
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: 7, m: 19 });
-  assert.deepEqual(await card("WORKLOAD"), { n: seedWorkload + 1, m: 19 });
+  assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n, m: seedRole.m + 1 });
+  assert.deepEqual(await card("WORKLOAD"), { n: seedWorkload.n + 1, m: seedWorkload.m + 1 });
 
   const again = await newMessages(live, () => say(live, "/myanswers"));
   assert.equal(again[0].text, `2026-10-15\n${reply}\n${en.myAnswers.changedByHr}: ${summary}\n${en.myAnswers.labels}: ${en.labels.WORKLOAD}`);
@@ -182,8 +184,8 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   });
   const { data: person } = await db.from("people").select("telegram_chat_id").eq("id", id).single();
   assert.equal(person!.telegram_chat_id, null);
-  assert.deepEqual(await card("WORKLOAD"), { n: seedWorkload, m: 18 });
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: 7, m: 18 });
+  assert.deepEqual(await card("WORKLOAD"), seedWorkload);
+  assert.deepEqual(await card("ROLE_CLARITY"), seedRole);
   assert.deepEqual(await snapshots(), published);
 
   const { data: audits } = await db.from("audit_log").select("actor, action, target, reason");

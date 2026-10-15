@@ -1,3 +1,38 @@
 [
-  { "id": "6f1c2a3e-0000-4000-8000-000000000101", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "display_name": "Raj" }
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Raj",
+    "bind_token": "mgr-raj-invite"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000102",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Siti"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Hui Ling"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000104",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Aiko"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000105",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Ji-woo"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Farid"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "display_name": "Gopal"
+  }
 ]

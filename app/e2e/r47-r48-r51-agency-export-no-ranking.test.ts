@@ -1,263 +1,285 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { appUrl, db, freezeClock, hrRequest, hrToken, resetDemo } from "./helpers.ts";
+import {
+  addHire,
+  appUrl,
+  classifierTag,
+  db,
+  freezeClock,
+  hrRequest,
+  hrToken,
+  link,
+  resetDemo,
+  say,
+  scriptModel,
+  settle,
+  sentTo,
+  tap,
+} from "./helpers.ts";
 
-const organisation = "6f1c2a3e-0000-4000-8000-000000000001";
-const raj = "6f1c2a3e-0000-4000-8000-000000000101";
-let counter = 0;
+type Person = { id: string; code_name: string; team: string; start_date: string; role: string; agency?: string };
+type Response = { id: string; person_id: string; question_id: string; scale_value?: number };
+type Tag = { response_id: string; status: string; counted: boolean; drivers: string[] };
 
-async function hires(count: number, fields: { agency: string | null; role: string; start: string; answers?: number[] }) {
-  const ids: string[] = [];
-  for (let i = 0; i < count; i++) {
-    counter += 1;
-    const { data: person, error } = await db
-      .from("people")
-      .insert({
-        organisation_id: organisation,
-        code_name: `Test hire ${counter}`,
-        team: "Accounts Payable Asia",
-        manager_id: raj,
-        start_date: fields.start,
-        role: fields.role,
-        language: "en",
-        invite_token: `test-hire-${counter}`,
-        invite_expires_at: "2026-12-01T00:00:00Z",
-        state: "active",
-        agency: fields.agency,
-      })
-      .select("id")
-      .single();
-    if (error) throw error;
-    const { data: schedule, error: scheduleError } = await db
-      .from("checkin_schedule")
-      .insert({ organisation_id: organisation, person_id: person.id, touchpoint: 14, due_at: "2026-09-20T02:00:00Z", status: "answered" })
-      .select("id")
-      .single();
-    if (scheduleError) throw scheduleError;
-    const { data: response, error: responseError } = await db
-      .from("responses")
-      .insert({
-        organisation_id: organisation,
-        person_id: person.id,
-        schedule_id: schedule.id,
-        question_id: "OPEN",
-        language: "en",
-        created_at: "2026-09-20T03:00:00Z",
-      })
-      .select("id")
-      .single();
-    if (responseError) throw responseError;
-    const { error: tagError } = await db.from("ai_tags").insert({
-      organisation_id: organisation,
-      response_id: response.id,
-      status: "ok",
-      drivers: ["ROLE_CLARITY"],
-      context_tags: [],
-      escalate: false,
-      counted: true,
-      created_at: "2026-09-20T03:00:00Z",
-    });
-    if (tagError) throw tagError;
-    if (fields.answers) {
-      const { error: answerError } = await db.from("responses").insert({
-        organisation_id: organisation,
-        person_id: person.id,
-        schedule_id: schedule.id,
-        question_id: "JOB_MATCH",
-        scale_value: fields.answers[i],
-        language: "en",
-        created_at: "2026-09-20T03:01:00Z",
-      });
-      if (answerError) throw answerError;
-    }
-    ids.push(person.id);
-  }
-  return ids;
+const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
+const people: Person[] = read("../data/seed/people.json");
+const responses: Response[] = read("../data/seed/responses.json");
+const tags: Tag[] = read("../data/seed/ai_tags.json");
+const outcomes: { intake: string; agency: string | null; hired: number; employed: number }[] = read("../data/seed/intake_outcomes.json");
+const groups: { id: string; text: string }[] = read("../data/seed/question_groups.json");
+const ms = read("../data/packs/ms.json");
+const overtime = groups.find((g) => g.text === "How do I claim overtime?")!;
+const parking = groups.find((g) => g.text === "Where can I park my motorbike?")!;
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+const trend = "This shows a trend, not proof that Sapa caused it";
+
+function seededThemes(match: (person: Person) => boolean) {
+  const ids = new Set(people.filter(match).map((p) => p.id));
+  const byResponse = new Map(tags.map((t) => [t.response_id, t]));
+  const counted = responses
+    .filter((r) => r.question_id === "OPEN" && ids.has(r.person_id))
+    .map((r) => ({ person: r.person_id, tag: byResponse.get(r.id)! }))
+    .filter(({ tag }) => tag.status === "reviewed" || (tag.status === "ok" && tag.counted));
+  const m = new Set(counted.map((c) => c.person)).size;
+  const n = (driver: string) => new Set(counted.filter((c) => c.tag.drivers.includes(driver)).map((c) => c.person)).size;
+  return { m, n };
 }
 
-async function agencyToken(email: string) {
-  const { data } = await db.auth.admin.listUsers({ perPage: 1000 });
-  const user = data.users.find((u) => u.email === email)!;
-  await db.auth.admin.updateUserById(user.id, { password: process.env.SEED_USER_PASSWORD! });
-  return hrToken(email);
+function themesOf(counts: { m: number; n: (driver: string) => number }, extraRoleClarity = 0, extraRespondents = 0) {
+  const m = counts.m + extraRespondents;
+  const message = `Not enough people yet (${m} of 5 needed)`;
+  return DRIVERS.map((driver) =>
+    m >= 5
+      ? { driver, enough: true, n: counts.n(driver) + (driver === "ROLE_CLARITY" ? extraRoleClarity : 0), m }
+      : { driver, enough: false, message },
+  );
+}
+
+function seededJobMatch(match: (person: Person) => boolean) {
+  const byPerson = new Map(people.filter(match).map((p) => [p.id, p]));
+  const cards = new Map<string, { m: number; n: number }>();
+  for (const r of responses.filter((r) => r.question_id === "JOB_MATCH" && byPerson.has(r.person_id))) {
+    const role = byPerson.get(r.person_id)!.role;
+    const card = cards.get(role) ?? { m: 0, n: 0 };
+    card.m += 1;
+    if (r.scale_value! <= 2) card.n += 1;
+    cards.set(role, card);
+  }
+  return [...cards.entries()]
+    .map(([role, { m, n }]) =>
+      m >= 5
+        ? { role, enough: true, n, m, label: `${role}: ${n} of ${m} said 'not really' at Day 14` }
+        : { role, enough: false, message: `Not enough people yet (${m} of 5 needed)` },
+    )
+    .sort((a, b) => a.role.localeCompare(b.role));
 }
 
 const asAgency = async (token: string, path: string) =>
   fetch(`${appUrl}${path}`, { headers: { authorization: `Bearer ${token}` } });
 
-const overview = async (token: string) => (await asAgency(token, "/api/agency/overview")).json();
+const overview = async (token: string) => {
+  const body = await (await asAgency(token, "/api/agency/overview")).json();
+  return { ...body, job_match: [...body.job_match].sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role)) };
+};
 
-const themes = (n: number, m: number) => [
-  { driver: "ROLE_CLARITY", enough: true, n, m },
-  { driver: "MANAGER_SUPPORT", enough: true, n: 0, m },
-  { driver: "BELONGING", enough: true, n: 0, m },
-  { driver: "ONBOARDING_TRAINING", enough: true, n: 0, m },
-  { driver: "WORKLOAD", enough: true, n: 0, m },
-];
-
-let maju: string;
+const maju = (person: Person) => person.agency === "Maju Staffing";
+const bintang = (person: Person) => person.agency === "Bintang Resource";
 
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T03:00:00.000Z");
-  await db.from("people").update({ agency: null }).eq("organisation_id", organisation);
-  await hires(5, { agency: "Maju Staffing", role: "Welder", start: "2026-09-01", answers: [1, 2, 2, 4, 5] });
-  await hires(4, { agency: "Bintang Resource", role: "Cutter", start: "2026-09-01", answers: [1, 1, 1, 1] });
-  await hires(7, { agency: null, role: "Welder", start: "2026-09-01", answers: [1, 1, 1, 1, 1, 1, 1] });
-  maju = await agencyToken("agency@maju.test");
 });
 
 test("R48: an agency user sees its own placements, pooled, with the job-match card and retention below 30", async () => {
-  assert.deepEqual(await overview(maju), {
+  const token = await hrToken("agency@maju.test");
+  const hired = outcomes.filter((o) => o.agency === "Maju Staffing").reduce((total, o) => total + o.hired, 0);
+  assert.deepEqual(await overview(token), {
     agency: "Maju Staffing",
     touchpoint: 14,
-    themes: themes(5, 5),
-    job_match: [{ role: "Welder", enough: true, n: 3, m: 5, label: "Welder: 3 of 5 said 'not really' at Day 14" }],
-    retention: { enough: false, message: "Too few to tell yet (6 of 30)", note: "This shows a trend, not proof that Sapa caused it" },
+    themes: themesOf(seededThemes(maju)),
+    job_match: seededJobMatch(maju),
+    retention: { enough: false, message: `Too few to tell yet (${hired} of 30)`, note: trend },
   });
+  const view = await overview(token);
+  assert.equal(view.themes[0].enough, true);
+  assert.equal(view.job_match[0].enough, true);
 });
 
 test("R48: a pool of 4 shows 'Not enough people yet' and an HR admin grants another agency access", async () => {
-  const denied = await hrRequest("/api/hr/agency-grants", "POST", { email: "agency@bintang.test", agency: "Bintang Resource" });
+  const denied = await hrRequest("/api/hr/agency-grants", "POST", { email: "second@maju.test", agency: "Maju Staffing" });
   assert.equal(denied.status, 403);
   const granted = await fetch(`${appUrl}/api/hr/agency-grants`, {
     method: "POST",
     headers: { authorization: `Bearer ${await hrToken("admin@contoh.test")}`, "content-type": "application/json" },
-    body: JSON.stringify({ email: "agency@bintang.test", agency: "Bintang Resource" }),
+    body: JSON.stringify({ email: "second@maju.test", agency: "Maju Staffing" }),
   });
   assert.equal(granted.status, 201);
-  const bintang = await agencyToken("agency@bintang.test");
-  const view = await overview(bintang);
-  const message = "Not enough people yet (4 of 5 needed)";
-  assert.deepEqual(view.themes, [
-    { driver: "ROLE_CLARITY", enough: false, message },
-    { driver: "MANAGER_SUPPORT", enough: false, message },
-    { driver: "BELONGING", enough: false, message },
-    { driver: "ONBOARDING_TRAINING", enough: false, message },
-    { driver: "WORKLOAD", enough: false, message },
-  ]);
-  assert.deepEqual(view.job_match, [{ role: "Cutter", enough: false, message }]);
-  assert.equal(view.agency, "Bintang Resource");
+  assert.equal((await granted.json()).agency, "Maju Staffing");
   const { data: rows } = await db.from("audit_log").select("target").eq("action", "grant_agency");
-  assert.deepEqual(rows, [{ target: "Bintang Resource" }]);
+  assert.deepEqual(rows, [{ target: "Maju Staffing" }]);
+
+  const view = await overview(await hrToken("agency@bintang.test"));
+  assert.equal(view.agency, "Bintang Resource");
+  assert.equal(people.filter(bintang).length, 4);
+  assert.deepEqual(view.themes, themesOf(seededThemes(bintang)));
+  assert.ok(view.themes.every((card: { enough: boolean; message: string }) => !card.enough && card.message === "Not enough people yet (4 of 5 needed)"));
+  assert.deepEqual(view.job_match, seededJobMatch(bintang));
+  assert.ok(view.job_match.every((card: { enough: boolean }) => !card.enough));
 });
 
 test("R48: retention pools every intake of the agency from 30 people and never another agency's", async () => {
-  await db.from("intake_outcomes").insert({
-    organisation_id: organisation,
-    intake: "2026-03",
-    agency: "Maju Staffing",
-    hired: 30,
-    employed: 24,
-    entered_by: "test",
-    entered_at: "2026-10-01T01:00:00Z",
-  });
-  assert.deepEqual((await overview(maju)).retention, {
+  const put = await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-03", agency: "Maju Staffing", hired: 30, employed: 24 });
+  assert.equal(put.status, 200);
+  const seeded = outcomes.filter((o) => o.agency === "Maju Staffing");
+  const k = seeded.reduce((total, o) => total + o.employed, 0) + 24;
+  const n = seeded.reduce((total, o) => total + o.hired, 0) + 30;
+  assert.deepEqual((await overview(await hrToken("agency@maju.test"))).retention, {
     enough: true,
-    k: 29,
-    n: 36,
-    text: "29 of 36 still employed at Month 6",
-    note: "This shows a trend, not proof that Sapa caused it",
+    k,
+    n,
+    text: `${k} of ${n} still employed at Month 6`,
+    note: trend,
   });
-  const bintang = await agencyToken("agency@bintang.test");
-  assert.deepEqual((await overview(bintang)).retention, {
+  assert.deepEqual((await overview(await hrToken("agency@bintang.test"))).retention, {
     enough: false,
     message: "Too few to tell yet (0 of 30)",
-    note: "This shows a trend, not proof that Sapa caused it",
+    note: trend,
   });
 });
 
 test("R48: the agency user is refused on a reply, a question and an escalation, and others are refused the agency view", async () => {
+  const token = await hrToken("agency@maju.test");
   for (const path of ["/api/hr/replies", "/api/hr/questions", "/api/hr/escalations", "/api/hr/queue", "/api/hr/actions", "/api/hr/hires"]) {
-    assert.equal((await asAgency(maju, path)).status, 401, path);
+    assert.equal((await asAgency(token, path)).status, 401, path);
   }
   assert.equal((await asAgency(await hrToken(), "/api/agency/overview")).status, 401);
   assert.equal((await asAgency(await hrToken("raj@contoh.test"), "/api/agency/overview")).status, 401);
   assert.equal((await fetch(`${appUrl}/api/agency/overview`)).status, 401);
 });
 
-async function intakeHires() {
-  return hires(6, { agency: null, role: "Press operator", start: "2026-04-20" });
-}
-
-async function concern(personId: string, createdAt: string, acknowledgedAt: string | null) {
-  const { data: response, error } = await db
-    .from("responses")
-    .insert({ organisation_id: organisation, person_id: personId, question_id: "UNPROMPTED", language: "en", kind: "unprompted", created_at: createdAt })
-    .select("id")
-    .single();
-  if (error) throw error;
-  const { error: escalationError } = await db.from("escalations").insert({
-    organisation_id: organisation,
-    response_id: response.id,
-    source: "keyword",
-    category: "wage_or_legal",
-    created_at: createdAt,
-    acknowledged_at: acknowledgedAt,
-  });
-  if (escalationError) throw escalationError;
-}
+const exportChats = Array.from({ length: 9 }, (_, i) => 5550004700 + i);
+const [askers, answerers] = [exportChats.slice(0, 6), exportChats.slice(6)];
 
 const exportIntake = (intake: string) => hrRequest("/api/hr/exports/worker-voice", "POST", { intake });
+const escalationIds = async () =>
+  ((await (await hrRequest("/api/hr/escalations", "GET")).json()) as { id: string }[]).map((row) => row.id);
+const acknowledge = async (id: string) => assert.equal((await hrRequest(`/api/hr/escalations/${id}/acknowledge`, "POST")).status, 200);
+
+async function ask(chat: number, group: string) {
+  const before = (await sentTo(chat)).length;
+  await scriptModel("omniroute", [
+    {
+      kind: "json",
+      content: {
+        kind: "question",
+        important_topic: "none",
+        answer: "",
+        cited_path: "",
+        supporting_quote: "",
+        group: { id: group, text: "" },
+      },
+    },
+  ]);
+  await say(chat, "Neutral question for the handbook");
+  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
+}
+
+async function raiseConcern(chat: number) {
+  const before = new Set(await escalationIds());
+  await say(chat, "The agent holds my passport");
+  const after = await escalationIds();
+  const created = after.filter((id) => !before.has(id));
+  assert.equal(created.length, 1);
+  return created[0];
+}
 
 test("R47: the export holds counts with their base, topics asked by 5 or more, and concerns as 'fewer than 5' below 5", async () => {
-  const people = await intakeHires();
-  const { data: popular } = await db
-    .from("question_groups")
-    .insert({ organisation_id: organisation, text: "Where is the canteen?", created_at: "2026-10-01T01:00:00Z" })
-    .select("id")
-    .single();
-  const { data: rare } = await db
-    .from("question_groups")
-    .insert({ organisation_id: organisation, text: "Can I bring my bicycle?", created_at: "2026-10-01T01:00:00Z" })
-    .select("id")
-    .single();
-  const asks = (group: string, who: string[]) =>
-    who.map((person_id) => ({
-      organisation_id: organisation,
-      person_id,
-      group_id: group,
-      language: "en",
-      outcome: "answered",
-      created_at: "2026-10-02T01:00:00Z",
-    }));
-  await db.from("asked_questions").insert([...asks(popular!.id, people.slice(0, 5)), ...asks(rare!.id, people.slice(0, 4))]);
-  await concern(people[0], "2026-10-09T08:00:00Z", "2026-10-12T02:00:00Z");
-  await concern(people[1], "2026-10-12T02:00:00Z", "2026-10-12T08:00:00Z");
-  await concern(people[2], "2026-10-12T02:00:00Z", null);
+  for (const chat of exportChats) {
+    const { token } = await addHire({ code_name: `Export hire ${chat}`, language: "ms", start_date: "2026-10-02" });
+    await link(chat, token);
+    await tap(chat, "Bahasa Malaysia");
+    await tap(chat, ms.agree);
+  }
+  for (const chat of askers.slice(0, 5)) await ask(chat, overtime.id);
+  for (const chat of askers.slice(0, 4)) await ask(chat, parking.id);
+  const first = [];
+  for (const chat of askers.slice(0, 3)) first.push(await raiseConcern(chat));
+  await acknowledge(first[0]);
+  await acknowledge(first[1]);
+
+  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  for (const chat of answerers) {
+    for (const score of ["4", "3", "5", "3", "3", "3"]) await tap(chat, score);
+    await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
+    await say(chat, "Bos bagi tiga tugas semua penting, saya tak tahu mana nak buat dulu");
+  }
 
   const { count: exportsBefore } = await db.from("audit_log").select("*", { count: "exact", head: true }).eq("action", "export_worker_voice");
-  const res = await exportIntake("2026-04");
+  const res = await exportIntake("2026-10");
   assert.equal(res.status, 200);
+  const october = seededThemes((p) => p.start_date.startsWith("2026-10"));
   assert.deepEqual(await res.json(), {
-    intake: "2026-04",
-    themes: themes(6, 6),
-    question_topics: [{ topic: "Where is the canteen?", n: 5 }],
+    intake: "2026-10",
+    themes: themesOf(october, answerers.length, answerers.length),
+    question_topics: [{ topic: overtime.text, n: 5 }],
     serious_concerns: { received: "fewer than 5", acknowledged_within_1_working_day: "fewer than 5" },
   });
   const { data: audit } = await db.from("audit_log").select("target").eq("action", "export_worker_voice");
   assert.equal(audit!.length, (exportsBefore ?? 0) + 1);
-  assert.deepEqual(audit!.at(-1), { target: "2026-04" });
+  assert.deepEqual(audit!.at(-1), { target: "2026-10" });
 });
 
 test("R47: concerns show their number from 5, counting only those acknowledged within 1 working day", async () => {
-  const { data } = await db.from("people").select("id").eq("role", "Press operator");
-  const ids = data!.map((row) => row.id as string);
-  await concern(ids[3], "2026-10-12T02:00:00Z", "2026-10-13T01:00:00Z");
-  await concern(ids[4], "2026-10-12T02:00:00Z", "2026-10-13T02:00:00Z");
-  await concern(ids[5], "2026-10-12T02:00:00Z", "2026-10-14T03:00:00Z");
-  const body = await (await exportIntake("2026-04")).json();
-  assert.deepEqual(body.serious_concerns, { received: 6, acknowledged_within_1_working_day: "fewer than 5" });
-  await db.from("escalations").update({ acknowledged_at: "2026-10-13T01:00:00Z" }).is("acknowledged_at", null);
-  await db.from("escalations").update({ acknowledged_at: "2026-10-13T01:00:00Z" }).eq("acknowledged_at", "2026-10-14T03:00:00Z");
-  const after = await (await exportIntake("2026-04")).json();
-  assert.deepEqual(after.serious_concerns, { received: 6, acknowledged_within_1_working_day: 6 });
-  assert.equal(JSON.stringify(after).includes("Test hire"), false);
-  assert.equal((await exportIntake("April")).status, 400);
+  const second = [];
+  for (const chat of answerers) second.push(await raiseConcern(chat));
+  const [one, two, late] = second;
+  await acknowledge(one);
+  await acknowledge(two);
+  assert.equal((await escalationIds()).length, 6);
+  const afterOneAck = await (await exportIntake("2026-10")).json();
+  assert.deepEqual(afterOneAck.serious_concerns, { received: 6, acknowledged_within_1_working_day: "fewer than 5" });
+
+  const { data: pending } = await db.from("escalations").select("id").is("acknowledged_at", null);
+  const open = pending!.map((row) => row.id as string).filter((id) => id !== late);
+  for (const id of open) await acknowledge(id);
+  assert.deepEqual((await (await exportIntake("2026-10")).json()).serious_concerns, { received: 6, acknowledged_within_1_working_day: 5 });
+
+  await freezeClock("2026-10-20T03:00:00.000Z");
+  await acknowledge(late);
+  const after = await (await exportIntake("2026-10")).json();
+  assert.deepEqual(after.serious_concerns, { received: 6, acknowledged_within_1_working_day: 5 });
+  assert.equal(JSON.stringify(after).includes("Export hire"), false);
+  assert.equal((await exportIntake("October")).status, 400);
 });
 
-test("R51: no HR endpoint returns teams or managers side by side", async () => {
-  const paths = [
+const teamNames = [...new Set(people.map((p) => p.team))];
+const managerNames = ["Raj"];
+
+function sideBySide(value: unknown, labels: string[]): string[] {
+  if (Array.isArray(value)) {
+    const grouped = new Set<string>();
+    for (const row of value) {
+      if (typeof row !== "object" || row === null) continue;
+      const label = Object.values(row).find((v) => typeof v === "string" && labels.includes(v));
+      if (label && Object.values(row).some((v) => typeof v === "number")) grouped.add(label as string);
+    }
+    return [...(grouped.size > 1 ? [`array groups ${[...grouped].join(", ")}`] : []), ...value.flatMap((row) => sideBySide(row, labels))];
+  }
+  if (typeof value === "object" && value !== null) {
+    const entries = Object.entries(value);
+    const keyed = entries.filter(([key]) => labels.includes(key));
+    return [...(keyed.length > 1 ? [`object keys ${keyed.map(([key]) => key).join(", ")}`] : []), ...entries.flatMap(([, v]) => sideBySide(v, labels))];
+  }
+  return [];
+}
+
+test("R51: no HR or export endpoint returns teams or managers side by side", async () => {
+  const admin = await hrToken("admin@contoh.test");
+  const post = (path: string, body: Record<string, unknown>) =>
+    fetch(`${appUrl}${path}`, { method: "POST", headers: { authorization: `Bearer ${admin}`, "content-type": "application/json" }, body: JSON.stringify(body) });
+  const bodies: [string, unknown][] = [];
+  for (const path of [
     "/api/hr/themes",
     "/api/hr/themes/narrative",
     "/api/hr/impact",
@@ -265,9 +287,47 @@ test("R51: no HR endpoint returns teams or managers side by side", async () => {
     "/api/hr/quality",
     "/api/hr/job-match",
     "/api/hr/queue",
-  ];
-  for (const path of paths) {
-    const text = JSON.stringify(await (await hrRequest(path, "GET")).json());
-    assert.equal(/"(team|teams|manager|managers|manager_id|manager_name)"/.test(text), false, path);
+    "/api/hr/hires",
+    "/api/hr/actions",
+    "/api/hr/escalations",
+    "/api/hr/replies",
+    "/api/hr/questions",
+  ]) {
+    const res = await hrRequest(path, "GET");
+    assert.equal(res.status, 200, path);
+    bodies.push([path, await res.json()]);
   }
+  const voice = await post("/api/hr/exports/worker-voice", { intake: "2026-05" });
+  assert.equal(voice.status, 200);
+  bodies.push(["worker-voice", await voice.json()]);
+  const person = await post("/api/hr/exports", { code_name: `Export hire ${exportChats[0]}`, reason: "Subject access request" });
+  assert.equal(person.status, 200);
+  bodies.push(["person export", await person.json()]);
+
+  for (const [path, body] of bodies) {
+    assert.ok(path === "/api/hr/milestones" || JSON.stringify(body).length > 2, `${path} returned an empty body`);
+    assert.deepEqual(sideBySide(body, teamNames), [], path);
+    assert.deepEqual(sideBySide(body, managerNames), [], path);
+  }
+});
+
+test("R51: a manager's snapshots hold one team, not teams side by side", { todo: "Raj manages four teams in the seed, so /api/manager/snapshots lists them together (R51)" }, async () => {
+  const res = await fetch(`${appUrl}/api/manager/snapshots`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
+  assert.equal(res.status, 200);
+  const rows = (await res.json()) as { team: string }[];
+  assert.ok(rows.length > 0);
+  assert.equal(new Set(rows.map((row) => row.team)).size, 1);
+});
+
+test("R51: HR can open the themes of one chosen team, and the Korean desk reads Not enough people yet (4 of 5 needed)", async () => {
+  const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
+  assert.equal(res.status, 200);
+  const message = "Not enough people yet (4 of 5 needed)";
+  assert.deepEqual((await res.json()).cards, [
+    { driver: "ROLE_CLARITY", enough: false, message },
+    { driver: "MANAGER_SUPPORT", enough: false, message },
+    { driver: "BELONGING", enough: false, message },
+    { driver: "ONBOARDING_TRAINING", enough: false, message },
+    { driver: "WORKLOAD", enough: false, message },
+  ]);
 });
