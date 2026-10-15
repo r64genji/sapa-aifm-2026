@@ -41,10 +41,10 @@ export async function retryReply(organisationId: string, responseId: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("text_encrypted, person_id, people!inner(language)")
+    .select("text_encrypted, person_id, language, escalations(id)")
     .eq("organisation_id", organisationId)
     .eq("id", responseId)
-    .maybeSingle<{ text_encrypted: string | null; person_id: string; people: { language: Person["language"] } }>();
+    .maybeSingle();
   if (error) throw error;
   if (!data?.text_encrypted) return { error: "Not found", code: 404 };
   const { data: tag, error: tagError } = await db
@@ -57,23 +57,9 @@ export async function retryReply(organisationId: string, responseId: string) {
     return { error: "Nothing to retry", code: 409 };
   }
   const result = await tagReply(organisationId, responseId, decrypt(data.text_encrypted));
-  const { data: opened, error: openedError } = await db
-    .from("escalations")
-    .select("id")
-    .eq("response_id", responseId)
-    .maybeSingle();
-  if (openedError) throw openedError;
-  if (opened) {
-    const { error: flagError } = await db.from("ai_tags").update({ escalate: true }).eq("response_id", responseId);
-    if (flagError) throw flagError;
-  } else if (result.status !== "awaiting_ai" && result.tag.escalate) {
+  if (result.status !== "awaiting_ai" && result.tag.escalate && !data.escalations) {
     const person = await reachable(data.person_id);
-    const text = await escalate(
-      { organisation_id: organisationId, language: data.people.language } as Person,
-      responseId,
-      null,
-      result.tag.escalate_category,
-    );
+    const text = await escalate(person ?? ({ organisation_id: organisationId, language: data.language } as Person), responseId, null, result.tag.escalate_category);
     if (person) await send(person.telegram_chat_id!, { text });
   }
   return { status: result.status };
