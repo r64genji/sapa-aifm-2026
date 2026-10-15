@@ -200,23 +200,23 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000007119",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "person_id": "6f1c2a3e-0000-4000-8000-000000010087",
-    "group_id": "6f1c2a3e-0000-4000-8000-000000007003",
-    "important_topic": null,
-    "language": "en",
-    "outcome": "unknown",
-    "cited_path": null,
-    "created_at": "2026-10-14T11:09:00Z"
-  },
-  {
-    "id": "6f1c2a3e-0000-4000-8000-000000007120",
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
     "group_id": "6f1c2a3e-0000-4000-8000-000000007003",
     "important_topic": null,
     "language": "en",
     "outcome": "unknown",
     "cited_path": null,
-    "created_at": "2026-10-01T03:29:00Z"
+    "created_at": "2026-10-09T06:44:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000007120",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "person_id": "6f1c2a3e-0000-4000-8000-000000010073",
+    "group_id": "6f1c2a3e-0000-4000-8000-000000007003",
+    "important_topic": null,
+    "language": "en",
+    "outcome": "unknown",
+    "cited_path": null,
+    "created_at": "2026-09-24T05:28:00Z"
   }
 ]

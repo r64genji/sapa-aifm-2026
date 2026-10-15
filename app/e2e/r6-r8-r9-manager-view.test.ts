@@ -51,14 +51,13 @@ const production = {
   enough: true,
   respondents: 9,
   drivers: {
-    ROLE_CLARITY: 4,
+    ROLE_CLARITY: 5,
     MANAGER_SUPPORT: "fewer than 3",
-    BELONGING: 3,
+    BELONGING: "fewer than 3",
     ONBOARDING_TRAINING: "fewer than 3",
     WORKLOAD: "fewer than 3",
   },
 };
-const packaging = { team: "Korean Desk", week: "2026-10-12", enough: false, message: "Not enough people yet" };
 
 let rajToken: string;
 
@@ -83,7 +82,7 @@ before(async () => {
 test("R9: the supervisor sees only the last weekly snapshot, with counts under 3 shown as fewer than 3", async () => {
   const res = await asManager("/api/manager/snapshots", rajToken);
   assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), [production, packaging]);
+  assert.deepEqual(await res.json(), [production]);
 
   const hr = await hrToken();
   assert.equal((await asManager("/api/manager/snapshots", hr)).status, 401);
@@ -124,41 +123,26 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
   assert.equal((await fetch(`${appUrl}/api/nightly`, { method: "POST" })).status, 401);
   const thursday = await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key });
   assert.equal((await thursday.json()).snapshots, 0);
-  assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [production, packaging]);
+  assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [production]);
 
   await freezeClock("2026-10-19T10:00:00.000Z");
   const monday = await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key });
-  assert.equal((await monday.json()).snapshots, 4);
+  assert.equal((await monday.json()).snapshots, 7);
   assert.equal((await (await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key })).json()).snapshots, 0);
   assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [
     {
       team: "Accounts Payable Asia",
       week: "2026-10-19",
       enough: true,
-      respondents: 5,
+      respondents: 10,
       drivers: {
-        ROLE_CLARITY: 4,
+        ROLE_CLARITY: 6,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
         ONBOARDING_TRAINING: "fewer than 3",
         WORKLOAD: "fewer than 3",
       },
     },
-    {
-      team: "IT Service Desk",
-      week: "2026-10-19",
-      enough: true,
-      respondents: 6,
-      drivers: {
-        ROLE_CLARITY: "fewer than 3",
-        MANAGER_SUPPORT: "fewer than 3",
-        BELONGING: "fewer than 3",
-        ONBOARDING_TRAINING: "fewer than 3",
-        WORKLOAD: "fewer than 3",
-      },
-    },
-    { team: "Korean Desk", week: "2026-10-19", enough: false, message: "Not enough people yet" },
-    { team: "Order-to-Cash Asia", week: "2026-10-19", enough: false, message: "Not enough people yet" },
   ]);
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
@@ -176,7 +160,7 @@ test("R6, R7, R8, R9: the supervisor's own session reads no reply, tag, escalati
     {
       team: "Accounts Payable Asia",
       week: "2026-10-19",
-      drivers: { ROLE_CLARITY: 4, BELONGING: "fewer than 3" },
+      drivers: { ROLE_CLARITY: 6, MANAGER_SUPPORT: "fewer than 3", WORKLOAD: "fewer than 3" },
     },
   ]);
   const { data: hrSees } = await (await sessionClient("hr@contoh.test")).from("manager_snapshots").select("team");

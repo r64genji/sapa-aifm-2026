@@ -30,7 +30,7 @@ const outcomes: { intake: string; agency: string | null; hired: number; employed
 const groups: { id: string; text: string }[] = read("../data/seed/question_groups.json");
 const ms = read("../data/packs/ms.json");
 const overtime = groups.find((g) => g.text === "How do I claim overtime?")!;
-const parking = groups.find((g) => g.text === "Where can I park my motorbike?")!;
+const payday = groups.find((g) => g.text === "When is my first payday?")!;
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
 const trend = "This shows a trend, not proof that Sapa caused it";
 
@@ -202,7 +202,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
     await tap(chat, ms.agree);
   }
   for (const chat of askers.slice(0, 5)) await ask(chat, overtime.id);
-  for (const chat of askers.slice(0, 4)) await ask(chat, parking.id);
+  for (const chat of askers.slice(0, 4)) await ask(chat, payday.id);
   const first = [];
   for (const chat of askers.slice(0, 3)) first.push(await raiseConcern(chat));
   await acknowledge(first[0]);
@@ -222,7 +222,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
   assert.deepEqual(await res.json(), {
     intake: "2026-10",
     themes: themesOf(october, answerers.length, answerers.length),
-    question_topics: [{ topic: overtime.text, n: 5 }],
+    question_topics: [{ topic: overtime.text, n: 11 }],
     serious_concerns: { received: "fewer than 5", acknowledged_within_1_working_day: "fewer than 5" },
   });
   const { data: audit } = await db.from("audit_log").select("target").eq("action", "export_worker_voice");
@@ -236,7 +236,7 @@ test("R47: concerns show their number from 5, counting only those acknowledged w
   const [one, two, late] = second;
   await acknowledge(one);
   await acknowledge(two);
-  assert.equal((await escalationIds()).length, 6);
+  assert.equal((await escalationIds()).length, 12);
   const afterOneAck = await (await exportIntake("2026-10")).json();
   assert.deepEqual(afterOneAck.serious_concerns, { received: 6, acknowledged_within_1_working_day: "fewer than 5" });
 
@@ -311,7 +311,7 @@ test("R51: no HR or export endpoint returns teams or managers side by side", asy
   }
 });
 
-test("R51: a manager's snapshots hold one team, not teams side by side", { todo: "Raj manages four teams in the seed, so /api/manager/snapshots lists them together (R51)" }, async () => {
+test("R51: a manager's snapshots hold one team, not teams side by side", async () => {
   const res = await fetch(`${appUrl}/api/manager/snapshots`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
   assert.equal(res.status, 200);
   const rows = (await res.json()) as { team: string }[];
@@ -319,10 +319,10 @@ test("R51: a manager's snapshots hold one team, not teams side by side", { todo:
   assert.equal(new Set(rows.map((row) => row.team)).size, 1);
 });
 
-test("R51: HR can open the themes of one chosen team, and the Korean desk reads Not enough people yet (4 of 5 needed)", async () => {
+test("R51: HR can open the themes of one chosen team, and the Korean desk reads Not enough people yet (3 of 5 needed)", async () => {
   const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
   assert.equal(res.status, 200);
-  const message = "Not enough people yet (4 of 5 needed)";
+  const message = "Not enough people yet (3 of 5 needed)";
   assert.deepEqual((await res.json()).cards, [
     { driver: "ROLE_CLARITY", enough: false, message },
     { driver: "MANAGER_SUPPORT", enough: false, message },

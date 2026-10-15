@@ -74,7 +74,7 @@ test("R17, R22: the reply reaches the model masked, and the same update sent aga
 });
 
 test("R44, R12: the card stays put until HR confirms the label, then moves up by one person", async () => {
-  const queue = await (await hrRequest("/api/hr/queue", "GET")).json();
+  const queue = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
   assert.equal(queue.length, 1);
   assert.equal(queue[0].note, "New labels wait for HR during calibration");
   const waiting = await roleClarity();
@@ -85,7 +85,7 @@ test("R44, R12: the card stays put until HR confirms the label, then moves up by
   assert.deepEqual([moved.n, moved.m, moved.reviewed], [seed.n + 1, seed.m + 1, seed.reviewed + 1]);
 });
 
-test("R8, R51: the Korean Desk team view says Not enough people yet (3 of 5 needed)", { todo: "needs the 100-hire seed (#25)" }, async () => {
+test("R8, R51: the Korean Desk team view says Not enough people yet (3 of 5 needed)", async () => {
   const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
   assert.equal(res.status, 200);
   const body = await res.json();

@@ -105,7 +105,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040035",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030035",
-    "status": "ok",
+    "status": "reviewed",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -123,8 +123,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-05-18T03:05:00Z",
     "counted": true,
-    "reviewed_by": null,
-    "reviewed_at": null
+    "reviewed_by": "seed",
+    "reviewed_at": "2026-05-19T03:05:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040042",
@@ -281,7 +281,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040084",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030084",
-    "status": "ok",
+    "status": "reviewed",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -299,8 +299,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-06-15T06:48:00Z",
     "counted": true,
-    "reviewed_by": null,
-    "reviewed_at": null
+    "reviewed_by": "seed",
+    "reviewed_at": "2026-06-16T06:48:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040091",
@@ -454,7 +454,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040133",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030133",
-    "status": "ok",
+    "status": "reviewed",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -472,8 +472,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-06-15T02:29:00Z",
     "counted": true,
-    "reviewed_by": null,
-    "reviewed_at": null
+    "reviewed_by": "seed",
+    "reviewed_at": "2026-06-16T02:29:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040140",
@@ -580,7 +580,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040168",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030168",
-    "status": "reviewed",
+    "status": "ok",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -598,8 +598,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-07-20T04:25:00Z",
     "counted": true,
-    "reviewed_by": "seed",
-    "reviewed_at": "2026-07-21T04:25:00Z"
+    "reviewed_by": null,
+    "reviewed_at": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040175",
@@ -878,7 +878,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040252",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030252",
-    "status": "reviewed",
+    "status": "ok",
     "drivers": [
       "ROLE_CLARITY",
       "WORKLOAD"
@@ -897,8 +897,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-08-17T06:45:00Z",
     "counted": true,
-    "reviewed_by": "seed",
-    "reviewed_at": "2026-08-18T06:45:00Z"
+    "reviewed_by": null,
+    "reviewed_at": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040259",
@@ -929,7 +929,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040266",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030266",
-    "status": "reviewed",
+    "status": "ok",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -947,8 +947,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-08-17T04:45:00Z",
     "counted": true,
-    "reviewed_by": "seed",
-    "reviewed_at": "2026-08-18T04:45:00Z"
+    "reviewed_by": null,
+    "reviewed_at": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040273",
@@ -1178,7 +1178,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040336",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030336",
-    "status": "ok",
+    "status": "reviewed",
     "drivers": [
       "ROLE_CLARITY",
       "MANAGER_SUPPORT"
@@ -1197,8 +1197,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-09-21T06:53:00Z",
     "counted": true,
-    "reviewed_by": null,
-    "reviewed_at": null
+    "reviewed_by": "seed",
+    "reviewed_at": "2026-09-22T06:53:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040343",
@@ -1229,7 +1229,7 @@
     "id": "6f1c2a3e-0000-4000-8000-000000040350",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "response_id": "6f1c2a3e-0000-4000-8000-000000030350",
-    "status": "reviewed",
+    "status": "ok",
     "drivers": [
       "ROLE_CLARITY"
     ],
@@ -1247,8 +1247,8 @@
     "prompt_version": "classify-v1",
     "created_at": "2026-09-21T05:33:00Z",
     "counted": true,
-    "reviewed_by": "seed",
-    "reviewed_at": "2026-09-22T05:33:00Z"
+    "reviewed_by": null,
+    "reviewed_at": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000040357",

@@ -34,18 +34,18 @@
     "counts": {
       "ROLE_CLARITY": {
         "n": 8,
-        "reviewed": 5,
-        "ai_confident": 3
+        "reviewed": 4,
+        "ai_confident": 4
       },
       "WORKLOAD": {
         "n": 2,
-        "reviewed": 1,
-        "ai_confident": 1
+        "reviewed": 0,
+        "ai_confident": 2
       },
       "MANAGER_SUPPORT": {
         "n": 7,
-        "reviewed": 2,
-        "ai_confident": 5
+        "reviewed": 3,
+        "ai_confident": 4
       },
       "ONBOARDING_TRAINING": {
         "n": 4,

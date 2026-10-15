@@ -154,7 +154,7 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010010",
@@ -169,7 +169,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010011",
@@ -231,7 +232,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010015",
@@ -247,7 +249,7 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010016",
@@ -262,7 +264,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "agency": "Bintang Resource"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010017",
@@ -390,7 +393,7 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010025",
@@ -486,7 +489,7 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010031",
@@ -566,7 +569,7 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010036",
@@ -693,7 +696,7 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010044",
@@ -772,7 +775,7 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010049",
@@ -914,7 +917,7 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010058",
@@ -977,7 +980,7 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010062",
@@ -1009,7 +1012,7 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010064",
@@ -1056,7 +1059,7 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010067",
@@ -1072,7 +1075,7 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010068",
@@ -1230,7 +1233,7 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010078",
@@ -1324,7 +1327,7 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000202",
@@ -1433,7 +1436,7 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010091",
@@ -1543,7 +1546,7 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010098",
@@ -1559,7 +1562,7 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Kerjaya Talent"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010099",
@@ -1580,22 +1583,19 @@
     "id": "6f1c2a3e-0000-4000-8000-000000011001",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "code_name": "Hazwan R.",
-    "team": "IT Service Desk",
-    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "team": "Korean Desk",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000105",
     "start_date": "2025-11-03",
-    "role": "IT service desk analyst (German)",
-    "language": "en",
+    "role": "Customer care agent (Korean)",
+    "language": "ms",
     "invite_token": "seed-11001-invite",
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Bintang Resource",
-    "left_reason": "resigned",
-    "left_at": "2026-03-13T09:00:00Z",
-    "end_sent_at": "2026-03-13T09:00:00Z",
-    "exit_ok": true,
-    "exit_asked_at": "2026-03-13T09:00:00Z"
+    "left_reason": "ended_by_company",
+    "left_at": "2026-03-25T09:00:00Z",
+    "end_sent_at": "2026-03-25T09:00:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011002",
@@ -1611,11 +1611,9 @@
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "left_reason": "resigned",
+    "left_reason": "ended_by_company",
     "left_at": "2026-01-07T09:00:00Z",
-    "end_sent_at": "2026-01-07T09:00:00Z",
-    "exit_ok": true,
-    "exit_asked_at": "2026-01-07T09:00:00Z"
+    "end_sent_at": "2026-01-07T09:00:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011003",
@@ -1650,8 +1648,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011005",
@@ -1666,8 +1663,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011006",
@@ -1682,8 +1678,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011007",
@@ -1698,8 +1693,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011008",
@@ -1714,8 +1708,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011009",
@@ -1730,8 +1723,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011010",
@@ -1761,8 +1753,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011012",
@@ -1777,8 +1768,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011013",
@@ -1793,8 +1783,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011014",
@@ -1809,8 +1798,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011015",
@@ -1840,8 +1828,7 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011017",
@@ -1857,7 +1844,6 @@
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Kerjaya Talent",
     "left_reason": "resigned",
     "left_at": "2026-01-25T09:00:00Z",
     "end_sent_at": "2026-01-25T09:00:00Z",
@@ -1878,10 +1864,11 @@
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
-    "left_reason": "ended_by_company",
+    "left_reason": "resigned",
     "left_at": "2026-04-13T09:00:00Z",
-    "end_sent_at": "2026-04-13T09:00:00Z"
+    "end_sent_at": "2026-04-13T09:00:00Z",
+    "exit_ok": true,
+    "exit_asked_at": "2026-04-13T09:00:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011019",
@@ -1917,7 +1904,6 @@
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Kerjaya Talent",
     "left_reason": "resigned",
     "left_at": "2026-03-05T09:00:00Z",
     "end_sent_at": "2026-03-05T09:00:00Z",
@@ -1997,8 +1983,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011026",
@@ -2013,8 +1998,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011027",
@@ -2029,8 +2013,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011028",
@@ -2060,8 +2043,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011030",
@@ -2076,8 +2058,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011031",
@@ -2092,8 +2073,7 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011032",
@@ -2109,7 +2089,6 @@
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-05-30T09:00:00Z",
     "end_sent_at": "2026-05-30T09:00:00Z",
@@ -2130,7 +2109,6 @@
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-04-15T09:00:00Z",
     "end_sent_at": "2026-04-15T09:00:00Z",
@@ -2151,7 +2129,6 @@
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-05-26T09:00:00Z",
     "end_sent_at": "2026-05-26T09:00:00Z",
@@ -2186,8 +2163,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011037",
@@ -2217,8 +2193,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011039",
@@ -2263,8 +2238,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011042",
@@ -2279,8 +2253,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011043",
@@ -2325,8 +2298,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011046",
@@ -2356,8 +2328,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011048",
@@ -2372,8 +2343,7 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011049",
@@ -2389,7 +2359,6 @@
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-07-13T09:00:00Z",
     "end_sent_at": "2026-07-13T09:00:00Z",
@@ -2410,7 +2379,6 @@
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Kerjaya Talent",
     "left_reason": "resigned",
     "left_at": "2026-04-01T09:00:00Z",
     "end_sent_at": "2026-04-01T09:00:00Z",
@@ -2431,7 +2399,6 @@
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Bintang Resource",
     "left_reason": "resigned",
     "left_at": "2026-05-24T09:00:00Z",
     "end_sent_at": "2026-05-24T09:00:00Z",
@@ -2452,9 +2419,11 @@
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "left_reason": "ended_by_company",
+    "left_reason": "resigned",
     "left_at": "2026-06-05T09:00:00Z",
-    "end_sent_at": "2026-06-05T09:00:00Z"
+    "end_sent_at": "2026-06-05T09:00:00Z",
+    "exit_ok": true,
+    "exit_asked_at": "2026-06-05T09:00:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011053",
@@ -2484,8 +2453,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011055",
@@ -2530,8 +2498,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011058",
@@ -2546,8 +2513,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011059",
@@ -2562,8 +2528,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011060",
@@ -2593,8 +2558,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011062",
@@ -2609,8 +2573,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011063",
@@ -2625,8 +2588,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011064",
@@ -2656,8 +2618,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011066",
@@ -2672,8 +2633,7 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011067",
@@ -2707,7 +2667,6 @@
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-07-06T09:00:00Z",
     "end_sent_at": "2026-07-06T09:00:00Z"
@@ -2725,8 +2684,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011070",
@@ -2771,8 +2729,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011073",
@@ -2787,8 +2744,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011074",
@@ -2818,8 +2774,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011076",
@@ -2909,8 +2864,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011082",
@@ -2925,8 +2879,7 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011083",
@@ -2960,7 +2913,6 @@
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-07-31T09:00:00Z",
     "end_sent_at": "2026-07-31T09:00:00Z"
@@ -2979,7 +2931,6 @@
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "left",
     "synthetic": true,
-    "agency": "Maju Staffing",
     "left_reason": "resigned",
     "left_at": "2026-06-10T09:00:00Z",
     "end_sent_at": "2026-06-10T09:00:00Z"
@@ -2997,8 +2948,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011087",
@@ -3028,8 +2978,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011089",
@@ -3044,8 +2993,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011090",
@@ -3075,8 +3023,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011092",
@@ -3091,8 +3038,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011093",
@@ -3137,8 +3083,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011096",
@@ -3168,8 +3113,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Maju Staffing"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011098",
@@ -3184,8 +3128,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "synthetic": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011099",
@@ -3200,7 +3143,6 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true,
-    "agency": "Bintang Resource"
+    "synthetic": true
   }
 ]

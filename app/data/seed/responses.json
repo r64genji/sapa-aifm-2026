@@ -137,7 +137,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010002",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020002",
     "question_id": "JOB_MATCH",
-    "scale_value": 1,
+    "scale_value": 4,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-05-18T04:12:00Z"
@@ -214,7 +214,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010004",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020004",
     "question_id": "JOB_MATCH",
-    "scale_value": 3,
+    "scale_value": 1,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-05-18T04:32:00Z"
@@ -291,7 +291,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010005",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020005",
     "question_id": "JOB_MATCH",
-    "scale_value": 2,
+    "scale_value": 1,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-05-18T02:26:00Z"
@@ -368,7 +368,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010006",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020006",
     "question_id": "JOB_MATCH",
-    "scale_value": 4,
+    "scale_value": 3,
     "language": "ms",
     "kind": "checkin",
     "created_at": "2026-05-18T03:04:00Z"
@@ -445,7 +445,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010007",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020007",
     "question_id": "JOB_MATCH",
-    "scale_value": 5,
+    "scale_value": 2,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-05-18T04:35:00Z"
@@ -522,7 +522,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010008",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020008",
     "question_id": "JOB_MATCH",
-    "scale_value": 4,
+    "scale_value": 5,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-05-18T06:55:00Z"
@@ -907,7 +907,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010017",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020017",
     "question_id": "JOB_MATCH",
-    "scale_value": 5,
+    "scale_value": 4,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-06-15T06:47:00Z"
@@ -1061,7 +1061,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010020",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020020",
     "question_id": "JOB_MATCH",
-    "scale_value": 3,
+    "scale_value": 4,
     "language": "ms",
     "kind": "checkin",
     "created_at": "2026-06-15T04:00:00Z"
@@ -1754,7 +1754,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010033",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020033",
     "question_id": "JOB_MATCH",
-    "scale_value": 2,
+    "scale_value": 3,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-07-20T02:56:00Z"
@@ -1908,7 +1908,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010036",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020036",
     "question_id": "JOB_MATCH",
-    "scale_value": 1,
+    "scale_value": 5,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-07-20T07:00:00Z"
@@ -2062,7 +2062,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010038",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020038",
     "question_id": "JOB_MATCH",
-    "scale_value": 4,
+    "scale_value": 3,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-07-20T07:02:00Z"
@@ -2678,7 +2678,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010051",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020051",
     "question_id": "JOB_MATCH",
-    "scale_value": 2,
+    "scale_value": 3,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-08-17T05:45:00Z"
@@ -2986,7 +2986,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010055",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020055",
     "question_id": "JOB_MATCH",
-    "scale_value": 3,
+    "scale_value": 2,
     "language": "ms",
     "kind": "checkin",
     "created_at": "2026-08-17T03:00:00Z"
@@ -3910,7 +3910,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010073",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020073",
     "question_id": "JOB_MATCH",
-    "scale_value": 3,
+    "scale_value": 2,
     "language": "en",
     "kind": "checkin",
     "created_at": "2026-09-21T05:16:00Z"
@@ -5256,7 +5256,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000030480",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "person_id": "6f1c2a3e-0000-4000-8000-000000010083",
+    "person_id": "6f1c2a3e-0000-4000-8000-000000010017",
     "schedule_id": null,
     "question_id": "QA",
     "text": "My supervisor keeps touching my shoulder and sends me strange messages at night.",
@@ -5311,26 +5311,6 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000030485",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "person_id": "6f1c2a3e-0000-4000-8000-000000011001",
-    "schedule_id": null,
-    "question_id": "exit.ROLE_CLARITY",
-    "language": "en",
-    "kind": "exit",
-    "created_at": "2026-03-13T10:00:00Z"
-  },
-  {
-    "id": "6f1c2a3e-0000-4000-8000-000000030486",
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "person_id": "6f1c2a3e-0000-4000-8000-000000011002",
-    "schedule_id": null,
-    "question_id": "exit.ROLE_CLARITY",
-    "language": "en",
-    "kind": "exit",
-    "created_at": "2026-01-07T10:00:00Z"
-  },
-  {
-    "id": "6f1c2a3e-0000-4000-8000-000000030487",
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011003",
     "schedule_id": null,
     "question_id": "exit.ROLE_CLARITY",
@@ -5339,7 +5319,7 @@
     "created_at": "2026-01-14T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030488",
+    "id": "6f1c2a3e-0000-4000-8000-000000030486",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011017",
     "schedule_id": null,
@@ -5349,7 +5329,17 @@
     "created_at": "2026-01-25T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030489",
+    "id": "6f1c2a3e-0000-4000-8000-000000030487",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "person_id": "6f1c2a3e-0000-4000-8000-000000011018",
+    "schedule_id": null,
+    "question_id": "exit.ROLE_CLARITY",
+    "language": "ms",
+    "kind": "exit",
+    "created_at": "2026-04-13T10:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000030488",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011019",
     "schedule_id": null,
@@ -5359,17 +5349,17 @@
     "created_at": "2026-04-19T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030490",
+    "id": "6f1c2a3e-0000-4000-8000-000000030489",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011020",
     "schedule_id": null,
-    "question_id": "exit.ONBOARDING_TRAINING",
+    "question_id": "exit.ROLE_CLARITY",
     "language": "en",
     "kind": "exit",
     "created_at": "2026-03-05T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030491",
+    "id": "6f1c2a3e-0000-4000-8000-000000030490",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011032",
     "schedule_id": null,
@@ -5379,7 +5369,7 @@
     "created_at": "2026-05-30T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030492",
+    "id": "6f1c2a3e-0000-4000-8000-000000030491",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011033",
     "schedule_id": null,
@@ -5389,7 +5379,7 @@
     "created_at": "2026-04-15T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030493",
+    "id": "6f1c2a3e-0000-4000-8000-000000030492",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011034",
     "schedule_id": null,
@@ -5399,17 +5389,17 @@
     "created_at": "2026-05-26T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030494",
+    "id": "6f1c2a3e-0000-4000-8000-000000030493",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011049",
     "schedule_id": null,
-    "question_id": "exit.WORKLOAD",
+    "question_id": "exit.ONBOARDING_TRAINING",
     "language": "en",
     "kind": "exit",
     "created_at": "2026-07-13T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030495",
+    "id": "6f1c2a3e-0000-4000-8000-000000030494",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011050",
     "schedule_id": null,
@@ -5419,13 +5409,23 @@
     "created_at": "2026-04-01T10:00:00Z"
   },
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000030496",
+    "id": "6f1c2a3e-0000-4000-8000-000000030495",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "person_id": "6f1c2a3e-0000-4000-8000-000000011051",
     "schedule_id": null,
-    "question_id": "exit.BELONGING",
+    "question_id": "exit.WORKLOAD",
     "language": "ms",
     "kind": "exit",
     "created_at": "2026-05-24T10:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000030496",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "person_id": "6f1c2a3e-0000-4000-8000-000000011052",
+    "schedule_id": null,
+    "question_id": "exit.BELONGING",
+    "language": "en",
+    "kind": "exit",
+    "created_at": "2026-06-05T10:00:00Z"
   }
 ]

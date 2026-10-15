@@ -95,12 +95,12 @@ test("R26: the seeded earlier action leads with the score change against other t
   assert.equal(fewInScope.score.detail, null);
 });
 
-test("R26: the seeded earlier action reads 2.5 → 3.8 for 6 people", { todo: "needs the 100-hire seed (#25)" }, async () => {
+test("R26: the seeded earlier action reads 2.5 → 3.8 for 6 people", async () => {
   const rows = (await (await hrRequest("/api/hr/actions", "GET")).json()) as Record<string, any>[];
   assert.equal(rows.find((row) => row.id === "6f1c2a3e-0000-4000-8000-000000000501")!.score.detail, "2.5 → 3.8, 6 people");
 });
 
-test("R43: the draft screen for Priorities chat and written top-3 list shows 41 people", { todo: "needs the 100-hire seed (#25)" }, async () => {
+test("R43: the draft screen for Priorities chat and written top-3 list shows 41 people", async () => {
   const entries = (await (await hrRequest("/api/hr/actions/library?driver=ROLE_CLARITY", "GET")).json()) as { title: string; evidence: string }[];
   assert.equal(
     entries.find((entry) => entry.title === "Priorities chat and written top-3 list")!.evidence,
