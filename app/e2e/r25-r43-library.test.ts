@@ -42,7 +42,7 @@ test("R43, R25: a fix sent with Add your own fix is listed in the library, can b
   const added = (await list()).find((entry) => entry.title === "Weekly 1:1 with a mentor")!;
   assert.equal(added.text, "Raj pairs each new hire with a mentor.");
   assert.equal(added.result, "New · no result yet");
-  assert.equal((await list()).find((entry) => entry.id === seeded)!.result, "Not used here yet");
+  assert.equal((await list()).find((entry) => entry.id === seeded)!.result, "Used 3 times here. +1.0 vs other teams, 41 people");
 
   const second = await newDraft();
   assert.equal((await hrRequest(`/api/hr/actions/${second}`, "PATCH", { library_entry_id: added.id, steps: added.text })).status, 200);
