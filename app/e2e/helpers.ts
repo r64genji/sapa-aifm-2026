@@ -90,6 +90,10 @@ export async function blockChat(chatId: number) {
   await fetch(`${telegramUrl}/block/${chatId}`, { method: "POST" });
 }
 
+export async function failChat(chatId: number) {
+  await fetch(`${telegramUrl}/fail/${chatId}`, { method: "POST" });
+}
+
 export async function hrToken(email = "hr@contoh.test") {
   const client = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -17,7 +17,7 @@ export const providers = (schema: object, medium: boolean) => [
   },
   {
     name: "deepseek" as const,
-    url: `${process.env.DEEPSEEK_BASE_URL}/chat/completions`,
+    url: `${process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com"}/chat/completions`,
     key: process.env.DEEPSEEK_API_KEY!,
     model: process.env.DEEPSEEK_MODEL_ID!,
     price: { input: 0.3, output: 1.2 },
