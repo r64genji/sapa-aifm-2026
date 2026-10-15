@@ -4,7 +4,6 @@ import { before, test } from "node:test";
 import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
-const organisation = "6f1c2a3e-0000-4000-8000-000000000001";
 const trend = "This shows a trend, not proof that Sapa caused it";
 const mondays = ["2026-10-19", "2026-10-26", "2026-11-02", "2026-11-09"];
 
@@ -172,7 +171,7 @@ test("R42: an intake of 5 shows its response rate with lapsed check-ins counted,
     const { data: person } = await db.from("people").select("id").eq("code_name", `April hire ${index}`).single();
     const { error } = await db
       .from("checkin_schedule")
-      .upsert({ organisation_id: organisation, person_id: person!.id, touchpoint: 3, due_at: "2026-04-09T01:00:00Z", status }, { onConflict: "person_id,touchpoint" });
+      .upsert({ organisation_id: organisation.id, person_id: person!.id, touchpoint: 3, due_at: "2026-04-09T01:00:00Z", status }, { onConflict: "person_id,touchpoint" });
     if (error) throw error;
   }
   const { intakes } = await (await hrRequest("/api/hr/impact", "GET")).json();
