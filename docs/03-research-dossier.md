@@ -1,6 +1,6 @@
 # Sapa — AIFM 2026 Challenge 4 (RETAIN): Research & Product Dossier
 
-*As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/8cef3335-cecc-4bce-812e-b8fd6617111e). Sections C, D, H, I, K, L and M were updated on 15 Oct to match the [implementation spec (05)](05-implementation-spec.md). Where they disagree, 05 wins.*
+*As of 14 Oct 2026. Sections C, D, H, I, K, L and M were updated on 15 Oct to match the [implementation spec (05)](05-implementation-spec.md). Where they disagree, 05 wins.*
 
 **Sapa is a voluntary chat check-in assistant that helps HR and line managers spot new-hire difficulties in the first six months and act on them before they become resignations.** It follows the guide's Challenge 4 brief: one employee group (new hires), voluntary feedback, AI-found themes, human review and a tracked support action.
 
@@ -16,6 +16,22 @@
 - **What Sapa never does:** no hidden monitoring, no emotion detection, no prediction of who will quit, no use in performance or probation decisions. This follows the guide's rule against secret monitoring and emotion inference.
 
 "Sapa" comes from the Malay *tegur sapa*, to greet or check in. It is a working name.
+
+**Contents**
+
+- [A. Target and scope](#a-target-and-scope)
+- [B. The problem in plain language](#b-the-problem-in-plain-language)
+- [C. Current process and where it breaks (slide 3)](#c-current-process-and-where-it-breaks-slide-3)
+- [D. Answers to the guide's 7 required questions](#d-answers-to-the-guides-7-required-questions)
+- [E. Competitive landscape and differentiation](#e-competitive-landscape-and-differentiation)
+- [F. Product specification inputs](#f-product-specification-inputs)
+- [G. Testing plan (slide 8)](#g-testing-plan-slide-8)
+- [H. Business and economic impact](#h-business-and-economic-impact)
+- [I. ESG and Responsible AI (slide 9)](#i-esg-and-responsible-ai-slide-9)
+- [J. Rubric checklist](#j-rubric-checklist)
+- [K. 10-slide outline and 2-minute demo](#k-10-slide-outline-and-2-minute-demo)
+- [L. Likely judge questions](#l-likely-judge-questions)
+- [M. Risks, caveats and open questions](#m-risks-caveats-and-open-questions)
 
 ## A. Target and scope
 

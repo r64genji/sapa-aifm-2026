@@ -1,6 +1,6 @@
 # AIFM 2026 — Sapa Product Rundown & Deliverables Checklist
 
-*As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/db43d8dd-2495-4e94-a72b-93be99a5fb42). The working checklist with owners and statuses lives in [`/deliverables`](../deliverables/README.md).*
+*As of 14 Oct 2026. The working checklist with owners and statuses lives in [`/deliverables`](../deliverables/README.md).*
 
 ## 1. What Sapa does
 
