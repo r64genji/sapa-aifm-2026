@@ -42,7 +42,7 @@ test("R51: a request for more than one team is refused and no route lists teams"
     assert.deepEqual(await res.json(), { error: "One team at a time" });
   }
   const text = JSON.stringify(await detail(""));
-  assert.equal(/"teams?"/.test(text), false);
+  assert.equal(/"(teams|manager|managers|manager_id|manager_name)"/.test(text), false);
   assert.equal((await hrRequest("/api/hr/themes/UNKNOWN", "GET")).status, 404);
 });
 

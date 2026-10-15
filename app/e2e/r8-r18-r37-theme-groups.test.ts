@@ -12,7 +12,7 @@ async function addRoleClarityReplies(count: number) {
   for (let i = 1; i <= count; i++) {
     const person = await db
       .from("people")
-      .insert({ organisation_id: org, code_name: `Group test ${i}`, team: "Accounts Payable Asia", manager_id: raj, start_date: "2026-09-07", role: "Accounts payable analyst", language: "en", state: "active", synthetic: true })
+      .insert({ organisation_id: org, code_name: `Group test ${i}`, team: "Accounts Payable Asia", manager_id: raj, start_date: "2026-09-07", role: "Accounts payable analyst", language: "en", invite_token: `group-test-${i}`, invite_expires_at: "2026-11-01T00:00:00Z", state: "active", synthetic: true })
       .select("id")
       .single();
     assert.equal(person.error, null);
