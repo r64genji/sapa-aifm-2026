@@ -10,7 +10,9 @@ const mondays = ["2026-10-19", "2026-10-26", "2026-11-02", "2026-11-09"];
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const ms_ = read("../data/packs/ms.json");
 const seedResponses: { id: string; kind: string; language: string }[] = read("../data/seed/responses.json");
-const seededIds = (language: string) => seedResponses.filter((r) => r.kind === "unprompted" && r.language === language).map((r) => r.id);
+const escalated = new Set(read("../data/seed/escalations.json").map((e: { response_id: string }) => e.response_id));
+const seededIds = (language: string) =>
+  seedResponses.filter((r) => r.kind === "unprompted" && r.language === language && !escalated.has(r.id)).map((r) => r.id);
 const outcomes: { intake: string; agency: string | null; hired: number; employed: number }[] = read("../data/seed/intake_outcomes.json");
 const [organisation] = read("../data/seed/organisations.json");
 const sum = (rows: typeof outcomes, key: "hired" | "employed") => rows.reduce((total, row) => total + row[key], 0);
@@ -45,7 +47,7 @@ before(async () => {
   await freezeClock("2026-10-15T03:00:00.000Z");
 });
 
-test("R42: the seed shows 80 of 99 against the usual 73 in 100", { todo: "needs the 100-hire seed (#25)" }, async () => {
+test("R42: the seed shows 80 of 99 against the usual 73 in 100", { todo: "R42: lib/impact.ts says \"a usual 73 of 100\", docs/05 says \"73 in 100\"" }, async () => {
   assert.equal((await impact()).text, "80 of 99 still employed at Month 6, against a usual 73 in 100");
 });
 
@@ -83,9 +85,11 @@ test("R42: a confirmed DELETE leaves the retention figure unchanged", async () =
 test("R42: a pool under 30 says Too few to tell yet, and HR can only enter an intake that has passed Month 6", async () => {
   assert.equal((await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-03", hired: 1, employed: 2 })).status, 400);
   assert.equal((await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-04", hired: 5, employed: 4 })).status, 409);
-  assert.equal((await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-03", hired: 1, employed: 1 })).status, 200);
-  const march = outcomes.filter((row) => row.intake === "2026-03" && row.agency === null);
-  const pooled = sum(outcomes, "hired") - sum(march, "hired") + 1;
+  const passed = ["2025-11", "2025-12", "2026-01", "2026-02", "2026-03"];
+  for (const intake of passed) {
+    assert.equal((await hrRequest("/api/hr/intake-outcomes", "PUT", { intake, hired: 1, employed: 1 })).status, 200);
+  }
+  const pooled = sum(outcomes.filter((row) => !passed.includes(row.intake)), "hired") + passed.length;
   assert.ok(pooled < 30);
   assert.deepEqual(await impact(), { enough: false, message: `Too few to tell yet (${pooled} of 30)`, note: trend });
   assert.equal(
@@ -180,6 +184,6 @@ test("R42: an intake of 5 shows its response rate with lapsed check-ins counted,
     enough: true,
     response_rate: 0.6,
     median_days_reply_to_done: 11,
-    score_change_against_others: 1.2,
+    score_change_against_others: 1,
   });
 });

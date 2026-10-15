@@ -22,6 +22,9 @@ import {
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
+const seededEscalations = new Set(read("../data/seed/escalations.json").map((e: { id: string }) => e.id));
+const newEscalations = async () =>
+  ((await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[]).filter((e) => !seededEscalations.has(e.id));
 const en = read("../data/packs/en.json");
 const zh = read("../data/packs/zh.json");
 const [organisation] = read("../data/seed/organisations.json");
@@ -180,8 +183,7 @@ test("R32: a pay dispute gets the important-matter message, no AI answer and no 
   assert.deepEqual(await asked(payDispute), [
     { outcome: "important", important_topic: "pay_problem", cited_path: null, group_id: null },
   ]);
-  const res = await hrRequest("/api/hr/escalations", "GET");
-  assert.deepEqual(await res.json(), []);
+  assert.deepEqual(await newEscalations(), []);
 });
 
 test("R32, R13: a crisis message gets the safe message with no model call and opens an escalation", async () => {
@@ -191,16 +193,15 @@ test("R32, R13: a crisis message gets the safe message with no model call and op
   assert.ok(replies[0].includes(en.safety.message));
   assert.ok(!replies[0].includes(en.qa.label));
   assert.equal((await modelCalls("omniroute")).length, calls);
-  const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[];
-  assert.deepEqual(escalations.map((e) => e.category), ["self_harm_crisis"]);
+  assert.deepEqual((await newEscalations()).map((e) => e.category), ["self_harm_crisis"]);
   assert.equal((await asked(crisis))[0].important_topic, "self_harm_crisis");
 });
 
 test("R34: a group below 3 askers shows only in the total, and a third distinct asker forwards it with no names or words", async () => {
   const before = await questions();
   assert.deepEqual(before.groups.map((g) => [g.text, g.askers]), [
-    ["How do I claim overtime?", 5 + 1],
-    ["Where can I park my motorbike?", 3],
+    ["How do I claim overtime?", 11 + 1],
+    ["Where can I park my motorbike?", 7],
   ]);
   assert.equal(before.other.questions, 5);
   assert.equal(before.other.text, "5 other questions from fewer than 3 people");
@@ -326,8 +327,7 @@ test("R32, R13, R14: forced labour or sexual harassment that only the model sees
   assert.equal(harassedReplies.length, 1);
   assert.ok(harassedReplies[0].includes(en.safety.tribunal));
 
-  const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[];
-  assert.deepEqual(escalations.map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
+  assert.deepEqual((await newEscalations()).map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
 });
 
 test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese handbook page", async () => {

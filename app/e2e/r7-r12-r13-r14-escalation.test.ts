@@ -22,6 +22,7 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta
 const en = read("../data/packs/en.json");
 const [organisation] = read("../data/seed/organisations.json");
 const contacts = organisation.escalation_contacts;
+const seeded = new Set(read("../data/seed/escalations.json").map((e: { id: string }) => e.id));
 const probes: string[] = en.checkin.probes.map((p: { text: string }) => p.text);
 const [crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, held] = [401, 402, 403, 404, 405, 406, 407, 408, 409, 410].map(
   (n) => 5550000000 + n,
@@ -58,7 +59,7 @@ async function openResponse(chat: number) {
 async function escalations() {
   const res = await hrRequest("/api/hr/escalations", "GET");
   assert.equal(res.status, 200);
-  return (await res.json()) as Record<string, unknown>[];
+  return ((await res.json()) as Record<string, unknown>[]).filter((e) => !seeded.has(e.id));
 }
 
 async function escalationFor(chat: number) {
@@ -165,7 +166,7 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
   }
   const themes = await (await hrRequest("/api/hr/themes", "GET")).json();
   const card = themes.cards.find((c: { driver: string }) => c.driver === "ROLE_CLARITY");
-  assert.deepEqual({ n: card.n, m: card.m }, { n: 8, m: 19 });
+  assert.deepEqual({ n: card.n, m: card.m }, { n: 24, m: 65 });
 
   const manager = await hrToken("raj@contoh.test");
   const res = await fetch(`${appUrl}/api/hr/escalations`, { headers: { authorization: `Bearer ${manager}` } });
@@ -182,7 +183,7 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
 
   const asHr = await sessionClient("hr@contoh.test");
   const { data: hrRows } = await asHr.from("escalations").select("category").order("created_at");
-  assert.equal(hrRows!.length, 3);
+  assert.equal(hrRows!.length, seeded.size + 3);
 });
 
 test("R30, R13: a passport message typed while a 1-5 question is open gets the safety message and an escalation, and the question stays open", async () => {

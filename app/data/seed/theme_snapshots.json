@@ -7,22 +7,86 @@
     "respondents": 9,
     "suppressed": false,
     "counts": {
-      "ROLE_CLARITY": { "n": 4, "reviewed": 3, "ai_confident": 1 },
-      "BELONGING": { "n": 3, "reviewed": 2, "ai_confident": 1 },
-      "WORKLOAD": { "n": 2, "reviewed": 2, "ai_confident": 0 },
-      "MANAGER_SUPPORT": { "n": 1, "reviewed": 1, "ai_confident": 0 }
+      "ROLE_CLARITY": {
+        "n": 5,
+        "reviewed": 4,
+        "ai_confident": 1
+      },
+      "MANAGER_SUPPORT": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1
+      },
+      "WORKLOAD": {
+        "n": 1,
+        "reviewed": 1,
+        "ai_confident": 0
+      }
     }
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "week": "2026-10-05",
+    "week": "2026-10-12",
     "touchpoint": 14,
-    "team": "Accounts Payable Asia",
-    "respondents": 8,
+    "team": "Accounts Payable Europe",
+    "respondents": 22,
     "suppressed": false,
     "counts": {
-      "ROLE_CLARITY": { "n": 6, "reviewed": 5, "ai_confident": 1 },
-      "WORKLOAD": { "n": 4, "reviewed": 3, "ai_confident": 1 }
+      "ROLE_CLARITY": {
+        "n": 8,
+        "reviewed": 4,
+        "ai_confident": 4
+      },
+      "WORKLOAD": {
+        "n": 2,
+        "reviewed": 0,
+        "ai_confident": 2
+      },
+      "MANAGER_SUPPORT": {
+        "n": 7,
+        "reviewed": 3,
+        "ai_confident": 4
+      },
+      "ONBOARDING_TRAINING": {
+        "n": 4,
+        "reviewed": 3,
+        "ai_confident": 1
+      },
+      "BELONGING": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Japanese Desk",
+    "respondents": 5,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1
+      },
+      "ONBOARDING_TRAINING": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1
+      },
+      "WORKLOAD": {
+        "n": 1,
+        "reviewed": 1,
+        "ai_confident": 0
+      },
+      "MANAGER_SUPPORT": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1
+      }
     }
   },
   {
@@ -30,8 +94,61 @@
     "week": "2026-10-12",
     "touchpoint": 14,
     "team": "Korean Desk",
+    "respondents": 3,
+    "suppressed": true,
+    "counts": null
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Order-to-Cash Asia",
     "respondents": 4,
     "suppressed": true,
     "counts": null
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Record-to-Report",
+    "respondents": 3,
+    "suppressed": true,
+    "counts": null
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "IT Service Desk",
+    "respondents": 9,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 2,
+        "reviewed": 2,
+        "ai_confident": 0
+      },
+      "MANAGER_SUPPORT": {
+        "n": 2,
+        "reviewed": 2,
+        "ai_confident": 0
+      },
+      "ONBOARDING_TRAINING": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1
+      },
+      "BELONGING": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1
+      },
+      "WORKLOAD": {
+        "n": 1,
+        "reviewed": 1,
+        "ai_confident": 0
+      }
+    }
   }
 ]

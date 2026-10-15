@@ -39,7 +39,7 @@ before(async () => {
   await joined(asker, "2026-10-14");
 });
 
-test("R52: the seeded Accounts payable analyst card reads 12 of 26 said 'not really' at Day 14", { todo: "needs the 100-hire seed (#25)" }, async () => {
+test("R52: the seeded Accounts payable analyst card reads 12 of 26 said 'not really' at Day 14", async () => {
   const card = (await cards()).find((c) => c.role === "Accounts payable analyst")!;
   assert.deepEqual(card, {
     role: "Accounts payable analyst",
@@ -62,15 +62,26 @@ test("R52: a role with fewer than 5 people shows 'Not enough people yet' and no 
   assert.deepEqual(
     all.filter((c) => c.role !== "Accounts payable analyst").map((c) => [c.role, c.enough, c.message]),
     [
-      ["AP analyst (Mandarin)", false, "Not enough people yet (0 of 5 needed)"],
-      ["Customer care agent (Korean)", false, "Not enough people yet (2 of 5 needed)"],
-      ["IT service desk analyst", false, "Not enough people yet (3 of 5 needed)"],
-      ["Order-to-Cash analyst", false, "Not enough people yet (2 of 5 needed)"],
+      ["AP analyst (German)", false, "Not enough people yet (1 of 5 needed)"],
+      ["AP analyst (Mandarin)", false, "Not enough people yet (1 of 5 needed)"],
+      ["AP analyst (Thai)", false, "Not enough people yet (1 of 5 needed)"],
+      ["AP analyst (Vietnamese)", false, "Not enough people yet (2 of 5 needed)"],
+      ["Billing analyst", false, "Not enough people yet (2 of 5 needed)"],
+      ["Collections analyst", false, "Not enough people yet (3 of 5 needed)"],
+      ["Customer care agent (Japanese)", false, "Not enough people yet (4 of 5 needed)"],
+      ["Customer care agent (Korean)", false, "Not enough people yet (3 of 5 needed)"],
+      ["Customer care agent (Thai)", false, "Not enough people yet (2 of 5 needed)"],
+      ["General ledger accountant", false, "Not enough people yet (3 of 5 needed)"],
+      ["IT service desk analyst", false, "Not enough people yet (4 of 5 needed)"],
+      ["IT service desk analyst (Europe shift)", false, "Not enough people yet (3 of 5 needed)"],
+      ["IT service desk analyst (German)", false, "Not enough people yet (2 of 5 needed)"],
+      ["Order-to-Cash analyst", false, "Not enough people yet (4 of 5 needed)"],
+      ["Reconciliations analyst", false, "Not enough people yet (3 of 5 needed)"],
     ],
   );
   const refused = await hrRequest("/api/hr/job-match/actions", "POST", { role: "IT service desk analyst" });
   assert.equal(refused.status, 422);
-  assert.equal(((await refused.json()) as { error: string }).error, "Not enough people yet (3 of 5 needed)");
+  assert.equal(((await refused.json()) as { error: string }).error, "Not enough people yet (4 of 5 needed)");
 });
 
 test("R52: a manager is refused on the card and on drafting from it", async () => {

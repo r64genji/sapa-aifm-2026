@@ -23,6 +23,7 @@ const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
 const en = pack("en");
 const ms = pack("ms");
+const zh = pack("zh");
 
 before(async () => {
   await resetDemo();
@@ -166,7 +167,7 @@ test("R36: /bahasa offers the languages and switching changes the person's langu
   const shown = (await sentTo(chat)).at(-1)!;
   assert.deepEqual(
     (shown.reply_markup as any).inline_keyboard.flat().map((b: any) => b.text),
-    [en.name, ms.name],
+    [en.name, ms.name, zh.name],
   );
   await tap(chat, ms.name);
   assert.equal((await personRow(chat)).language, "ms");
