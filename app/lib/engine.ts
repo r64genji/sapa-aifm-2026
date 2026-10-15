@@ -1,3 +1,4 @@
+import { managerChat } from "@/lib/actions";
 import { checkinButton, checkinText } from "@/lib/checkin";
 import { answerOffer } from "@/lib/offers";
 import { ask } from "@/lib/qa";
@@ -137,7 +138,7 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
         };
       }
     }
-    return { replies: [{ text: packs.en.start }] };
+    return (await managerChat(chatId, input)) ?? { replies: [{ text: packs.en.start }] };
   }
   if (person.state === "stopped") return none;
   const languages = await liveLanguages(person.organisation_id);
