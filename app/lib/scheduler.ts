@@ -1,5 +1,6 @@
 import { checkinReminder, checkinStart } from "@/lib/checkin";
 import { now } from "@/lib/clock";
+import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { offerReply } from "@/lib/offers";
 import type { Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -28,7 +29,11 @@ export async function dispatch() {
   for (const offer of offers as { chat_id: number; language: Language }[]) {
     await send(offer.chat_id, offerReply(offer.language));
   }
-  return claims.length + offers.length;
+  const nudges = await claimMilestones();
+  for (const nudge of nudges) {
+    await send(nudge.chat_id, milestoneReply(nudge.language, nudge.id, nudge.day, nudge.hire));
+  }
+  return claims.length + offers.length + nudges.length;
 }
 
 export async function scheduleFor(personId: string) {

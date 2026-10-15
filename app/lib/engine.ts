@@ -16,6 +16,7 @@ import {
 } from "@/lib/directory";
 import { now } from "@/lib/clock";
 import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
+import { milestoneDone } from "@/lib/milestones";
 import { packs, type CommandId, type Language } from "@/lib/packs";
 
 export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[] };
@@ -128,6 +129,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
 export async function handle(chatId: number, input: Input): Promise<Outcome> {
   const person = await personByChat(chatId);
   if (!person) {
+    if (input.kind === "button" && input.id === "ms") {
+      const replies = await milestoneDone(chatId, input.value);
+      if (replies) return { replies };
+    }
     if (input.kind === "text") {
       const [head, token] = input.text.trim().split(/\s+/);
       if (head.toLowerCase().split("@")[0] === "/start" && token) {

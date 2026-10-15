@@ -100,6 +100,15 @@
     "accepted": "Terima kasih. HR akan menghubungi anda dalam masa 2 hari bekerja.",
     "declined": "Tidak mengapa. Terima kasih kerana memberitahu kami."
   },
+  "milestone": {
+    "nudges": {
+      "1": "Hari 1 untuk {name}: Tetapkan seorang buddy.",
+      "7": "Hari 7 untuk {name}: Tempah sembang keutamaan 15 minit.",
+      "30": "Hari 30 untuk {name}: Persetujui pelan 30-60-90."
+    },
+    "done": "Selesai",
+    "doneAck": "Terima kasih. Ditandakan selesai."
+  },
   "closure": "HR telah selesai menyemak perkara yang anda kongsikan. Jika anda mahu bercakap dengan HR lagi, anda boleh hubungi HR di sini:",
   "safety": {
     "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, jadi ia hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda juga boleh menghubungi:",

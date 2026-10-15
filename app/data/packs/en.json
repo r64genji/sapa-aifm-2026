@@ -100,6 +100,15 @@
     "accepted": "Thank you. HR will contact you within 2 working days.",
     "declined": "No problem. Thank you for telling us."
   },
+  "milestone": {
+    "nudges": {
+      "1": "Day 1 for {name}: Assign a buddy.",
+      "7": "Day 7 for {name}: Book a 15-minute priorities chat.",
+      "30": "Day 30 for {name}: Agree a 30-60-90 plan."
+    },
+    "done": "Done",
+    "doneAck": "Thank you. Marked as done."
+  },
   "closure": "HR has finished looking into what you shared. If you want to talk to HR again, you can reach them here:",
   "safety": {
     "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will contact you within 1 working day. If you are in danger now, call 999.\nYou can also reach:",
