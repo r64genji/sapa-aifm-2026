@@ -34,7 +34,7 @@ Run before each rehearsal, not on every commit. It runs required journey 2 again
 
 ## Production jobs
 
-Two `pg_cron` jobs on the cloud Supabase project call the app with `Authorization: Bearer $DISPATCH_SECRET`. They are created by SQL, not by a migration, so the secret stays out of git. `sapa-dispatch` runs every minute (`* * * * *`) and posts to `/api/dispatch`. `sapa-nightly` runs at 00:30 Kuala Lumpur time (`30 16 * * *` UTC) and posts to `/api/nightly`: retention purge, weekly snapshots, held manager alerts and spot checks. Without it none of these run.
+Two `pg_cron` jobs on the cloud Supabase project call the app with `Authorization: Bearer $DISPATCH_SECRET`. They are created by SQL, not by a migration, so the secret stays out of git. `sapa-dispatch` runs every minute (`* * * * *`) and posts to `/api/dispatch`. `sapa-nightly` runs at 03:00 Kuala Lumpur time (`0 19 * * *` UTC) and posts to `/api/nightly`: retention purge, weekly snapshots, held manager alerts and spot checks. Without it none of these run.
 
 ## Data and secrets
 
