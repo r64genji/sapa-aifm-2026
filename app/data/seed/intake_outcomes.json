@@ -1,0 +1,6 @@
+[
+  { "id": "6f1c2a3e-0000-4000-8000-000000000701", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "intake": "2026-01", "agency": null, "hired": 10, "employed": 8, "entered_by": "seed", "entered_at": "2026-10-01T01:00:00Z" },
+  { "id": "6f1c2a3e-0000-4000-8000-000000000702", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "intake": "2026-02", "agency": "Maju Staffing", "hired": 6, "employed": 5, "entered_by": "seed", "entered_at": "2026-10-01T01:00:00Z" },
+  { "id": "6f1c2a3e-0000-4000-8000-000000000703", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "intake": "2026-02", "agency": null, "hired": 4, "employed": 3, "entered_by": "seed", "entered_at": "2026-10-01T01:00:00Z" },
+  { "id": "6f1c2a3e-0000-4000-8000-000000000704", "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001", "intake": "2026-03", "agency": null, "hired": 11, "employed": 10, "entered_by": "seed", "entered_at": "2026-10-01T01:00:00Z" }
+]

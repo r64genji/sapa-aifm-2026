@@ -1,6 +1,7 @@
 import { releaseAlerts } from "@/lib/actions";
 import { now } from "@/lib/clock";
 import { purgeRawText } from "@/lib/privacy";
+import { queueSpotChecks } from "@/lib/quality";
 import { matchesSecret } from "@/lib/secret";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -11,5 +12,11 @@ export async function POST(request: Request) {
   }
   const { data, error } = await createAdminClient().rpc("take_snapshots", { at: (await now()).toISOString() });
   if (error) throw error;
-  return Response.json({ ok: true, snapshots: data, purged: await purgeRawText(), alerts: await releaseAlerts() });
+  return Response.json({
+    ok: true,
+    snapshots: data,
+    purged: await purgeRawText(),
+    alerts: await releaseAlerts(),
+    spot_checks: await queueSpotChecks(),
+  });
 }

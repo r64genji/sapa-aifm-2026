@@ -36,6 +36,12 @@ export async function themeCards(organisationId: string, touchpoint: number, mon
       context: CONTEXT.map((theme) => ({ theme, hr_only: true, enough: false, message })),
     };
   }
+  const { data: held, error } = await createAdminClient()
+    .from("quality_holds")
+    .select("driver, language, reason")
+    .eq("organisation_id", organisationId)
+    .eq("state", "held");
+  if (error) throw error;
   return {
     touchpoint,
     cards: DRIVERS.map((driver) => ({
@@ -46,6 +52,9 @@ export async function themeCards(organisationId: string, touchpoint: number, mon
       reviewed: c.drivers![driver]?.reviewed ?? 0,
       ai_confident: c.drivers![driver]?.ai_confident ?? 0,
       note: c.calibrating!.includes(driver) ? "New labels wait for HR during calibration" : null,
+      ...(held.some((hold) => hold.driver === driver) && {
+        held: held.filter((hold) => hold.driver === driver).map(({ language, reason }) => ({ language, reason })),
+      }),
     })),
     context: CONTEXT.map((theme) => ({
       theme,
