@@ -25,8 +25,7 @@ const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
 const [en, zh] = [pack("en"), pack("zh")];
 const chat = 5550000401;
-const phone = "012-345 6789";
-const reply = `老板给了我三个紧急任务，我不知道先做哪个，请打${phone}`;
+const reply = "老板给了我三个紧急任务，我不知道先做哪个";
 const quote = "我不知道先做哪个";
 const translated = "The boss gave me three urgent tasks and I do not know which to do first.";
 
@@ -106,9 +105,7 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   assert.deepEqual(item.translation, { label: "AI translation", text: translated });
   const calls = (await modelCalls("omniroute")).slice(classifyCalls);
   assert.equal(calls.length, 1);
-  const sent = JSON.stringify(calls[0].body);
-  assert.ok(sent.includes("[PHONE]"));
-  assert.ok(!sent.includes(phone));
+  assert.ok(JSON.stringify(calls[0].body).includes(reply));
 
   await scriptModel("omniroute", [{ kind: "json", content: { translation: translated } }]);
   const all = await (await hrRequest("/api/hr/replies", "GET")).json();

@@ -45,9 +45,7 @@ begin
     from people p
     join organisations o on o.id = p.organisation_id
     where p.state = 'left' and p.end_sent_at is null and not p.synthetic and p.telegram_chat_id is not null
-      and (o.demo_mode or (
-        extract(isodow from at at time zone o.time_zone) <= 5
-        and extract(hour from at at time zone o.time_zone) between 9 and 16))
+      and (o.demo_mode or working_hour(o, at))
     for update of p skip locked
   )
   update people p

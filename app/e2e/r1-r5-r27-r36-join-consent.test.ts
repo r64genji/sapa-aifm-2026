@@ -89,7 +89,7 @@ test("R27: an invite 15 days old is refused", async () => {
 });
 
 test("R1: a hire marked as left before joining is refused and gets no check-ins", async () => {
-  const chat = 5550000006;
+  const chat = 5550000009;
   const { token } = await addHire({ code_name: "Left before joining" });
   assert.equal((await hrRequest("/api/hr/hires/left", "POST", { code_name: "Left before joining", reason: "ended_by_company" })).status, 200);
   await link(chat, token);

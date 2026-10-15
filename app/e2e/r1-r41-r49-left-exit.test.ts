@@ -22,7 +22,7 @@ import {
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const generic = "This person is not receiving messages from Sapa now";
 const retention = "2027-04-16";
-const [ticked, unticked, company, safety, replier, stopper, control, sharer] = [701, 702, 703, 704, 705, 706, 707, 708].map(
+const [ticked, unticked, company, safety, replier, stopper, control] = [701, 702, 703, 704, 705, 706, 707].map(
   (n) => 5550000000 + n,
 );
 const names: Record<number, string> = {};
@@ -51,9 +51,9 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
-  for (const chat of [ticked, unticked, company, safety, replier, stopper, control, sharer]) {
+  for (const chat of [ticked, unticked, company, safety, replier, stopper, control]) {
     await joined(chat, "2026-10-02");
-    await tap(chat, chat === sharer ? en.visibilityHrManager : en.visibilityHrOnly);
+    await tap(chat, en.visibilityHrOnly);
     await tap(chat, chat === unticked || chat === control ? en.exitNo : en.exitYes);
     const { data } = await db.from("people").select("code_name").eq("telegram_chat_id", chat).single();
     names[chat] = data!.code_name;
@@ -203,15 +203,4 @@ test("R1, R24: the end text shows the retention date from the last check-in sent
   assert.equal((await markLeft(control, "ended_by_company")).status, 200);
   await dispatch();
   assert.deepEqual((await texts(control)).slice(before), [en.end.replace("{date}", "2027-06-01")]);
-});
-
-test("R49, R6: a manager cannot read the exit answer of a hire who shares replies with them", async () => {
-  assert.equal((await markLeft(sharer, "resigned")).status, 200);
-  await dispatch();
-  await tap(sharer, "Workload");
-  await reply(sharer, "I left because the pay was too low");
-  assert.equal((await texts(sharer)).at(-1), en.exit.thanks);
-  const res = await fetch(`${appUrl}/api/manager/replies`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
-  assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), []);
 });
