@@ -6,7 +6,7 @@ import { Card, CountBar, driverName, Empty, LaneSection, Loading, PageHeader, Ro
 type Retention = { enough: true; k: number; n: number; note: string } | { enough: false; message: string; note: string };
 type Intake =
   | { intake: string; enough: false; message: string }
-  | { intake: string; enough: true; hired: number | null; employed: number | null; response_rate: number; median_days_reply_to_done: number | null };
+  | { intake: string; enough: true; response_rate: number; median_days_reply_to_done: number | null };
 type Fix = {
   id: string;
   driver: string;
@@ -23,6 +23,7 @@ type Impact = {
   baseline: { kept: number; of: number } | null;
   target: number;
   intakes: Intake[];
+  retention_by_intake: { intake: string; hired: number; employed: number }[];
   day14: { answered: number; of: number } | null;
   typical_days_reply_to_done: number | null;
   speed: { first_intake: string; change: number } | null;
@@ -140,6 +141,7 @@ export default function Page() {
   const quality = useApi<Quality[]>("/api/hr/quality");
   if (!impact.data || !milestones.data || !quality.data) return impact.error || milestones.error || quality.error ? <Empty title="Could not load Impact" sub="Try again in a moment." /> : <Loading />;
   const { retention, baseline, target, intakes, day14, speed, fixes, leavers, typical_days_reply_to_done: typical } = impact.data;
+  const outcome = new Map(impact.data.retention_by_intake.map((r) => [r.intake, r]));
   const shareDone = new Map(milestones.data.map((m) => [m.intake, m.share_done]));
   const timed = intakes.flatMap((i) => (i.enough && i.median_days_reply_to_done !== null ? [{ intake: i.intake, days: i.median_days_reply_to_done }] : []));
   const slowest = Math.max(...timed.map((t) => t.days), 1);
@@ -270,7 +272,7 @@ export default function Page() {
                     <th scope="row" className="py-2 pr-3 text-left font-semibold">{monthYear(i.intake)}</th>
                     {i.enough ? (
                       <>
-                        <td className="py-2 pr-3">{i.hired !== null ? `${i.employed} of ${i.hired}` : "Not entered yet"}</td>
+                        <td className="py-2 pr-3">{outcome.has(i.intake) ? `${outcome.get(i.intake)!.employed} of ${outcome.get(i.intake)!.hired}` : "Not entered yet"}</td>
                         <td className="py-2 pr-3">{pct(i.response_rate, 1)}%</td>
                         <td className="py-2 pr-3">{i.median_days_reply_to_done ?? "–"}</td>
                         <td className="py-2">{share === undefined ? "–" : `${pct(share, 1)}%`}</td>

@@ -146,8 +146,6 @@ export async function impact(organisationId: string) {
         : {
             intake,
             enough: true,
-            hired: kept.get(intake)?.hired ?? null,
-            employed: kept.get(intake)?.employed ?? null,
             response_rate: Math.round((entry.answered / entry.sent) * 100) / 100,
             median_days_reply_to_done: entry.days.length ? Math.round(median(entry.days) * 10) / 10 : null,
             score_change_against_others: (() => {
@@ -212,6 +210,7 @@ export async function impact(organisationId: string) {
     day14: day14.sent < org.min_group_size ? null : { answered: day14.answered, of: day14.sent },
     speed,
     intakes,
+    retention_by_intake: intakes.flatMap((entry) => (entry.enough && kept.has(entry.intake) ? [{ intake: entry.intake, ...kept.get(entry.intake)! }] : [])),
     fixes,
     fixes_note: TREND,
     fixes_line: packs.en.action.scoreNote,
