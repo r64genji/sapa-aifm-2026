@@ -61,7 +61,9 @@ for _ in $(seq 60); do
 done
 curl -s -o /dev/null "$APP_URL" || fail "next start"
 
-node --test --test-reporter=spec --test-concurrency=1 e2e/*.test.ts 2>&1 | tee "$log/test.log"
+files=("$@")
+[ ${#files[@]} -eq 0 ] && files=(e2e/*.test.ts)
+node --test --test-reporter=spec --test-concurrency=1 "${files[@]}" 2>&1 | tee "$log/test.log"
 status=${PIPESTATUS[0]}
 count() { sed 's/\x1b\[[0-9;]*m//g' "$log/test.log" | sed -n "s/^ℹ $1 //p"; }
 summary="tests $(count tests), pass $(count pass), fail $(count fail), skipped $(count skipped), todo $(count todo)"
