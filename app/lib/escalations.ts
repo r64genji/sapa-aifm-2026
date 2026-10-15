@@ -131,12 +131,12 @@ export async function setDontContact(organisationId: string, id: string, actor: 
   return { dont_contact: true };
 }
 
-export async function closeEscalation(organisationId: string, id: string, actor: string, sendClosure: boolean) {
+export async function closeEscalation(organisationId: string, id: string, actor: string, sendClosure: boolean, notSerious: boolean) {
   const db = createAdminClient();
   const at = (await now()).toISOString();
   const { data, error } = await db
     .from("escalations")
-    .update({ closed_at: at })
+    .update({ closed_at: at, not_serious: notSerious })
     .eq("organisation_id", organisationId)
     .eq("id", id)
     .is("closed_at", null)

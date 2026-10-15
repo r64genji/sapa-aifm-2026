@@ -271,3 +271,29 @@ test("R51: no HR endpoint returns teams or managers side by side", async () => {
     assert.equal(/"(team|teams|manager|managers|manager_id|manager_name)"/.test(text), false, path);
   }
 });
+
+test("R47: the export of an intake older than six months still holds its theme counts", async () => {
+  await hires(6, { agency: null, role: "Press operator", start: "2026-01-12" });
+  const body = await (await exportIntake("2026-01")).json();
+  assert.deepEqual(body.themes, themes(6, 6));
+});
+
+test("R48: the agency view pools placements older than six months with the recent ones", async () => {
+  await hires(5, { agency: "Maju Staffing", role: "Welder", start: "2026-01-12", answers: [1, 1, 1, 1, 5] });
+  const view = await overview(maju);
+  assert.deepEqual(view.themes, themes(10, 10));
+  assert.deepEqual(view.job_match, [{ role: "Welder", enough: true, n: 7, m: 10, label: "Welder: 7 of 10 said 'not really' at Day 14" }]);
+});
+
+test("R51: HR can open the themes of one chosen team, and the Korean desk reads Not enough people yet (4 of 5 needed)", async () => {
+  const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
+  assert.equal(res.status, 200);
+  const message = "Not enough people yet (4 of 5 needed)";
+  assert.deepEqual((await res.json()).cards, [
+    { driver: "ROLE_CLARITY", enough: false, message },
+    { driver: "MANAGER_SUPPORT", enough: false, message },
+    { driver: "BELONGING", enough: false, message },
+    { driver: "ONBOARDING_TRAINING", enough: false, message },
+    { driver: "WORKLOAD", enough: false, message },
+  ]);
+});
