@@ -92,7 +92,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await tap(live, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
-  const [queued] = await (await hrRequest("/api/hr/queue", "GET")).json();
+  const [queued] = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
   assert.equal((await hrRequest(`/api/hr/replies/${queued.id}/review`, "POST")).status, 200);
   assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n + 1, m: seedRole.m + 1 });
   await freezeClock("2026-10-15T15:01:00.000Z");
@@ -142,7 +142,7 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   const published = await snapshots();
   const production = published.find((s: { team: string }) => s.team === "Accounts Payable Asia");
   assert.equal(production.respondents, 9);
-  assert.equal(production.drivers.ROLE_CLARITY, 4);
+  assert.equal(production.drivers.ROLE_CLARITY, 5);
 
   const rows = async () => {
     const { data: responses } = await db.from("responses").select("id").eq("person_id", id);

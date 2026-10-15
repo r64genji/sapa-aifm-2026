@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
 import {
   addHire,
@@ -14,6 +15,7 @@ import {
   tapData,
 } from "./helpers.ts";
 
+const seeded: { code_name: string; synthetic: boolean }[] = JSON.parse(readFileSync(new URL("../data/seed/people.json", import.meta.url), "utf8"));
 const raj = 5550000801;
 const [invited, active, stopped, left, extra, fifth] = [811, 812, 813, 815, 816, 817].map((n) => 5550000000 + n);
 const names = [...[invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`), "Live hire"];
@@ -79,7 +81,7 @@ test("R45: Day 7 and Day 30 nudges follow on their days with the fixed text", as
   const texts = (await nudgesTo()).map((m) => m.text);
   assert.ok(texts.includes("Day 7 for Week old: Book a 15-minute priorities chat."));
   assert.ok(texts.includes("Day 30 for Month old: Agree a 30-60-90 plan."));
-  assert.deepEqual(texts.filter((text) => String(text).includes("Synthetic hire")), []);
+  assert.deepEqual(texts.filter((text) => seeded.some((p) => p.synthetic && String(text).includes(p.code_name))), []);
 });
 
 test("R45, R51: Done is recorded, and HR sees the share done per intake with no manager figure", async () => {
@@ -93,6 +95,12 @@ test("R45, R51: Done is recorded, and HR sees the share done per intake with no 
   const res = await hrRequest("/api/hr/milestones", "GET");
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), [
+    { intake: "2025-11", enough: true, hires: 16, share_done: 0.75 },
+    { intake: "2025-12", enough: true, hires: 15, share_done: 0.84 },
+    { intake: "2026-01", enough: true, hires: 17, share_done: 0.84 },
+    { intake: "2026-02", enough: true, hires: 18, share_done: 0.65 },
+    { intake: "2026-03", enough: true, hires: 16, share_done: 0.77 },
+    { intake: "2026-04", enough: true, hires: 17, share_done: 0.82 },
     { intake: "2026-09", enough: false, message: "Not enough people yet" },
     { intake: "2026-10", enough: true, hires: 6, share_done: 0.33 },
   ]);

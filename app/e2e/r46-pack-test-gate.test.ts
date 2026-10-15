@@ -75,7 +75,7 @@ test("R44: the language panel shows Not evaluated for a pack that has not passed
   const res = await hrRequest("/api/hr/quality/languages", "GET");
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), [
-    { language: "en", evaluation: "Evaluated", false_alarms: 1, sent_to_review_share: 1 / 6 },
+    { language: "en", evaluation: "Evaluated", false_alarms: 2, sent_to_review_share: 1 / 16 },
     { language: "ms", evaluation: "Not evaluated", false_alarms: 0, sent_to_review_share: 0 },
     { language: "zh", evaluation: "Not evaluated", false_alarms: 0, sent_to_review_share: 0 },
   ]);

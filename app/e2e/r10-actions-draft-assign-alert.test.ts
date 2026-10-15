@@ -104,9 +104,9 @@ before(async () => {
   const other = await (await hrRequest("/api/hr/managers", "POST", { display_name: "Budi", email: "budi-r10@contoh.test" })).json();
   budi = other.manager_id;
   await hrRequest(`/api/hr/managers/${aisha}/hires`, "POST", {
-    code_names: ["Synthetic hire 1", "Synthetic hire 2", "Synthetic hire 6"],
+    code_names: ["Deepa R.", "Zhi Hao R.", "Najwa R."],
   });
-  await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Synthetic hire 10", "Synthetic hire 14"] });
+  await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
   await settle();
 });
 
@@ -200,7 +200,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
   const [message] = await alertTo(aishaChat, "Weekly priorities talk");
   assert.match(
     String(message.text),
-    /Several new hires in Accounts Payable Asia named role clarity in the last weekly snapshot \(5 of 6 who answered\)\./,
+    /Several new hires in Accounts Payable Asia named role clarity in the last weekly snapshot \(7 of 11 who answered\)\./,
   );
   assert.match(String(message.text), /Due 2026-10-26\./);
   assert.equal((await (await nightly()).json()).alerts, 0);
