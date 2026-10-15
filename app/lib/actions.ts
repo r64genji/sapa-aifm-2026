@@ -2,7 +2,6 @@ import { z } from "zod";
 import { complete } from "@/lib/ai";
 import { now } from "@/lib/clock";
 import type { Input, Outcome, Reply } from "@/lib/engine";
-import { liveLanguages } from "@/lib/directory";
 import { packs } from "@/lib/packs";
 import { audit, signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -304,8 +303,8 @@ export async function approveNotice(
     const notes: Record<string, string> = {};
     for (const [language, note] of Object.entries(body.notes)) if (note?.trim()) notes[language] = note.trim();
     if (!notes.en || !notes.ms) return { error: "The note is needed in English and Bahasa Malaysia", code: 422 };
-    if (!notes.zh && (await liveLanguages(organisationId)).includes("zh")) {
-      return { error: "The note is needed in Chinese too while the Chinese pack is live", code: 422 };
+    if (!notes.zh) {
+      return { error: "The note is needed in Chinese too", code: 422 };
     }
     if (Object.values(notes).some((note) => words(note) > 40)) return { error: "A note has at most 40 words", code: 422 };
     fields = { notes, note_approved_by: actor, note_approved_at: (await now()).toISOString(), no_notice_reason: null };
