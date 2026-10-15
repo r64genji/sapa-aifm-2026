@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
+import { addHire, appUrl, classifierTag, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const trend = "This shows a trend, not proof that Sapa caused it";
@@ -169,15 +169,20 @@ test("R44: HR changing 3 of 10 ROLE_CLARITY spot checks in one language holds th
 });
 
 test("R42: an intake of 5 shows its response rate with lapsed check-ins counted, and its score change against other teams from the seeded fix", async () => {
-  const statuses = ["answered", "answered", "answered", "skipped", "reminded"];
-  for (const [index, status] of statuses.entries()) {
-    assert.equal((await addHire({ code_name: `April hire ${index}`, start_date: "2026-04-06" })).status, 201);
-    const { data: person } = await db.from("people").select("id").eq("code_name", `April hire ${index}`).single();
-    const { error } = await db
-      .from("checkin_schedule")
-      .upsert({ organisation_id: organisation.id, person_id: person!.id, touchpoint: 3, due_at: "2026-04-09T01:00:00Z", status }, { onConflict: "person_id,touchpoint" });
-    if (error) throw error;
+  const chats = [5550004211, 5550004212, 5550004213, 5550004214, 5550004215];
+  await freezeClock("2026-04-06T01:00:00.000Z");
+  for (const chat of chats) await joined(chat, "2026-04-06");
+  await freezeClock("2026-04-09T02:00:00.000Z");
+  await dispatch();
+  for (const chat of chats.slice(0, 3)) {
+    for (let step = 0; step < 6; step++) await tap(chat, "3");
+    await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
+    await say(chat, "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
   }
+  await say(chats[3], "/skip");
+  await freezeClock("2026-04-10T02:00:00.000Z");
+  await dispatch();
+  await freezeClock("2026-10-15T03:00:00.000Z");
   const { intakes } = await (await hrRequest("/api/hr/impact", "GET")).json();
   assert.deepEqual(intakes.find((row: { intake: string }) => row.intake === "2026-04"), {
     intake: "2026-04",
