@@ -8,7 +8,6 @@ import { AiMark, Button, DRIVERS, Dialog, Quote, dayLabel, driverName, shortDate
 export type ReplyItem = {
   id: string;
   text: string | null;
-  team: string;
   touchpoint: number | null;
   created_at: string;
   status: "ok" | "awaiting_ai" | "needs_review" | "reviewed" | null;
@@ -127,8 +126,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onFollowUp, onUnd
             </span>
           ) : null}
           <span className="sp-caption">
-            {item.team}
-            {item.touchpoint !== null ? ` · ${dayLabel(item.touchpoint)}` : ""} · {shortDate(item.created_at)}
+            {item.touchpoint !== null ? `${dayLabel(item.touchpoint)} · ` : ""}{shortDate(item.created_at)}
           </span>
         </div>
         <Quote text={item.text ?? ""} evidence={item.evidence_quote} />

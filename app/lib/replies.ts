@@ -14,13 +14,13 @@ export async function readReplies(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("responses")
     .select(
-      "id, question_id, text_encrypted, language, created_at, people(team), checkin_schedule(touchpoint), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr)",
+      "id, question_id, text_encrypted, language, created_at, checkin_schedule(touchpoint), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr)",
     )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;
-  type Joined = { people: { team: string }; checkin_schedule: { touchpoint: number } | null; ai_tags: object | null };
+  type Joined = { checkin_schedule: { touchpoint: number } | null; ai_tags: object | null };
   const at = (await now()).toISOString();
   const { error: auditError } = await db
     .from("audit_log")
@@ -36,7 +36,6 @@ export async function readReplies(organisationId: string, actor: string) {
         text,
         language: row.language,
         created_at: row.created_at,
-        team: joined.people.team,
         touchpoint: joined.checkin_schedule?.touchpoint ?? null,
         ...joined.ai_tags,
       };
@@ -93,7 +92,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team), checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -102,7 +101,7 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string }; checkin_schedule: { touchpoint: number } | null } })[];
+  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; checkin_schedule: { touchpoint: number } | null } })[];
   const { data: held, error: heldError } = await db
     .from("quality_holds")
     .select("driver, language, reason")
@@ -120,7 +119,6 @@ export async function readQueue(organisationId: string, actor: string) {
         ...row,
         text,
         language: responses.language,
-        team: responses.people.team,
         touchpoint: responses.checkin_schedule?.touchpoint ?? null,
         note:
           challenged_at && !challenge_resolved_at
