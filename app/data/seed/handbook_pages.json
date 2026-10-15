@@ -248,5 +248,125 @@
     "status": "draft",
     "updated_by": "Contoh HR demo seed",
     "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006026",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/overtime.md",
+    "language": "zh",
+    "body": "# 加班费\n\n加班前必须获得主管批准。申请加班费时，请在当天填写加班表格，并交给主管签字。获批的加班费会在下个月的工资中发放。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006027",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/payslip.md",
+    "language": "zh",
+    "body": "# 工资单\n\n工资单会在每月最后一个工作日发给你。上面列出你的基本工资、津贴和扣款。如果工资单上有任何一行看不明白，请询问人事部。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006028",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "pay/epf-socso.md",
+    "language": "zh",
+    "body": "# 公积金和社险\n\n公司从每位员工上班的第一天起，就为员工缴纳公积金（EPF）和社险（SOCSO）。你个人负担的部分会从月薪中扣除，并显示在工资单上。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006029",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/annual-leave.md",
+    "language": "zh",
+    "body": "# 年假\n\n服务不满两年的员工，每年有 8 天年假。请至少在想休假的第一天之前三个工作日申请年假。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006030",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/sick-leave.md",
+    "language": "zh",
+    "body": "# 病假\n\n如果你生病了，请在上班前告诉主管。每一天病假都需要医生开的病假证明。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006031",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "leave/public-holidays.md",
+    "language": "zh",
+    "body": "# 公共假期\n\n公司每年提供 11 天带薪公共假期。当年的假期名单贴在食堂的布告栏上。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006032",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/first-week.md",
+    "language": "zh",
+    "body": "# 你的第一周\n\n第一天，请在早上 8:30 到人事部办公室报到。人事部会给你门禁卡，并介绍你认识你的主管。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006033",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/safety-induction.md",
+    "language": "zh",
+    "body": "# 安全培训\n\n每位新员工必须在第一周内完成安全培训。在培训签字确认之前，你不可以操作任何机器。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006034",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "onboarding/uniform.md",
+    "language": "zh",
+    "body": "# 笔记本电脑和门禁卡\n\n公司会给每位新员工一台笔记本电脑和一张大楼门禁卡。资讯部会在第一周内交给你，通常在第 5 天之前。在那之前，请使用培训室的电脑。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006035",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/canteen.md",
+    "language": "zh",
+    "body": "# 食堂\n\n食堂开放时间为 7:00 至 9:00、12:00 至 14:00 和 19:00 至 21:00。员工每餐 RM3。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006036",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/lockers.md",
+    "language": "zh",
+    "body": "# 储物柜\n\n每位员工可以使用更衣室旁边的一个储物柜。请自备挂锁，不要把贵重物品留在储物柜过夜。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
+  },
+  {
+    "id": "6f1c2a3e-0000-4000-8000-000000006037",
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "path": "facilities/shuttle-bus.md",
+    "language": "zh",
+    "body": "# 接驳巴士\n\n每个班次开始前，都有一辆免费接驳巴士从双溪尼波巴士总站开往公司。巴士在班次开始后会再等十分钟。",
+    "status": "published",
+    "updated_by": "Contoh HR demo seed",
+    "updated_at": "2026-10-01T02:00:00Z"
   }
 ]
