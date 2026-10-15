@@ -10,14 +10,14 @@ export const DEMO_SCRIPT: { beat: string; time: string; what: string; screen: st
   {
     beat: "2 · One reply, one person",
     time: "30 s",
-    what: "Reply shows Role clarity with the quote and \"New labels wait for HR during calibration\" · card reads 23 of 64 (16 reviewed, 7 AI-confident) · Confirm label · it becomes 24 of 65 · mark needs follow-up · Offer a private chat · top question: \"Where can I park my motorbike?\", 7 asked",
+    what: "Reply shows Role clarity with the quote and \"New labels wait for HR during calibration\" · card reads 23 of 64 (16 reviewed, 7 AI-confident) · Confirm label · it becomes 24 of 65 · top question: \"Where can I park my motorbike?\", 7 asked",
     screen: "Replies to check, Needs you",
   },
   {
     beat: "3 · The pattern",
     time: "20 s",
-    what: "Phone taps Yes · contact task (due in 2 working days) marked done · Draft a fix from the Role clarity card · \"Mei Ling only\" blocked: \"She chose HR only\" · pick Raj's team · approve note · assign · \"In real use this alert waits until Monday\"",
-    screen: "Private chats, Draft a fix",
+    what: "Draft a fix from the Role clarity card · \"Mei Ling only\" blocked: \"She chose HR only\" · pick Raj's team · approve note · assign · \"In real use this alert waits until Monday\"",
+    screen: "Draft a fix",
   },
   {
     beat: "4 · Manager acts",
