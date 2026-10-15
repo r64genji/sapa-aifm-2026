@@ -5,6 +5,7 @@ import { hrUser } from "@/lib/hr";
 const Body = z.object({
   title: z.string().min(1).optional(),
   steps: z.string().min(1).optional(),
+  library_entry_id: z.string().uuid().optional(),
   scope: z
     .discriminatedUnion("type", [
       z.object({ type: z.literal("person"), code_name: z.string() }),
