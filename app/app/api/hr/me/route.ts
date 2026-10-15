@@ -1,3 +1,4 @@
+import { now } from "@/lib/clock";
 import { hrUser } from "@/lib/hr";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -16,5 +17,6 @@ export async function GET(request: Request) {
     role: user.role,
     organisation: org.name,
     demo_mode: org.demo_mode,
+    today: (await now()).toISOString(),
   });
 }
