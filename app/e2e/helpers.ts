@@ -19,7 +19,6 @@ export async function resetSeed() {
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
   if (!res.ok) throw new Error(`demo reset failed: ${res.status}`);
-  await db.from("ai_usage").delete().neq("id", "00000000-0000-0000-0000-000000000000");
   const { invites } = await res.json();
   liveInvite = String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1];
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
