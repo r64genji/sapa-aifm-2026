@@ -82,6 +82,7 @@ test("R3: after STOP, dispatch at the hire's next due check-in sends nothing to 
   assert.equal((await dispatch()).status, 200);
   assert.ok((await texts(control)).length > before.control);
   assert.equal((await texts(stopped)).length, before.stopped);
+  await freezeClock("2026-10-14T01:00:00.000Z");
 });
 
 test("R3: a STOP sent while the bot is still working on the hire's previous text is not lost", async () => {
