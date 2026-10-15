@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { editAction } from "@/lib/actions";
+import { actionDetail, editAction } from "@/lib/actions";
 import { hrUser } from "@/lib/hr";
 
 const Body = z.object({
   title: z.string().min(1).optional(),
   steps: z.string().min(1).optional(),
+  library_entry_id: z.string().uuid().optional(),
   scope: z
     .discriminatedUnion("type", [
       z.object({ type: z.literal("person"), code_name: z.string() }),
@@ -22,4 +23,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const result = await editAction(user.organisationId, user.actor, (await params).id, body.data);
   if ("error" in result) return Response.json(result, { status: result.code });
   return Response.json(result);
+}
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await hrUser(request);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+  const detail = await actionDetail(user.organisationId, (await params).id);
+  return detail ? Response.json(detail) : Response.json({ error: "Not found" }, { status: 404 });
 }

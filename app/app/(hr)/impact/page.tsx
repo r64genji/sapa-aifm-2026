@@ -24,7 +24,8 @@ type Impact = {
   target: number;
   intakes: Intake[];
   day14: { answered: number; of: number } | null;
-  speed: { median: number; first_intake: string; change: number } | null;
+  typical_days_reply_to_done: number | null;
+  speed: { first_intake: string; change: number } | null;
   fixes: Fix[];
   fixes_note: string;
   fixes_line: string;
@@ -138,7 +139,7 @@ export default function Page() {
   const milestones = useApi<Milestone[]>("/api/hr/milestones");
   const quality = useApi<Quality[]>("/api/hr/quality");
   if (!impact.data || !milestones.data || !quality.data) return impact.error || milestones.error || quality.error ? <Empty title="Could not load Impact" sub="Try again in a moment." /> : <Loading />;
-  const { retention, baseline, target, intakes, day14, speed, fixes, leavers } = impact.data;
+  const { retention, baseline, target, intakes, day14, speed, fixes, leavers, typical_days_reply_to_done: typical } = impact.data;
   const shareDone = new Map(milestones.data.map((m) => [m.intake, m.share_done]));
   const timed = intakes.flatMap((i) => (i.enough && i.median_days_reply_to_done !== null ? [{ intake: i.intake, days: i.median_days_reply_to_done }] : []));
   const slowest = Math.max(...timed.map((t) => t.days), 1);
@@ -199,8 +200,8 @@ export default function Page() {
         <Stat label="Answered Day 14" value={day14 ? `${pct(day14.answered, day14.of)}%` : "–"} base={day14 ? `${day14.answered} of ${day14.of}` : "Not enough people yet"} />
         <Stat
           label="Reply to fix done"
-          value={speed ? `${speed.median} days` : "–"}
-          base={!speed ? "Not enough fixes yet" : speed.change === 0 ? "No change" : `${Math.abs(speed.change)} days ${speed.change > 0 ? "faster" : "slower"} than ${month(speed.first_intake)}`}
+          value={typical !== null ? `${typical} days` : "–"}
+          base={!speed || typical === null ? "Not enough fixes yet" : speed.change === 0 ? "No change" : `${Math.abs(speed.change)} days ${speed.change > 0 ? "faster" : "slower"} than ${month(speed.first_intake)}`}
         />
         <Stat label="Manager onboarding steps" value={steps ? `${pct(steps.done, steps.of)}%` : "–"} base={steps ? `${steps.done} of ${steps.of} done` : "Not enough people yet"} />
         <Stat label="Fixes that worked" value={measured.length ? `${worked} of ${measured.length}` : "–"} base={measured.length ? `measured${tooEarly ? ` · ${tooEarly} too early` : ""}` : "No fix measured yet"} />

@@ -27,7 +27,7 @@ async function seedUsers() {
   for (const { email, app_metadata, agency } of users) {
     const existing = data.users.find((user) => user.email === email);
     const { data: saved, error } = existing
-      ? await admin.updateUserById(existing.id, { password, app_metadata })
+      ? await admin.updateUserById(existing.id, { app_metadata })
       : await admin.createUser({ email, password, email_confirm: true, app_metadata });
     if (error) throw error;
     if (agency) {

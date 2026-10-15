@@ -97,19 +97,33 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   assert.deepEqual(tag, { status: "needs_review", counted: false });
 
   const classifyCalls = (await modelCalls("omniroute")).length;
-  await scriptModel("omniroute", [{ kind: "json", content: { translation: translated } }]);
   const res = await hrRequest("/api/hr/queue", "GET");
   const item = (await res.json()).find((r: any) => r.id === response!.id);
   assert.equal(item.text, reply);
   assert.equal(item.evidence_quote, quote);
-  assert.deepEqual(item.translation, { label: "AI translation", text: translated });
+  assert.equal(item.translation, undefined);
+  assert.equal((await modelCalls("omniroute")).length, classifyCalls);
+
+  await scriptModel("omniroute", [{ kind: "json", content: { translation: translated } }]);
+  const opened = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
+  assert.equal(opened.status, 200);
+  assert.deepEqual(await opened.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
   const calls = (await modelCalls("omniroute")).slice(classifyCalls);
   assert.equal(calls.length, 1);
   assert.ok(JSON.stringify(calls[0].body).includes(reply));
 
-  await scriptModel("omniroute", [{ kind: "json", content: { translation: translated } }]);
   const all = await (await hrRequest("/api/hr/replies", "GET")).json();
-  assert.deepEqual(all.find((r: any) => r.id === response!.id).translation, { label: "AI translation", text: translated });
+  assert.equal(all.find((r: any) => r.id === response!.id).translation, undefined);
+
+  await scriptModel("omniroute", [{ kind: "text", content: "```json\n{}\n```" }, { kind: "json", content: { translation: translated } }]);
+  const retried = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
+  assert.deepEqual(await retried.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
+
+  await scriptModel("omniroute", [{ kind: "text", content: "not json" }, { kind: "text", content: "still not json" }]);
+  const failed = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
+  assert.equal(failed.status, 200);
+  assert.deepEqual(await failed.json(), { language: "zh", translation: null });
+  assert.equal((await hrRequest("/api/hr/queue", "GET")).status, 200);
 
   for (const table of ["responses", "ai_tags", "ai_usage", "audit_log", "change_signals", "escalations"]) {
     const { data } = await db.from(table).select("*");
@@ -128,6 +142,9 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await tap(other, "4");
   await tap(other, "3");
   await tap(other, "5");
+  await tap(other, "3");
+  await tap(other, "3");
+  await tap(other, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
   await say(other, withPhone);
   await settle();
@@ -138,7 +155,9 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
     { kind: "json", content: { translation: translated } },
   ]);
   const all = await (await hrRequest("/api/hr/replies", "GET")).json();
-  assert.ok(all.some((r: any) => r.text === withPhone));
+  const opened = all.find((r: any) => r.text === withPhone);
+  assert.ok(opened);
+  assert.equal((await hrRequest(`/api/hr/replies/${opened.id}/translation`, "GET")).status, 200);
   const sent = (await modelCalls("omniroute")).slice(calls).map((c) => JSON.stringify(c.body));
   assert.ok(sent.some((body) => body.includes("我不知道先做哪个，请打电话 [PHONE] 给我")));
   assert.ok(!sent.some((body) => body.includes("012-345 6789")));
@@ -153,4 +172,12 @@ test("R46: a voice note gets the fixed type-it text and nothing from it is store
   assert.equal((await texts()).at(-1), zh.typeInstead);
   assert.deepEqual(await counts(), before);
   assert.equal((await modelCalls("omniroute")).length, calls);
+});
+
+test("R3, R50: a stopped person who sends a voice note gets no message", async () => {
+  await db.from("people").update({ state: "stopped" }).eq("telegram_chat_id", chat);
+  const before = (await texts()).length;
+  assert.equal((await postUpdate(update("voice", { chat_id: chat }))).status, 200);
+  await settle();
+  assert.equal((await texts()).length, before);
 });

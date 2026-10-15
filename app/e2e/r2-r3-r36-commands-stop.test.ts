@@ -60,6 +60,20 @@ test("R2, R3: typed STOP ends everything and nothing more is sent after the conf
   assert.deepEqual(data, [{ state: "stopped" }]);
 });
 
+test("R3: a voice note after STOP gets no reply, while an active hire still gets the type-instead text", async () => {
+  const stopped = 5550000016;
+  const active = 5550000017;
+  await activeHire(stopped, "English", en.agree);
+  await activeHire(active, "English", en.agree);
+  await say(stopped, "STOP");
+  const count = (await texts(stopped)).length;
+  await postUpdate(update("voice", { chat_id: stopped }));
+  await postUpdate(update("voice", { chat_id: active }));
+  await settle();
+  assert.equal((await texts(stopped)).length, count);
+  assert.equal((await texts(active)).at(-1), en.typeInstead);
+});
+
 test("R2, R3: typed BERHENTI and /berhenti stop a Bahasa Malaysia hire", async () => {
   const typed = 5550000013;
   const slash = 5550000014;
@@ -71,8 +85,22 @@ test("R2, R3: typed BERHENTI and /berhenti stop a Bahasa Malaysia hire", async (
   assert.equal((await texts(slash)).at(-1), ms.stopped);
 });
 
+test("R3: after STOP, dispatch at the hire's next due check-in sends nothing to that hire", async () => {
+  const stopped = 5550000016;
+  const control = 5550000017;
+  await activeHire(stopped, "English", en.agree);
+  await activeHire(control, "English", en.agree);
+  await say(stopped, "STOP");
+  const before = { stopped: (await texts(stopped)).length, control: (await texts(control)).length };
+  await freezeClock("2026-10-28T02:00:00.000Z");
+  assert.equal((await dispatch()).status, 200);
+  assert.ok((await texts(control)).length > before.control);
+  assert.equal((await texts(stopped)).length, before.stopped);
+  await freezeClock("2026-10-14T01:00:00.000Z");
+});
+
 test("R3: a STOP sent while the bot is still working on the hire's previous text is not lost", async () => {
-  const chat = 5550000016;
+  const chat = 5550000018;
   await activeHire(chat, "English", en.agree);
   await scriptModel("omniroute", [{ kind: "timeout" }]);
   await postUpdate(update("text", { chat_id: chat, text: "How do I claim overtime?" }));

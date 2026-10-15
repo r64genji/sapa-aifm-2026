@@ -1,7 +1,7 @@
 import { now } from "@/lib/clock";
 import { milestoneShare, milestoneSteps } from "@/lib/milestones";
 import { packs } from "@/lib/packs";
-import { libraryWithEvidence } from "@/lib/resolution";
+import { libraryWithEvidence, members, pooled, type Resolvable, scoreOf } from "@/lib/resolution";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { themeCards } from "@/lib/themes";
@@ -83,14 +83,15 @@ export async function impact(organisationId: string) {
     .from("checkin_schedule")
     .select("person_id, touchpoint, status, people!inner(start_date)")
     .eq("organisation_id", organisationId)
-    .in("status", ["sent", "reminded", "answered"]);
+    .in("status", ["sent", "reminded", "answered", "skipped"]);
   if (sentError) throw sentError;
   const { data: done, error: doneError } = await db
     .from("actions")
-    .select("done_at, responses!actions_source_response_id_fkey(created_at, people(start_date))")
+    .select("*, responses!actions_source_response_id_fkey(created_at, people(start_date))")
     .eq("organisation_id", organisationId)
     .eq("status", "done")
-    .not("source_response_id", "is", null);
+    .eq("hiring_side", false)
+    .not("scope_type", "is", null);
   if (doneError) throw doneError;
   const { data: outcomes, error: outcomesError } = await db
     .from("intake_outcomes")
@@ -102,9 +103,10 @@ export async function impact(organisationId: string) {
     const entry = kept.get(row.intake) ?? { hired: 0, employed: 0 };
     kept.set(row.intake, { hired: entry.hired + row.hired, employed: entry.employed + row.employed });
   }
-  const groups = new Map<string, { people: Set<string>; sent: number; answered: number; days: number[] }>();
+  type Score = Awaited<ReturnType<typeof scoreOf>>;
+  const groups = new Map<string, { people: Set<string>; sent: number; answered: number; days: number[]; scores: Score[] }>();
   const group = (intake: string) => {
-    if (!groups.has(intake)) groups.set(intake, { people: new Set(), sent: 0, answered: 0, days: [] });
+    if (!groups.has(intake)) groups.set(intake, { people: new Set(), sent: 0, answered: 0, days: [], scores: [] });
     return groups.get(intake)!;
   };
   const day14 = { sent: 0, answered: 0 };
@@ -118,13 +120,24 @@ export async function impact(organisationId: string) {
     entry.sent += 1;
     if (row.status === "answered") entry.answered += 1;
   }
-  for (const row of done as unknown as { done_at: string; responses: { created_at: string; people: { start_date: string } } | null }[]) {
-    if (row.responses?.people) {
-      group(row.responses.people.start_date.slice(0, 7)).days.push(
-        (new Date(row.done_at).getTime() - new Date(row.responses.created_at).getTime()) / DAY_MS,
-      );
+  for (const row of done as unknown as (Resolvable & {
+    created_at: string;
+    responses: { created_at: string; people: { start_date: string } } | null;
+  })[]) {
+    const reply = row.responses?.people ? row.responses : null;
+    const started = reply?.created_at ?? row.created_at;
+    const days = (new Date(row.done_at!).getTime() - new Date(started).getTime()) / DAY_MS;
+    const score = await scoreOf(row);
+    const intakeMonths = reply
+      ? [reply.people.start_date.slice(0, 7)]
+      : [...new Set((await members(row, false)).map((person) => person.start_date.slice(0, 7)))];
+    for (const intake of intakeMonths) {
+      const entry = group(intake);
+      entry.days.push(days);
+      entry.scores.push(score);
     }
   }
+  const allDays = [...groups.values()].flatMap((entry) => entry.days);
   const intakes = [...groups.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([intake, entry]) =>
@@ -137,15 +150,16 @@ export async function impact(organisationId: string) {
             employed: kept.get(intake)?.employed ?? null,
             response_rate: Math.round((entry.answered / entry.sent) * 100) / 100,
             median_days_reply_to_done: entry.days.length ? Math.round(median(entry.days) * 10) / 10 : null,
+            score_change_against_others: (() => {
+              const { difference } = pooled(entry.scores);
+              return difference === null ? null : Math.round(difference * 10) / 10;
+            })(),
           },
     );
 
   const timed = intakes.filter((entry) => entry.enough && entry.median_days_reply_to_done !== null);
-  const enoughIntakes = new Set(intakes.filter((entry) => entry.enough).map((entry) => entry.intake));
-  const allDays = [...groups.entries()].filter(([intake]) => enoughIntakes.has(intake)).flatMap(([, entry]) => entry.days);
   const speed = timed.length
     ? {
-        median: Math.round(median(allDays) * 10) / 10,
         first_intake: timed[0].intake,
         change: Math.round((timed[0].median_days_reply_to_done! - timed.at(-1)!.median_days_reply_to_done!) * 10) / 10,
       }
@@ -194,9 +208,10 @@ export async function impact(organisationId: string) {
     retention: await retention(organisationId),
     baseline: org.retention_baseline_of === null ? null : { kept: org.retention_baseline_kept, of: org.retention_baseline_of },
     target: TARGET,
-    intakes,
+    typical_days_reply_to_done: allDays.length ? Math.round(median(allDays)) : null,
     day14: day14.sent < org.min_group_size ? null : { answered: day14.answered, of: day14.sent },
     speed,
+    intakes,
     fixes,
     fixes_note: TREND,
     fixes_line: packs.en.action.scoreNote,

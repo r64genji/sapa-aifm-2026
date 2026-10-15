@@ -30,9 +30,9 @@ const label = (driver: string) => {
 const signed = (value: number) => `${value < 0 ? "-" : "+"}${Math.abs(value).toFixed(1)}`;
 const change = (side: Side) => side.after - side.before;
 
-async function members(action: Resolvable, eligible: boolean) {
+export async function members(action: Resolvable, eligible: boolean) {
   const db = createAdminClient();
-  let query = db.from("people").select("id, language").eq("organisation_id", action.organisation_id);
+  let query = db.from("people").select("id, language, start_date").eq("organisation_id", action.organisation_id);
   if (action.scope_type === "person") query = query.eq("id", action.scope_person_id!);
   if (action.scope_type === "team") query = query.eq("team", action.scope_team!);
   if (action.scope_type === "intake") {
@@ -118,7 +118,7 @@ async function liveScore(action: Resolvable): Promise<Score> {
   return { scope: side(scope), other: side(other) };
 }
 
-const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
+export const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
 
 async function scopeLabel(action: Resolvable) {
   const db = createAdminClient();
@@ -165,9 +165,26 @@ export async function scoreCard(action: Resolvable) {
   return { headline, detail, note: text.scoreNote };
 }
 
+export function pooled(scores: Score[]) {
+  const total = (pick: (score: Score) => Side) => {
+    const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
+    const mean = (value: (side: Side) => number) =>
+      scores.reduce((sum, score) => sum + pick(score).n * value(pick(score)), 0) / (n || 1);
+    return { n, before: mean((side) => side.before), after: mean((side) => side.after), change: mean(change) };
+  };
+  const scope = total((score) => score.scope);
+  const other = total((score) => score.other);
+  const difference = scope.n >= ENOUGH && other.n >= ENOUGH ? scope.change - other.change : null;
+  return { scope, other, difference };
+}
+
 export async function libraryWithEvidence(organisationId: string, driver?: string) {
   const db = createAdminClient();
-  let query = db.from("action_library").select("id, driver, title, text").eq("organisation_id", organisationId);
+  let query = db
+    .from("action_library")
+    .select("id, driver, title, text, created_by")
+    .eq("organisation_id", organisationId)
+    .is("deleted_at", null);
   if (driver) query = query.eq("driver", driver);
   const { data: entries, error } = await query;
   if (error) throw error;
@@ -182,15 +199,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
     entries.map(async (entry) => {
       const used = done.filter((action) => action.library_entry_id === entry.id);
       const scores = await Promise.all(used.map((action) => scoreOf(action as Resolvable)));
-      const total = (pick: (score: Score) => Side) => {
-        const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
-        const mean = (value: (side: Side) => number) =>
-          scores.reduce((sum, score) => sum + pick(score).n * value(pick(score)), 0) / (n || 1);
-        return { n, before: mean((side) => side.before), after: mean((side) => side.after), change: mean(change) };
-      };
-      const scope = total((score) => score.scope);
-      const other = total((score) => score.other);
-      const difference = scope.n >= ENOUGH && other.n >= ENOUGH ? scope.change - other.change : null;
+      const { scope, other, difference } = pooled(scores);
       const verdict =
         scope.n < ENOUGH
           ? text.notEnoughEvidence
@@ -206,7 +215,17 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
         used.length === 0
           ? text.notEnoughEvidence
           : `${fill(text.evidenceUsed, { times: `${used.length} ${used.length === 1 ? "time" : "times"}` })} ${verdict}`;
-      return { ...entry, used: used.length, difference, evidence, scope, other };
+      const times = `${used.length} ${used.length === 1 ? "time" : "times"}`;
+      const result =
+        used.length === 0
+          ? entry.created_by
+            ? "New · no result yet"
+            : "Not used here yet"
+          : difference === null
+            ? `Used ${times} here · no result yet`
+            : `Used ${times} here. ${signed(difference)} vs other teams, ${scope.n} people`;
+      const { created_by, ...shown } = entry;
+      return { ...shown, custom: created_by !== null, used: used.length, difference, evidence, result, scope, other };
     }),
   );
   return ranked.sort(

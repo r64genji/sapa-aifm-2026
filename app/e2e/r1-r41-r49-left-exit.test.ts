@@ -148,6 +148,9 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   await tap(sharer, "4");
   await tap(sharer, "3");
   await tap(sharer, "5");
+  await tap(sharer, "3");
+  await tap(sharer, "3");
+  await tap(sharer, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await reply(sharer, "tak tahu mana nak buat dulu");
 
@@ -195,4 +198,12 @@ test("R41: an offer to a hire who left shows the same generic reason as for one 
     [409, { error: generic, code: 409 }],
     [409, { error: generic, code: 409 }],
   ]);
+});
+
+test("R1, R24: the end text shows the retention date from the last check-in sent, not from the day HR marked the person as left", async () => {
+  await freezeClock("2026-12-10T02:00:00.000Z");
+  const before = (await texts(control)).length;
+  assert.equal((await markLeft(control, "ended_by_company")).status, 200);
+  await dispatch();
+  assert.deepEqual((await texts(control)).slice(before), [en.end.replace("{date}", "2027-06-01")]);
 });
