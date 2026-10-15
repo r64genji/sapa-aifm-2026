@@ -4,10 +4,21 @@ import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { offerReply } from "@/lib/offers";
 import { exitQuestion } from "@/lib/exit";
 import { packs, type Language } from "@/lib/packs";
+import type { Reply } from "@/lib/engine";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 
 type Claim = { schedule_id: string; chat_id: number; language: Language; progress: number; kind: "checkin" | "reminder" };
+
+async function deliver(chatId: number, replies: Reply[]) {
+  try {
+    for (const reply of replies) {
+      if (!(await send(chatId, reply))) return;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export async function dispatch() {
   const { data, error } = await createAdminClient().rpc("dispatch_claim", {
@@ -27,35 +38,35 @@ export async function dispatch() {
       claim.kind === "reminder"
         ? checkinReminder(person, claim.progress, row.recheck_driver, row.touchpoint)
         : checkinStart(person, row.recheck_driver, row.touchpoint);
-    for (const reply of replies) {
-      if (!(await send(claim.chat_id, reply))) break;
-    }
+    await deliver(claim.chat_id, replies);
   }
   const { data: offers, error: offersError } = await createAdminClient().rpc("offers_claim", {
     at: (await now()).toISOString(),
   });
   if (offersError) throw offersError;
   for (const offer of offers as { chat_id: number; language: Language }[]) {
-    await send(offer.chat_id, offerReply(offer.language));
+    await deliver(offer.chat_id, [offerReply(offer.language)]);
   }
   const nudges = await claimMilestones();
   for (const nudge of nudges) {
-    await send(nudge.chat_id, milestoneReply(nudge.language, nudge.id, nudge.day, nudge.hire));
+    await deliver(nudge.chat_id, [milestoneReply(nudge.language, nudge.id, nudge.day, nudge.hire)]);
   }
   const { data: left, error: leftError } = await createAdminClient().rpc("left_claim", {
     at: (await now()).toISOString(),
   });
   if (leftError) throw leftError;
   for (const person of left as { chat_id: number; language: Language; end_date: string; ask_exit: boolean }[]) {
-    await send(person.chat_id, { text: packs[person.language].end.replace("{date}", person.end_date) });
-    if (person.ask_exit) await send(person.chat_id, exitQuestion(person.language));
+    await deliver(person.chat_id, [
+      { text: packs[person.language].end.replace("{date}", person.end_date) },
+      ...(person.ask_exit ? [exitQuestion(person.language)] : []),
+    ]);
   }
   const { data: notices, error: noticesError } = await createAdminClient().rpc("notices_claim", {
     at: (await now()).toISOString(),
   });
   if (noticesError) throw noticesError;
   for (const notice of notices as { chat_id: number; language: Language; note: string }[]) {
-    await send(notice.chat_id, { text: packs[notice.language].notice.replace("{note}", notice.note) });
+    await deliver(notice.chat_id, [{ text: packs[notice.language].notice.replace("{note}", notice.note) }]);
   }
   return claims.length + offers.length + left.length + nudges.length + notices.length;
 }
@@ -65,6 +76,11 @@ export async function scheduleFor(personId: string) {
     person: personId,
     at: (await now()).toISOString(),
   });
+  if (error) throw error;
+}
+
+export async function setHolidays(organisationId: string, holidays: string[]) {
+  const { error } = await createAdminClient().from("organisations").update({ holidays }).eq("id", organisationId);
   if (error) throw error;
 }
 
