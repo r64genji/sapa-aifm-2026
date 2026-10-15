@@ -4,7 +4,7 @@ alter table people add constraint people_state_check
 
 alter table people
   add column left_reason text check (left_reason in ('resigned', 'ended_by_company')),
-  add column left_at timestamptz,
+  add column if not exists left_at timestamptz,
   add column exit_ok boolean,
   add column end_sent_at timestamptz,
   add column exit_asked_at timestamptz;
