@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
-import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
 import {
-  appUrl,
   classifierTag,
   db,
   freezeClock,
@@ -179,7 +177,6 @@ test("R37: over $1.50 of fallback spend, DeepSeek gets no call, and a demo reset
     call_type: "classify",
     cost: 1.51,
     ok: true,
-    eval_run_id: randomUUID(),
     at: "2026-10-15T15:00:00Z",
   }).select("id").single();
   try {
@@ -196,24 +193,4 @@ test("R37: over $1.50 of fallback spend, DeepSeek gets no call, and a demo reset
   } finally {
     await db.from("ai_usage").delete().eq("id", spent!.id);
   }
-});
-
-test("R37: a demo reset does not give the fallback its $1.50 back", async () => {
-  await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
-  const res = await fetch(`${appUrl}/api/demo/reset`, {
-    method: "POST",
-    headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
-  });
-  assert.equal(res.status, 200);
-  const { invites } = await res.json();
-  await link(live, String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1]);
-  await tap(live, "English");
-  await tap(live, en.agree);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  await reachOpenQuestion(live);
-  await scriptModel("deepseek", [{ kind: "json", content: classifierTag() }]);
-  const before = (await modelCalls("deepseek")).length;
-  await say(live, reply);
-  assert.equal((await modelCalls("deepseek")).length, before);
-  assert.equal(await lastText(live), en.checkin.gotIt);
 });

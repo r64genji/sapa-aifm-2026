@@ -142,6 +142,9 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await tap(other, "4");
   await tap(other, "3");
   await tap(other, "5");
+  await tap(other, "3");
+  await tap(other, "3");
+  await tap(other, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
   await say(other, withPhone);
   await settle();

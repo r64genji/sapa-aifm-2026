@@ -148,6 +148,9 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   await tap(sharer, "4");
   await tap(sharer, "3");
   await tap(sharer, "5");
+  await tap(sharer, "3");
+  await tap(sharer, "3");
+  await tap(sharer, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await reply(sharer, "tak tahu mana nak buat dulu");
 
