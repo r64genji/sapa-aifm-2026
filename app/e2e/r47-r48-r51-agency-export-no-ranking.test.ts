@@ -318,3 +318,16 @@ test("R51: a manager's snapshots hold one team, not teams side by side", { todo:
   assert.ok(rows.length > 0);
   assert.equal(new Set(rows.map((row) => row.team)).size, 1);
 });
+
+test("R51: HR can open the themes of one chosen team, and the Korean desk reads Not enough people yet (4 of 5 needed)", async () => {
+  const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
+  assert.equal(res.status, 200);
+  const message = "Not enough people yet (4 of 5 needed)";
+  assert.deepEqual((await res.json()).cards, [
+    { driver: "ROLE_CLARITY", enough: false, message },
+    { driver: "MANAGER_SUPPORT", enough: false, message },
+    { driver: "BELONGING", enough: false, message },
+    { driver: "ONBOARDING_TRAINING", enough: false, message },
+    { driver: "WORKLOAD", enough: false, message },
+  ]);
+});

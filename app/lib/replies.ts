@@ -1,8 +1,11 @@
 import { Tag, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
+import { reachable, type Person } from "@/lib/directory";
+import { escalate } from "@/lib/escalations";
 import { resolveChallenge } from "@/lib/privacy";
 import { audit, signal } from "@/lib/signal";
+import { send } from "@/lib/telegram";
 import { translation } from "@/lib/translate";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -27,18 +30,30 @@ export async function readReplies(organisationId: string, actor: string) {
         id: row.id,
         question_id: row.question_id,
         text,
+        language: row.language,
         created_at: row.created_at,
-        ...(await translation(organisationId, row.language, text)),
       };
     }),
   );
+}
+
+export async function translateReply(organisationId: string, responseId: string) {
+  const { data, error } = await createAdminClient()
+    .from("responses")
+    .select("text_encrypted, language")
+    .eq("organisation_id", organisationId)
+    .eq("id", responseId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data?.text_encrypted) return { error: "Not found", code: 404 };
+  return translation(organisationId, data.language, decrypt(data.text_encrypted));
 }
 
 export async function retryReply(organisationId: string, responseId: string) {
   const db = createAdminClient();
   const { data, error } = await db
     .from("responses")
-    .select("text_encrypted")
+    .select("text_encrypted, person_id, language, escalations(id)")
     .eq("organisation_id", organisationId)
     .eq("id", responseId)
     .maybeSingle();
@@ -53,7 +68,13 @@ export async function retryReply(organisationId: string, responseId: string) {
   if (tag?.status !== "awaiting_ai" && tag?.status !== "needs_review") {
     return { error: "Nothing to retry", code: 409 };
   }
-  return { status: (await tagReply(organisationId, responseId, decrypt(data.text_encrypted))).status };
+  const result = await tagReply(organisationId, responseId, decrypt(data.text_encrypted));
+  if (result.status !== "awaiting_ai" && result.tag.escalate && !data.escalations) {
+    const person = await reachable(data.person_id);
+    const text = await escalate(person ?? ({ organisation_id: organisationId, language: data.language } as Person), responseId, null, result.tag.escalate_category);
+    if (person) await send(person.telegram_chat_id!, { text });
+  }
+  return { status: result.status };
 }
 
 const waiting = "New labels wait for HR during calibration";
@@ -91,6 +112,7 @@ export async function readQueue(organisationId: string, actor: string) {
         id: response_id,
         ...row,
         text,
+        language: responses.language,
         note:
           challenged_at && !challenge_resolved_at
             ? challenged
@@ -99,7 +121,6 @@ export async function readQueue(organisationId: string, actor: string) {
               : row.status === "ok" && spot_check_at
                 ? spotCheck
                 : null,
-        ...(text && (await translation(organisationId, responses.language, text))),
       };
     }),
   );

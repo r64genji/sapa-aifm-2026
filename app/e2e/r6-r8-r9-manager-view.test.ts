@@ -11,6 +11,7 @@ import {
   joined,
   link,
   liveInvite,
+  postUpdate,
   resetDemo,
   say,
   scriptModel,
@@ -18,11 +19,12 @@ import {
   sessionClient,
   settle,
   tap,
+  update,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const raj = "6f1c2a3e-0000-4000-8000-000000000101";
-const [shared, hrOnly, escalated] = [601, 602, 603].map((n) => 5550000000 + n);
+const [shared, hrOnly, escalated, waiting] = [601, 602, 603, 604].map((n) => 5550000000 + n);
 const live = 5550000201;
 const sharedText = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 const hrOnlyText = "Nobody told me who to ask when the line stops";
@@ -73,6 +75,8 @@ before(async () => {
   await joined(hrOnly, "2026-10-02");
   await joined(escalated, "2026-10-02");
   await tap(escalated, en.visibilityHrManager);
+  await joined(waiting, "2026-10-02");
+  await tap(waiting, en.visibilityHrManager);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
 });
 
@@ -188,6 +192,8 @@ test("Telegram link: HR invites a manager, the one-time link binds one chat, and
   const chat = 5550000701;
   await link(chat, token);
   assert.deepEqual((await sentTo(chat)).map((m) => m.text), [en.managerLinked]);
+  await say(chat, "/whatican");
+  assert.equal((await sentTo(chat)).at(-1)!.text, en.whatICanSee);
   await link(5550000702, token);
   assert.deepEqual((await sentTo(5550000702)).map((m) => m.text), [en.invalidInvite]);
   const { data: manager } = await db.from("managers").select("telegram_chat_id").eq("id", invite.manager_id).single();
@@ -198,6 +204,38 @@ test("Telegram link: HR invites a manager, the one-time link binds one chat, and
   const { data: hire } = await db.from("people").select("manager_id").eq("code_name", `Hire ${hrOnly}`).single();
   assert.equal(hire!.manager_id, invite.manager_id);
   assert.equal((await hrRequest("/api/hr/managers", "POST", { display_name: "Again", email: "aisha@contoh.test" })).status, 422);
+});
+
+async function lastTextTo(chat: number) {
+  return String((await sentTo(chat)).at(-1)?.text);
+}
+
+test("R7, R49: the supervisor never reads a crisis reply while it is being checked, nor a sharing hire's unprompted text", async () => {
+  await tap(waiting, "4");
+  await tap(waiting, "3");
+  await tap(waiting, "5");
+  await scriptModel("omniroute", [{ kind: "timeout" }]);
+  await scriptModel("deepseek", [{ kind: "timeout" }]);
+  const crisisText = "I can't take it anymore, I want to kill myself";
+  const pending = postUpdate(update("text", { chat_id: waiting, text: crisisText }));
+  await settle(3000);
+  const during = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
+  assert.ok(!during.some((r) => r.text === crisisText));
+  await pending;
+  for (let i = 0; i < 60 && !(await lastTextTo(waiting)).includes(en.safety.message); i++) await settle(500);
+
+  await scriptModel("omniroute", [
+    {
+      kind: "json",
+      content: { kind: "feedback", important_topic: "none", answer: "", cited_path: "", supporting_quote: "", group: { id: "new", text: "" } },
+    },
+    { kind: "json", content: classifierTag({ drivers: [], positive: true, concern_level: "none", evidence_quote: "the team is kind" }) },
+  ]);
+  await say(escalated, "The canteen queue is long but the team is kind");
+  for (let i = 0; i < 60 && (await lastTextTo(escalated)) !== en.checkin.thanks; i++) await settle(500);
+  assert.equal(await lastTextTo(escalated), en.checkin.thanks);
+  const after = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
+  assert.deepEqual(after.map((r) => r.text), [sharedText]);
 });
 
 test("R6, R9: HR removes a manager and the supervisor's still-valid session is refused at once, by the API and by the tables", async () => {

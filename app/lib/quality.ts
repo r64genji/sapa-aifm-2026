@@ -59,3 +59,36 @@ export async function qualityPanel(organisationId: string) {
     .sort((a, b) => a.driver.localeCompare(b.driver) || a.language.localeCompare(b.language))
     .map((entry) => ({ ...entry, changed_share: entry.spot_checks ? entry.changed / entry.spot_checks : null }));
 }
+
+export async function languagePanel(organisationId: string) {
+  const db = createAdminClient();
+  const since = new Date((await now()).getTime() - WINDOW_DAYS * 86400000).toISOString();
+  const [packs, escalations, tags] = await Promise.all([
+    db.from("language_packs").select("language, test_passed_on").eq("organisation_id", organisationId),
+    db
+      .from("escalations")
+      .select("not_serious, responses!inner(language)")
+      .eq("organisation_id", organisationId)
+      .gte("created_at", since),
+    db
+      .from("ai_tags")
+      .select("status, responses!inner(language)")
+      .eq("organisation_id", organisationId)
+      .neq("status", "awaiting_ai")
+      .gte("created_at", since),
+  ]);
+  for (const result of [packs, escalations, tags]) if (result.error) throw result.error;
+  const rows = escalations.data as unknown as { not_serious: boolean; responses: { language: string } }[];
+  const labelled = tags.data as unknown as { status: string; responses: { language: string } }[];
+  return packs
+    .data!.sort((a, b) => a.language.localeCompare(b.language))
+    .map((pack) => {
+      const mine = labelled.filter((tag) => tag.responses.language === pack.language);
+      return {
+        language: pack.language,
+        evaluation: pack.test_passed_on ? "Evaluated" : "Not evaluated",
+        false_alarms: rows.filter((row) => row.not_serious && row.responses.language === pack.language).length,
+        sent_to_review_share: mine.length ? mine.filter((tag) => tag.status === "needs_review").length / mine.length : null,
+      };
+    });
+}

@@ -4,6 +4,7 @@ Read these in order. The `.md` files are snapshots of the live Claude Docs; if y
 
 | # | Doc | What it's for | Live version |
 | --- | --- | --- | --- |
+| 0 | [Intent](00-intent.md) | **Wins over every doc below.** Goal, show-off list (the scope) and agent rules | — |
 | 1 | [Product rundown & deliverables](01-product-rundown-and-deliverables.md) | **Start here.** What Sapa does in plain words, every deliverable the guide requires, how judges score | [Claude Doc](https://claude.ai/code/artifact/db43d8dd-2495-4e94-a72b-93be99a5fb42) |
 | 2 | [Prototype architecture](02-prototype-architecture.md) | How the prototype is built: stack, components, AI layer, privacy enforcement, demo script, build plan | [Claude Doc](https://claude.ai/code/artifact/e40dee12-b432-4053-a659-68b1cc87acda) |
 | 3 | [Research & product dossier](03-research-dossier.md) | The evidence and product spec: statistics, competitors, personas, question bank, taxonomy, testing plan, ROI, ESG, judge Q&A | [Claude Doc](https://claude.ai/code/artifact/8cef3335-cecc-4bce-812e-b8fd6617111e) |
@@ -24,7 +25,7 @@ Read these in order. The `.md` files are snapshots of the live Claude Docs; if y
 
 ## Where docs disagree
 
-- **Demo script.** The implementation spec (05, "Updated 2-minute demo" and "Demo setup") is the only source. The dossier (section K) and the architecture doc (section 7.1) have older versions.
+- **Demo script.** No script is final ([00](00-intent.md)). The implementation spec (05, "Updated 2-minute demo" and "Demo setup") has the latest draft. The dossier (section K) and the architecture doc (section 7.1) have older versions.
 - **Eval set size.** The dossier and the architecture (about 150) are older than the spec. Aim for about 200 (the dossier minimum is 50–100), with at least 40 escalation cases (05 eval method). A smaller escalation set gives an interval too wide to use.
 - **Reference customer.** The rubric reviews (04, 08, 10, 11, 12) are history and describe a 300-staff factory, Contoh Manufacturing. The current customer is Contoh GBS, a Penang shared services centre ([09](09-client-story.md)).
 - **Group size and window.** The dossier (03), review (04) and rubric review (08) are history and still say "intake of 6", "3 of 5" or "rolling 90 days". The current rule is everyone hired in the last six months (about 100 hires at Contoh GBS), matching the guide's "leave within six months". Specs 01, 02, 05 and 06 are current.

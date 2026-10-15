@@ -216,3 +216,11 @@ test("R26: the next check-in of each person in scope starts with the neutral 1-5
   const entries = (await (await hrRequest("/api/hr/actions/library?driver=MANAGER_SUPPORT", "GET")).json()) as { id: string; evidence: string }[];
   assert.equal(entries.find((entry) => entry.id === library(3))!.evidence, "Used 1 time here. Not enough evidence here yet");
 });
+
+test("R46, R28: once the Chinese pack is live, a note without Chinese cannot be approved", async () => {
+  const id = await draft("BELONGING", 5, "Team tea", droppedNote);
+  assert.equal((await action(id, "/notice", { notes: droppedNote })).status, 200);
+  assert.equal((await hrRequest("/api/hr/language-packs/zh/activate", "POST", { checker_name: "Li Wei" })).status, 200);
+  assert.equal((await action(id, "/notice", { notes: droppedNote })).status, 422);
+  assert.equal((await action(id, "/notice", { notes: { ...droppedNote, zh: "为没人而写的说明。" } })).status, 200);
+});

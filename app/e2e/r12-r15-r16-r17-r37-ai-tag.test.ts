@@ -49,6 +49,12 @@ async function storedTag(chat: number) {
 }
 
 const lastText = async (chat: number) => (await sentTo(chat)).at(-1)?.text;
+const usageIds = async () => new Set((await db.from("ai_usage").select("id")).data!.map((row) => row.id as string));
+
+async function newUsage(seen: Set<string>, columns: string) {
+  const ids = [...(await usageIds())].filter((id) => !seen.has(id));
+  return (await db.from("ai_usage").select(columns).in("id", ids).order("at")).data;
+}
 
 before(async () => {
   await resetDemo();
@@ -62,6 +68,7 @@ before(async () => {
 });
 
 test("R17, R16, R12: the model gets masked text, extra fields are not stored, and probes stop at the cap", async () => {
+  const seen = await usageIds();
   await reachOpenQuestion(live);
   await scriptModel("omniroute", [
     { kind: "json", content: { ...classifierTag({ probe_id: "ROLE_CLARITY" }), emotion: "angry", sentiment_score: -0.8 } },
@@ -81,7 +88,7 @@ test("R17, R16, R12: the model gets masked text, extra fields are not stored, an
   assert.equal(tag.model, "test-gemini");
   assert.equal(tag.prompt_version, "classify-v1");
   assert.ok(!Object.keys(tag).some((key) => /emotion|sentiment|personality|quit|risk/.test(key)));
-  const { data: usage } = await db.from("ai_usage").select("provider, model, call_type, input_tokens, output_tokens, cost, ok");
+  const usage = await newUsage(seen, "provider, model, call_type, input_tokens, output_tokens, cost, ok");
   assert.deepEqual(usage, [
     { provider: "gemini", model: "test-gemini", call_type: "classify", input_tokens: 100, output_tokens: 50, cost: 0.0002625, ok: true },
   ]);
@@ -150,13 +157,12 @@ test("R2, R37: with both providers down commands work, the reply waits for AI, H
 test("DeepSeek answers when OmniRoute is down, and both calls are recorded", async () => {
   await reachOpenQuestion(fallback);
   await scriptModel("deepseek", [{ kind: "json", content: classifierTag() }]);
-  const before = (await db.from("ai_usage").select("id")).data!.length;
+  const seen = await usageIds();
   await say(fallback, reply);
   const { tag } = await storedTag(fallback);
   assert.equal(tag.status, "ok");
   assert.equal(tag.model, "test-deepseek");
-  const { data } = await db.from("ai_usage").select("provider, ok").order("at");
-  assert.deepEqual(data!.slice(before), [
+  assert.deepEqual(await newUsage(seen, "provider, ok"), [
     { provider: "gemini", ok: false },
     { provider: "deepseek", ok: true },
   ]);

@@ -298,3 +298,30 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
   assert.ok(!later.includes("Q: memory question number"));
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
+
+test("R32, R13, R14: forced labour or sexual harassment that only the model sees is escalated with its fixed outside contact", async () => {
+  const [labour, harassed] = [1311, 1312].map((n) => 5550000000 + n);
+  for (const chat of [labour, harassed]) await joined(chat, "2026-10-14");
+
+  const labourText = "The agency deducts half my pay every month and the warden says I need permission to go out on Sunday";
+  await script(
+    output({ important_topic: "legal" }),
+    classifierTag({ drivers: [], escalate: true, escalate_category: "forced_labour_indicator", evidence_quote: labourText }),
+  );
+  const labourReplies = await ask(labour, labourText);
+  assert.equal(labourReplies.length, 1);
+  assert.ok(labourReplies[0].includes(en.safety.forcedLabour));
+  assert.ok(labourReplies[0].includes(en.safety.labourAuthority));
+
+  const harassedText = "My supervisor keeps making comments about my body and wants me to stay late alone with him";
+  await script(
+    output({ important_topic: "harassment_bullying_discrimination" }),
+    classifierTag({ drivers: [], escalate: true, escalate_category: "sexual_harassment", evidence_quote: harassedText }),
+  );
+  const harassedReplies = await ask(harassed, harassedText);
+  assert.equal(harassedReplies.length, 1);
+  assert.ok(harassedReplies[0].includes(en.safety.tribunal));
+
+  const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[];
+  assert.deepEqual(escalations.map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
+});

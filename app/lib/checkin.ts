@@ -131,6 +131,7 @@ async function openProbe(person: Person) {
 async function conclude(person: Person, open: Open, responseId: string, text: string): Promise<Reply[]> {
   const { checkin } = packs[person.language];
   const keyword = detect(text);
+  if (keyword) await escalate(person, responseId, keyword, null);
   const result = await tagReply(person.organisation_id, responseId, text).catch((error) => {
     console.error(error);
     return { status: "awaiting_ai" as const };

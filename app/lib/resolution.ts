@@ -30,9 +30,9 @@ const label = (driver: string) => {
 const signed = (value: number) => `${value < 0 ? "-" : "+"}${Math.abs(value).toFixed(1)}`;
 const change = (side: Side) => side.after - side.before;
 
-async function members(action: Resolvable, eligible: boolean) {
+export async function members(action: Resolvable, eligible: boolean) {
   const db = createAdminClient();
-  let query = db.from("people").select("id, language").eq("organisation_id", action.organisation_id);
+  let query = db.from("people").select("id, language, start_date").eq("organisation_id", action.organisation_id);
   if (action.scope_type === "person") query = query.eq("id", action.scope_person_id!);
   if (action.scope_type === "team") query = query.eq("team", action.scope_team!);
   if (action.scope_type === "intake") {
@@ -118,7 +118,7 @@ async function liveScore(action: Resolvable): Promise<Score> {
   return { scope: side(scope), other: side(other) };
 }
 
-const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
+export const scoreOf = (action: Resolvable) => action.score_change ?? liveScore(action);
 
 async function scopeLabel(action: Resolvable) {
   const db = createAdminClient();
@@ -165,6 +165,18 @@ export async function scoreCard(action: Resolvable) {
   return { headline, detail, note: text.scoreNote };
 }
 
+export function pooled(scores: Score[]) {
+  const total = (pick: (score: Score) => Side) => {
+    const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
+    const moved = scores.reduce((sum, score) => sum + pick(score).n * change(pick(score)), 0);
+    return { n, change: moved / (n || 1) };
+  };
+  const scope = total((score) => score.scope);
+  const other = total((score) => score.other);
+  const difference = scope.n >= ENOUGH && other.n >= ENOUGH ? scope.change - other.change : null;
+  return { scope, difference };
+}
+
 export async function libraryWithEvidence(organisationId: string, driver?: string) {
   const db = createAdminClient();
   let query = db.from("action_library").select("id, driver, title, text").eq("organisation_id", organisationId);
@@ -182,14 +194,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
     entries.map(async (entry) => {
       const used = done.filter((action) => action.library_entry_id === entry.id);
       const scores = await Promise.all(used.map((action) => scoreOf(action as Resolvable)));
-      const total = (pick: (score: Score) => Side) => {
-        const n = scores.reduce((sum, score) => sum + pick(score).n, 0);
-        const moved = scores.reduce((sum, score) => sum + pick(score).n * change(pick(score)), 0);
-        return { n, change: moved / (n || 1) };
-      };
-      const scope = total((score) => score.scope);
-      const other = total((score) => score.other);
-      const difference = scope.n >= ENOUGH && other.n >= ENOUGH ? scope.change - other.change : null;
+      const { scope, difference } = pooled(scores);
       const verdict =
         scope.n < ENOUGH
           ? text.notEnoughEvidence

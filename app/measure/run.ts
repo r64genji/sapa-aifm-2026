@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { complete, providers, request } from "@/lib/ai";
+import { complete, fallbackSpend, providers, request } from "@/lib/ai";
 import { classify, evidenceHolds, parse, PROMPT_VERSION } from "@/lib/classify";
 import { mask } from "@/lib/mask";
 import { generate, groundedPage, prompt } from "@/lib/qa";
@@ -31,13 +31,18 @@ const modelName = models[0] as "gemini" | "deepseek";
 const splitArg = args.indexOf("--split") >= 0 ? args[args.indexOf("--split") + 1] : "test";
 const organisation = process.env.EVAL_ORGANISATION_ID;
 const runId = randomUUID();
+if (modelName === "deepseek" && !organisation) {
+  console.error("A DeepSeek run needs EVAL_ORGANISATION_ID so its spend counts toward the R37 cap.");
+  process.exit(2);
+}
+const baseline = modelName === "deepseek" ? await fallbackSpend() : 0;
 
 const usage = { calls: 0, failed: 0, input: 0, output: 0, cost: 0 };
 let queue = Promise.resolve();
 
 function caller(trail: (string | null)[]): typeof complete {
   return async (_organisationId, callType, system, user, schema) => {
-    if (modelName === "deepseek" && usage.cost > FALLBACK_CAP) throw new Error("DeepSeek spend passed the R37 cap");
+    if (modelName === "deepseek" && baseline + usage.cost > FALLBACK_CAP) throw new Error("DeepSeek spend passed the R37 cap");
     const provider = providers(schema, false).find((p) => p.name === modelName)!;
     const reply = await request(provider, system, user);
     trail.push(reply.content);

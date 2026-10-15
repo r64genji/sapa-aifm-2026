@@ -98,7 +98,7 @@ export async function classify(organisationId: string, text: string, call = comp
   let held: Result | undefined;
   for (let attempt = 0; attempt < 2; attempt++) {
     const reply = await call(organisationId, "classify", system, user, schema);
-    if (!reply) return { status: "awaiting_ai" };
+    if (!reply) return held ?? { status: "awaiting_ai" };
     const parsed = parse(reply.content);
     if (!parsed?.success) continue;
     const meta = { model: reply.model, latencyMs: reply.latencyMs };
