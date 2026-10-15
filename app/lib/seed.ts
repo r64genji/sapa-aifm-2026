@@ -54,6 +54,12 @@ function liveDates(timeZone: string) {
   return { start_date: start, invite_expires_at: new Date(Date.parse(start) + 26 * DAY_MS).toISOString() };
 }
 
+function passedPacks() {
+  if (process.env.SAPA_TEST === "1") return language_packs;
+  const results = { test_passed_on: "2026-10-15", test_results_file: "eval/results/2026-10-15T21-54-14-063Z-gemini-classify-test.json" };
+  return language_packs.map((pack) => (pack.language === "zh" ? pack : { ...pack, ...results }));
+}
+
 export async function resetDemo() {
   const db = createAdminClient();
   const { data: live, error: modeError } = await db.from("organisations").select("id").eq("demo_mode", false).limit(1);
@@ -67,7 +73,7 @@ export async function resetDemo() {
   );
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs, managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedUsers();

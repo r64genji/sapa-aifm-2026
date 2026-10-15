@@ -152,7 +152,7 @@ export default function Page() {
   const period = intakes.length ? `${monthYear(intakes[0].intake)} – ${monthYear(intakes.at(-1)!.intake)} · ${intakes.length} intakes${retention.enough ? ` · ${retention.n} hired` : ""}` : null;
   const checks = quality.data.reduce((sum, q) => sum + q.spot_checks, 0);
   const changed = quality.data.reduce((sum, q) => sum + q.changed, 0);
-  const untested = quality.data.filter((q) => !q.evaluated).map((q) => q.language);
+  const untested = [...new Set(quality.data.filter((q) => !q.evaluated).map((q) => q.language))];
   const watched = quality.data.filter((q) => q.evaluated && q.driver);
   const keptPct = retention.enough ? pct(retention.k, retention.n) : 0;
   const basePct = baseline ? pct(baseline.kept, baseline.of) : null;
