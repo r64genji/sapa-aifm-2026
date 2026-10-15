@@ -12,7 +12,7 @@ export const db = createClient(
 
 export let liveInvite = "";
 
-export async function resetDemo() {
+export async function resetSeed() {
   await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
   const res = await fetch(`${appUrl}/api/demo/reset`, {
     method: "POST",
@@ -23,6 +23,11 @@ export async function resetDemo() {
   liveInvite = String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1];
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
   await fetch(`${modelUrl}/calls`, { method: "DELETE" });
+}
+
+export async function resetDemo() {
+  await resetSeed();
+  await db.from("language_packs").update({ test_passed_on: "2026-10-15" }).in("language", ["en", "ms"]);
 }
 
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;

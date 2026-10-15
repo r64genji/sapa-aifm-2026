@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   if (message && message.text === undefined && !message.contact) {
     after(async () => {
       const person = await personByChat(message.chat.id);
-      if (person && !["invited", "consent_shown", "active"].includes(person.state)) return;
+      if (person && ["declined", "stopped", "left", "deleted"].includes(person.state)) return;
       await send(message.chat.id, { text: packs[person?.language ?? "en"].typeInstead });
     });
     return new Response("OK");
