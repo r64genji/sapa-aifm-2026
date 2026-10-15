@@ -9,7 +9,8 @@
     "acknowledged_at": null,
     "contact_recorded_at": null,
     "dont_contact": false,
-    "closed_at": null
+    "closed_at": null,
+    "not_serious": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050002",
@@ -21,7 +22,8 @@
     "acknowledged_at": null,
     "contact_recorded_at": null,
     "dont_contact": false,
-    "closed_at": null
+    "closed_at": null,
+    "not_serious": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050003",
@@ -33,7 +35,8 @@
     "acknowledged_at": "2026-10-13T09:05:00Z",
     "contact_recorded_at": "2026-10-14T02:30:00Z",
     "dont_contact": false,
-    "closed_at": null
+    "closed_at": null,
+    "not_serious": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050004",
@@ -45,7 +48,8 @@
     "acknowledged_at": "2026-10-02T05:00:00Z",
     "contact_recorded_at": "2026-10-05T03:00:00Z",
     "dont_contact": false,
-    "closed_at": "2026-10-12T07:00:00Z"
+    "closed_at": "2026-10-12T07:00:00Z",
+    "not_serious": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050005",
@@ -57,7 +61,8 @@
     "acknowledged_at": "2026-10-06T01:30:00Z",
     "contact_recorded_at": "2026-10-06T06:00:00Z",
     "dont_contact": false,
-    "closed_at": "2026-10-08T08:00:00Z"
+    "closed_at": "2026-10-08T08:00:00Z",
+    "not_serious": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050006",
@@ -69,6 +74,7 @@
     "acknowledged_at": "2026-09-28T07:00:00Z",
     "contact_recorded_at": "2026-09-29T03:00:00Z",
     "dont_contact": false,
-    "closed_at": "2026-10-02T08:00:00Z"
+    "closed_at": "2026-10-02T08:00:00Z",
+    "not_serious": true
   }
 ]
