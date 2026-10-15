@@ -108,7 +108,10 @@ export async function exitText(person: Person, text: string): Promise<Reply[] | 
   if (!answers.driver) return [exitQuestion(person.language)];
   const responseId = await insertResponse(person, null, "exit_open", null, text, "exit");
   const keyword = detect(text);
-  const result = await tagReply(person.organisation_id, responseId, text);
+  const result = await tagReply(person.organisation_id, responseId, text).catch((error) => {
+    console.error(error);
+    return { status: "awaiting_ai" as const };
+  });
   const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
   if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
   return [{ text: packs[person.language].exit.thanks }];

@@ -174,6 +174,9 @@ test("R41: an offer to a hire who left shows the same generic reason as for one 
     await tap(chat, "4");
     await tap(chat, "3");
     await tap(chat, "5");
+    await tap(chat, "3");
+    await tap(chat, "3");
+    await tap(chat, "3");
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
     await reply(chat, "tak tahu mana nak buat dulu");
   }

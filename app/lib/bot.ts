@@ -10,6 +10,7 @@ export const bot = new Chat({
   userName: process.env.TELEGRAM_BOT_USERNAME!,
   adapters: { telegram: createTelegramAdapter({ mode: "webhook" }) },
   state: createMemoryState(),
+  concurrency: "queue",
 });
 
 async function setMenu(chatId: number, language: keyof typeof packs) {

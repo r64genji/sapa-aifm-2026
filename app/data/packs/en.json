@@ -47,6 +47,7 @@
   "visibilityHrOnly": "HR only",
   "visibilityHrManager": "HR and my manager",
   "visibilitySaved": "Saved. You can change this later with /privacy.",
+  "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
   "help": "You can type /help, /stop, or STOP at any time. Sapa will message you for your next check-in.",
   "commands": {
@@ -130,6 +131,8 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
+      "ONBOARDING_TRAINING",
+      "WORKLOAD",
       "OPEN"
     ]
   },

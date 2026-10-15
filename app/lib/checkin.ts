@@ -20,14 +20,15 @@ type Open = {
 const probeCap = (touchpoint: number) => (touchpoint <= 7 ? 1 : 2);
 const PROBE_WINDOW_MS = 48 * 3600 * 1000;
 
-const sequenceOf = (language: Language, recheckDriver: string | null) => {
+const sequenceOf = (language: Language, recheckDriver: string | null, touchpoint: number) => {
   const { sequence } = packs[language].checkin;
-  return recheckDriver ? [recheckDriver, ...sequence.filter((id) => id !== recheckDriver)] : sequence;
+  const asked = touchpoint === 14 ? sequence.flatMap((id) => (id === "OPEN" ? ["JOB_MATCH", id] : [id])) : sequence;
+  return recheckDriver ? [recheckDriver, ...asked.filter((id) => id !== recheckDriver)] : asked;
 };
 
-export function questionReply(person: Pick<Person, "language">, progress: number, recheckDriver: string | null = null): Reply {
+export function questionReply(person: Pick<Person, "language">, progress: number, recheckDriver: string | null, touchpoint: number): Reply {
   const { checkin } = packs[person.language];
-  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, recheckDriver)[progress])!;
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, recheckDriver, touchpoint)[progress])!;
   if (question.type !== "scale") return { text: question.text };
   return {
     text: question.text,
@@ -35,12 +36,12 @@ export function questionReply(person: Pick<Person, "language">, progress: number
   };
 }
 
-export function checkinStart(person: Pick<Person, "language">, recheckDriver: string | null = null): Reply[] {
-  return [{ text: packs[person.language].checkin.intro }, questionReply(person, 0, recheckDriver)];
+export function checkinStart(person: Pick<Person, "language">, recheckDriver: string | null, touchpoint: number): Reply[] {
+  return [{ text: packs[person.language].checkin.intro }, questionReply(person, 0, recheckDriver, touchpoint)];
 }
 
-export function checkinReminder(person: Pick<Person, "language">, progress: number, recheckDriver: string | null = null): Reply[] {
-  return [{ text: packs[person.language].checkin.reminder }, questionReply(person, progress, recheckDriver)];
+export function checkinReminder(person: Pick<Person, "language">, progress: number, recheckDriver: string | null, touchpoint: number): Reply[] {
+  return [{ text: packs[person.language].checkin.reminder }, questionReply(person, progress, recheckDriver, touchpoint)];
 }
 
 async function openCheckin(person: Person) {
@@ -54,6 +55,19 @@ async function openCheckin(person: Person) {
     .maybeSingle<Open>();
   if (error) throw error;
   return data;
+}
+
+export async function skipCheckin(person: Person) {
+  const open = await openCheckin(person);
+  if (!open) return false;
+  const { data, error } = await createAdminClient()
+    .from("checkin_schedule")
+    .update({ status: "skipped" })
+    .eq("id", open.id)
+    .in("status", ["sent", "reminded"])
+    .select("id");
+  if (error) throw error;
+  return data.length === 1;
 }
 
 export async function insertResponse(
@@ -86,7 +100,7 @@ export async function insertResponse(
 }
 
 async function store(person: Person, open: Open, scale: number | null, text: string | null) {
-  const sequence = sequenceOf(person.language, open.recheck_driver);
+  const sequence = sequenceOf(person.language, open.recheck_driver, open.touchpoint);
   const last = open.progress === sequence.length - 1;
   const { data, error } = await createAdminClient()
     .from("checkin_schedule")
@@ -117,7 +131,10 @@ async function openProbe(person: Person) {
 async function conclude(person: Person, open: Open, responseId: string, text: string): Promise<Reply[]> {
   const { checkin } = packs[person.language];
   const keyword = detect(text);
-  const result = await tagReply(person.organisation_id, responseId, text);
+  const result = await tagReply(person.organisation_id, responseId, text).catch((error) => {
+    console.error(error);
+    return { status: "awaiting_ai" as const };
+  });
   const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
   if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
   if (result.status === "awaiting_ai") return [{ text: checkin.gotIt }];
@@ -139,20 +156,25 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
   if (!open) return null;
   const { checkin } = packs[person.language];
   const [index, scale] = value.split(".").map(Number);
-  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver)[open.progress])!;
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver, open.touchpoint)[open.progress])!;
   if (index !== open.progress || question.type !== "scale" || !(scale >= 1 && scale <= 5)) {
-    return [questionReply(person, open.progress, open.recheck_driver)];
+    return [questionReply(person, open.progress, open.recheck_driver, open.touchpoint)];
   }
   if (!(await store(person, open, scale, null))) return null;
-  return [questionReply(person, open.progress + 1, open.recheck_driver)];
+  return [questionReply(person, open.progress + 1, open.recheck_driver, open.touchpoint)];
 }
 
 export async function checkinText(person: Person, text: string): Promise<Reply[] | null> {
   const open = await openCheckin(person);
   if (!open) return answerProbe(person, text);
   const { checkin } = packs[person.language];
-  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver)[open.progress])!;
-  if (question.type !== "open") return [questionReply(person, open.progress, open.recheck_driver)];
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver, open.touchpoint)[open.progress])!;
+  if (question.type !== "open") {
+    const keyword = detect(text);
+    if (!keyword) return [questionReply(person, open.progress, open.recheck_driver, open.touchpoint)];
+    const unprompted = await insertResponse(person, null, "QA", null, text, "unprompted");
+    return [{ text: await escalate(person, unprompted, keyword, null) }];
+  }
   const responseId = await store(person, open, null, text);
   if (!responseId) return null;
   return conclude(person, open, responseId, text);

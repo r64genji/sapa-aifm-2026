@@ -23,12 +23,15 @@ const en = read("../data/packs/en.json");
 const [organisation] = read("../data/seed/organisations.json");
 const contacts = organisation.escalation_contacts;
 const probes: string[] = en.checkin.probes.map((p: { text: string }) => p.text);
-const [crisis, passport, epf, modelOnly, plain, late] = [401, 402, 403, 404, 405, 406].map((n) => 5550000000 + n);
+const [crisis, passport, epf, modelOnly, plain, onScale, late] = [401, 402, 403, 404, 405, 406, 407].map((n) => 5550000000 + n);
 
 async function reachOpenQuestion(chat: number) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
 }
 
 async function answer(chat: number, text: string) {
@@ -64,9 +67,9 @@ async function escalationFor(chat: number) {
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
-  for (const chat of [crisis, passport, epf, modelOnly, plain, late]) await joined(chat, "2026-10-02");
+  for (const chat of [crisis, passport, epf, modelOnly, plain, onScale, late]) await joined(chat, "2026-10-02");
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
-  assert.equal((await res.json()).sent, 6);
+  assert.equal((await res.json()).sent, 7);
   for (const chat of [crisis, passport, epf, modelOnly, plain, late]) await reachOpenQuestion(chat);
 });
 
@@ -180,6 +183,19 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
   const asHr = await sessionClient("hr@contoh.test");
   const { data: hrRows } = await asHr.from("escalations").select("category").order("created_at");
   assert.equal(hrRows!.length, 3);
+});
+
+test("R30, R13: a passport message typed while a 1-5 question is open gets the safety message and an escalation, and the question stays open", async () => {
+  const replies = await answer(onScale, "The agent holds my passport");
+  assert.equal(replies.length, 1);
+  assert.ok(replies[0].includes(en.safety.forcedLabour));
+  const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", onScale).single();
+  const { data: stored } = await db.from("responses").select("id, kind").eq("person_id", who!.id);
+  assert.deepEqual(stored!.map((row) => row.kind), ["unprompted"]);
+  const alert = (await escalations()).find((row) => row.response_id === stored![0].id)!;
+  assert.equal(alert.category, "forced_labour_indicator");
+  const { data: schedule } = await db.from("checkin_schedule").select("progress, status").eq("person_id", who!.id).eq("touchpoint", 14);
+  assert.deepEqual(schedule, [{ progress: 0, status: "sent" }]);
 });
 
 test("R13, R14: a reply stored while the model was down escalates when HR retries and the model flags it", async () => {
