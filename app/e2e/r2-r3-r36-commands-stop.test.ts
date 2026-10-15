@@ -60,6 +60,20 @@ test("R2, R3: typed STOP ends everything and nothing more is sent after the conf
   assert.deepEqual(data, [{ state: "stopped" }]);
 });
 
+test("R3: a voice note after STOP gets no reply, while an active hire still gets the type-instead text", async () => {
+  const stopped = 5550000016;
+  const active = 5550000017;
+  await activeHire(stopped, "English", en.agree);
+  await activeHire(active, "English", en.agree);
+  await say(stopped, "STOP");
+  const count = (await texts(stopped)).length;
+  await postUpdate(update("voice", { chat_id: stopped }));
+  await postUpdate(update("voice", { chat_id: active }));
+  await settle();
+  assert.equal((await texts(stopped)).length, count);
+  assert.equal((await texts(active)).at(-1), en.typeInstead);
+});
+
 test("R2, R3: typed BERHENTI and /berhenti stop a Bahasa Malaysia hire", async () => {
   const typed = 5550000013;
   const slash = 5550000014;

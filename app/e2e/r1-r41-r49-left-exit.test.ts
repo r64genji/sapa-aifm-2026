@@ -199,3 +199,11 @@ test("R41: an offer to a hire who left shows the same generic reason as for one 
     [409, { error: generic, code: 409 }],
   ]);
 });
+
+test("R1, R24: the end text shows the retention date from the last check-in sent, not from the day HR marked the person as left", async () => {
+  await freezeClock("2026-12-10T02:00:00.000Z");
+  const before = (await texts(control)).length;
+  assert.equal((await markLeft(control, "ended_by_company")).status, 200);
+  await dispatch();
+  assert.deepEqual((await texts(control)).slice(before), [en.end.replace("{date}", "2027-06-01")]);
+});
