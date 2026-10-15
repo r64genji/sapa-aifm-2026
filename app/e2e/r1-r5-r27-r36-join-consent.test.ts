@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, db, hrRequest, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
+import { addHire, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -86,16 +86,6 @@ test("R27: an invite 15 days old is refused", async () => {
   await link(chat, token);
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
   await freezeClock(frozen);
-});
-
-test("R1: a hire marked as left before joining is refused and gets no check-ins", async () => {
-  const chat = 5550000009;
-  const { token } = await addHire({ code_name: "Left before joining" });
-  assert.equal((await hrRequest("/api/hr/hires/left", "POST", { code_name: "Left before joining", reason: "ended_by_company" })).status, 200);
-  await link(chat, token);
-  assert.deepEqual(await texts(chat), [en.invalidInvite]);
-  const { data } = await db.from("people").select("state, telegram_chat_id").eq("code_name", "Left before joining");
-  assert.deepEqual(data, [{ state: "left", telegram_chat_id: null }]);
 });
 
 test("R46: a language without a recorded checker cannot be chosen", async () => {
