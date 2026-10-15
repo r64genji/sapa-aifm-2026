@@ -31,6 +31,9 @@ async function reachOpenQuestion(chat: number) {
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
 }
 
 async function storedTag(chat: number) {

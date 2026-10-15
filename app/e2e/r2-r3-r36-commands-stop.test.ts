@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, blockChat, db, freezeClock, link, resetDemo, say, sentTo, tap, telegramCalls } from "./helpers.ts";
+import { addHire, blockChat, db, dispatch, freezeClock, link, resetDemo, say, sentTo, tap, telegramCalls } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -63,4 +63,57 @@ test("R36, R3: a bot-was-blocked error counts as STOP", async () => {
   const { data } = await db.from("people").select("state").eq("telegram_chat_id", chat);
   assert.deepEqual(data, [{ state: "stopped" }]);
   assert.equal((await telegramCalls("sendMessage.blocked")).length, 1);
+});
+
+async function personRow(chat: number) {
+  const { data } = await db.from("people").select("id, language").eq("telegram_chat_id", chat).single();
+  return data!;
+}
+
+test("R36: /skip closes the open check-in", async () => {
+  const chat = 5550000021;
+  await activeHire(chat, "English", en.agree);
+  await freezeClock("2026-10-19T02:00:00.000Z");
+  await dispatch();
+  const { id } = await personRow(chat);
+  const status = async () =>
+    (await db.from("checkin_schedule").select("status").eq("person_id", id).eq("touchpoint", 3).single()).data!.status;
+  assert.equal(await status(), "sent");
+  await say(chat, "/skip");
+  assert.equal((await texts(chat)).at(-1), en.skipped);
+  assert.equal(await status(), "skipped");
+  await freezeClock("2026-10-14T01:00:00.000Z");
+});
+
+test("R36, R25: /privacy shows the visibility buttons and the choice is saved and audited", async () => {
+  const chat = 5550000022;
+  await activeHire(chat, "English", en.agree);
+  await say(chat, "/privacy");
+  assert.equal((await sentTo(chat)).at(-1)!.text, en.visibilityPrompt);
+  await tap(chat, en.visibilityHrManager);
+  assert.ok((await texts(chat)).includes(en.visibilitySaved));
+  const { id } = await personRow(chat);
+  const { data: consents } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", id).order("granted_at");
+  assert.deepEqual(
+    consents!.map((row) => [row.scope, row.withdrawn_at !== null]),
+    [["hr_only", true], ["share_with_manager", false]],
+  );
+  const { data: audits } = await db.from("audit_log").select("actor, action").eq("target", id).order("at");
+  assert.ok(audits!.some((row) => row.actor === "new_hire" && row.action === "change_consent_scope"));
+});
+
+test("R36: /bahasa offers the languages and switching changes the person's language and menu", async () => {
+  const chat = 5550000023;
+  await activeHire(chat, "English", en.agree);
+  await say(chat, "/bahasa");
+  const shown = (await sentTo(chat)).at(-1)!;
+  assert.deepEqual(
+    (shown.reply_markup as any).inline_keyboard.flat().map((b: any) => b.text),
+    [en.name, ms.name],
+  );
+  await tap(chat, ms.name);
+  assert.equal((await personRow(chat)).language, "ms");
+  assert.equal((await texts(chat)).at(-1), ms.help);
+  const menu = (await telegramCalls("setMyCommands")).findLast((m: any) => m.scope.chat_id === chat) as any;
+  assert.equal(menu.commands[0].description, ms.commands.start.description);
 });

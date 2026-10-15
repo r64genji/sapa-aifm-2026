@@ -84,6 +84,9 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   await tap(chat, "4");
   await tap(chat, "3");
   await tap(chat, "5");
+  await tap(chat, "3");
+  await tap(chat, "3");
+  await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
   await say(chat, reply);
 

@@ -14,6 +14,7 @@
   "visibilityHrOnly": "HR sahaja",
   "visibilityHrManager": "HR dan pengurus saya",
   "visibilitySaved": "Disimpan. Anda boleh menukarnya kemudian dengan /privasi.",
+  "skipped": "Dilangkau. Semakan ini ditutup. Sapa akan menghubungi anda pada semakan seterusnya.",
   "stopped": "Anda telah berhenti. Sapa tidak akan menghantar mesej lagi kepada anda.",
   "help": "Anda boleh menaip /bantuan, /berhenti, atau BERHENTI pada bila-bila masa. Sapa akan menghubungi anda untuk semakan seterusnya.",
   "commands": {
@@ -97,6 +98,8 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
+      "ONBOARDING_TRAINING",
+      "WORKLOAD",
       "OPEN"
     ]
   },
