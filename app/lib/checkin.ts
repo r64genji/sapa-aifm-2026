@@ -44,12 +44,13 @@ async function openCheckin(person: Person) {
   return data;
 }
 
-async function insertResponse(
+export async function insertResponse(
   person: Person,
-  scheduleId: string,
+  scheduleId: string | null,
   questionId: string,
   scale: number | null,
   text: string | null,
+  kind = "checkin",
 ) {
   const { data, error } = await createAdminClient()
     .from("responses")
@@ -61,6 +62,7 @@ async function insertResponse(
       scale_value: scale,
       text_encrypted: text === null ? null : encrypt(text),
       language: person.language,
+      kind,
       created_at: (await now()).toISOString(),
     })
     .select("id")

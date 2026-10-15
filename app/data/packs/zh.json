@@ -140,5 +140,16 @@
       "safety_hazard": ["机器不安全", "没有安全护罩", "消防门被锁", "安全出口被锁", "工伤"],
       "wage_legal": ["没发工资", "工资没发", "拖欠工资", "没拿到工资", "没有发薪水"]
     }
+  },
+  "exitPrompt": "如果您以后辞职，人力资源部可以问您一个关于原因的简短问题吗？",
+  "exitYes": "可以",
+  "exitNo": "不用了",
+  "exitSaved": "已保存。",
+  "end": "您的跟进已结束。您的回答将保存到{date}。输入 DELETE 可立即删除。",
+  "exit": {
+    "question": "最后一个问题，如果您愿意回答：您离开的主要原因是什么？",
+    "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "归属感", "ONBOARDING_TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
+    "open": "您还有什么想补充的吗？请输入。",
+    "thanks": "谢谢。Sapa 不会再给您发消息了。"
   }
 }

@@ -145,5 +145,16 @@
       "safety_hazard": ["mesin tak selamat", "mesin tidak selamat", "pintu kecemasan berkunci", "tiada pengadang keselamatan", "cedera di tempat kerja"],
       "wage_legal": ["gaji tak bayar", "gaji tak dibayar", "gaji tidak dibayar", "tak dapat gaji", "tidak dapat gaji"]
     }
+  },
+  "exitPrompt": "Jika anda berhenti kerja suatu hari nanti, bolehkah HR bertanya satu soalan ringkas tentang sebabnya?",
+  "exitYes": "Ya, boleh",
+  "exitNo": "Tidak, terima kasih",
+  "exitSaved": "Disimpan.",
+  "end": "Semakan anda telah tamat. Jawapan anda disimpan sehingga {date}. Taip DELETE untuk memadamkannya sekarang.",
+  "exit": {
+    "question": "Satu soalan terakhir, jika anda sudi: apakah sebab utama anda berhenti?",
+    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Rasa diterima", "ONBOARDING_TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
+    "open": "Adakah anda mahu menambah apa-apa? Sila taip.",
+    "thanks": "Terima kasih. Sapa tidak akan menghantar mesej lagi."
   }
 }

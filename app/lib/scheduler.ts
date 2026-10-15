@@ -2,7 +2,8 @@ import { checkinReminder, checkinStart } from "@/lib/checkin";
 import { now } from "@/lib/clock";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { offerReply } from "@/lib/offers";
-import type { Language } from "@/lib/packs";
+import { exitQuestion } from "@/lib/exit";
+import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 
@@ -33,7 +34,15 @@ export async function dispatch() {
   for (const nudge of nudges) {
     await send(nudge.chat_id, milestoneReply(nudge.language, nudge.id, nudge.day, nudge.hire));
   }
-  return claims.length + offers.length + nudges.length;
+  const { data: left, error: leftError } = await createAdminClient().rpc("left_claim", {
+    at: (await now()).toISOString(),
+  });
+  if (leftError) throw leftError;
+  for (const person of left as { chat_id: number; language: Language; end_date: string; ask_exit: boolean }[]) {
+    await send(person.chat_id, { text: packs[person.language].end.replace("{date}", person.end_date) });
+    if (person.ask_exit) await send(person.chat_id, exitQuestion(person.language));
+  }
+  return claims.length + offers.length + left.length + nudges.length;
 }
 
 export async function scheduleFor(personId: string) {
