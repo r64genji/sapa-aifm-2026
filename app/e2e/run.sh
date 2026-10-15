@@ -50,9 +50,9 @@ export REPLY_ENCRYPTION_KEY=c2FwYS10ZXN0LXJlcGx5LWVuY3J5cHRpb24ta2V5ISE=
 
 npx next build >"$log/build.log" 2>&1 || fail "next build"
 
-setsid node e2e/fakes/telegram.ts >"$log/telegram.log" 2>&1 & pids+=($!)
-setsid node e2e/fakes/model.ts >"$log/model.log" 2>&1 & pids+=($!)
-setsid npx next start -H 127.0.0.1 -p "$PORT" >"$log/app.log" 2>&1 & pids+=($!)
+setsid node e2e/fakes/telegram.ts >"$log/telegram.log" 2>&1 9>&- & pids+=($!)
+setsid node e2e/fakes/model.ts >"$log/model.log" 2>&1 9>&- & pids+=($!)
+setsid npx next start -H 127.0.0.1 -p "$PORT" >"$log/app.log" 2>&1 9>&- & pids+=($!)
 
 for _ in $(seq 60); do
   curl -s -o /dev/null "$APP_URL" && break
