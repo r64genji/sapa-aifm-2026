@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap } from "./helpers.ts";
+import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, liveInvite } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -15,7 +15,7 @@ before(async () => {
 });
 
 test("R19, R23: Advance to Day 14 sends the Day 14 check-in to the live hire only, at night", async () => {
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   const before = (await sentTo(live)).length;

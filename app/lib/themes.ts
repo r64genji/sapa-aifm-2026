@@ -82,11 +82,18 @@ export async function themeNarrative(organisationId: string, touchpoint: number,
   const { cards } = await themeCards(organisationId, touchpoint, month);
   const shown = cards.filter((card) => card.enough);
   if (shown.length === 0) return { narrative: null };
-  const { data, error } = await createAdminClient()
+  const db = createAdminClient();
+  const { data: escalated, error: escalatedError } = await db
+    .from("escalations")
+    .select("response_id")
+    .eq("organisation_id", organisationId);
+  if (escalatedError) throw escalatedError;
+  const { data, error } = await db
     .from("ai_tags")
     .select("summary")
     .eq("organisation_id", organisationId)
     .eq("escalate", false)
+    .not("response_id", "in", `(${escalated.map((row) => row.response_id).join(",")})`)
     .not("summary", "is", null)
     .or("status.eq.reviewed,counted.eq.true")
     .order("created_at", { ascending: false })

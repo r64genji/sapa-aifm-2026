@@ -135,6 +135,39 @@ test("R49, R13: an exit answer goes through the safety check", async () => {
   assert.notEqual((await texts(safety)).at(-1), en.exit.thanks);
 });
 
+test("R49: the exit answer of a hire who shared with the manager never reaches the manager", async () => {
+  const sharer = 5550000708;
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  await joined(sharer, "2026-10-02");
+  await tap(sharer, en.visibilityHrManager);
+  await tap(sharer, en.exitYes);
+  const { data } = await db.from("people").select("code_name").eq("telegram_chat_id", sharer).single();
+  names[sharer] = data!.code_name;
+  await freezeClock("2026-10-16T02:00:00.000Z");
+  await dispatch();
+  await tap(sharer, "4");
+  await tap(sharer, "3");
+  await tap(sharer, "5");
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
+  await reply(sharer, "tak tahu mana nak buat dulu");
+
+  assert.equal((await markLeft(sharer, "resigned")).status, 200);
+  await dispatch();
+  await tap(sharer, "Workload");
+  await scriptModel("omniroute", [
+    { kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], concern_level: "none", evidence_quote: "too many hours" }) },
+  ]);
+  await reply(sharer, "I left because of too many hours");
+  assert.deepEqual((await exitRows(sharer)).map((r) => r.question_id), ["exit.WORKLOAD", "exit_open"]);
+
+  const res = await fetch(`${appUrl}/api/manager/replies`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
+  assert.equal(res.status, 200);
+  assert.deepEqual(
+    ((await res.json()) as { author: string; text: string }[]).map(({ author, text }) => ({ author, text })),
+    [{ author: names[sharer], text: "tak tahu mana nak buat dulu" }],
+  );
+});
+
 test("R41: an offer to a hire who left shows the same generic reason as for one who stopped", async () => {
   await freezeClock("2026-10-16T02:00:00.000Z");
   for (const chat of [replier, stopper]) {

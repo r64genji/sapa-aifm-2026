@@ -11,6 +11,7 @@ import {
   hrToken,
   joined,
   link,
+  liveInvite,
   resetDemo,
   say,
   scriptModel,
@@ -77,7 +78,7 @@ before(async () => {
 
 test("R40: /myanswers shows own replies, escalated ones with date and text only, and This is wrong takes the tags out of counts until HR reviews", async () => {
   seedWorkload = (await card("WORKLOAD")).n;
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);

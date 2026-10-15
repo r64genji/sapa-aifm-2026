@@ -10,6 +10,7 @@ import {
   hrRequest,
   joined,
   link,
+  liveInvite,
   modelCalls,
   resetDemo,
   say,
@@ -54,7 +55,7 @@ const lastText = async (chat: number) => (await sentTo(chat)).at(-1)?.text;
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
-  await link(live, "live-hire-invite");
+  await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   for (const chat of [wrongTwice, wrongOnce, badJson, down, fallback, capped]) await joined(chat, "2026-10-02");

@@ -131,6 +131,33 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   }
 });
 
+test("R17: HR opening a Chinese reply that holds a phone number sends the model [PHONE], never the number", async () => {
+  const other = 5550000402;
+  const withPhone = "我不知道先做哪个，请打电话 012-345 6789 给我";
+  const { token } = await addHire({ code_name: "Hire ZH 2", language: "zh", start_date: "2026-10-05" });
+  await link(other, token);
+  await tapData(other, 'chat:{"a":"lang","v":"zh"}');
+  await tap(other, zh.agree);
+  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 17 })).status, 200);
+  await tap(other, "4");
+  await tap(other, "3");
+  await tap(other, "5");
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
+  await say(other, withPhone);
+  await settle();
+
+  const calls = (await modelCalls("omniroute")).length;
+  await scriptModel("omniroute", [
+    { kind: "json", content: { translation: translated } },
+    { kind: "json", content: { translation: translated } },
+  ]);
+  const all = await (await hrRequest("/api/hr/replies", "GET")).json();
+  assert.ok(all.some((r: any) => r.text === withPhone));
+  const sent = (await modelCalls("omniroute")).slice(calls).map((c) => JSON.stringify(c.body));
+  assert.ok(sent.some((body) => body.includes("我不知道先做哪个，请打电话 [PHONE] 给我")));
+  assert.ok(!sent.some((body) => body.includes("012-345 6789")));
+});
+
 test("R46: a voice note gets the fixed type-it text and nothing from it is stored", async () => {
   const before = await counts();
   const calls = (await modelCalls("omniroute")).length;
