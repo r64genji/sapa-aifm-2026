@@ -110,6 +110,7 @@
     "done": "Selesai",
     "doneAck": "Terima kasih. Ditandakan selesai."
   },
+  "notice": "Kemas kini daripada HR: {note}",
   "closure": "HR telah selesai menyemak perkara yang anda kongsikan. Jika anda mahu bercakap dengan HR lagi, anda boleh hubungi HR di sini:",
   "safety": {
     "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, jadi ia hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda juga boleh menghubungi:",

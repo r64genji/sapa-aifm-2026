@@ -18,6 +18,16 @@
     "finished": "Marked done. Thank you.",
     "idle": "Sapa will message you here when HR assigns an action to you.",
     "demoLabel": "In real use this alert waits until {weekday}",
+    "notEnoughAnswers": "Not enough answers yet",
+    "notEnoughComparison": "Not enough comparison yet",
+    "ofFive": "({n} of 5)",
+    "notEnoughEvidence": "Not enough evidence here yet",
+    "scoreHeadline": "{driver}, {scope} {change}, other teams {other} in the same weeks",
+    "scoreDetail": "{before} → {after}, {n} people",
+    "scoreNote": "Teams picked for a fix often improve anyway. This compares them with other teams.",
+    "evidenceUsed": "Used {times} here.",
+    "evidenceRise": "{driver} rose {diff} {direction} than in other teams ({n} people).",
+    "noticeSent": "Notice sent to {hires}, {time}",
     "drivers": {
       "ROLE_CLARITY": "role clarity",
       "MANAGER_SUPPORT": "manager support",
@@ -133,6 +143,7 @@
     "done": "Done",
     "doneAck": "Thank you. Marked as done."
   },
+  "notice": "Update from HR: {note}",
   "closure": "HR has finished looking into what you shared. If you want to talk to HR again, you can reach them here:",
   "safety": {
     "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will contact you within 1 working day. If you are in danger now, call 999.\nYou can also reach:",

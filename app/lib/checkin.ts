@@ -4,18 +4,30 @@ import { encrypt } from "@/lib/crypto";
 import type { Person } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
 import { escalate } from "@/lib/escalations";
-import { packs } from "@/lib/packs";
+import { packs, type Language } from "@/lib/packs";
 import { detect } from "@/lib/safety";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-type Open = { id: string; progress: number; touchpoint: number; probes_used: number };
+type Open = {
+  id: string;
+  progress: number;
+  touchpoint: number;
+  probes_used: number;
+  recheck_action_id: string | null;
+  recheck_driver: string | null;
+};
 
 const probeCap = (touchpoint: number) => (touchpoint <= 7 ? 1 : 2);
 const PROBE_WINDOW_MS = 48 * 3600 * 1000;
 
-export function questionReply(person: Pick<Person, "language">, progress: number): Reply {
+const sequenceOf = (language: Language, recheckDriver: string | null) => {
+  const { sequence } = packs[language].checkin;
+  return recheckDriver ? [recheckDriver, ...sequence.filter((id) => id !== recheckDriver)] : sequence;
+};
+
+export function questionReply(person: Pick<Person, "language">, progress: number, recheckDriver: string | null = null): Reply {
   const { checkin } = packs[person.language];
-  const question = checkin.questions.find((q) => q.id === checkin.sequence[progress])!;
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, recheckDriver)[progress])!;
   if (question.type !== "scale") return { text: question.text };
   return {
     text: question.text,
@@ -23,18 +35,18 @@ export function questionReply(person: Pick<Person, "language">, progress: number
   };
 }
 
-export function checkinStart(person: Pick<Person, "language">): Reply[] {
-  return [{ text: packs[person.language].checkin.intro }, questionReply(person, 0)];
+export function checkinStart(person: Pick<Person, "language">, recheckDriver: string | null = null): Reply[] {
+  return [{ text: packs[person.language].checkin.intro }, questionReply(person, 0, recheckDriver)];
 }
 
-export function checkinReminder(person: Pick<Person, "language">, progress: number): Reply[] {
-  return [{ text: packs[person.language].checkin.reminder }, questionReply(person, progress)];
+export function checkinReminder(person: Pick<Person, "language">, progress: number, recheckDriver: string | null = null): Reply[] {
+  return [{ text: packs[person.language].checkin.reminder }, questionReply(person, progress, recheckDriver)];
 }
 
 async function openCheckin(person: Person) {
   const { data, error } = await createAdminClient()
     .from("checkin_schedule")
-    .select("id, progress, touchpoint, probes_used")
+    .select("id, progress, touchpoint, probes_used, recheck_action_id, recheck_driver")
     .eq("person_id", person.id)
     .in("status", ["sent", "reminded"])
     .order("due_at", { ascending: false })
@@ -51,6 +63,7 @@ export async function insertResponse(
   scale: number | null,
   text: string | null,
   kind = "checkin",
+  actionId: string | null = null,
 ) {
   const { data, error } = await createAdminClient()
     .from("responses")
@@ -63,6 +76,7 @@ export async function insertResponse(
       text_encrypted: text === null ? null : encrypt(text),
       language: person.language,
       kind,
+      action_id: actionId,
       created_at: (await now()).toISOString(),
     })
     .select("id")
@@ -72,8 +86,8 @@ export async function insertResponse(
 }
 
 async function store(person: Person, open: Open, scale: number | null, text: string | null) {
-  const { checkin } = packs[person.language];
-  const last = open.progress === checkin.sequence.length - 1;
+  const sequence = sequenceOf(person.language, open.recheck_driver);
+  const last = open.progress === sequence.length - 1;
   const { data, error } = await createAdminClient()
     .from("checkin_schedule")
     .update({ progress: open.progress + 1, ...(last ? { status: "answered" } : {}) })
@@ -82,7 +96,7 @@ async function store(person: Person, open: Open, scale: number | null, text: str
     .select("id");
   if (error) throw error;
   if (data.length === 0) return null;
-  return insertResponse(person, open.id, checkin.sequence[open.progress], scale, text);
+  return insertResponse(person, open.id, sequence[open.progress], scale, text, "checkin", open.progress === 0 ? open.recheck_action_id : null);
 }
 
 async function openProbe(person: Person) {
@@ -125,20 +139,20 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
   if (!open) return null;
   const { checkin } = packs[person.language];
   const [index, scale] = value.split(".").map(Number);
-  const question = checkin.questions.find((q) => q.id === checkin.sequence[open.progress])!;
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver)[open.progress])!;
   if (index !== open.progress || question.type !== "scale" || !(scale >= 1 && scale <= 5)) {
-    return [questionReply(person, open.progress)];
+    return [questionReply(person, open.progress, open.recheck_driver)];
   }
   if (!(await store(person, open, scale, null))) return null;
-  return [questionReply(person, open.progress + 1)];
+  return [questionReply(person, open.progress + 1, open.recheck_driver)];
 }
 
 export async function checkinText(person: Person, text: string): Promise<Reply[] | null> {
   const open = await openCheckin(person);
   if (!open) return answerProbe(person, text);
   const { checkin } = packs[person.language];
-  const question = checkin.questions.find((q) => q.id === checkin.sequence[open.progress])!;
-  if (question.type !== "open") return [questionReply(person, open.progress)];
+  const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver)[open.progress])!;
+  if (question.type !== "open") return [questionReply(person, open.progress, open.recheck_driver)];
   const responseId = await store(person, open, null, text);
   if (!responseId) return null;
   return conclude(person, open, responseId, text);

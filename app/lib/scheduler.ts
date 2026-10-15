@@ -7,7 +7,7 @@ import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 
-type Claim = { chat_id: number; language: Language; progress: number; kind: "checkin" | "reminder" };
+type Claim = { schedule_id: string; chat_id: number; language: Language; progress: number; kind: "checkin" | "reminder" };
 
 export async function dispatch() {
   const { data, error } = await createAdminClient().rpc("dispatch_claim", {
@@ -15,10 +15,16 @@ export async function dispatch() {
   });
   if (error) throw error;
   const claims = data as Claim[];
+  const { data: rechecks, error: rechecksError } = await createAdminClient()
+    .from("checkin_schedule")
+    .select("id, recheck_driver")
+    .in("id", claims.map((claim) => claim.schedule_id));
+  if (rechecksError) throw rechecksError;
   for (const claim of claims) {
     const person = { language: claim.language };
+    const driver = rechecks.find((row) => row.id === claim.schedule_id)?.recheck_driver ?? null;
     const replies =
-      claim.kind === "reminder" ? checkinReminder(person, claim.progress) : checkinStart(person);
+      claim.kind === "reminder" ? checkinReminder(person, claim.progress, driver) : checkinStart(person, driver);
     for (const reply of replies) {
       if (!(await send(claim.chat_id, reply))) break;
     }
@@ -42,7 +48,14 @@ export async function dispatch() {
     await send(person.chat_id, { text: packs[person.language].end.replace("{date}", person.end_date) });
     if (person.ask_exit) await send(person.chat_id, exitQuestion(person.language));
   }
-  return claims.length + offers.length + left.length + nudges.length;
+  const { data: notices, error: noticesError } = await createAdminClient().rpc("notices_claim", {
+    at: (await now()).toISOString(),
+  });
+  if (noticesError) throw noticesError;
+  for (const notice of notices as { chat_id: number; language: Language; note: string }[]) {
+    await send(notice.chat_id, { text: packs[notice.language].notice.replace("{note}", notice.note) });
+  }
+  return claims.length + offers.length + left.length + nudges.length + notices.length;
 }
 
 export async function scheduleFor(personId: string) {
