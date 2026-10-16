@@ -47,8 +47,22 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  const devSession =
+    !user && process.env.NODE_ENV === "development" && process.env.SEED_USER_PASSWORD
+      ? (await supabase.auth.signInWithPassword({ email: "admin@contoh.test", password: process.env.SEED_USER_PASSWORD })).data.session
+      : null;
+
+  if (devSession && request.nextUrl.pathname.startsWith("/auth/login")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    const redirect = NextResponse.redirect(url);
+    supabaseResponse.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+    return redirect;
+  }
+
   if (
     !user &&
+    !devSession &&
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth")
   ) {
