@@ -17,7 +17,7 @@ finish() {
 trap 'finish "E2E FAIL: interrupted" 1' INT TERM
 fail() { echo "$1 (logs in $log)"; finish "E2E FAIL: $1" 1; }
 
-npx supabase start -x studio,imgproxy,storage-api,edge-runtime,logflare,vector,mailpit,postgres-meta,supavisor,realtime >"$log/supabase.log" 2>&1 \
+npx supabase start -x studio,imgproxy,storage-api,edge-runtime,logflare,vector,mailpit,postgres-meta,supavisor >"$log/supabase.log" 2>&1 \
   || fail "supabase start"
 npx supabase db reset --local >>"$log/supabase.log" 2>&1 || fail "supabase db reset"
 docker exec -i supabase_db_sapa psql -q -U postgres -d postgres -v ON_ERROR_STOP=1 <e2e/test-clock.sql >>"$log/supabase.log" 2>&1 \
