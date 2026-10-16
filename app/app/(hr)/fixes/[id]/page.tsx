@@ -298,7 +298,7 @@ export default function Page() {
               </div>
             </dl>
             <div>
-              <h3 className="m-0 text-[17px] font-bold">{done ? `What ${owner} did` : `What ${owner} does`}</h3>
+              <h3 className="m-0 text-[17px] font-bold">{`Message to ${owner}`}</h3>
               <p className="m-0 mt-2 text-[17px] leading-7">{a.steps}</p>
             </div>
             {done && a.outcome_note ? (
