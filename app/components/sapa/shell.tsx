@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Home, Shield } from "lucide-react";
+import { Home, Shield } from "lucide-react";
 import { Suspense, type ReactNode } from "react";
 import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
@@ -87,12 +87,11 @@ export function Shell({ children }: { children: ReactNode }) {
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
         <div className="hidden pb-5 md:block">{logo}</div>
-        <div className="grid grid-cols-5 md:flex md:flex-col md:gap-0.5">
+        <div className="grid grid-cols-4 md:flex md:flex-col md:gap-0.5">
           <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Needs you" short="Home" />
           <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
           <NavItem href="/replies" icon={<LaneIcon lane="ai" />} label="Check AI labels" short="AI labels" count={toCheck} />
-          <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes" short="Fixes" />
-          <NavItem href="/impact" icon={<BarChart3 size={17} aria-hidden="true" />} label="Impact" short="Impact" />
+          <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes and impact" short="Fixes" />
         </div>
         <div className="hidden min-h-6 grow md:block" />
         <Link href="/concerns" className="sp-caption hidden min-h-11 items-center gap-2 px-2.5 no-underline md:flex" style={{ color: "var(--ink-muted)" }}>

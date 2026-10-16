@@ -88,14 +88,14 @@ test("Demo beats 4 and 5: Raj marks it done, the hire gets the update, and the D
   assert.equal(sent[1], question("ROLE_CLARITY"));
 });
 
-test("Demo beat 6: the Impact page shows 80 of 99 still employed at Month 6", async () => {
-  await page.goto(`${appUrl}/impact`);
+test("Demo beat 6: the Fixes and impact page shows 80 of 99 still employed at Month 6", async () => {
+  await page.goto(`${appUrl}/fixes`);
   await page.getByText(/80 of 99 still employed at Month 6/).first().waitFor();
 });
 
 test("Every demo page loads at 390 px with no sideways scroll", async () => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/replies", "/fixes", "/impact"]) {
+  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/replies", "/fixes"]) {
     await page.goto(`${appUrl}${path}`);
     await page.waitForLoadState("networkidle");
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), 0, path);

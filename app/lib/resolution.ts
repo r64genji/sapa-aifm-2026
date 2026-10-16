@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 const text = packs.en.action;
 const ENOUGH = 5;
+const WORKED = 0.5;
 
 type Side = { n: number; before: number; after: number };
 type Score = { scope: Side; other: Side };
@@ -164,6 +165,8 @@ export async function scoreCard(action: Resolvable) {
         });
   return { headline, detail, note: text.scoreNote };
 }
+
+export const verdict = (difference: number | null) => (difference === null ? "too_early" : difference >= WORKED ? "worked" : "no_clear_change");
 
 export function pooled(scores: Score[]) {
   const total = (pick: (score: Score) => Side) => {

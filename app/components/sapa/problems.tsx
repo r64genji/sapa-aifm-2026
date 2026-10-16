@@ -509,11 +509,7 @@ export function Problems({ driver }: { driver?: string }) {
       <p className="m-0 rounded-lg border border-dashed px-4 py-3.5 sp-meta" style={{ borderColor: "var(--line-strong)" }}>
         This page shows what is happening now. Problems a fix already solved, and how well each fix worked, are in{" "}
         <Link href="/fixes" className="font-semibold">
-          Fixes
-        </Link>{" "}
-        and{" "}
-        <Link href="/impact" className="font-semibold">
-          Impact
+          Fixes and impact
         </Link>
         .
       </p>

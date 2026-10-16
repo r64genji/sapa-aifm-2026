@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   allowedDevOrigins: ["dev.sapa.abrahamtan.com"],
   env: { SAPA_TEST: process.env.SAPA_TEST ?? "" },
+  redirects: async () => [{ source: "/impact", destination: "/fixes", permanent: false }],
 };
 
 export default nextConfig;

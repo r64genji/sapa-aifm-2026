@@ -7,7 +7,7 @@ import { audit, signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 import { jobMatchCards } from "@/lib/jobmatch";
-import { libraryWithEvidence, members, queueResolution, scoreCard, scoreOf } from "@/lib/resolution";
+import { libraryWithEvidence, members, pooled, queueResolution, scoreCard, scoreOf, verdict } from "@/lib/resolution";
 import { sendNotices } from "@/lib/scheduler";
 import { themeCards } from "@/lib/themes";
 
@@ -681,6 +681,7 @@ export async function listActions(organisationId: string) {
       const queued = notices.filter((notice) => notice.action_id === row.id);
       const sent = queued.filter((notice) => notice.sent_at);
       const last = sent.map((notice) => notice.sent_at as string).sort().at(-1);
+      const result = row.status === "done" ? await scoreOf(row) : null;
       return {
         ...row,
         scope_person: people?.code_name ?? null,
@@ -707,7 +708,8 @@ export async function listActions(organisationId: string) {
             : null,
         },
         score: row.status === "done" ? await scoreCard(row) : null,
-        result: row.status === "done" ? await scoreOf(row) : null,
+        result,
+        verdict: result ? verdict(pooled([result]).difference) : null,
       };
     }),
   );

@@ -1,7 +1,7 @@
 import { now } from "@/lib/clock";
 import { milestoneShare, milestoneSteps } from "@/lib/milestones";
 import { packs } from "@/lib/packs";
-import { libraryWithEvidence, members, pooled, type Resolvable, scoreOf } from "@/lib/resolution";
+import { libraryWithEvidence, members, pooled, type Resolvable, scoreOf, verdict } from "@/lib/resolution";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { themeCards } from "@/lib/themes";
@@ -10,7 +10,6 @@ const POOL = 30;
 const TREND = "This shows a trend, not proof that Sapa caused it";
 const DAY_MS = 86400000;
 const TARGET = 85;
-const WORKED = 0.5;
 
 export async function saveBaseline(organisationId: string, actor: string, kept: number, of: number) {
   const { error } = await createAdminClient()
@@ -172,7 +171,7 @@ export async function impact(organisationId: string) {
       used,
       difference,
       evidence,
-      result: difference === null ? "too_early" : difference >= WORKED ? "worked" : "no_clear_change",
+      result: verdict(difference),
       with_fix: { n: scope.n, before: scope.before, after: scope.after },
       others: { n: other.n, before: other.before, after: other.after },
     }));

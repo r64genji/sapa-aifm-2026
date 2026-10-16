@@ -329,8 +329,8 @@ export default function Page() {
                     Leavers&apos; top reason: {driverName(impact.data.leavers.top_reasons[0].driver)}, {impact.data.leavers.top_reasons[0].n} of {impact.data.leavers.total}
                   </div>
                 ) : null}
-                <Link href="/impact" className="inline-flex min-h-11 items-center self-start text-[13px] font-semibold md:min-h-0">
-                  Open Impact
+                <Link href="/fixes" className="inline-flex min-h-11 items-center self-start text-[13px] font-semibold md:min-h-0">
+                  Open Fixes and impact
                 </Link>
               </>
             ) : null}

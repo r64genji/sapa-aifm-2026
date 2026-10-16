@@ -180,6 +180,8 @@ HR (and HR's boss) want to know if Sapa is worth it. An Impact view shows:
 
 Below 30 people the retention figure says "Too few to tell yet (n of 30)". The view always says "This shows a trend, not proof that Sapa caused it". The trend over several intakes is the point. This view also feeds pitch slides 8 and 10.
 
+The Impact view and the list of HR's own fixes are one page, "Fixes and impact" (`/fixes`). *Why:* the two pages answered the same question, "did our fixes help?". On that page each done fix shows its own result (worked, no clear change, too early) beside the outcome figures, so HR can judge each fix and not only the pooled library.
+
 ### Flow K — Is the AI still right?
 
 A panel shows, over the last 30 days and per driver and per language, the share of random spot checks HR changed and the number of challenges from `/myanswers`. It also shows false alarms and the share sent to review, per language, so a Manglish writer does not get more red flags than an English writer. AI-confident labels count without review from the start. If HR changes more than 20% of the spot checks for a driver in a language, AI-confident labels for that driver and language stop counting until HR reviews them, and the card says why (R44). A pack whose own test has not passed shows "Not evaluated", and all its labels wait for HR (R46).
