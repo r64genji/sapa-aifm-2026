@@ -11,13 +11,14 @@ import { Button, LaneIcon, Loading, Waiting } from "./ui";
 export type Me = { name: string; role: string; organisation: string; demo_mode: boolean };
 type Escalation = { id: string; closed_at: string | null; waited_hours: number; overdue: boolean };
 
-function NavItem({ href, icon, label, count, serious }: { href: string; icon: ReactNode; label: string; count?: number; serious?: boolean }) {
+function NavItem({ href, icon, label, short, count, serious }: { href: string; icon: ReactNode; label: string; short: string; count?: number; serious?: boolean }) {
   const path = usePathname();
   const current = href === "/" ? path === "/" : path.startsWith(href);
   return (
     <Link href={href} className="sp-nav-item" aria-current={current ? "page" : undefined}>
       {icon}
-      <span className="flex-auto">{label}</span>
+      <span className="flex-auto md:hidden">{short}</span>
+      <span className="hidden flex-auto md:inline">{label}</span>
       {count ? <span className={`sp-nav-count${serious ? " sp-lane-serious" : ""}`}>{count}</span> : null}
     </Link>
   );
@@ -26,7 +27,7 @@ function NavItem({ href, icon, label, count, serious }: { href: string; icon: Re
 function Main({ children }: { children: ReactNode }) {
   const path = usePathname();
   return (
-    <main key={path.split("/")[1]} className="sp-enter mx-auto box-border flex max-w-[1180px] flex-col gap-6 px-4 pb-14 pt-6 md:px-8 md:pt-8">
+    <main id="main" tabIndex={-1} key={path.split("/")[1]} className="sp-enter mx-auto box-border flex max-w-[1180px] flex-col gap-6 px-4 pb-28 pt-5 md:px-8 md:pb-14 md:pt-8">
       {children}
     </main>
   );
@@ -54,39 +55,53 @@ export function Shell({ children }: { children: ReactNode }) {
   const oldest = open.reduce((max, e) => Math.max(max, e.waited_hours), 0);
   const toCheck = (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed").length;
 
+  const logo = (
+    <Link href="/" className="flex min-h-11 items-center gap-2.5 px-2.5 no-underline" style={{ color: "var(--ink)" }}>
+      <span className="flex h-7 w-7 items-center justify-center text-[15px] font-bold shadow-sm transition-transform duration-300 hover:rotate-[-6deg] hover:scale-110" style={{ borderRadius: "var(--radius-control)", background: "linear-gradient(135deg, var(--problems), #0e7a75)", color: "var(--on-problems)" }}>
+        S
+      </span>
+      <span className="text-[17px] font-bold">Sapa</span>
+    </Link>
+  );
+  const user = (
+    <>
+      <span className="flex h-8 w-8 flex-none items-center justify-center font-bold" style={{ borderRadius: "var(--radius-round)", background: "var(--problems-soft)", color: "var(--problems)" }}>
+        {me.data.name.slice(0, 1).toUpperCase()}
+      </span>
+      <span className="flex min-w-0 flex-auto flex-col">
+        <span className="truncate font-semibold">{me.data.name}</span>
+        <span className="sp-caption truncate">HR · {me.data.organisation.replace(/ \(.*$/, "").replace("Contoh Global Business Services", "Contoh GBS")}</span>
+      </span>
+      <button type="button" onClick={signOut} className="sp-caption min-h-11 flex-none cursor-pointer border-0 bg-transparent px-1 underline">
+        Sign out
+      </button>
+    </>
+  );
+
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
+      <a href="#main" className="sp-skip">Skip to content</a>
+      <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b py-1.5 pl-1.5 pr-3 md:hidden" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
+        {logo}
+        <span className="flex min-w-0 flex-auto items-center justify-end gap-2.5">{user}</span>
+      </header>
       <nav
         aria-label="Main"
-        className="box-border flex w-full flex-col gap-0.5 border-b px-3 py-4 md:sticky md:top-0 md:h-screen md:w-[232px] md:flex-none md:overflow-y-auto md:border-b-0 md:border-r md:py-5"
+        className="sp-nav box-border md:sticky md:top-0 md:flex md:h-screen md:w-[232px] md:flex-none md:flex-col md:gap-0.5 md:overflow-y-auto md:border-r md:px-3 md:py-5"
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
-        <Link href="/" className="flex items-center gap-2.5 px-2.5 pb-4 no-underline md:pb-5" style={{ color: "var(--ink)" }}>
-          <span className="flex h-7 w-7 items-center justify-center text-[15px] font-bold shadow-sm transition-transform duration-300 hover:rotate-[-6deg] hover:scale-110" style={{ borderRadius: "var(--radius-control)", background: "linear-gradient(135deg, var(--problems), #0e7a75)", color: "var(--on-problems)" }}>
-            S
-          </span>
-          <span className="text-[17px] font-bold">Sapa</span>
-        </Link>
-        <div className="grid grid-cols-2 gap-0.5 md:flex md:flex-col">
-          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Needs you" />
-          <NavItem href="/concerns" icon={<LaneIcon lane="serious" />} label="Serious concerns" count={open.length} serious />
-          <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" />
-          <NavItem href="/replies" icon={<LaneIcon lane="ai" />} label="Check AI labels" count={toCheck} />
-          <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes" />
-          <NavItem href="/impact" icon={<BarChart3 size={17} aria-hidden="true" />} label="Impact" />
+        <div className="hidden pb-5 md:block">{logo}</div>
+        <div className="grid grid-cols-6 md:flex md:flex-col md:gap-0.5">
+          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Needs you" short="Home" />
+          <NavItem href="/concerns" icon={<LaneIcon lane="serious" />} label="Serious concerns" short="Serious" count={open.length} serious />
+          <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
+          <NavItem href="/replies" icon={<LaneIcon lane="ai" />} label="Check AI labels" short="AI labels" count={toCheck} />
+          <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes" short="Fixes" />
+          <NavItem href="/impact" icon={<BarChart3 size={17} aria-hidden="true" />} label="Impact" short="Impact" />
         </div>
         <div className="hidden min-h-6 grow md:block" />
-        <div className="mt-2 flex items-center gap-2.5 border-t px-2.5 pt-3" style={{ borderColor: "var(--line-soft)" }}>
-          <span className="flex h-8 w-8 items-center justify-center font-bold" style={{ borderRadius: "var(--radius-round)", background: "var(--problems-soft)", color: "var(--problems)" }}>
-            {me.data.name.slice(0, 1).toUpperCase()}
-          </span>
-          <span className="flex min-w-0 flex-auto flex-col">
-            <span className="font-semibold">{me.data.name}</span>
-            <span className="sp-caption truncate">HR · {me.data.organisation.replace(/ \(.*$/, "").replace("Contoh Global Business Services", "Contoh GBS")}</span>
-          </span>
-          <button type="button" onClick={signOut} className="sp-caption cursor-pointer border-0 bg-transparent underline">
-            Sign out
-          </button>
+        <div className="mt-2 hidden items-center gap-2.5 border-t px-2.5 pt-3 md:flex" style={{ borderColor: "var(--line-soft)" }}>
+          {user}
         </div>
       </nav>
       <div className="min-w-0 flex-1">

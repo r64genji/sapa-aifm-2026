@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ChevronDown, Info, TrendingDown, TrendingUp } from "lucide-react";
+import { createPortal } from "react-dom";
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useApi } from "@/components/sapa/data";
 import { driverName, Empty, LaneIcon, Loading, Waiting } from "@/components/sapa/ui";
@@ -117,14 +118,16 @@ function Num({ value, decimals = 0, sign, after = "" }: { value: number; decimal
 }
 
 function Tip({ label, children, end }: { label: string; children: ReactNode; end?: boolean }) {
+  const [open, setOpen] = useState(false);
   return (
-    <span className={`sp-tip${end ? " sp-tip-end" : ""}`}>
-      <button type="button" className="sp-tip-btn" aria-label={label}>
+    <span className={`sp-tip${end ? " sp-tip-end" : ""}${open ? " is-open" : ""}`} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
+      <button type="button" className="sp-tip-btn" aria-label={label} aria-expanded={open} onClick={() => setOpen(!open)}>
         <Info size={16} strokeWidth={2} aria-hidden="true" />
       </button>
       <span role="tooltip" className="sp-tip-bubble">
         {children}
       </span>
+      {open ? createPortal(<span role="status" className="sp-tip-sheet">{children}</span>, document.body) : null}
     </span>
   );
 }

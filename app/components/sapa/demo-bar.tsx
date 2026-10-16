@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { ApiError, apiSend, useApi } from "./data";
 import { Button, Dialog, dayLabel } from "./ui";
@@ -30,6 +31,7 @@ export function DemoBar() {
   const [confirming, setConfirming] = useState(false);
   const [invite, setInvite] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
@@ -59,17 +61,21 @@ export function DemoBar() {
   return (
     <section aria-label="Demo controls" className="flex flex-col gap-1.5 px-4 py-2 text-[13px] md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="flex flex-col">
+        <span className="flex flex-auto flex-col md:flex-none">
           <span className="sp-num text-[15px] font-bold">{s ? `Live hire: Day ${s.live_hire.day}` : "Live hire: …"}</span>
           <span className="sp-caption">{s ? (next ? `Next check-in: ${dayLabel(next.touchpoint)}` : s.phones.live_hire_bound ? "No more check-ins scheduled" : "Waiting for the live hire to agree") : ""}</span>
         </span>
-        <span className="flex flex-wrap gap-2">
+        <button type="button" className="sp-btn sp-btn-secondary sp-lane-ink md:hidden" aria-expanded={open} aria-controls="demo-controls" onClick={() => setOpen(!open)}>
+          Demo controls
+          <ChevronDown size={16} aria-hidden="true" className="sp-chev" style={{ transform: open ? "rotate(180deg)" : undefined }} />
+        </button>
+        <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
           <Button variant="primary" disabled={busy} onClick={() => advance(14)}>Advance to Day 14</Button>
           <Button disabled={busy} onClick={() => advance(30)}>Advance to Day 30</Button>
           <Button disabled={busy} onClick={() => setConfirming(true)}>Reset to seed</Button>
         </span>
         {s ? (
-          <span className="flex flex-wrap gap-3 md:ml-auto">
+          <span className={`${open ? "flex" : "hidden"} flex-wrap gap-3 md:ml-auto md:flex`}>
             <Light ok={s.main_ai.reachable} label="Main AI" title={s.main_ai.reachable ? `Reachable · ${(s.main_ai.ms / 1000).toFixed(1)} s` : "Not reachable"} />
             <Light ok={s.fallback_ai.reachable} label="Fallback AI" title={`$${s.fallback_ai.spend.toFixed(2)} of $${s.fallback_ai.cap.toFixed(2)} cap used`} />
             <Light ok={s.telegram.reachable && s.telegram.webhook_set} label="Telegram" title={s.telegram.last_error ?? (s.telegram.webhook_set ? "Webhook OK" : "Webhook not set")} />

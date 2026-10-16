@@ -300,7 +300,7 @@ export default function Page() {
             ))}
             {toCheck.length === 0 && done.length === 0 ? <Row title="Nothing to check" /> : null}
             <div className="border-t px-[18px] py-3" style={{ borderColor: "var(--line-soft)" }}>
-              <Link href="/replies" className="text-[13px] font-semibold">
+              <Link href="/replies" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
                 See all replies
               </Link>
             </div>
@@ -388,7 +388,7 @@ export default function Page() {
                     Leavers&apos; top reason: {driverName(impact.data.leavers.top_reasons[0].driver)}, {impact.data.leavers.top_reasons[0].n} of {impact.data.leavers.total}
                   </div>
                 ) : null}
-                <Link href="/impact" className="text-[13px] font-semibold">
+                <Link href="/impact" className="inline-flex min-h-11 items-center self-start text-[13px] font-semibold md:min-h-0">
                   Open Impact
                 </Link>
               </>
