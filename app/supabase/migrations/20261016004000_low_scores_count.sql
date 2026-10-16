@@ -19,7 +19,7 @@ as $$
       and (month is null or (p.start_date >= month and p.start_date < month + interval '1 month'))
   ),
   counted as (
-    select sc.person_id, t.drivers, t.context_tags, t.status = 'reviewed' as reviewed
+    select sc.id as schedule_id, sc.person_id, t.drivers, t.context_tags, t.status = 'reviewed' as reviewed
     from ai_tags t
     join responses r on r.id = t.response_id
     join scope sc on sc.id = r.schedule_id
@@ -32,6 +32,7 @@ as $$
     from responses r
     join scope sc on sc.id = r.schedule_id
     where r.scale_value is not null
+      and sc.id in (select schedule_id from counted)
       and r.question_id in ('ROLE_CLARITY', 'MANAGER_SUPPORT', 'BELONGING', 'ONBOARDING_TRAINING', 'WORKLOAD')
       and not exists (
         select 1 from responses e
@@ -39,10 +40,7 @@ as $$
         left join ai_tags y on y.response_id = e.id
         where e.schedule_id = sc.id and (x.id is not null or coalesce(y.escalate, false)))
   ),
-  respondents as (
-    select count(distinct person_id)::int as n
-    from (select person_id from counted union select person_id from scored) a
-  )
+  respondents as (select count(distinct person_id)::int as n from counted)
   select jsonb_build_object('respondents', respondents.n, 'min_group_size', o.minimum, 'enough', respondents.n >= o.minimum)
     || case when respondents.n < o.minimum then '{}'::jsonb else jsonb_build_object(
       'drivers', (
