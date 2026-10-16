@@ -106,15 +106,10 @@ export function Shell({ children }: { children: ReactNode }) {
       </nav>
       <div className="min-w-0 flex-1">
         {me.data.role === "hr_admin" && me.data.demo_mode ? <DemoBar /> : null}
-        {me.data.demo_mode ? (
-          <div className="px-4 py-2 text-center text-[13px] font-medium md:px-8" style={{ background: "var(--surface-sunken)", borderBottom: "1px solid var(--line)" }}>
-            This is a future year: what HR would see one year into Sapa. These numbers are fictional.
-          </div>
-        ) : null}
         {open.length > 0 ? (
           <Link
             href="/concerns"
-            className="sp-fade-in flex flex-wrap items-center gap-2 px-4 py-2 text-[13px] font-semibold no-underline transition-colors hover:brightness-[0.98] md:px-8"
+            className="sp-fade-in sticky top-[57px] z-20 flex flex-wrap items-center gap-2 px-4 py-2 text-[13px] font-semibold no-underline transition-colors hover:brightness-[0.98] md:top-0 md:px-8"
             style={{ background: "var(--serious-soft)", color: "var(--serious-ink)", borderBottom: "1px solid var(--serious-line)" }}
           >
             <LaneIcon lane="serious" size={15} />

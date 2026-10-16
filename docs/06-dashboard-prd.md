@@ -101,6 +101,8 @@ These hold regardless of layout or flow. Each reflects a promise made to new hir
 
 **Words.** Prefer "new hire", "who answered", "problem area" and "serious concern". Avoid words that suggest surveillance or judgement of people: risk, score, sentiment, mood, at-risk, monitor, track (for people).
 
+**Show, don't tell.** A page has no subheading or caption that explains what the page is or how it works. The screen must make that clear on its own. Keep a line only when it shows data (a date, a count, a scope) or a privacy or safety fact the user must not miss.
+
 ## 7. User flows (recommended)
 
 These flows describe what each person is trying to get done, and in roughly what order. They are the current best thinking, not a screen plan. One flow might be one screen or several; several flows might share a screen.

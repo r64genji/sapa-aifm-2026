@@ -39,16 +39,40 @@ function Bar({ s, label }: { s: Share; label: string }) {
   );
 }
 
-function Step({ n, title, sub }: { n: number; title: string; sub: string }) {
+function Timeline({ stops }: { stops: (Share & { touchpoint: number })[] }) {
   return (
-    <div className="flex items-start gap-3">
+    <ol className="m-0 flex list-none flex-col p-0">
+      {stops.map((s, i) => (
+        <li key={s.touchpoint} className="relative flex gap-3 pb-4 last:pb-0">
+          {i < stops.length - 1 ? <span aria-hidden="true" className="absolute left-[5px] top-4 bottom-0 w-0.5" style={{ background: "var(--line)" }} /> : null}
+          <span
+            aria-hidden="true"
+            className="relative mt-1 h-3 w-3 flex-none rounded-full border-2"
+            style={s.enough ? { background: "var(--problems)", borderColor: "var(--problems)" } : { background: "var(--surface-sunken)", borderColor: "var(--line)" }}
+          />
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <span className="sp-caption font-semibold">{dayLabel(s.touchpoint)}</span>
+            {s.enough ? (
+              <CountBar count={s.n} of={s.m} />
+            ) : (
+              <span className="sp-count-muted text-[13px]">
+                Waiting: {s.have} of {s.need} people answered
+              </span>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function Step({ n, title }: { n: number; title: string }) {
+  return (
+    <div className="flex items-center gap-3">
       <span aria-hidden="true" className="sp-step">
         {n}
       </span>
-      <div className="flex flex-col gap-0.5">
-        <h3 className="m-0 text-[18px] font-bold leading-6">{title}</h3>
-        <span className="sp-meta">{sub}</span>
-      </div>
+      <h3 className="m-0 text-[18px] font-bold leading-6">{title}</h3>
     </div>
   );
 }
@@ -213,11 +237,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
         </div>
 
         <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
-          <Step
-            n={1}
-            title="What new hires mean"
-            sub={grouped.length ? `The AI grouped the ${card.n ?? mine.length} replies by what people describe. Read a group before you act on it.` : "Read what people wrote before you act on it."}
-          />
+          <Step n={1} title="What new hires mean" />
           {g && g.status === "ok" && "groups" in g && grouped.length ? (
             <div className="sp-stagger flex flex-col gap-2.5">
               {grouped.map((group) => {
@@ -255,15 +275,13 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
         </div>
 
         <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
-          <Step n={2} title="Who has it" sub="Counted by Sapa from the labels. Each group shows who it is out of." />
+          <Step n={2} title="Who has it" />
           {d ? (
             <div className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="flex flex-col gap-2.5 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
                 <h4 className="m-0 text-[14px] font-bold">When it starts</h4>
                 <span className="sp-caption">The same group, at each check-in</span>
-                {d.by_day.map((s) => (
-                  <Bar key={s.touchpoint} s={s} label={`at ${dayLabel(s.touchpoint)}`} />
-                ))}
+                <Timeline stops={d.by_day} />
               </div>
               <div className="flex flex-col gap-2.5 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
                 <h4 className="m-0 text-[14px] font-bold">By intake</h4>
@@ -325,7 +343,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
         </div>
 
         <div className="flex flex-col gap-4 px-5 py-5 sm:px-6">
-          <Step n={3} title="Fix it" sub="Fixes from your library, best match first, with how each worked here before." />
+          <Step n={3} title="Fix it" />
           <div className="sp-stagger flex flex-col gap-3">
             {fixes.map((a) => {
               const entry = library.data?.find((f) => f.id === a.library_entry_id);
@@ -443,14 +461,7 @@ export function Problems({ driver }: { driver?: string }) {
       <header className="flex flex-col gap-1.5">
         <span className="sp-caption font-semibold">Day 14 check-in{answered ? ` · ${answered} new hires answered` : ""}</span>
         <h1 className="sp-page-title">Shared problems</h1>
-        <p className="m-0 max-w-[760px] text-[15px] leading-[22px] sp-muted">
-          The AI reads every reply and sorts it into a problem area. Sapa counts them. Pick a problem to see what people mean, who has it, and the fix to start.
-        </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1.5 sp-caption">
-          <span className="inline-flex items-center gap-2">
-            <AiMark label="AI suggestion" />
-            check it before you act
-          </span>
           <span>Counts include replies you checked and replies the AI was sure about</span>
           <span>Under 5 people: no number</span>
         </div>
@@ -459,11 +470,10 @@ export function Problems({ driver }: { driver?: string }) {
       <div className="flex flex-wrap items-start gap-5">
         <div className="flex min-w-0 max-w-full flex-[1_1_300px] flex-col gap-4 min-[1180px]:sticky min-[1180px]:top-6 min-[1180px]:max-w-[340px]">
           <section aria-labelledby="list-title" className="sp-card overflow-hidden">
-            <div className="flex flex-col gap-0.5 border-b px-4 pb-3 pt-3.5" style={{ borderColor: "var(--line)" }}>
+            <div className="border-b px-4 pb-3 pt-3.5" style={{ borderColor: "var(--line)" }}>
               <h2 id="list-title" className="m-0 text-[15px] font-bold leading-5">
                 Problems right now
               </h2>
-              <span className="sp-caption">Sorted by the AI into five areas · biggest first</span>
             </div>
             <div className="px-4 pb-1 pt-3 text-xs font-bold sp-muted">Needs a fix</div>
             <div className="sp-stagger flex flex-col gap-1.5 px-2 pb-2">{need.length ? need.map(item) : <span className="sp-meta px-2 py-1">Every problem area has a fix in progress.</span>}</div>

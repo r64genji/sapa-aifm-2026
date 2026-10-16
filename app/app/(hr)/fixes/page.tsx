@@ -68,7 +68,6 @@ export default function Page() {
     <>
       <PageHeader
         title="Fixes"
-        sub="Each fix starts from a shared problem, goes to a manager or to hiring, and ends with a note to the new hires it covers."
         right={
           <div className="flex flex-wrap items-center gap-3">
             <Tabs
@@ -87,7 +86,6 @@ export default function Page() {
           </div>
         }
       />
-      <p className="sp-caption m-0">New fix opens Shared problems. A fix always starts from a problem area, never from one person.</p>
 
       {tab === "open" ? (
         <>

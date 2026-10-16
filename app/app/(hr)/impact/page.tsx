@@ -776,7 +776,6 @@ export default function Page() {
             ) : null}
             <Tip label="What these numbers count">Groups of 5 or more only, so no one can be picked out. Serious concerns are never counted. No team or manager is ranked against another.</Tip>
           </div>
-          <p className="m-0 text-[15px] leading-[22px] sp-muted">Do more new hires stay? Do the fixes work? Is HR getting faster?</p>
         </header>
       </Reveal>
 

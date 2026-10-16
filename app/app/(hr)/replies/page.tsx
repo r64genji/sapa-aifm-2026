@@ -70,7 +70,6 @@ export default function Page() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Check AI labels"
-        sub="Read the reply. Is the AI label right?"
         right={
           <Tabs
             label="Show"

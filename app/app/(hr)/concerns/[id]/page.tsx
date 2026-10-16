@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use, useState } from "react";
-import { Check, ChevronLeft, Lock, Shield } from "lucide-react";
+import { Check, ChevronLeft, Lock, PhoneCall, PhoneOff, Search, Shield, Users } from "lucide-react";
 import { ClockChip, LEGAL, SOURCES, categoryName, contactedAt, type Concern } from "@/components/sapa/concerns";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
 import { Button, Card, Loading, Quote, dayLabel } from "@/components/sapa/ui";
@@ -55,14 +55,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const steps = ["Read", "Acknowledge", "Contact", "Close"];
   const done = [true, !!c.acknowledged_at, contacted, !!c.closed_at];
   const reach = c.dont_contact
-    ? "Asked not to be contacted"
+    ? { Icon: PhoneOff, head: "Do not contact", sub: "Their choice" }
     : c.contact_method === "call"
-      ? c.phone
-        ? `Call them: ${c.phone}`
-        : "Wants a call. Phone number not shared yet."
+      ? { Icon: PhoneCall, head: c.phone ?? "Wants a call", sub: c.phone ? "Call them" : "No number shared yet" }
       : c.contact_method === "meet"
-        ? "Wants to meet in person"
-        : "No answer yet. Find them by code name.";
+        ? { Icon: Users, head: "Meet in person", sub: "Their choice" }
+        : { Icon: Search, head: c.code_name, sub: "No choice yet. Find them in your records." };
   const notSerious = kind === "not_serious";
   const current = done.findIndex((d) => !d);
 
@@ -115,29 +113,40 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </div>
           </Card>
 
-          <Card title="How to reach them">
-            <p className="m-0 font-semibold">{reach}</p>
-            <p className="m-0 text-[13px] sp-muted">They chose this in Telegram. Find {c.code_name} in your own records.</p>
-          </Card>
-
           <Card title="What to do">
-            <ol className="m-0 flex list-none flex-wrap gap-x-5 gap-y-2 p-0">
+            <ol className="m-0 flex list-none items-start p-0">
               {steps.map((label, i) => (
-                <li key={label} className="flex items-center gap-2 text-[13px]" style={{ fontWeight: i === current ? 700 : 500, color: done[i] ? "var(--ink-muted)" : "var(--ink)" }}>
-                  <span
-                    className="inline-flex h-5 w-5 items-center justify-center text-[11px] font-bold"
-                    style={{ borderRadius: "var(--radius-round)", background: done[i] ? "var(--ink)" : i === current ? "var(--serious)" : "var(--track-empty)", color: done[i] || i === current ? "#fff" : "var(--ink)" }}
-                  >
-                    {done[i] ? <Check size={12} strokeWidth={3.5} aria-hidden="true" /> : i + 1}
+                <li key={label} className="flex flex-1 flex-col items-center gap-1.5 text-[13px]" style={{ fontWeight: i === current ? 700 : 500, color: i === current ? "var(--serious-ink)" : done[i] ? "var(--ink-muted)" : "var(--ink)" }}>
+                  <span className="flex w-full items-center">
+                    <span className="h-[3px] flex-1" style={{ background: i === 0 ? "transparent" : done[i] || i === current ? "var(--ink)" : "var(--track-empty)" }} />
+                    <span
+                      className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-[13px] font-bold"
+                      style={{ borderRadius: "var(--radius-round)", background: done[i] ? "var(--ink)" : i === current ? "var(--serious)" : "var(--track-empty)", color: done[i] || i === current ? "#fff" : "var(--ink)", boxShadow: i === current ? "0 0 0 4px var(--serious-soft)" : undefined }}
+                    >
+                      {done[i] ? <Check size={16} strokeWidth={3.5} aria-hidden="true" /> : i + 1}
+                    </span>
+                    <span className="h-[3px] flex-1" style={{ background: i === steps.length - 1 ? "transparent" : done[i + 1] || i + 1 === current ? "var(--ink)" : "var(--track-empty)" }} />
                   </span>
                   {label}
                 </li>
               ))}
             </ol>
 
+            {!c.closed_at ? (
+              <div className="flex items-center gap-3 p-3" style={{ borderRadius: "var(--radius-control)", background: contacted ? "var(--surface-sunken)" : "var(--serious-soft)", border: `1px solid ${contacted ? "var(--line-soft)" : "var(--serious-line)"}` }}>
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center" style={{ borderRadius: "var(--radius-round)", background: contacted ? "var(--ink-muted)" : "var(--serious)", color: "#fff" }}>
+                  <reach.Icon size={20} strokeWidth={2} aria-hidden="true" />
+                </span>
+                <span className="flex min-w-0 flex-col">
+                  <span className="text-[17px] font-bold">{reach.head}</span>
+                  <span className="text-[13px] sp-muted">{reach.sub}</span>
+                </span>
+              </div>
+            ) : null}
+
             {!c.acknowledged_at ? (
               <div>
-                <p className="m-0 mb-3 sp-muted">You have read this. Acknowledging tells the team HR is on it.</p>
+                <p className="m-0 mb-3 text-[13px] sp-muted">Tells the team HR is on it.</p>
                 <Button variant="primary" lane="serious" onClick={() => act("acknowledge")}>
                   Acknowledge
                 </Button>
@@ -146,8 +155,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
             {c.acknowledged_at && !contacted ? (
               <div>
-                <p className="m-0 mb-1 font-semibold">Contact them outside Sapa</p>
-                <p className="m-0 mb-3 sp-muted">Sapa does not pass messages between you and them. Use the way they chose above, then record it here.</p>
+                <p className="m-0 mb-3 text-[13px] sp-muted">Reach them outside Sapa. Sapa does not pass messages.</p>
                 <Button variant="primary" lane="serious" onClick={() => act("contact")}>
                   I contacted them
                 </Button>
@@ -155,7 +163,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             ) : null}
 
             {c.dont_contact && !c.closed_at ? (
-              <p className="m-0 sp-muted">Asked not to be contacted. For some matters HR may still need to follow up.</p>
+              <p className="m-0 text-[13px] sp-muted">Some matters may still need HR to follow up.</p>
             ) : null}
 
             {contacted && !c.closed_at ? (
