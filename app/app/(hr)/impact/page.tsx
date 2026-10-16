@@ -791,8 +791,8 @@ export default function Page() {
         />
         <Tile
           i={1}
-          label="Reply to fix done"
-          value={typical !== null ? <Num value={typical} after=" days" /> : "–"}
+          label={timed.length ? `Reply to fix done · ${month(timed.at(-1)!.intake)} intake` : "Reply to fix done"}
+          value={timed.length ? <Num value={timed.at(-1)!.days} after=" days" /> : typical !== null ? <Num value={typical} after=" days" /> : "–"}
           viz={timed.length > 1 ? <MiniBars values={timed.map((t) => t.days)} label={`Typical days by intake: ${timed.map((t) => t.days).join(", ")}`} /> : null}
           base={
             !speed || typical === null ? (

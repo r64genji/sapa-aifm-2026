@@ -18,6 +18,7 @@ import actions from "@/data/seed/actions.json";
 import users from "@/data/seed/users.json";
 import escalations from "@/data/seed/escalations.json";
 import milestone_nudges from "@/data/seed/milestone_nudges.json";
+import demo_history from "@/data/seed/demo_history.json";
 import { encrypt } from "@/lib/crypto";
 import { inviteLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -54,6 +55,25 @@ function liveDates(timeZone: string) {
   return { start_date: start, invite_expires_at: new Date(Date.parse(start) + 26 * DAY_MS).toISOString() };
 }
 
+function demoActions() {
+  return process.env.SAPA_TEST === "1" ? actions : [...actions, ...demo_history];
+}
+
+async function seedSpotChecks() {
+  if (process.env.SAPA_TEST === "1") return;
+  const rows = quality_holds.flatMap((hold) =>
+    Array.from({ length: hold.spot_checks_done }, (_, i) => ({
+      organisation_id: hold.organisation_id,
+      driver: hold.driver,
+      language: hold.language,
+      at: new Date(Date.now() - ((i * 3) % 28) * DAY_MS - DAY_MS).toISOString(),
+      changed: i < hold.spot_checks_changed,
+    })),
+  );
+  const { error } = await createAdminClient().from("spot_checks").insert(rows);
+  if (error) throw error;
+}
+
 function passedPacks() {
   if (process.env.SAPA_TEST === "1") return language_packs;
   const results = { test_passed_on: "2026-10-15", test_results_file: "eval/results/2026-10-15T21-54-14-063Z-gemini-classify-test.json" };
@@ -73,9 +93,10 @@ export async function resetDemo() {
   );
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions, intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
+  await seedSpotChecks();
   await seedUsers();
   return {
     invites: invited

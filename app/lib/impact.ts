@@ -130,7 +130,7 @@ export async function impact(organisationId: string) {
     const score = await scoreOf(row);
     const intakeMonths = reply
       ? [reply.people.start_date.slice(0, 7)]
-      : [...new Set((await members(row, false)).map((person) => person.start_date.slice(0, 7)))];
+      : [...new Set((await members(row, false)).filter((person) => person.start_date <= row.done_at!.slice(0, 10)).map((person) => person.start_date.slice(0, 7)))];
     for (const intake of intakeMonths) {
       const entry = group(intake);
       entry.days.push(days);
