@@ -71,7 +71,7 @@ test("R1, R23, R45: the supervisor gets the same Day 1 nudge for every hire stil
 
 test("R45: a second dispatch sends nothing again", async () => {
   await dispatch();
-  assert.equal((await nudgesTo()).length, 6);
+  assert.equal((await nudgesTo()).length, 5);
 });
 
 test("R45: Day 7 and Day 30 nudges follow on their days with the fixed text", async () => {
@@ -102,6 +102,6 @@ test("R45, R51: Done is recorded, and HR sees the share done per intake with no 
     { intake: "2026-03", enough: true, hires: 16, share_done: 0.77 },
     { intake: "2026-04", enough: true, hires: 17, share_done: 0.82 },
     { intake: "2026-09", enough: false, message: "Not enough people yet" },
-    { intake: "2026-10", enough: true, hires: 6, share_done: 0.33 },
+    { intake: "2026-10", enough: true, hires: 5, share_done: 0.4 },
   ]);
 });

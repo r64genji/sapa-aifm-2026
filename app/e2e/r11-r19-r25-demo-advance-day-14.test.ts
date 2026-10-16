@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, liveInvite } from "./helpers.ts";
+import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, liveInvite, chatPerson } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -56,7 +56,7 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   const { data: rows } = await db
     .from("responses")
     .select("question_id, scale_value, text_encrypted")
-    .eq("person_id", "6f1c2a3e-0000-4000-8000-000000000201");
+    .eq("person_id", (await chatPerson(live)).id);
   const byQuestion = Object.fromEntries(rows!.map((r) => [r.question_id, r]));
   assert.deepEqual(
     ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD", "JOB_MATCH"].map((id) => byQuestion[id].scale_value),
@@ -64,7 +64,7 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   );
   assert.ok(byQuestion.OPEN.text_encrypted);
   assert.ok(!byQuestion.OPEN.text_encrypted.includes("urgent"));
-  const { data: schedule } = await db.from("checkin_schedule").select("status").eq("touchpoint", 14).eq("person_id", "6f1c2a3e-0000-4000-8000-000000000201");
+  const { data: schedule } = await db.from("checkin_schedule").select("status").eq("touchpoint", 14).eq("person_id", (await chatPerson(live)).id);
   assert.deepEqual(schedule, [{ status: "answered" }]);
 
   const read = await hrRequest("/api/hr/replies", "GET");
