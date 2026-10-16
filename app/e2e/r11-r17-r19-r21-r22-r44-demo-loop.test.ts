@@ -71,12 +71,12 @@ test("R17, R22: the reply reaches the model masked, and the same update sent aga
   assert.deepEqual(await counts(), once);
 });
 
-test("R44, R12: the card stays put until HR confirms the label, then moves up by one person", async () => {
+test("R44, R12: the card moves up by one person when the reply arrives, and Confirm label marks it reviewed", async () => {
   const queue = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
   assert.equal(queue.length, 1);
-  assert.equal(queue[0].note, "New labels wait for HR during calibration");
-  const waiting = await roleClarity();
-  assert.deepEqual([waiting.n, waiting.m], [seed.n, seed.m]);
+  assert.equal(queue[0].note, null);
+  const arrived = await roleClarity();
+  assert.deepEqual([arrived.n, arrived.m, arrived.reviewed], [seed.n + 1, seed.m + 1, seed.reviewed]);
 
   assert.equal((await hrRequest(`/api/hr/replies/${queue[0].id}/review`, "POST")).status, 200);
   const moved = await roleClarity();

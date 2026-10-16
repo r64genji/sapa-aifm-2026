@@ -14,7 +14,7 @@
 
 ## The script (2 minutes)
 
-Use **[05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo)**. It is the only demo source. Do not copy it here; older copies in 02 and the dossier are out of date. 05's script includes the label confirmation, the calibration note, the private-chat offer and the "top questions" tile in beat 2, the consent-gated scope ("Raj's team", not Mei Ling) in beat 3, the "Update from HR" notice and the neutral recheck at the Day 30 check-in in beat 5, and the score change against other teams, the leavers' reasons and the Impact view in beat 6.
+Use **[05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo)**. It is the only demo source. Do not copy it here; older copies in 02 and the dossier are out of date. 05's script includes the label confirmation, the private-chat offer and the "top questions" tile in beat 2, the consent-gated scope ("Raj's team", not Mei Ling) in beat 3, the "Update from HR" notice and the neutral recheck at the Day 30 check-in in beat 5, and the score change against other teams, the leavers' reasons and the Impact view in beat 6.
 
 ## What goes in this folder
 

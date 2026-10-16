@@ -8,11 +8,11 @@ import { Translation, type ReplyItem } from "./reply";
 import { AiMark, Button, CountBar, FixTrack, Loading, Quote, Waiting, dayLabel, driverName, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number } | { enough: false; have: number; need: number };
-type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; note?: string | null; message?: string };
+type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; message?: string };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
 type Detail = {
-  card: Share & { note?: string | null };
+  card: Share;
   by_day: (Share & { touchpoint: number })[];
   by_intake: (Share & { intake: string })[];
   by_role: (Share & { role: string })[];
@@ -226,7 +226,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   </span>
                 </Link>
               ) : null}
-              {card.note ? <span className="sp-caption">The AI is still new here, so you check each new reply before it counts.</span> : null}
               {fixes.map((a) => (
                 <span key={a.id} className="sp-meta">
                   Fix in progress: {fixLine(a)}

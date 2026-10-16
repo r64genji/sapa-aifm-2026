@@ -119,7 +119,7 @@ async function countsWithoutReview(organisationId: string, language: string, dri
     organisation_id: organisationId,
     driver,
     language,
-    state: "calibrating",
+    state: "trusted",
     started_at,
   }));
   if (rows.length > 0) {

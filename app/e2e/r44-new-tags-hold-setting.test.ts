@@ -41,24 +41,19 @@ before(async () => {
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
 });
 
-test("R44: a new driver and language waits for HR until 20 spot checks with at most 10% changed", async () => {
+test("R44: a new driver and language counts without review, and HR reviews keep it trusted", async () => {
   const ids = [];
   for (const chat of chats.slice(0, 4)) ids.push(await answer(chat, ["BELONGING", "WORKLOAD"]));
-  for (const id of ids) assert.deepEqual(await tagOf(id), { status: "ok", counted: false });
+  for (const id of ids) assert.deepEqual(await tagOf(id), { status: "ok", counted: true });
 
   assert.equal((await review(ids[0], true)).status, 200);
-  for (const id of ids.slice(1, 3)) assert.equal((await review(id, false)).status, 200);
-  assert.equal(await state("BELONGING", "ms"), "calibrating");
-  assert.equal(await state("WORKLOAD", "ms"), "calibrating");
-
-  assert.equal((await review(ids[3], false)).status, 200);
-  assert.equal(await state("BELONGING", "ms"), "calibrating");
+  for (const id of ids.slice(1)) assert.equal((await review(id, false)).status, 200);
+  assert.equal(await state("BELONGING", "ms"), "trusted");
   assert.equal(await state("WORKLOAD", "ms"), "trusted");
 });
 
-test("R44: once calibrated, a new AI-confident tag counts without review, and the hold-new-tags setting (HR admin only) holds it", async () => {
+test("R44: a new AI-confident tag counts without review, and the hold-new-tags setting (HR admin only) holds it", async () => {
   const before = await workload();
-  assert.equal(before.note, null);
 
   assert.equal((await hrRequest("/api/hr/settings/hold-new-tags", "PUT", { value: true })).status, 403);
   const admin = (value: boolean) =>

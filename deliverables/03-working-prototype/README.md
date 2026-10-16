@@ -67,7 +67,7 @@ Phases follow section 7.2 of the architecture doc.
 - [ ] Participation visibility and one generic block reason (R41)
 - [ ] Impact view: hired and still-employed numbers per intake, pooled retention, "Too few to tell yet" (R42)
 - [ ] One 1–5 item per driver; neutral score recheck; score change per action against other teams; fix evidence on the draft screen (R26, R43)
-- [ ] AI quality watch with weekly spot checks, calibration and the hold-new-tags setting (R44)
+- [ ] AI quality watch with weekly spot checks, holds and the hold-new-tags setting (R44)
 - [ ] Manager milestone nudges on Telegram (R45)
 - [ ] Language packs (BM, English, Chinese) with checker records and per-pack AI tests (R46); AI translation of Chinese replies for HR (R53)
 - [ ] Worker-voice export, agency role, exit question, left flag, job-match card (R47, R48, R49, R1, R52)

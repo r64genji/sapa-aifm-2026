@@ -29,7 +29,7 @@ const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROW
 
 type Me = { today: string };
 type Escalation = { id: string; category: string; created_at: string; closed_at: string | null; waited_hours: number; overdue: boolean };
-type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; note?: string | null; held?: { language: string; reason: string }[] };
+type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string };
@@ -203,11 +203,6 @@ export default function Page() {
                   <div className="sp-meta">
                     {top.reviewed} reviewed{top.ai_confident ? `, ${top.ai_confident} AI-confident` : ""}
                   </div>
-                  {top.note ? (
-                    <div className="sp-meta">
-                      <AiMark state="suggested" label={top.note} />
-                    </div>
-                  ) : null}
                   {top.held?.map((h) => (
                     <div key={h.language} className="sp-meta">{h.reason}</div>
                   ))}

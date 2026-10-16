@@ -684,7 +684,7 @@ function Quality({ quality }: { quality: Quality[] }) {
   const languages = [...byLanguage.entries()].sort(([a], [b]) => (a === "ms" ? -1 : b === "ms" ? 1 : a.localeCompare(b)));
   const checks = quality.reduce((sum, q) => sum + q.spot_checks, 0);
   const changed = quality.reduce((sum, q) => sum + q.changed, 0);
-  const waiting = quality.filter((q) => q.evaluated && q.driver && (q.state === "held" || q.state === "calibrating"));
+  const waiting = quality.filter((q) => q.evaluated && q.driver && q.state === "held");
   return (
     <details className="sp-card sp-fold overflow-hidden" open>
       <summary className="flex min-h-[52px] cursor-pointer flex-wrap items-center gap-3 px-[18px] py-1.5">
@@ -728,11 +728,11 @@ function Quality({ quality }: { quality: Quality[] }) {
           <div className="flex flex-col gap-1.5 border-t pt-3 text-[13px]" style={{ borderColor: "var(--line-soft)" }}>
             {waiting.map((q) => (
               <span key={`${q.driver}|${q.language}`} className="flex flex-wrap items-center gap-x-2">
-                <Waiting>{q.state === "held" ? "Held" : "Calibrating"}</Waiting>
+                <Waiting>Held</Waiting>
                 <span className="font-semibold">
                   {driverName(q.driver!)} · {LANGUAGES[q.language] ?? q.language}
                 </span>
-                <span className="sp-muted">{q.reason ?? (q.state === "held" ? "New labels wait for HR" : "New labels wait for HR until 20 spot checks show at most 10% changed")}</span>
+                <span className="sp-muted">{q.reason ?? "New labels wait for HR"}</span>
               </span>
             ))}
           </div>

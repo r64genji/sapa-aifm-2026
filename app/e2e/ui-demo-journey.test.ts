@@ -43,17 +43,16 @@ test("Demo beat 1: Advance to Day 14 sends the live hire one check-in", async ()
   assert.ok((await texts()).includes(question("ROLE_CLARITY")));
 });
 
-test("Demo beat 2: the reply waits for HR at 23 of 64, and Confirm label moves the card to 24 of 65", async () => {
+test("Demo beat 2: the reply moves the card to 24 of 65, and Confirm label marks it reviewed", async () => {
   for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 
   await page.goto(`${appUrl}/`);
-  await page.getByText("New labels wait for HR during calibration").first().waitFor();
-  assert.equal(await topCard().textContent(), "23 of 64 who answered at Day 14");
+  await page.getByText("24 of 65 who answered at Day 14").first().waitFor();
+  assert.equal(await topCard().textContent(), "24 of 65 who answered at Day 14");
   await page.locator(".sp-row", { hasText: reply }).getByRole("button", { name: "Confirm label" }).click();
-  await page.getByText("24 of 65 who answered at Day 14").waitFor();
-  assert.equal(await page.getByText("17 reviewed, 7 AI-confident").count(), 1);
+  await page.getByText("17 reviewed, 7 AI-confident").waitFor();
 });
 
 test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and send it", async () => {

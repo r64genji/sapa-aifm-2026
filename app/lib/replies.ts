@@ -83,7 +83,7 @@ export async function retryReply(organisationId: string, responseId: string) {
   return { status: result.status };
 }
 
-const waiting = "New labels wait for HR during calibration";
+const waiting = "New labels wait for HR";
 const challenged = "Challenged by new hire";
 const spotCheck = "Spot check";
 

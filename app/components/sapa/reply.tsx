@@ -30,7 +30,6 @@ export type ReplyRowProps = {
   onConfirm: () => Promise<unknown>;
   onChange: (change: ReplyChange) => Promise<unknown>;
   onRetry: () => Promise<unknown>;
-  onFollowUp: (value: boolean) => Promise<unknown>;
   onUndo?: () => Promise<unknown>;
 };
 
@@ -57,9 +56,7 @@ const whyHere = (item: ReplyItem) =>
       ? "AI not sure"
       : item.escalate
         ? "Flagged as a serious concern"
-        : item.concern_level === "needs_follow_up"
-          ? "Needs follow-up"
-          : null);
+        : null);
 
 function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (change: ReplyChange) => void; onClose: () => void }) {
   const only = item.drivers.length === 1 ? item.drivers[0] : null;
@@ -93,7 +90,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   );
 }
 
-export function ReplyRow({ item, onConfirm, onChange, onRetry, onFollowUp, onUndo }: ReplyRowProps) {
+export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const run = async (action: () => Promise<unknown>) => {
@@ -109,7 +106,6 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onFollowUp, onUnd
   const reviewed = item.status === "reviewed";
   const awaiting = item.status === "awaiting_ai";
   const pending = item.status === "needs_review" || (item.status === "ok" && (!!item.note || item.counted === false));
-  const followUp = item.concern_level === "needs_follow_up";
   const caption = item.serious ? "Your label" : reviewed ? "Your label" : awaiting ? "AI label" : pending ? "AI label" : "Counted automatically";
   const state = reviewed ? (item.changed_by_hr ? "corrected" : "confirmed") : item.status === "needs_review" ? "unsure" : "suggested";
 
@@ -173,11 +169,6 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onFollowUp, onUnd
             <Button disabled={busy || item.serious} why={item.serious ? "Already sent to Serious concerns" : null} onClick={() => run(onUndo)}>
               Undo
             </Button>
-          ) : null}
-          {tagged ? (
-            <button type="button" className="sp-btn sp-btn-secondary sp-lane-ink" aria-pressed={followUp} disabled={busy} onClick={() => run(() => onFollowUp(!followUp))} style={followUp ? { background: "var(--waiting-soft)", color: "var(--waiting-ink)", borderColor: "var(--waiting)" } : undefined}>
-              Needs follow-up{followUp ? ": on" : ""}
-            </button>
           ) : null}
         </div>
       </div>

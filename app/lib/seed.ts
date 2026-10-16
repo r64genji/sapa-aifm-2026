@@ -9,6 +9,7 @@ import checkin_schedule from "@/data/seed/checkin_schedule.json";
 import responses from "@/data/seed/responses.json";
 import ai_tags from "@/data/seed/ai_tags.json";
 import quality_holds from "@/data/seed/quality_holds.json";
+import spot_checks from "@/data/seed/spot_checks.json";
 import intake_outcomes from "@/data/seed/intake_outcomes.json";
 import handbook_pages from "@/data/seed/handbook_pages.json";
 import question_groups from "@/data/seed/question_groups.json";
@@ -62,13 +63,13 @@ function demoActions() {
 
 async function seedSpotChecks() {
   if (process.env.SAPA_TEST === "1") return;
-  const rows = quality_holds.flatMap((hold) =>
-    Array.from({ length: hold.spot_checks_done }, (_, i) => ({
-      organisation_id: hold.organisation_id,
-      driver: hold.driver,
-      language: hold.language,
+  const rows = spot_checks.flatMap((check) =>
+    Array.from({ length: check.done }, (_, i) => ({
+      organisation_id: check.organisation_id,
+      driver: check.driver,
+      language: check.language,
       at: new Date(Date.now() - ((i * 3) % 28) * DAY_MS - DAY_MS).toISOString(),
-      changed: i < hold.spot_checks_changed,
+      changed: i < check.changed,
     })),
   );
   const { error } = await createAdminClient().from("spot_checks").insert(rows);

@@ -45,11 +45,6 @@ export default function Page() {
     onChange: (change: ReplyChange) =>
       review(item, change, change.serious ? { serious: true } : { drivers: change.drivers ?? item.drivers, context_tags: change.context_tags ?? item.context_tags, changed_by_hr: true }, track),
     onRetry: () => guard(() => apiSend(`/api/hr/replies/${item.id}/retry`)),
-    onFollowUp: (value: boolean) =>
-      guard(async () => {
-        await apiSend(`/api/hr/replies/${item.id}/follow-up`, "POST", { value });
-        setDone((d) => (d[item.id] ? { ...d, [item.id]: { ...d[item.id], item: { ...d[item.id].item, concern_level: value ? "needs_follow_up" : "none" } } } : d));
-      }),
     onUndo: undoable
       ? () =>
           guard(async () => {

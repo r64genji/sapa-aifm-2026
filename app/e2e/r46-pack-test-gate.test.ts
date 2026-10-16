@@ -52,7 +52,7 @@ test("R46: only an HR admin records that a pack passed, naming the results file,
   assert.deepEqual(audited, [{ target: "en:eval/results/en-gemini-2026-10-16.json" }]);
 
   await reply(second);
-  assert.deepEqual(await tagOf(second), { status: "ok", counted: false });
+  assert.deepEqual(await tagOf(second), { status: "ok", counted: true });
 });
 
 test("R44: the language panel shows Not evaluated for a pack that has not passed, false alarms closed as not serious, and the share sent to review", async () => {

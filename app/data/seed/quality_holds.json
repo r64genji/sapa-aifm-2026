@@ -3,14 +3,86 @@
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "driver": "ROLE_CLARITY",
     "language": "en",
-    "state": "calibrating",
-    "spot_checks_done": 3,
+    "state": "trusted",
+    "spot_checks_done": 0,
     "spot_checks_changed": 0,
     "started_at": "2026-10-01T01:00:00Z"
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "driver": "ROLE_CLARITY",
+    "language": "ms",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "MANAGER_SUPPORT",
+    "language": "en",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "MANAGER_SUPPORT",
+    "language": "ms",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "BELONGING",
+    "language": "en",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "BELONGING",
+    "language": "ms",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "ONBOARDING_TRAINING",
+    "language": "en",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "ONBOARDING_TRAINING",
+    "language": "ms",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "WORKLOAD",
+    "language": "en",
+    "state": "trusted",
+    "spot_checks_done": 0,
+    "spot_checks_changed": 0,
+    "started_at": "2026-10-01T01:00:00Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "driver": "WORKLOAD",
     "language": "ms",
     "state": "trusted",
     "spot_checks_done": 0,
@@ -24,24 +96,6 @@
     "state": "trusted",
     "spot_checks_done": 0,
     "spot_checks_changed": 0,
-    "started_at": "2026-10-01T01:00:00Z"
-  },
-  {
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "BELONGING",
-    "language": "ms",
-    "state": "calibrating",
-    "spot_checks_done": 16,
-    "spot_checks_changed": 2,
-    "started_at": "2026-10-01T01:00:00Z"
-  },
-  {
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "WORKLOAD",
-    "language": "ms",
-    "state": "calibrating",
-    "spot_checks_done": 16,
-    "spot_checks_changed": 1,
     "started_at": "2026-10-01T01:00:00Z"
   }
 ]

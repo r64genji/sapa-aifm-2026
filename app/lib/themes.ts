@@ -12,7 +12,6 @@ export type Counts = {
   enough: boolean;
   drivers?: Record<string, { n: number; reviewed: number; ai_confident: number }>;
   context?: Record<string, number>;
-  calibrating?: string[];
 };
 
 export async function counts(
@@ -61,7 +60,6 @@ export async function themeCards(organisationId: string, touchpoint: number, mon
       m: c.respondents,
       reviewed: c.drivers![driver]?.reviewed ?? 0,
       ai_confident: c.drivers![driver]?.ai_confident ?? 0,
-      note: c.calibrating!.includes(driver) ? "New labels wait for HR during calibration" : null,
       ...(held.some((hold) => hold.driver === driver) && {
         held: held.filter((hold) => hold.driver === driver).map(({ language, reason }) => ({ language, reason })),
       }),

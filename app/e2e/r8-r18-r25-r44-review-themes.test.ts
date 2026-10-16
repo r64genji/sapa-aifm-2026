@@ -45,10 +45,8 @@ test("R44: the seed card reads 23 of 64: 16 reviewed, 7 AI-confident", async () 
   assert.deepEqual([card.n, card.m, card.reviewed, card.ai_confident], [23, 64, 16, 7]);
 });
 
-test("R44, R8, R25: the live reply waits for HR, the card moves up by one person only after Confirm label, and the Korean desk alone is too small", async () => {
-  const first = await roleClarity();
-  assert.equal(first.note, "New labels wait for HR during calibration");
-  seed = first;
+test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label moves it to reviewed, and the Korean desk alone is too small", async () => {
+  seed = await roleClarity();
 
   await link(live, liveInvite);
   await tap(live, "English");
@@ -70,11 +68,11 @@ test("R44, R8, R25: the live reply waits for HR, the card moves up by one person
   assert.equal(queue[0].evidence_quote, "tak tahu mana nak buat dulu");
   assert.equal(queue[0].summary, "The employee does not know which task to do first.");
   assert.deepEqual(queue[0].drivers, ["ROLE_CLARITY"]);
-  assert.equal(queue[0].note, "New labels wait for HR during calibration");
+  assert.equal(queue[0].note, null);
   assert.deepEqual((await auditActions()).filter((row) => row.target === queue[0].id), [{ action: "read_reply_text", target: queue[0].id }]);
 
-  const waiting = await roleClarity();
-  assert.deepEqual([waiting.n, waiting.m, waiting.reviewed, waiting.ai_confident], [seed.n, seed.m, seed.reviewed, seed.ai_confident]);
+  const arrived = await roleClarity();
+  assert.deepEqual([arrived.n, arrived.m, arrived.reviewed, arrived.ai_confident], [seed.n + 1, seed.m + 1, seed.reviewed, seed.ai_confident + 1]);
 
   const res = await hrRequest(`/api/hr/replies/${queue[0].id}/review`, "POST");
   assert.equal(res.status, 200);
