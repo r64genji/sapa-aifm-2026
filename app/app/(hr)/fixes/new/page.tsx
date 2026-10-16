@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { ChevronDown, Clock, Plus, Send, ShieldCheck, Trash2 } from "lucide-react";
+import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Trash2 } from "lucide-react";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
 import type { Me } from "@/components/sapa/shell";
 import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Tabs, driverName, shortDate } from "@/components/sapa/ui";
@@ -81,6 +81,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
   const [adding, setAdding] = useState(false);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [drafting, setDrafting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [removed, setRemoved] = useState<Entry | null>(null);
   const [sent, setSent] = useState<Sent | null>(null);
@@ -159,12 +160,13 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
 
   const addOwn = (fixName = name) =>
     run(async () => {
-      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName.trim().slice(0, 60) });
+      setMenu(false);
+      setAdding(false);
+      setDrafting(fixName.trim().slice(0, 60));
+      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName.trim().slice(0, 60) }).finally(() => setDrafting(null));
       setOwnFix(true);
       setEntryId(null);
       setNotes(EMPTY);
-      setMenu(false);
-      setAdding(false);
       setName("");
       if (result.notes) {
         setSuggestion({ title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." });
@@ -208,17 +210,14 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     setDecision("pending");
   };
 
-  const tryAgain = () =>
-    run(async () => {
-      await apiSend(`/api/hr/actions/${id}/dismiss`, "POST", { reason: "Tried again" });
-      const next = await apiSend<{ id: string }>("/api/hr/actions", "POST", { driver: view.driver });
-      window.location.href = `/fixes/new?driver=${view.driver}&id=${next.id}`;
-    });
+  const tryAgain = () => addOwn(suggestion!.title);
 
-  const pending = mode === "ai" && decision === "pending";
+  const pending = mode === "ai" && decision === "pending" && !drafting;
   const noteOk = !!notes.en.trim() && !!notes.ms.trim();
   const tooLong = LANGS.find(([l]) => words(notes[l]) > 40);
-  const why = pending
+  const why = drafting
+    ? "Wait for the AI draft."
+    : pending
     ? "Accept or reject the AI draft first."
     : !title.trim() || !steps.trim()
       ? "Add the fix title and the message."
@@ -301,7 +300,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                   aria-expanded={menu}
                   aria-labelledby="lib-label"
                   onClick={() => setMenu(!menu)}
-                  disabled={!!sent}
+                  disabled={!!sent || !!drafting}
                 >
                   <span className="flex min-w-0 flex-col">
                     <span className="truncate font-semibold">{ownFix ? (title || "Your own fix") : (entry?.title ?? "Pick a fix")}</span>
@@ -356,7 +355,14 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 ) : null}
               </div>
 
-              {decision === "rejected" && mode === "ai" ? (
+              {drafting ? (
+                <div className="sp-meta sp-fade-in flex items-center gap-2" role="status" aria-live="polite" style={{ background: "var(--surface-sunken)", padding: "8px 12px", borderRadius: "var(--radius-control)" }}>
+                  <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
+                  <span>The AI is writing “{drafting}”: the message and the note. This takes a few seconds.</span>
+                </div>
+              ) : null}
+
+              {decision === "rejected" && mode === "ai" && !drafting ? (
                 <div className="sp-meta flex flex-wrap items-center gap-2">
                   <span>Your own words.</span>
                   <Button onClick={useDraft}>Use the AI draft instead</Button>
@@ -367,13 +373,13 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 <label htmlFor="fix-title" className="sp-caption" style={{ fontWeight: 600 }}>
                   Fix title
                 </label>
-                <input id="fix-title" className={draftClass} maxLength={120} value={title} disabled={!!sent} onChange={(e) => setTitle(e.target.value)} placeholder="Short name for the fix" />
+                <input id="fix-title" className={draftClass} maxLength={120} value={title} disabled={!!sent || !!drafting} onChange={(e) => setTitle(e.target.value)} placeholder="Short name for the fix" />
               </div>
               <div className="flex flex-col gap-1">
                 <label htmlFor="fix-steps" className="sp-caption" style={{ fontWeight: 600 }}>
                   Message to {ownerName}
                 </label>
-                <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent} onChange={(e) => setSteps(e.target.value)} placeholder={`What you ask ${ownerName} to do. This is the Telegram message.`} />
+                <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent || !!drafting} onChange={(e) => setSteps(e.target.value)} placeholder={`What you ask ${ownerName} to do. This is the Telegram message.`} />
                 <span className="sp-caption">{words(steps)} of 60 words</span>
               </div>
 
@@ -424,7 +430,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 aria-label={`Note in ${LANGS.find(([l]) => l === lang)![1]}`}
                 className={draftClass}
                 rows={3}
-                disabled={!!sent}
+                disabled={!!sent || !!drafting}
                 value={notes[lang]}
                 placeholder={lang === "en" ? "What changed, in one or two sentences. Do not name anyone." : ""}
                 onChange={(e) => setNotes({ ...notes, [lang]: e.target.value })}

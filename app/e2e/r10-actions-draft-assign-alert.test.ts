@@ -34,12 +34,6 @@ const asManager = (path: string, token: string, method = "GET", body?: Record<st
     body: body && JSON.stringify(body),
   });
 
-const draftJson = (id: string, title: string) => ({
-  kind: "json" as const,
-  content: { library_entry_id: id, reason: "Fits the unclear priorities.", title, steps: "Talk through the top three tasks each Monday.",
-    notes: { en: "Your supervisor will agree priorities with you.", ms: "Penyelia anda akan bersetuju tentang keutamaan.", zh: "你的主管会和你确认工作重点。" },
-  },
-});
 const library = (n: number) => `6f1c2a3e-0000-4000-8000-0000000004${String(n).padStart(2, "0")}`;
 
 async function reply(chat: number, text: string) {
@@ -59,10 +53,12 @@ async function replyId(text: string) {
 }
 
 async function draft(title: string, driver: string, libraryNumber: number, responseId?: string) {
-  await scriptModel("omniroute", [draftJson(library(libraryNumber), title)]);
   const res = await hrRequest("/api/hr/actions", "POST", { driver, ...(responseId && { response_id: responseId }) });
   const body = await res.json();
-  if (res.status === 201) await hrRequest(`/api/hr/actions/${body.id}/notice`, "POST", { no_notice_reason: "Not needed for this test" });
+  if (res.status === 201) {
+    assert.equal((await hrRequest(`/api/hr/actions/${body.id}`, "PATCH", { library_entry_id: library(libraryNumber), title })).status, 200);
+    await hrRequest(`/api/hr/actions/${body.id}/notice`, "POST", { no_notice_reason: "Not needed for this test" });
+  }
   return { status: res.status, body };
 }
 
@@ -118,7 +114,6 @@ test("R10: Draft action on a reply from someone who chose HR only is blocked and
   assert.equal(allowed.status, 201);
   const [row] = await board();
   assert.equal(row.library_entry_id, library(1));
-  assert.equal(row.draft_reason, "Fits the unclear priorities.");
   assert.equal(row.status, "draft");
 });
 

@@ -12,9 +12,6 @@ const list = async () =>
     result: string;
   }[];
 const newDraft = async () => {
-  await scriptModel("omniroute", [
-    { kind: "json", content: { library_entry_id: seeded, reason: "Fits.", title: "Priorities", steps: "Talk weekly.", notes } },
-  ]);
   const res = await hrRequest("/api/hr/actions", "POST", { driver: "ROLE_CLARITY" });
   assert.equal(res.status, 201);
   return (await res.json()).id as string;

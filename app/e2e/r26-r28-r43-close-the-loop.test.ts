@@ -43,13 +43,12 @@ async function baseline(chat: number, scores: number[], text: string) {
   await say(chat, text);
 }
 
-async function draft(driver: string, entry: number, title: string, notes: Record<string, string>) {
-  await scriptModel("omniroute", [
-    { kind: "json", content: { library_entry_id: library(entry), reason: "Fits.", title, steps: "Do the thing each week.", notes } },
-  ]);
+async function draft(driver: string, entry: number, title: string) {
   const res = await hrRequest("/api/hr/actions", "POST", { driver });
   assert.equal(res.status, 201);
-  return (await res.json()).id as string;
+  const id = (await res.json()).id as string;
+  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { library_entry_id: library(entry), title, steps: "Do the thing each week." })).status, 200);
+  return id;
 }
 
 const action = (id: string, path: string, body?: Record<string, unknown>) => hrRequest(`/api/hr/actions/${id}${path}`, "POST", body);
@@ -106,7 +105,7 @@ test("R43: the draft screen for Priorities chat and written top-3 list shows 41 
   );
 });
 
-test("R43: the draft screen shows what each library entry achieved here, and the draft gets the entries ranked by it", async () => {
+test("R43: the draft screen shows what each library entry achieved here, and a new draft starts from the top entry with no AI call", async () => {
   const res = await hrRequest("/api/hr/actions/library?driver=ROLE_CLARITY", "GET");
   const entries = (await res.json()) as { title: string; evidence: string }[];
   assert.equal(entries[0].title, "Priorities chat and written top-3 list");
@@ -116,22 +115,18 @@ test("R43: the draft screen shows what each library entry achieved here, and the
   const unused = (await (await hrRequest("/api/hr/actions/library?driver=BELONGING", "GET")).json()) as { evidence: string }[];
   assert.deepEqual(unused.map((entry) => entry.evidence), ["Not enough evidence here yet", "Not enough evidence here yet"]);
 
-  await scriptModel("omniroute", [
-    { kind: "json", content: { library_entry_id: library(1), reason: "Worked here.", title: "Priorities", steps: "Talk weekly.", notes: mainNote } },
-  ]);
-  assert.equal((await hrRequest("/api/hr/actions", "POST", { driver: "ROLE_CLARITY" })).status, 201);
-  const prompt = String((await modelCalls("omniroute")).at(-1)!.body.messages.at(-1)!.content);
-  const input = JSON.parse(prompt.split("<<<\n")[1].split("\n>>>")[0]);
-  assert.deepEqual(
-    input.library.map((entry: { title: string; evidence: string }) => [entry.title, entry.evidence]),
-    entries.map((entry) => [entry.title, entry.evidence]),
-  );
+  const calls = (await modelCalls("omniroute")).length;
+  const made = await hrRequest("/api/hr/actions", "POST", { driver: "ROLE_CLARITY" });
+  assert.equal(made.status, 201);
+  const { data: row } = await db.from("actions").select("title").eq("id", (await made.json()).id).single();
+  assert.equal(row!.title, "Priorities chat and written top-3 list");
+  assert.equal((await modelCalls("omniroute")).length, calls);
 });
 
 test("R28: an action is not assigned without an approved note in English and Bahasa Malaysia, unless no notice has a reason", async () => {
-  main = await draft("MANAGER_SUPPORT", 3, "Weekly one-to-one", mainNote);
+  main = await draft("MANAGER_SUPPORT", 3, "Weekly one-to-one");
   const row = await card(main);
-  assert.deepEqual(row.draft_notes, mainNote);
+  assert.equal(row.draft_notes, null);
   assert.equal((await setTeam(main, "Accounts Payable Asia")).status, 200);
 
   assert.equal((await action(main, "/assign", { owner: "hr" })).status, 422);
@@ -139,7 +134,7 @@ test("R28: an action is not assigned without an approved note in English and Bah
   assert.equal((await action(main, "/notice", { no_notice_reason: "  " })).status, 422);
   assert.equal((await action(main, "/assign", { owner: "hr" })).status, 422);
 
-  noNotice = await draft("WORKLOAD", 9, "Workload check", droppedNote);
+  noNotice = await draft("WORKLOAD", 9, "Workload check");
   assert.equal((await setTeam(noNotice, "IT Service Desk")).status, 200);
   assert.equal((await action(noNotice, "/notice", { no_notice_reason: "The team already knows" })).status, 200);
   assert.equal((await action(noNotice, "/assign", { owner: "hr" })).status, 200);
@@ -149,7 +144,7 @@ test("R28: an action is not assigned without an approved note in English and Bah
 });
 
 test("R28: a dismissed action sends nothing", async () => {
-  const dismissed = await draft("BELONGING", 5, "Team lunch", droppedNote);
+  const dismissed = await draft("BELONGING", 5, "Team lunch");
   await setTeam(dismissed, "Accounts Payable Asia");
   assert.equal((await action(dismissed, "/notice", { notes: droppedNote })).status, 200);
   assert.equal((await action(dismissed, "/assign", { owner: "hr" })).status, 200);
@@ -216,7 +211,7 @@ test("R26: the next check-in of each person in scope starts with the neutral 1-5
 });
 
 test("R46, R28: a note without Chinese cannot be approved", async () => {
-  const id = await draft("BELONGING", 5, "Team tea", droppedNote);
+  const id = await draft("BELONGING", 5, "Team tea");
   const { zh, ...withoutChinese } = droppedNote;
   assert.equal((await action(id, "/notice", { notes: withoutChinese })).status, 422);
   assert.equal((await action(id, "/notice", { notes: droppedNote })).status, 200);
