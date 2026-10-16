@@ -18,6 +18,7 @@ if (process.env.SAPA_TEST === "1") {
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  allowedDevOrigins: ["dev.sapa.abrahamtan.com"],
   env: { SAPA_TEST: process.env.SAPA_TEST ?? "" },
 };
 
