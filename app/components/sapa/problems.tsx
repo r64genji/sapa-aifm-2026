@@ -30,7 +30,13 @@ const fixLine = (a: Action) =>
 const counted = (r: ReplyItem) => r.status === "reviewed" || (r.status === "ok" && r.counted !== false);
 
 function Bar({ s, label }: { s: Share; label: string }) {
-  return s.enough ? <CountBar count={s.n} of={s.m} label={label} /> : <CountBar notEnough have={s.have} need={s.need} />;
+  if (s.enough) return <CountBar count={s.n} of={s.m} label={label} />;
+  return (
+    <div>
+      <span className="sp-caption font-semibold">{label.charAt(0).toUpperCase() + label.slice(1)}</span>
+      <CountBar notEnough have={s.have} need={s.need} />
+    </div>
+  );
 }
 
 function Step({ n, title, sub }: { n: number; title: string; sub: string }) {
