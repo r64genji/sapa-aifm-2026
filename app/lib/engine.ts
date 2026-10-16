@@ -7,16 +7,17 @@ import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
   moveState,
+  intakeTeams,
+  joinIntake,
   personByChat,
-  personByToken,
   recordConsent,
   redeemInvite,
   setLanguage,
   setScope,
+  setTeam,
   stopPerson,
   type Person,
 } from "@/lib/directory";
-import { now } from "@/lib/clock";
 import { answerContact } from "@/lib/escalations";
 import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 import { milestoneDone } from "@/lib/milestones";
@@ -65,9 +66,13 @@ const visibilityReply = (language: Language): Reply => {
   };
 };
 
-function prompt(person: Person, languages: Language[]): Reply[] {
+async function prompt(person: Person, languages: Language[]): Promise<Reply[]> {
   const pack = packs[person.language];
   if (person.state === "invited") return [languageReply(languages)];
+  if (person.state === "choosing_team") {
+    const teams = await intakeTeams(person);
+    return [{ text: pack.teamPrompt, buttons: teams.map(({ team }, i) => ({ label: team, id: "team", value: String(i) })) }];
+  }
   if (person.state === "consent_shown") {
     return [
       {
@@ -84,14 +89,9 @@ function prompt(person: Person, languages: Language[]): Reply[] {
 }
 
 async function join(chatId: number, token: string): Promise<Outcome> {
-  const found = await personByToken(token);
-  const refused = { replies: [{ text: packs[found?.language ?? "en"].invalidInvite }] };
-  if (!found || found.state === "left" || found.invite_used_at || new Date(found.invite_expires_at) <= (await now())) {
-    return refused;
-  }
-  const person = await redeemInvite(token, chatId);
-  if (!person) return refused;
-  return { replies: prompt(person, languages) };
+  const person = (await joinIntake(token, chatId)) ?? (await redeemInvite(token, chatId));
+  if (!person) return { replies: [{ text: packs.en.invalidInvite }] };
+  return { replies: await prompt(person, languages) };
 }
 
 async function press(person: Person, id: string, value: string, languages: Language[]): Promise<Outcome> {
@@ -100,7 +100,7 @@ async function press(person: Person, id: string, value: string, languages: Langu
     const language = value as Language;
     await setLanguage(person, language);
     await moveState(person, "invited", "consent_shown");
-    return { replies: prompt({ ...person, language, state: "consent_shown" }, languages), menu: language };
+    return { replies: await prompt({ ...person, language, state: "consent_shown" }, languages), menu: language };
   }
   if (id === "lang" && person.state === "active" && languages.includes(value as Language)) {
     const language = value as Language;
@@ -111,11 +111,16 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "no" && (await moveState(person, "consent_shown", "declined"))) {
       return { replies: [{ text: pack.declined }] };
     }
-    if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
+    const next = person.team ? "active" : "choosing_team";
+    if (value === "yes" && (await moveState(person, "consent_shown", next))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
+      if (next === "choosing_team") return { replies: await prompt({ ...person, state: next }, languages) };
       return { replies: [visibilityReply(person.language)] };
     }
+  }
+  if (id === "team" && person.state === "choosing_team" && (await setTeam(person, Number(value)))) {
+    return { replies: [visibilityReply(person.language)] };
   }
   if (
     id === "visibility" &&
@@ -142,7 +147,7 @@ async function press(person: Person, id: string, value: string, languages: Langu
     const replies = await checkinButton(person, value);
     if (replies) return { replies };
   }
-  return { replies: prompt(person, languages) };
+  return { replies: await prompt(person, languages) };
 }
 
 export async function handle(chatId: number, input: Input): Promise<Outcome> {
@@ -185,7 +190,7 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (input.kind === "button") return press(person, input.id, input.value, languages);
   if (command === "myanswers") return { replies: await myAnswers(person) };
   if (person.state === "active" && command === "skip") {
-    return { replies: (await skipCheckin(person)) ? [{ text: packs[person.language].skipped }] : prompt(person, languages) };
+    return { replies: (await skipCheckin(person)) ? [{ text: packs[person.language].skipped }] : await prompt(person, languages) };
   }
   if (person.state === "active" && command === "privacy") return { replies: [visibilityReply(person.language)] };
   if (person.state === "active" && command === "language") return { replies: [languageReply(languages)] };
@@ -201,5 +206,5 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
     if (!question) return { replies: [{ text: packs[person.language].qa.askPrompt }] };
     return { replies: await ask(person, question, command === "ask") };
   }
-  return { replies: prompt(person, languages) };
+  return { replies: await prompt(person, languages) };
 }

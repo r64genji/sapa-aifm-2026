@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import organisations from "@/data/seed/organisations.json";
 import language_packs from "@/data/seed/language_packs.json";
 import managers from "@/data/seed/managers.json";
+import intakes from "@/data/seed/intakes.json";
 import people from "@/data/seed/people.json";
 import consents from "@/data/seed/consents.json";
 import checkin_schedule from "@/data/seed/checkin_schedule.json";
@@ -20,7 +21,7 @@ import escalations from "@/data/seed/escalations.json";
 import milestone_nudges from "@/data/seed/milestone_nudges.json";
 import demo_history from "@/data/seed/demo_history.json";
 import { encrypt } from "@/lib/crypto";
-import { inviteLink } from "@/lib/directory";
+import { joinLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 async function seedUsers() {
@@ -52,7 +53,7 @@ const DAY_MS = 86400000;
 function liveDates(timeZone: string) {
   if (process.env.SAPA_TEST === "1") return {};
   const start = new Date(Date.now() - 13 * DAY_MS).toLocaleDateString("en-CA", { timeZone });
-  return { start_date: start, invite_expires_at: new Date(Date.parse(start) + 26 * DAY_MS).toISOString() };
+  return { start_date: start, expires_at: new Date(Date.parse(start) + 26 * DAY_MS).toISOString() };
 }
 
 function demoActions() {
@@ -86,22 +87,14 @@ export async function resetDemo() {
   if (modeError) throw modeError;
   if (live.length > 0) return { error: "Demo mode is off", code: 409 };
   const liveStart = liveDates(organisations[0].time_zone);
-  const invited = people.map((person) =>
-    person.synthetic || person.invite_used_at
-      ? person
-      : { ...person, ...liveStart, invite_token: randomBytes(16).toString("base64url") },
-  );
+  const intake = { ...intakes[0], ...liveStart, join_token: randomBytes(16).toString("base64url") };
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();
   await seedUsers();
-  return {
-    invites: invited
-      .filter((person) => person.invite_token && !person.invite_used_at)
-      .map((person) => ({ code_name: person.code_name, invite_link: inviteLink(person.invite_token!) })),
-  };
+  return { join_link: joinLink(intake.join_token) };
 }

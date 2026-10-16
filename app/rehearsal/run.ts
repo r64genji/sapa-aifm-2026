@@ -4,7 +4,7 @@ import { appUrl, db, dispatch, hrRequest, hrToken, link, postUpdate, tapData, up
 
 const chat = Number(process.env.REHEARSAL_CHAT_ID);
 const seededActions = JSON.parse(readFileSync(new URL("../data/seed/actions.json", import.meta.url), "utf8")).length;
-const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
+let livePerson = "";
 const raj = "6f1c2a3e-0000-4000-8000-000000000101";
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 const notes = { en: "Your team now has a weekly priority list every Monday.", ms: "Pasukan anda kini ada senarai keutamaan mingguan setiap Isnin." };
@@ -30,8 +30,8 @@ async function resetDemo() {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
-  const { invites } = await json(res, 200, "demo reset");
-  return String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1];
+  const { join_link } = await json(res, 200, "demo reset");
+  return String(join_link).split("?start=")[1];
 }
 
 const roleClarity = async () => {
@@ -45,9 +45,11 @@ async function run() {
   await link(chat, await resetDemo());
   await tapData(chat, button("lang", "en"));
   await tapData(chat, button("consent", "yes"));
+  await tapData(chat, button("team", "0"));
   await tapData(chat, button("visibility", "share_with_manager"));
   await until("the live hire to be active", async () => {
-    const { data } = await db.from("people").select("state").eq("id", livePerson).single();
+    const { data } = await db.from("people").select("id, state").eq("telegram_chat_id", chat).maybeSingle();
+    livePerson = data?.id ?? "";
     return data?.state === "active";
   });
 
@@ -112,8 +114,8 @@ async function run() {
 }
 
 async function restored() {
-  const { data: person } = await db.from("people").select("state, telegram_chat_id").eq("id", livePerson).single();
-  assert.deepEqual(person, { state: "invited", telegram_chat_id: null });
+  const { data: person } = await db.from("people").select("id").eq("telegram_chat_id", chat);
+  assert.deepEqual(person, []);
   const { data: org } = await db.from("organisations").select("demo_offset_days");
   assert.deepEqual(org, [{ demo_offset_days: 0 }]);
   assert.equal((await board()).length, seededActions);

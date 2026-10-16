@@ -4,6 +4,8 @@
 
 This doc wins over every other doc, ticket, review and spec. If they disagree with it, they are wrong. Change this doc first, then the others.
 
+The spec (docs/05) is never the source of truth. It records how we build what this doc asks for. My intent here always takes precedence over it. If the spec says something this doc does not want, change the spec.
+
 ## Goal
 
 Win the AIFM 2026 pitch on 23 Oct. The live demo is the only thing that matters.
@@ -22,6 +24,16 @@ We must not miss anything the organisers require. A missed requirement can lose 
 ## What Sapa is
 
 A chat bot that checks in with new employees during their first six months, plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
+
+## Privacy: one link per intake
+
+Agreed 16 Oct 2026.
+
+- HR gives one join link (QR code) to a whole intake. There is no personal invite link.
+- Sapa never asks for or keeps a new hire's real name or Telegram name. Each new hire gets a random code name. The new hire picks their team in the bot.
+- HR and managers cannot see who wrote a reply. A new hire gives their name or phone only when they choose to, for example on a serious concern.
+- Sapa still keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
+- Say "HR cannot see who you are unless you choose to tell them". Never say "fully anonymous".
 
 ## Show-off list
 

@@ -41,6 +41,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
 });
 
 test("R21, R19: at Day 14 two dispatch calls at the same time send the live hire one check-in", async () => {

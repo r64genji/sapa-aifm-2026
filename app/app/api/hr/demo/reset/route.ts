@@ -7,6 +7,5 @@ export async function POST(request: Request) {
   if (user.role !== "hr_admin") return new Response("Forbidden", { status: 403 });
   const result = await resetDemo();
   if ("error" in result) return Response.json(result, { status: result.code });
-  const live = result.invites.find((invite) => invite.code_name === "Live hire");
-  return Response.json({ invite_link: live?.invite_link ?? null });
+  return Response.json(result);
 }

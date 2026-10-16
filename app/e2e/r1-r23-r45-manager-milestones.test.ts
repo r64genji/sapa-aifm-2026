@@ -18,7 +18,7 @@ import {
 const seeded: { code_name: string; synthetic: boolean }[] = JSON.parse(readFileSync(new URL("../data/seed/people.json", import.meta.url), "utf8"));
 const raj = 5550000801;
 const [invited, active, stopped, left, extra, fifth] = [811, 812, 813, 815, 816, 817].map((n) => 5550000000 + n);
-const names = [...[invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`), "Live hire"];
+const names = [invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`);
 const mondayMorning = "2026-10-05T03:00:00.000Z";
 const mondayEvening = "2026-10-05T12:00:00.000Z";
 
@@ -71,7 +71,7 @@ test("R1, R23, R45: the supervisor gets the same Day 1 nudge for every hire stil
 
 test("R45: a second dispatch sends nothing again", async () => {
   await dispatch();
-  assert.equal((await nudgesTo()).length, 6);
+  assert.equal((await nudgesTo()).length, 5);
 });
 
 test("R45: Day 7 and Day 30 nudges follow on their days with the fixed text", async () => {
@@ -102,6 +102,6 @@ test("R45, R51: Done is recorded, and HR sees the share done per intake with no 
     { intake: "2026-03", enough: true, hires: 16, share_done: 0.77 },
     { intake: "2026-04", enough: true, hires: 17, share_done: 0.82 },
     { intake: "2026-09", enough: false, message: "Not enough people yet" },
-    { intake: "2026-10", enough: true, hires: 6, share_done: 0.33 },
+    { intake: "2026-10", enough: true, hires: 5, share_done: 0.4 },
   ]);
 });

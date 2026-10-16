@@ -1,14 +1,13 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
+import { addHire, chatPerson, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
 const en = pack("en");
 const ms = pack("ms");
 const zh = pack("zh");
-const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const frozen = "2026-10-14T01:00:00.000Z";
 
 before(async () => {
@@ -18,20 +17,24 @@ before(async () => {
 
 const texts = async (chatId: number) => (await sentTo(chatId)).map((m) => m.text);
 
-test("Bug fix: the live hire's invite token written in the public seed file binds no chat after a reset", async () => {
+test("Bug fix: the intake join token written in the public seed file binds no chat after a reset", async () => {
   const chat = 5550000006;
-  await link(chat, "live-hire-invite");
+  await link(chat, "october-intake-join");
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
 });
 
-test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and gets an English menu", async () => {
+test("R5, R36, R1, R27: a hire joins on the intake link in English, consents, picks a team, gets HR only and an English menu", async () => {
   const chat = 5550000001;
   await link(chat, liveInvite);
   assert.deepEqual(await texts(chat), [`${en.languagePrompt}\n${ms.languagePrompt}\n${zh.languagePrompt}`]);
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
+  await tap(chat, "Accounts Payable Asia");
+  assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.teamPrompt, en.visibilityPrompt]);
+  const livePerson = (await chatPerson(chat)).id;
+  const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
+  assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
 
   const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at").eq("person_id", livePerson);
   assert.deepEqual(consents, [{ text_version: en.consentVersion, scope: "hr_only", withdrawn_at: null }]);
@@ -45,7 +48,7 @@ test("R5, R36, R1: a seeded hire joins in English, consents with HR only, and ge
   ]);
 
   await tap(chat, en.visibilityHrManager);
-  const { data: after } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", livePerson).order("granted_at");
+  const { data: after } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", (await chatPerson(chat)).id).order("granted_at");
   assert.deepEqual(
     after!.map((c) => [c.scope, c.withdrawn_at !== null]),
     [["hr_only", true], ["share_with_manager", false]],
@@ -62,30 +65,36 @@ test("R36: a hire who picks Bahasa Malaysia gets the BM consent text and a BM me
   assert.deepEqual(menu.commands.map((c: any) => c.command), Object.values(ms.commands).map((c: any) => c.name));
 });
 
-test("R27: a used invite is refused with the ask-HR text, and HR sees only that it was used", async () => {
+test("R27: a second chat on the intake link joins as a new person, a chat that joined is refused, and HR sees no names", async () => {
   const other = 5550000003;
   await link(other, liveInvite);
-  assert.deepEqual(await texts(other), [en.invalidInvite]);
+  assert.deepEqual(await texts(other), [`${en.languagePrompt}\n${ms.languagePrompt}\n${zh.languagePrompt}`]);
+  const first = await chatPerson(5550000001);
+  const second = await chatPerson(other);
+  assert.notEqual(second.id, first.id);
+  assert.notEqual(second.code_name, first.code_name);
   await link(5550000001, liveInvite);
   assert.equal((await texts(5550000001)).at(-1), en.invalidInvite);
 
   const res = await fetch(`${appUrl}/api/hr/hires`, { headers: { authorization: `Bearer ${await hrToken()}` } });
-  const live = (await res.json()).find((h: any) => h.code_name === "Live hire");
+  const live = (await res.json()).find((h: any) => h.code_name === first.code_name);
   assert.deepEqual(live, {
-    code_name: "Live hire",
+    code_name: first.code_name,
     team: "Accounts Payable Asia",
     start_date: "2026-10-02",
-    role: "AP analyst (Mandarin)",
+    role: null,
     invite_used: true,
   });
 });
 
-test("R27: an invite 15 days old is refused", async () => {
+test("R27: an invite 15 days old and an expired intake link are refused", async () => {
   const chat = 5550000004;
   const { token } = await addHire({ code_name: "Late hire" });
   await freezeClock("2026-10-29T01:00:00.000Z");
   await link(chat, token);
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
+  await link(5550000007, liveInvite);
+  assert.deepEqual(await texts(5550000007), [en.invalidInvite]);
   await freezeClock(frozen);
 });
 

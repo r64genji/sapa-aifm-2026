@@ -65,6 +65,18 @@ async function telegram() {
   };
 }
 
+export async function demoIntake(organisationId: string) {
+  const { data, error } = await createAdminClient()
+    .from("intakes")
+    .select("id, start_date")
+    .eq("organisation_id", organisationId)
+    .order("start_date", { ascending: false })
+    .limit(1)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export async function demoStatus(organisationId: string) {
   const db = createAdminClient();
   const { data: org, error } = await db
@@ -74,31 +86,33 @@ export async function demoStatus(organisationId: string) {
     .single();
   if (error) throw error;
   if (!org.demo_mode) return { error: "Demo mode is off" };
+  const intake = await demoIntake(organisationId);
   const { data: live, error: liveError } = await db
     .from("people")
-    .select("id, start_date, telegram_chat_id, managers(telegram_chat_id, revoked_at)")
-    .eq("organisation_id", organisationId)
-    .eq("synthetic", false)
-    .order("start_date")
+    .select("id, telegram_chat_id, managers(telegram_chat_id, revoked_at)")
+    .eq("intake_id", intake.id)
+    .order("invite_used_at")
     .limit(1)
-    .single();
+    .maybeSingle();
   if (liveError) throw liveError;
-  const { data: next, error: nextError } = await db
-    .from("checkin_schedule")
-    .select("touchpoint, due_at")
-    .eq("person_id", live.id)
-    .eq("status", "scheduled")
-    .order("due_at")
-    .limit(1);
+  const { data: next, error: nextError } = live
+    ? await db
+        .from("checkin_schedule")
+        .select("touchpoint, due_at")
+        .eq("person_id", live.id)
+        .eq("status", "scheduled")
+        .order("due_at")
+        .limit(1)
+    : { data: [], error: null };
   if (nextError) throw nextError;
   const { data: spend, error: spendError } = await db.from("ai_usage").select("cost").eq("provider", "deepseek");
   if (spendError) throw spendError;
   const today = Date.parse((await now()).toLocaleDateString("en-CA", { timeZone: org.time_zone }));
-  const manager = live.managers as unknown as { telegram_chat_id: number | null; revoked_at: string | null } | null;
+  const manager = live?.managers as unknown as { telegram_chat_id: number | null; revoked_at: string | null } | null;
   const [ai, tg] = await Promise.all([models(), telegram()]);
   return {
     live_hire: {
-      day: Math.round((today - Date.parse(live.start_date)) / 86400000) + org.demo_offset_days,
+      day: Math.round((today - Date.parse(intake.start_date)) / 86400000) + org.demo_offset_days,
       next_check_in: next[0]
         ? { touchpoint: next[0].touchpoint, due_at: next[0].due_at }
         : null,
@@ -112,7 +126,7 @@ export async function demoStatus(organisationId: string) {
     ai_checked_at: ai.checked_at,
     telegram: tg,
     phones: {
-      live_hire_bound: live.telegram_chat_id !== null,
+      live_hire_bound: Boolean(live?.telegram_chat_id),
       demo_manager_bound: Boolean(manager?.telegram_chat_id) && !manager?.revoked_at,
     },
   };

@@ -106,7 +106,7 @@ test("R52, R28: the hiring-side action stays with HR, names nobody and completin
 
   const toManager = await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: { manager_id: raj } });
   assert.equal(toManager.status, 422);
-  const named = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "person", code_name: "Live hire" } });
+  const named = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "person", code_name: "Aina R." } });
   assert.equal(named.status, 422);
   const team = await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } });
   assert.equal(team.status, 422);

@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 exec 9>/tmp/sapa-e2e.lock
 echo "Waiting for the e2e lock..."
 flock 9
+fuser -k -n tcp 54330 54331 54332 >/dev/null 2>&1
 
 log=$(mktemp -d)
 pids=()

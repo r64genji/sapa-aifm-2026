@@ -19,7 +19,6 @@ import {
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const live = 5550000201;
-const livePerson = "6f1c2a3e-0000-4000-8000-000000000201";
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 
 const roleClarity = async (query = "") => {
@@ -54,6 +53,7 @@ test("R44, R8, R25: the live reply waits for HR, the card moves up by one person
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
   await tap(live, "4");
   await tap(live, "3");
@@ -133,7 +133,7 @@ test("R18: a narrative holding a number that is not in its input is rejected and
 });
 
 test("R7, R18: the narrative input holds no summary from an exit answer", async () => {
-  const { data: person } = await db.from("people").select("id, organisation_id").eq("id", livePerson).single();
+  const { data: person } = await db.from("people").select("id, organisation_id").eq("telegram_chat_id", live).single();
   const at = "2026-10-15T15:00:00.000Z";
   const { data: exit } = await db
     .from("responses")
