@@ -1,6 +1,6 @@
 # PRD — Sapa dashboard (HR and manager web app)
 
-*As of 14 Oct 2026. This is the **design PRD** for every screen of the Sapa web app. It is written to be pasted into Claude Design as the brief. It is self-contained: a designer needs no other doc. Behaviour, rules and data come from the [implementation spec](05-implementation-spec.md); rule IDs (R1–R29) point there. Labels: `ready-for-design`.*
+*As of 14 Oct 2026. This is the **design PRD** for every screen of the Sapa web app. It is written to be pasted into Claude Design as the brief. It is self-contained: a designer needs no other doc. Behaviour, rules and data come from the [implementation spec](../05-implementation-spec.md); rule IDs (R1–R29) point there. Labels: `ready-for-design`.*
 
 ## How the work is split
 

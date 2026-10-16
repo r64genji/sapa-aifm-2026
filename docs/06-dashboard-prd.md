@@ -2,6 +2,21 @@
 
 *As of 15 Oct 2026. This is the high-level design brief for the Sapa web app. It explains the situation, the problem, the goal, the people who use the app and the main user flows. It does not fix screens, layouts or components. Those are worked out later in conversation between Abraham and the design agent, and section 8 only gives a starting point for that conversation. Behaviour and data rules come from the [implementation spec](05-implementation-spec.md); rule IDs (R1–R53) point there. The earlier screen-by-screen draft is kept in [archive/06-dashboard-prd-detailed-v1.md](archive/06-dashboard-prd-detailed-v1.md) as a source of ideas, not as a requirement.*
 
+**Contents**
+
+- [How to read this spec](#how-to-read-this-spec)
+- [1. The situation](#1-the-situation)
+- [2. The HR problem](#2-the-hr-problem)
+- [3. What Sapa is, and where the web app fits](#3-what-sapa-is-and-where-the-web-app-fits)
+- [4. The problem the web app has to solve](#4-the-problem-the-web-app-has-to-solve)
+- [5. The people](#5-the-people)
+- [6. Commitments](#6-commitments)
+- [7. User flows (recommended)](#7-user-flows-recommended)
+- [8. Starting points for the design discussion](#8-starting-points-for-the-design-discussion)
+- [9. Sample data (fictional)](#9-sample-data-fictional)
+- [10. Out of scope](#10-out-of-scope)
+- [11. Open questions for the design discussion](#11-open-questions-for-the-design-discussion)
+
 ## How to read this spec
 
 The spec has three kinds of content, and they carry different weight:

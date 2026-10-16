@@ -1,6 +1,16 @@
 # Spec — Sapa: voluntary new-hire check-ins, from reply to tracked action
 
-*As of 15 Oct 2026. This is the **implementation spec**: behaviour, rules, data, AI and tests. The dashboard's screens and visual design live in the separate [dashboard PRD](06-dashboard-prd.md), which is designed in Claude Design. Built from [01 rundown](01-product-rundown-and-deliverables.md), [02 architecture](02-prototype-architecture.md), [03 dossier](03-research-dossier.md) and the fixes in [04 adversarial review](04-adversarial-review.md), [11 rubric review 3](11-rubric-review-3.md) and [12 rubric review 4](12-rubric-review-4.md). Where this spec and 02 disagree, this spec wins. Labels: `ready-for-agent`.*
+*As of 15 Oct 2026. This is the **implementation spec**: behaviour, rules, data, AI and tests. The dashboard's screens and visual design live in the separate [dashboard PRD](06-dashboard-prd.md), which is designed in Claude Design. Built from [01 rundown](01-product-rundown-and-deliverables.md), [02 architecture](02-prototype-architecture.md), [03 dossier](03-research-dossier.md) and the fixes in [04 adversarial review](archive/04-adversarial-review.md), [11 rubric review 3](archive/11-rubric-review-3.md) and [12 rubric review 4](archive/12-rubric-review-4.md). Where this spec and 02 disagree, this spec wins. Labels: `ready-for-agent`.*
+
+**Contents**
+
+- [Problem Statement](#problem-statement)
+- [Solution](#solution)
+- [User Stories](#user-stories)
+- [Implementation Decisions](#implementation-decisions)
+- [Testing Decisions](#testing-decisions)
+- [Out of Scope](#out-of-scope)
+- [Further Notes](#further-notes)
 
 ## Problem Statement
 
@@ -587,6 +597,7 @@ One end-to-end rehearsal script runs journey 2 against the deployed app, with a 
   1. Model route: decided 15 Oct. Gemini 3.8 Flash through OmniRoute behind a `cloudflared` named tunnel, with DeepSeek V4.1 Flash as the direct fallback.
   2. Whether a chat disclosure counts as a complaint under Employment Act s.81B. Ask the HR judges or a lawyer; until then the bot text does not promise that HR will stay silent.
   3. Which chat app the target frontline workers use most. Decided: Telegram only.
+  5. Fixed by the team on 15 Oct: the Q&A bot and the HR dashboard stay. The model route in item 1 stays for the competition. The team rejected review-2 fix 8 and review-3 G19, so the spec makes no pilot-data-path, region or provider-disclosure change.
   4. Organiser questions in `admin/organiser-questions.md` (dates, submission, demo fallback, equipment).
 - **Pitch wording fixes from the review.** Say "confidential, not anonymous". Say "24 of 65 who answered". Lead ROI with break-even. Say pay is out of scope. Say the AI writes to a new hire only two labelled things.
 - **Gemini pricing.** $0.75 / $3.75 per million tokens is an introductory price that a third-party source says ends 31 Dec 2026. Check before using the cost line in the pitch.

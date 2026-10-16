@@ -1,6 +1,6 @@
 # AIFM Problem 04 — Prototype Architecture
 
-*As of 14 Oct 2026 · Live version: [Claude Doc](https://claude.ai/code/artifact/e40dee12-b432-4053-a659-68b1cc87acda)*
+*As of 14 Oct 2026*
 
 > **This is the original architecture.** The [implementation spec (05)](05-implementation-spec.md) wins where they disagree. Lines that conflicted with 05 (model route, tunnel, tracing, follow-ups, manager steps, demo) were updated on 15 Oct. For rules, data model, Q&A and the demo, read 05.
 
@@ -205,7 +205,7 @@ Four narrow AI calls, each with a fixed schema, all going through OmniRoute to G
 
 ### 5.4 Testing the AI (guide item 7)
 
-Teammate B labels about 150 synthetic replies in BM, English and Manglish. The eval script runs them and writes results files. It reports, per language: Cohen's κ ≥ 0.6 on drivers, follow-up recall ≥ 0.9, and escalation recall as "k of n" with a 95% interval plus false alarms. The test split includes 10–15 Manglish hyperbole cases ("OT everyday, mati la"). 05 Testing Decisions is the full method.
+The eval set, its size and its pass marks are set only in [05 "Testing Decisions"](05-implementation-spec.md#testing-decisions). The eval script runs it and writes results files. It reports, per language: Cohen's κ ≥ 0.6 on drivers, follow-up recall ≥ 0.9, and escalation recall as "k of n" with a 95% interval plus false alarms. The test split includes 10–15 Manglish hyperbole cases ("OT everyday, mati la"). 05 Testing Decisions is the full method.
 
 A process test sits beside it: time how long HR takes to find the main issues in 20 raw replies by hand, then with Sapa's cohort view. That gives the "faster, clearer" evidence slide 8 needs.
 
@@ -253,7 +253,7 @@ Build days follow an 8-day plan; shift them once the organisers confirm dates. A
 | --- | --- | --- | --- |
 | 1. Foundations: repo from template, Supabase schema and RLS, Telegram bot on Vercel, OmniRoute over a `cloudflared` named tunnel, DeepSeek fallback | 1 | Abraham | Bot answers on a phone; one schema-valid Gemini call from Vercel; DeepSeek answers when the tunnel is stopped |
 | 2. Check-in loop: consent, question bank, scheduler, demo clock, commands | 2–3 | Abraham; A and B write BM/EN consent and question text | A full Day 3 → Day 14 run on a phone |
-| 3. AI pipeline: classify, probe choice, guardrails, escalation | 3–4 | Abraham; B labels the 150-reply eval set | Eval script runs; escalation recall reported as "k of n" with a 95% interval and false alarms |
+| 3. AI pipeline: classify, probe choice, guardrails, escalation | 3–4 | Abraham; B labels the eval set | Eval script runs; escalation recall reported as "k of n" with a 95% interval and false alarms |
 | 4. Dashboard: cohorts, flags, detail, actions board, manager role, Realtime | 4–6 | Abraham and B (B builds pages on preview branches) | A live reply shows on the dashboard; an action closes the loop |
 | 5. Evidence: synthetic cohort, eval report per language, HR timing test, backup recording | 6–7 | B for data and tests; A for slides and HR interviews | Numbers ready for slide 8 |
 | 6. Freeze and rehearse | 8 | Everyone | Three clean runs under 2 minutes; no new features |
