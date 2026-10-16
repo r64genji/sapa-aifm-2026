@@ -26,16 +26,6 @@ import {
 
 const TOUCHPOINTS = [3, 7, 14, 30, 60, 90, 182];
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
-const CONCERNS: Record<string, string> = {
-  harassment: "Harassment",
-  sexual_harassment: "Sexual harassment",
-  discrimination: "Discrimination",
-  bullying_threats: "Bullying or threats",
-  self_harm_crisis: "Self-harm or crisis",
-  safety_hazard: "Safety hazard",
-  wage_legal: "Wage or legal problem",
-  forced_labour_indicator: "Forced labour indicator",
-};
 
 type Me = { today: string };
 type Escalation = { id: string; category: string; created_at: string; closed_at: string | null; waited_hours: number; overdue: boolean };
@@ -128,8 +118,6 @@ export default function Page() {
   const impact = useApi<Impact>("/api/hr/impact");
   const hires = useApi<Hire[]>("/api/hr/hires", 60000);
 
-  const open = (escalations.data ?? []).filter((e) => !e.closed_at);
-  const oldest = open.reduce((max, e) => Math.max(max, e.waited_hours), 0);
   const replies = (queue.data ?? []).filter((r) => !r.escalate);
   const doneIds = new Set(done.map((d) => d.row.id));
   const toCheck = replies.filter((r) => !doneIds.has(r.id));
@@ -186,8 +174,7 @@ export default function Page() {
         }
       />
 
-      <nav aria-label="Lanes on this page" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <LaneTile lane="serious" count={open.length} label={open.length === 1 ? "Serious concern" : "Serious concerns"} hint={open.length ? `Waiting ${oldest} h of 1 working day` : "None open"} href="#serious" />
+      <nav aria-label="Lanes on this page" className="grid grid-cols-2 gap-3 lg:grid-cols-3">
         <LaneTile
           lane="problems"
           count={top ? <><CountUp value={top.n ?? 0} /> of <CountUp value={top.m ?? 0} /></> : "–"}
@@ -201,26 +188,6 @@ export default function Page() {
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex min-w-0 flex-col gap-6">
-          <LaneSection lane="serious" id="serious" title="Serious concerns" meta="HR only · never shown to managers or counted">
-            {open.length === 0 ? (
-              <Row title="No open serious concerns" />
-            ) : (
-              open.map((e) => (
-                <Row
-                  key={e.id}
-                  title={CONCERNS[e.category] ?? "Serious concern"}
-                  meta={`Arrived ${shortDate(e.created_at)}`}
-                  metric={<Waiting>{`Waiting ${e.waited_hours} h of 1 working day`}</Waiting>}
-                  action={
-                    <Button variant="primary" lane="serious" href={`/concerns/${e.id}`}>
-                      Open concern
-                    </Button>
-                  }
-                />
-              ))
-            )}
-          </LaneSection>
-
           <LaneSection lane="problems" id="problems" title="Shared problems" meta={`${dayLabel(touchpoint)} · counted from labels HR checked or the AI was sure of`}>
             {notEnough ? (
               <div className="px-[18px] py-4">

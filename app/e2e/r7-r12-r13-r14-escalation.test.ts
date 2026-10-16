@@ -9,14 +9,12 @@ import {
   hrRequest,
   hrToken,
   joined,
-  postUpdate,
   resetDemo,
   say,
   scriptModel,
   sentTo,
   sessionClient,
   tap,
-  update,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -75,37 +73,19 @@ before(async () => {
   for (const chat of [crisis, passport, epf, modelOnly, plain, mixed, retried, held]) await reachOpenQuestion(chat);
 });
 
-test("R13, R14: a crisis reply escalates by keyword while the model times out, with the configured contacts, and HR is alerted once the hire answers the contact question", async () => {
+test("R13, R14: a crisis reply escalates by keyword while the model times out, tells the hire to file an official complaint with the configured contacts and no contact question, and HR sees it at once", async () => {
   await scriptModel("omniroute", [{ kind: "timeout" }]);
   await scriptModel("deepseek", [{ kind: "timeout" }]);
   const replies = await answer(crisis, "I can't take it anymore, I want to kill myself");
   assert.equal(replies.length, 1);
   assert.ok(replies[0].includes(en.safety.message));
+  assert.ok(en.safety.message.includes("Please file an official complaint. Official complaints are 100% anonymous."));
   for (const contact of contacts.general) assert.ok(replies[0].includes(contact));
-  assert.equal(await escalationFor(crisis), undefined);
-  await tap(crisis, en.contact.yes);
-  assert.equal(await escalationFor(crisis), undefined);
-  await tap(crisis, en.contact.meet);
+  assert.equal((await sentTo(crisis)).at(-1)!.reply_markup, undefined);
 
   const alert = await escalationFor(crisis);
   assert.equal(alert.category, "self_harm_crisis");
   assert.equal(alert.source, "keyword");
-  assert.equal(alert.acknowledged_at, null);
-  assert.equal(alert.due_at, "2026-10-16T15:00:00.000Z");
-  assert.equal(alert.overdue, false);
-
-  await freezeClock("2026-10-16T16:00:00.000Z");
-  assert.deepEqual(
-    (await escalations()).map(({ waited_hours, overdue }) => ({ waited_hours, overdue })),
-    [{ waited_hours: 25, overdue: true }],
-  );
-  assert.equal((await hrRequest(`/api/hr/escalations/${alert.id}/acknowledge`, "POST")).status, 200);
-  assert.equal((await hrRequest(`/api/hr/escalations/${alert.id}/acknowledge`, "POST")).status, 409);
-  assert.equal((await hrRequest(`/api/hr/escalations/${alert.id}/contact`, "POST")).status, 200);
-  const seen = await escalationFor(crisis);
-  assert.equal(seen.acknowledged_at, "2026-10-16T16:00:00+00:00");
-  assert.equal(seen.contact_recorded_at, "2026-10-16T16:00:00+00:00");
-  await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
 test("R14, R12: a passport held by the agent escalates by keyword, the labour authority stays after HR removes contacts, and no probe follows", async () => {
@@ -124,7 +104,6 @@ test("R14, R12: a passport held by the agent escalates by keyword, the labour au
   assert.ok(en.safety.labourAuthority.includes("[SLOT: contact, verified before launch]"));
   for (const contact of contacts.forced_labour_indicator) assert.ok(!replies[0].includes(contact));
   assert.ok(!probes.some((probe) => replies.includes(probe)));
-  await tap(passport, en.contact.no);
 
   const alert = await escalationFor(passport);
   assert.equal(alert.category, "forced_labour_indicator");
@@ -153,7 +132,6 @@ test("R13, R12: the model alone escalates, and no probe follows", async () => {
   const replies = await answer(modelOnly, "My supervisor shouts at me every day and says I will regret it");
   assert.equal(replies.length, 1);
   assert.ok(replies[0].includes(en.safety.message));
-  await tap(modelOnly, en.contact.no);
   const alert = await escalationFor(modelOnly);
   assert.equal(alert.category, "bullying_threats");
   assert.equal(alert.source, "model");
@@ -198,7 +176,6 @@ test("R30, R13: a passport message typed while a 1-5 question is open gets the s
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", onScale).single();
   const { data: stored } = await db.from("responses").select("id, kind").eq("person_id", who!.id);
   assert.deepEqual(stored!.map((row) => row.kind), ["unprompted"]);
-  await tap(onScale, en.contact.no);
   const alert = (await escalations()).find((row) => row.response_id === stored![0].id)!;
   assert.equal(alert.category, "forced_labour_indicator");
   const { data: schedule } = await db.from("checkin_schedule").select("progress, status").eq("person_id", who!.id).eq("touchpoint", 14);
@@ -217,7 +194,6 @@ test("R13, R14: a disclosure typed while a 1-5 question is open escalates by key
   assert.ok(replies[0].includes(en.safety.forcedLabour));
   assert.ok(replies[0].includes(en.safety.labourAuthority));
   const [responseId] = await responsesOf(scale);
-  await tap(scale, en.contact.no);
   const alert = (await escalations()).find((row) => row.response_id === responseId)!;
   assert.equal(alert.category, "forced_labour_indicator");
 });
@@ -226,7 +202,6 @@ test("R13, R14: a Manglish passport report with an English threat still gets the
   const replies = await answer(mixed, "Ejen simpan pasport saya and boss threatened to cut my pay");
   assert.equal(replies.length, 1);
   assert.ok(replies[0].includes(en.safety.labourAuthority));
-  await tap(mixed, en.contact.no);
   assert.equal((await escalationFor(mixed)).category, "forced_labour_indicator");
 });
 
@@ -242,7 +217,6 @@ test("R13: HR retry of a reply that waited for AI escalates when the model now f
   const sent = (await sentTo(retried)).slice(before).map((m) => String(m.text));
   assert.equal(sent.length, 1);
   assert.ok(sent[0].includes(en.safety.message));
-  await tap(retried, en.contact.no);
   const alert = await escalationFor(retried);
   assert.equal(alert.category, "bullying_threats");
   assert.equal(alert.source, "model");
@@ -256,7 +230,6 @@ test("R13, R15: a model escalation with a bad quote still escalates when the ret
   const replies = await answer(held, text);
   assert.equal(replies.length, 1);
   assert.ok(replies[0].includes(en.safety.message));
-  await tap(held, en.contact.no);
   assert.equal((await escalationFor(held)).category, "bullying_threats");
 });
 
@@ -274,33 +247,4 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   const manager = await hrToken("raj@contoh.test");
   const denied = await fetch(`${appUrl}/api/hr/escalations/${alert.id}`, { headers: { authorization: `Bearer ${manager}` } });
   assert.equal(denied.status, 401);
-});
-
-async function caseOf(chat: number) {
-  const res = await hrRequest(`/api/hr/escalations/${(await escalationFor(chat)).id}`, "GET");
-  const { contact_method, phone, dont_contact } = await res.json();
-  return { contact_method, phone, dont_contact };
-}
-
-test("R14: the hire chooses to be called and shares their own number, another says no, and a shared number of someone else is ignored", async () => {
-  await tap(crisis, en.contact.yes);
-  await tap(crisis, en.contact.call);
-  const prompt = (await sentTo(crisis)).at(-1)!;
-  assert.equal(prompt.text, en.contact.sharePrompt);
-  assert.deepEqual((prompt.reply_markup as { keyboard: unknown }).keyboard, [[{ text: en.contact.share, request_contact: true }]]);
-  await postUpdate(update("contact", { chat_id: crisis, user_id: crisis, phone: "+60123456789" }));
-  assert.equal((await sentTo(crisis)).at(-1)!.text, en.contact.thanks);
-  assert.deepEqual(await caseOf(crisis), { contact_method: "call", phone: "+60123456789", dont_contact: false });
-
-  await tap(modelOnly, en.contact.yes);
-  await tap(modelOnly, en.contact.meet);
-  assert.equal((await sentTo(modelOnly)).at(-1)!.text, en.contact.thanks);
-  const before = (await sentTo(modelOnly)).length;
-  await postUpdate(update("contact", { chat_id: modelOnly, user_id: 1, phone: "+60111111111" }));
-  assert.equal((await sentTo(modelOnly)).length, before);
-  assert.deepEqual(await caseOf(modelOnly), { contact_method: "meet", phone: null, dont_contact: false });
-
-  await tap(passport, en.contact.no);
-  assert.equal((await sentTo(passport)).at(-1)!.text, en.contact.noThanks);
-  assert.deepEqual(await caseOf(passport), { contact_method: null, phone: null, dont_contact: true });
 });

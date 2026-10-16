@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   tap,
-  tapData,
 } from "./helpers.ts";
 
 type Person = { id: string; code_name: string; team: string; start_date: string; role: string; agency?: string };
@@ -185,7 +184,6 @@ async function ask(chat: number, group: string) {
 async function raiseConcern(chat: number) {
   const before = new Set(await escalationIds());
   await say(chat, "The agent holds my passport");
-  await tapData(chat, 'chat:{"a":"contact","v":"no"}');
   const after = await escalationIds();
   const created = after.filter((id) => !before.has(id));
   assert.equal(created.length, 1);

@@ -6,10 +6,9 @@ import { BarChart3, Home } from "lucide-react";
 import { Suspense, type ReactNode } from "react";
 import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
-import { Button, LaneIcon, Loading, Waiting } from "./ui";
+import { Button, LaneIcon, Loading } from "./ui";
 
 export type Me = { name: string; role: string; organisation: string; demo_mode: boolean };
-type Escalation = { id: string; closed_at: string | null; waited_hours: number; overdue: boolean };
 
 function NavItem({ href, icon, label, short, count, serious }: { href: string; icon: ReactNode; label: string; short: string; count?: number; serious?: boolean }) {
   const path = usePathname();
@@ -36,7 +35,6 @@ function Main({ children }: { children: ReactNode }) {
 export function Shell({ children }: { children: ReactNode }) {
   useLiveRefresh();
   const me = useApi<Me>("/api/hr/me", 60000);
-  const escalations = useApi<Escalation[]>(me.data ? "/api/hr/escalations" : null);
   const queue = useApi<{ escalate: boolean | null; status: string | null }[]>(me.data ? "/api/hr/queue" : null);
 
   if (me.error instanceof ApiError && me.error.status !== 401) {
@@ -51,8 +49,6 @@ export function Shell({ children }: { children: ReactNode }) {
   }
   if (!me.data) return <Loading />;
 
-  const open = (escalations.data ?? []).filter((e) => !e.closed_at);
-  const oldest = open.reduce((max, e) => Math.max(max, e.waited_hours), 0);
   const toCheck = (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed").length;
 
   const logo = (
@@ -93,7 +89,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="hidden pb-5 md:block">{logo}</div>
         <div className="grid grid-cols-6 md:flex md:flex-col md:gap-0.5">
           <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Needs you" short="Home" />
-          <NavItem href="/concerns" icon={<LaneIcon lane="serious" />} label="Serious concerns" short="Serious" count={open.length} serious />
+          <NavItem href="/concerns" icon={<LaneIcon lane="serious" />} label="Serious concerns" short="Serious" />
           <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
           <NavItem href="/replies" icon={<LaneIcon lane="ai" />} label="Check AI labels" short="AI labels" count={toCheck} />
           <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes" short="Fixes" />
@@ -106,17 +102,6 @@ export function Shell({ children }: { children: ReactNode }) {
       </nav>
       <div className="min-w-0 flex-1">
         {me.data.role === "hr_admin" && me.data.demo_mode ? <DemoBar /> : null}
-        {open.length > 0 ? (
-          <Link
-            href="/concerns"
-            className="sp-fade-in sticky top-[57px] z-20 flex flex-wrap items-center gap-2 px-4 py-2 text-[13px] font-semibold no-underline transition-colors hover:brightness-[0.98] md:top-0 md:px-8"
-            style={{ background: "var(--serious-soft)", color: "var(--serious-ink)", borderBottom: "1px solid var(--serious-line)" }}
-          >
-            <LaneIcon lane="serious" size={15} />
-            {open.length} serious {open.length === 1 ? "concern" : "concerns"} open
-            <Waiting>oldest waiting {oldest} h of 1 working day</Waiting>
-          </Link>
-        ) : null}
         <Suspense fallback={<Loading />}>
           <Main>{children}</Main>
         </Suspense>

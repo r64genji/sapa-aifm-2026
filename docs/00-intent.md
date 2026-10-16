@@ -31,7 +31,7 @@ Agreed 16 Oct 2026.
 
 - HR gives one join link (QR code) to a whole intake. There is no personal invite link.
 - Sapa never asks for or keeps a new hire's real name or Telegram name. Each new hire gets a random code name. The new hire picks their team in the bot.
-- HR and managers cannot see who wrote a reply. A new hire gives their name or phone only when they choose to, for example on a serious concern.
+- HR and managers cannot see who wrote a reply. Sapa never asks for a name or phone, not even on a serious concern.
 - Sapa still keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
 - Say "HR cannot see who you are unless you choose to tell them". Never say "fully anonymous".
 
@@ -51,7 +51,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - "What new hires mean": the AI groups replies inside one problem area.
 - Fix library, only as the `DraftFix` board in the Fixes design shows it.
 - `/ask` in Telegram: answers from the handbook. Questions the handbook cannot answer go to HR. This is not finished yet. Finish it.
-- Serious concerns go straight to HR, with a case page.
+- Serious concerns: Sapa tells the new hire to file an official complaint. Official complaints are 100% anonymous and are a separate company system, not Sapa's problem to solve. HR sees the replies and a count, and nothing to act on in Sapa (agreed 16 Oct 2026).
 - Bahasa Malaysia, English and Chinese. All are always on. No toggle.
 
 **Out**

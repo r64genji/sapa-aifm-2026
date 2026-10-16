@@ -13,7 +13,6 @@ import {
   say,
   scriptModel,
   tap,
-  tapData,
 } from "./helpers.ts";
 
 const seeded = new Set(JSON.parse(readFileSync(new URL("../data/seed/escalations.json", import.meta.url), "utf8")).map((e: { id: string }) => e.id));
@@ -34,7 +33,6 @@ before(async () => {
   await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary }) }]);
   await say(chat, text);
-  await tapData(chat, 'chat:{"a":"contact","v":"no"}');
 });
 
 test("R7: a reply escalated by keyword alone, with a label HR confirmed, is in no theme count, narrative or manager snapshot", async () => {

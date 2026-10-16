@@ -190,7 +190,6 @@ test("R32, R13: a crisis message gets the safe message with no model call and op
   assert.ok(replies[0].includes(en.safety.message));
   assert.ok(!replies[0].includes(en.qa.label));
   assert.equal((await modelCalls("omniroute")).length, calls);
-  await tap(crisis, en.contact.no);
   assert.deepEqual((await newEscalations()).map((e) => e.category), ["self_harm_crisis"]);
   assert.equal((await asked(crisis))[0].important_topic, "self_harm_crisis");
 });
@@ -327,7 +326,6 @@ test("R32, R13, R14: forced labour or sexual harassment that only the model sees
   const harassedReplies = await ask(harassed, harassedText);
   assert.equal(harassedReplies.length, 1);
   assert.ok(harassedReplies[0].includes(en.safety.tribunal));
-  for (const chat of [labour, harassed]) await tap(chat, en.contact.no);
 
   assert.deepEqual((await newEscalations()).map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
 });

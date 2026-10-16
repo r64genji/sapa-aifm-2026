@@ -157,8 +157,8 @@
   "notice": "Update from HR: {note}",
   "closure": "HR has finished looking into what you shared. If you want to talk to HR again, you can reach them here:",
   "safety": {
-    "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will read it within 1 working day. If you are in danger now, call 999.\nYou can also reach:",
-    "forcedLabour": "Thank you for telling us. Nobody may keep your passport or ID, make you pay a debt or fee to keep your job, or stop you from leaving where you live. This goes to HR only. Your manager cannot see it. HR will read it within 1 working day.\nYou can also reach:",
+    "message": "Thank you for telling us. This is serious, and Sapa is not the right place for it. Please file an official complaint. Official complaints are 100% anonymous. Your manager cannot see what you wrote here. If you are in danger now, call 999.\nYou can reach:",
+    "forcedLabour": "Thank you for telling us. Nobody may keep your passport or ID, make you pay a debt or fee to keep your job, or stop you from leaving where you live. Sapa is not the right place for this. Please file an official complaint. Official complaints are 100% anonymous. Your manager cannot see what you wrote here.\nYou can reach:",
     "labourAuthority": "Labour Department (Jabatan Tenaga Kerja): [SLOT: contact, verified before launch]",
     "tribunal": "Tribunal for Anti-Sexual Harassment: [SLOT: contact, verified before launch]",
     "spellings": { "pasport": "passport", "u": "you", "ur": "your" },
