@@ -286,6 +286,7 @@ a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); 
 .sp-tip-end .sp-tip-bubble { left: auto; right: 0; transform: translateY(4px); }
 .sp-tip:hover .sp-tip-bubble, .sp-tip:focus-within .sp-tip-bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .sp-tip-end:hover .sp-tip-bubble, .sp-tip-end:focus-within .sp-tip-bubble { transform: none; }
+.sp-hover-tip { position: fixed; z-index: 50; transform: translate(-50%, calc(-100% - 12px)); max-width: 240px; padding: 6px 10px; border-radius: var(--radius-control); background: var(--ink); color: #ffffff; font-size: 12px; line-height: 16px; font-weight: 600; width: max-content; pointer-events: none; box-shadow: var(--shadow-pop); }
 
 .sp-fixrow { border-top: 1px solid var(--line-soft); }
 .sp-fixrow > summary, .sp-fold > summary { list-style: none; cursor: pointer; transition: background-color 0.15s ease; }

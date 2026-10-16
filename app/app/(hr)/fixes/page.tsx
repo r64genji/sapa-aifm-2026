@@ -161,6 +161,49 @@ function Tip({ label, children, end }: { label: string; children: ReactNode; end
   );
 }
 
+function HoverTip() {
+  const [tip, setTip] = useState<{ text: string; x: number; y: number } | null>(null);
+  useEffect(() => {
+    const move = (e: PointerEvent) => {
+      const text = (e.target as Element | null)?.closest?.("[data-tip]")?.getAttribute("data-tip");
+      setTip(text ? { text, x: e.clientX, y: e.clientY } : null);
+    };
+    const hide = () => setTip(null);
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerdown", move);
+    window.addEventListener("scroll", hide, true);
+    return () => {
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerdown", move);
+      window.removeEventListener("scroll", hide, true);
+    };
+  }, []);
+  return tip
+    ? createPortal(
+        <span role="tooltip" className="sp-num sp-hover-tip" style={{ left: Math.max(136, Math.min(tip.x, window.innerWidth - 136)), top: tip.y }}>
+          {tip.text}
+        </span>,
+        document.body,
+      )
+    : null;
+}
+
+function ShowMore({ rows }: { rows: ReactNode[] }) {
+  const [all, setAll] = useState(false);
+  return (
+    <>
+      {all ? rows : rows.slice(0, 5)}
+      {rows.length > 5 ? (
+        <div className="px-[18px] py-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
+          <button type="button" className="sp-link" aria-expanded={all} onClick={() => setAll(!all)}>
+            {all ? "Show less" : `View more · ${rows.length - 5}`}
+          </button>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
 function Panel({ title, tip, badge, children, className }: { title: string; tip?: ReactNode; badge?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <section className={`sp-card sp-lift flex w-full flex-col gap-3.5 px-[18px] pb-[18px] pt-4 ${className ?? ""}`} aria-label={title}>
@@ -187,7 +230,7 @@ function Badge({ lane, icon, children }: { lane: "problems" | "fixes"; icon?: Re
   );
 }
 
-function RetentionChart({ points, base, target }: { points: { label: string; value: number }[]; base: number | null; target: number }) {
+function RetentionChart({ points, base, target }: { points: { label: string; value: number; tip: string }[]; base: number | null; target: number }) {
   const [ref, seen] = useSeen<HTMLDivElement>();
   const low = Math.min(60, Math.floor((Math.min(...points.map((p) => p.value), base ?? 100) - 5) / 10) * 10);
   const y = (v: number) => 20 + ((100 - v) / (100 - low)) * 170;
@@ -228,14 +271,15 @@ function RetentionChart({ points, base, target }: { points: { label: string; val
             </text>
           </g>
         ))}
-        <line className="sp-fade-in" x1="50" x2="560" y1={y(target)} y2={y(target)} style={{ stroke: "var(--ink)", strokeWidth: 1.5, strokeDasharray: "6 4", ...delay(200) }} />
-        {base !== null ? <line className="sp-fade-in" x1="50" x2="560" y1={y(base)} y2={y(base)} style={{ stroke: "var(--line-strong)", strokeWidth: 1.5, strokeDasharray: "6 4", ...delay(300) }} /> : null}
+        <line className="sp-fade-in" data-tip={`Target: ${target}%`} x1="50" x2="560" y1={y(target)} y2={y(target)} style={{ stroke: "var(--ink)", strokeWidth: 1.5, strokeDasharray: "6 4", ...delay(200) }} />
+        {base !== null ? <line className="sp-fade-in" data-tip={`Before Sapa: ${base}%`} x1="50" x2="560" y1={y(base)} y2={y(base)} style={{ stroke: "var(--line-strong)", strokeWidth: 1.5, strokeDasharray: "6 4", ...delay(300) }} /> : null}
         <path className="sp-fade-in" d={area} fill="url(#sp-ret-fill)" style={delay(900)} />
         <polyline className="sp-draw" pathLength={1} points={line} style={{ fill: "none", stroke: "var(--fixes)", strokeWidth: 3, strokeLinejoin: "round", strokeLinecap: "round" }} />
         {points.map((p, i) => {
           const last = i === points.length - 1;
           return (
-            <g key={p.label} className="sp-dot" style={{ ...delay(150 + i * 140), transformOrigin: `${x(i)}px ${y(p.value)}px` }}>
+            <g key={p.label} data-tip={p.tip} className="sp-dot" style={{ ...delay(150 + i * 140), transformOrigin: `${x(i)}px ${y(p.value)}px` }}>
+              <circle cx={x(i)} cy={y(p.value)} r="16" style={{ fill: "transparent" }} />
               <circle cx={x(i)} cy={y(p.value)} r={last ? 5.5 : 4.5} style={last ? { fill: "var(--fixes)" } : { fill: "var(--surface-raised)", stroke: "var(--fixes)", strokeWidth: 2.5 }} />
               <text x={x(i)} y={y(p.value) - 11} textAnchor="middle" style={{ fontSize: 11, fontWeight: 700, fill: "var(--ink)" }}>
                 {p.value}
@@ -266,7 +310,7 @@ function Hero({ impact }: { impact: Impact }) {
   const kept = pct(retention.k, retention.n);
   const base = baseline ? pct(baseline.kept, baseline.of) : null;
   const gain = base === null ? null : kept - base;
-  const points = impact.retention_by_intake.map((r) => ({ label: month(r.intake), value: pct(r.employed, r.hired) }));
+  const points = impact.retention_by_intake.map((r) => ({ label: month(r.intake), value: pct(r.employed, r.hired), tip: `${monthYear(r.intake)}: ${r.employed} of ${r.hired} still employed (${pct(r.employed, r.hired)}%)` }));
   return (
     <section className="sp-card sp-hero flex flex-wrap gap-7 px-[22px] py-5" aria-label="Still employed at Month 6">
       <div ref={ref} className={`sp-live flex min-w-0 flex-[1_1_300px] flex-col gap-3.5${seen ? " is-in" : ""}`}>
@@ -292,9 +336,9 @@ function Hero({ impact }: { impact: Impact }) {
         <span className="sp-num sp-meta">{retention.text}</span>
         <div role="img" aria-label={`${kept}% now.${base !== null ? ` ${base}% before Sapa.` : ""} Target ${target}%.`} className="flex flex-col gap-1.5 pt-1.5">
           <div className="relative h-3.5 rounded-[7px]" style={{ background: "var(--track-empty)" }}>
-            <div className="sp-grow-x absolute inset-y-0 left-0 rounded-[7px]" style={{ width: `${kept}%`, background: "linear-gradient(90deg, var(--fixes-soft), var(--fixes) 40%)", ...delay(150) }} />
-            {base !== null ? <div className="sp-fade-in absolute -inset-y-[5px] w-0.5" style={{ left: `${base}%`, background: "var(--line-strong)", ...delay(800) }} /> : null}
-            <div className="sp-fade-in absolute -inset-y-[5px] w-0.5" style={{ left: `${target}%`, background: "var(--ink)", ...delay(900) }} />
+            <div data-tip={`Now: ${retention.k} of ${retention.n} still employed (${kept}%)`} className="sp-grow-x absolute inset-y-0 left-0 rounded-[7px]" style={{ width: `${kept}%`, background: "linear-gradient(90deg, var(--fixes-soft), var(--fixes) 40%)", ...delay(150) }} />
+            {base !== null ? <div data-tip={`Before Sapa: ${baseline!.kept} of ${baseline!.of} (${base}%)`} className="sp-fade-in absolute -inset-y-[5px] w-1.5 -ml-0.5 bg-clip-content px-0.5" style={{ left: `${base}%`, background: "var(--line-strong)", ...delay(800) }} /> : null}
+            <div data-tip={`Target: ${target}%`} className="sp-fade-in absolute -inset-y-[5px] w-1.5 -ml-0.5 bg-clip-content px-0.5" style={{ left: `${target}%`, background: "var(--ink)", ...delay(900) }} />
           </div>
           <div className="sp-num relative h-4 text-xs font-semibold">
             {base !== null ? (
@@ -317,7 +361,7 @@ function Hero({ impact }: { impact: Impact }) {
   );
 }
 
-function Spark({ values, label }: { values: number[]; label: string }) {
+function Spark({ values, tips, label }: { values: number[]; tips: string[]; label: string }) {
   const top = Math.max(...values);
   const low = Math.min(...values);
   const xy = values.map((v, i) => [4 + (i * 72) / Math.max(values.length - 1, 1), 32 - ((v - low) / Math.max(top - low, 0.01)) * 24]);
@@ -326,16 +370,19 @@ function Spark({ values, label }: { values: number[]; label: string }) {
     <svg viewBox="0 0 80 36" width="80" height="36" role="img" aria-label={label}>
       <polyline className="sp-draw" pathLength={1} points={xy.map(([a, b]) => `${a},${b}`).join(" ")} style={{ fill: "none", stroke: "var(--problems)", strokeWidth: 2.5, strokeLinejoin: "round", strokeLinecap: "round" }} />
       <circle className="sp-dot" cx={end[0]} cy={end[1]} r="3.5" style={{ fill: "var(--problems)", transformOrigin: `${end[0]}px ${end[1]}px`, ...delay(900) }} />
+      {xy.map(([a], i) => (
+        <rect key={i} data-tip={tips[i]} x={a - 36 / values.length} y="0" width={72 / values.length} height="36" style={{ fill: "transparent" }} />
+      ))}
     </svg>
   );
 }
 
-function MiniBars({ values, label }: { values: number[]; label: string }) {
+function MiniBars({ values, tips, label }: { values: number[]; tips: string[]; label: string }) {
   const top = Math.max(...values, 1);
   return (
     <div role="img" aria-label={label} className="flex h-9 items-end gap-[3px]">
       {values.map((v, i) => (
-        <span key={i} className="sp-grow-y w-2 rounded-t-sm" style={{ height: `${Math.max((v / top) * 100, 8)}%`, background: i === values.length - 1 ? "var(--fixes)" : "var(--fixes-soft)", ...delay(i * 70) }} />
+        <span key={i} data-tip={tips[i]} className="sp-grow-y w-2 rounded-t-sm" style={{ height: `${Math.max((v / top) * 100, 8)}%`, background: i === values.length - 1 ? "var(--fixes)" : "var(--fixes-soft)", ...delay(i * 70) }} />
       ))}
     </div>
   );
@@ -343,7 +390,7 @@ function MiniBars({ values, label }: { values: number[]; label: string }) {
 
 function Ring({ share, label }: { share: number; label: string }) {
   return (
-    <svg viewBox="0 0 40 40" width="40" height="40" role="img" aria-label={label} style={{ transform: "rotate(-90deg)" }}>
+    <svg viewBox="0 0 40 40" width="40" height="40" role="img" aria-label={label} data-tip={label} style={{ transform: "rotate(-90deg)" }}>
       <circle cx="20" cy="20" r="15" style={{ fill: "none", stroke: "var(--track-empty)", strokeWidth: 6 }} />
       <circle className="sp-ring" pathLength={1} cx="20" cy="20" r="15" style={{ fill: "none", stroke: "var(--problems)", strokeWidth: 6, strokeDasharray: `${share} 1`, strokeLinecap: "round" }} />
     </svg>
@@ -403,6 +450,7 @@ function FixRow({ fix }: { fix: Fix }) {
   const measured = fix.result !== "too_early" && ok(fix.with_fix.after);
   const hasBefore = ok(fix.with_fix.before);
   const times = `${fix.used} ${fix.used === 1 ? "time" : "times"}`;
+  const chart = measured ? `Team ${fix.with_fix.before.toFixed(1)} to ${fix.with_fix.after.toFixed(1)}. Other teams ${fix.others.before.toFixed(1)} to ${fix.others.after.toFixed(1)}.` : hasBefore ? `Team ${fix.with_fix.before.toFixed(1)} before. No after score yet.` : "No score yet.";
   return (
     <details ref={ref} className={`sp-fixrow sp-live${seen ? " is-in" : ""}`}>
       <summary className="flex flex-wrap items-center gap-4 px-[18px] py-3.5">
@@ -413,7 +461,8 @@ function FixRow({ fix }: { fix: Fix }) {
         <div
           className="flex flex-[2_1_280px] flex-col gap-2.5"
           role="img"
-          aria-label={measured ? `Team ${fix.with_fix.before.toFixed(1)} to ${fix.with_fix.after.toFixed(1)}. Other teams ${fix.others.before.toFixed(1)} to ${fix.others.after.toFixed(1)}.` : hasBefore ? `Team ${fix.with_fix.before.toFixed(1)} before. No after score yet.` : "No score yet."}
+          aria-label={chart}
+          data-tip={chart}
         >
           {hasBefore ? <Dumbbell before={fix.with_fix.before} after={measured ? fix.with_fix.after : null} tone="var(--fixes)" big /> : <div className="h-3" />}
           {measured && ok(fix.others.before) && ok(fix.others.after) ? <Dumbbell before={fix.others.before} after={fix.others.after} tone="var(--line-strong)" /> : <div className="h-2.5" />}
@@ -517,9 +566,7 @@ function Fixes({ impact }: { impact: Impact }) {
       {fixes.length ? (
         <>
           <ScaleHead first="Fix" />
-          {fixes.map((fix) => (
-            <FixRow key={fix.id} fix={fix} />
-          ))}
+          <ShowMore rows={fixes.map((fix) => <FixRow key={fix.id} fix={fix} />)} />
           <div className="sp-caption px-[18px] py-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
             {impact.fixes_line} {impact.fixes_note}.
           </div>
@@ -553,6 +600,7 @@ function DoneRow({ a }: { a: Action }) {
   const measured = !a.hiring_side && r && a.verdict && a.verdict !== "too_early";
   const hasBefore = !a.hiring_side && r && r.scope.n > 0;
   const diff = measured ? gain(r) : null;
+  const chart = measured ? `Team ${r.scope.before.toFixed(1)} to ${r.scope.after.toFixed(1)}. Other teams ${r.other.before.toFixed(1)} to ${r.other.after.toFixed(1)}.` : hasBefore ? `Team ${r.scope.before.toFixed(1)} before. ${a.score?.headline ?? ""}` : a.hiring_side ? "Hiring fix. No recheck question." : (a.score?.headline ?? "No score yet.");
   return (
     <Link
       ref={ref}
@@ -569,7 +617,8 @@ function DoneRow({ a }: { a: Action }) {
       <div
         className="flex flex-[2_1_280px] flex-col gap-2.5"
         role="img"
-        aria-label={measured ? `Team ${r.scope.before.toFixed(1)} to ${r.scope.after.toFixed(1)}. Other teams ${r.other.before.toFixed(1)} to ${r.other.after.toFixed(1)}.` : hasBefore ? `Team ${r.scope.before.toFixed(1)} before. ${a.score?.headline ?? ""}` : a.hiring_side ? "Hiring fix. No recheck question." : (a.score?.headline ?? "No score yet.")}
+        aria-label={chart}
+        data-tip={chart}
       >
         {hasBefore ? <Dumbbell before={r.scope.before} after={measured ? r.scope.after : null} tone="var(--fixes)" big /> : null}
         {measured && r.other.n > 0 ? (
@@ -656,7 +705,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
               <Legend />
             </div>
             <ScaleHead first="Fix" />
-            {listed.length ? listed.map((a) => <DoneRow key={a.id} a={a} />) : quiet("No done fix has this result.")}
+            {listed.length ? <ShowMore key={filter} rows={listed.map((a) => <DoneRow key={a.id} a={a} />)} /> : quiet("No done fix has this result.")}
             <div className="sp-caption px-[18px] py-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
               {footer}
             </div>
@@ -676,8 +725,9 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
               </div>
             ))}
           </div>
-          {open.length
-            ? open.map((a) => {
+          {open.length ? (
+            <ShowMore
+              rows={open.map((a) => {
                 const waiting = waitingText(a);
                 return (
                   <Row
@@ -701,14 +751,17 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
                     action={<Button href={fixHref(a)}>{a.status === "draft" ? "Open draft" : "Open"}</Button>}
                   />
                 );
-              })
-            : quiet("No open fixes. Start one from a shared problem.")}
+              })}
+            />
+          ) : (
+            quiet("No open fixes. Start one from a shared problem.")
+          )}
         </>
       ) : null}
 
       {show === "cancelled"
         ? cancelled.length
-          ? cancelled.map((a) => (
+          ? <ShowMore rows={cancelled.map((a) => (
               <Row
                 key={a.id}
                 muted
@@ -717,7 +770,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
                 metric={<span className="text-[13px]">{a.dismiss_reason}</span>}
                 action={<Button href={`/fixes/${a.id}`}>Open</Button>}
               />
-            ))
+            ))} />
           : quiet("No cancelled fixes.")
         : null}
     </section>
@@ -771,12 +824,12 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
         </span>
         {rows.map((row, i) => (
           <Fragment key={row.driver}>
-            <div className="flex items-center justify-end gap-1.5" title={row.t ? `${row.t.n} of ${row.t.m}` : undefined}>
+            <div className="flex items-center justify-end gap-1.5" data-tip={row.t ? `${driverName(row.driver)}: ${row.t.n} of ${row.t.m} raised it at Day 14 (${row.left}%)` : undefined}>
               <span className="sp-num text-xs font-bold">{row.t ? `${row.left}%` : "–"}</span>
               <span className="sp-grow-x-r h-[18px] rounded-l-[3px]" style={{ width: width(row.left), background: "var(--problems)", ...delay(i * 90) }} />
             </div>
             <span className={`min-w-[96px] text-center text-[13px] ${i === 0 ? "font-bold" : "font-semibold"}`}>{driverName(row.driver)}</span>
-            <div className="flex items-center gap-1.5" title={row.r ? `${row.r.n} of ${leavers.total}` : undefined}>
+            <div className="flex items-center gap-1.5" data-tip={row.r ? `${driverName(row.driver)}: ${row.r.n} of ${leavers.total} leavers gave this reason (${row.right}%)` : undefined}>
               <span className="sp-grow-x h-[18px] rounded-r-[3px]" style={{ width: width(row.right), background: "var(--ink)", ...delay(120 + i * 90) }} />
               <span className="sp-num text-xs font-bold">{row.r ? `${row.right}%` : "–"}</span>
             </div>
@@ -815,7 +868,7 @@ function Speed({ timed }: { timed: { intake: string; days: number }[] }) {
           {timed.map((t, i) => {
             const end = i === timed.length - 1;
             return (
-              <div key={t.intake} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
+              <div key={t.intake} data-tip={`${monthYear(t.intake)}: ${fmt(t.days)} days`} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
                 <span className="sp-num sp-fade-in text-xs font-bold" style={{ color: end ? "var(--fixes)" : undefined, ...delay(400 + i * 80) }}>
                   {fmt(t.days)}
                 </span>
@@ -942,7 +995,7 @@ function Quality({ quality }: { quality: Quality[] }) {
             <div className="flex flex-[2_1_240px] items-center gap-2.5">
               {q.evaluated && q.checks ? (
                 <>
-                  <div role="img" aria-label={`${q.checks - q.changed} of ${q.checks} kept`} className="h-2.5 grow overflow-hidden rounded-[5px]" style={{ background: "var(--track-empty)" }}>
+                  <div role="img" aria-label={`${q.checks - q.changed} of ${q.checks} kept`} data-tip={`${q.checks - q.changed} of ${q.checks} kept (${pct(q.checks - q.changed, q.checks)}%), ${q.changed} changed`} className="h-2.5 grow overflow-hidden rounded-[5px]" style={{ background: "var(--track-empty)" }}>
                     <div className="sp-grow-x h-full" style={{ width: `${pct(q.checks - q.changed, q.checks)}%`, background: "var(--ai)", ...delay(i * 120) }} />
                   </div>
                   <span className="sp-num flex-[0_0_64px] font-bold">
@@ -997,6 +1050,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-5">
+      <HoverTip />
       <Reveal>
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2.5">
@@ -1023,14 +1077,14 @@ export default function Page() {
           i={0}
           label="Answered Day 14"
           value={day14 ? <Num value={pct(day14.answered, day14.of)} after="%" /> : "–"}
-          viz={rates.length > 1 ? <Spark values={rates} label={`Reply rate by intake: ${rates.map((r) => `${pct(r, 1)}%`).join(", ")}`} /> : null}
+          viz={rates.length > 1 ? <Spark values={rates} tips={enough.map((i) => `${monthYear(i.intake)}: ${pct(i.response_rate, 1)}% replied`)} label={`Reply rate by intake: ${rates.map((r) => `${pct(r, 1)}%`).join(", ")}`} /> : null}
           base={day14 ? `${day14.answered} of ${day14.of} new hires` : "Not enough people yet"}
         />
         <Tile
           i={1}
           label={timed.length ? `Reply to fix done · ${month(timed.at(-1)!.intake)} intake` : "Reply to fix done"}
           value={timed.length ? <Num value={timed.at(-1)!.days} after=" days" /> : typical !== null ? <Num value={typical} after=" days" /> : "–"}
-          viz={timed.length > 1 ? <MiniBars values={timed.map((t) => t.days)} label={`Typical days by intake: ${timed.map((t) => t.days).join(", ")}`} /> : null}
+          viz={timed.length > 1 ? <MiniBars values={timed.map((t) => t.days)} tips={timed.map((t) => `${monthYear(t.intake)}: ${t.days} days`)} label={`Typical days by intake: ${timed.map((t) => t.days).join(", ")}`} /> : null}
           base={
             !speed || typical === null ? (
               "Not enough fixes yet"
@@ -1061,10 +1115,10 @@ export default function Page() {
             judged.length ? (
               <div role="img" aria-label={`${worked} worked, ${measured.length - worked} no clear change, ${tooEarly} too early`} className="sp-grow-x mb-2 flex h-3.5 min-w-12 flex-1 gap-[2px] overflow-hidden rounded-full">
                 {[
-                  { n: worked, style: { background: "var(--fixes)" } },
-                  { n: measured.length - worked, style: { background: "var(--line-strong)" } },
-                  { n: tooEarly, className: "sp-bar-hatch" },
-                ].map((s, i) => (s.n ? <span key={i} className={s.className} style={{ flexGrow: s.n, ...s.style }} /> : null))}
+                  { n: worked, tip: `${worked} worked`, style: { background: "var(--fixes)" } },
+                  { n: measured.length - worked, tip: `${measured.length - worked} no clear change`, style: { background: "var(--line-strong)" } },
+                  { n: tooEarly, tip: `${tooEarly} too early to tell`, className: "sp-bar-hatch" },
+                ].map((s, i) => (s.n ? <span key={i} data-tip={s.tip} className={s.className} style={{ flexGrow: s.n, ...s.style }} /> : null))}
               </div>
             ) : null
           }
