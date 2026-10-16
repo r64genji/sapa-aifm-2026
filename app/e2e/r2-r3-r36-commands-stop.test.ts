@@ -70,7 +70,6 @@ test("R3: a voice note after STOP gets no reply, while an active hire still gets
   const count = (await texts(stopped)).length;
   await postUpdate(update("voice", { chat_id: stopped }));
   await postUpdate(update("voice", { chat_id: active }));
-  await settle();
   assert.equal((await texts(stopped)).length, count);
   assert.equal((await texts(active)).at(-1), en.typeInstead);
 });
@@ -104,9 +103,10 @@ test("R3: a STOP sent while the bot is still working on the hire's previous text
   const chat = 5550000018;
   await activeHire(chat, "English", en.agree);
   await scriptModel("omniroute", [{ kind: "timeout" }]);
-  await postUpdate(update("text", { chat_id: chat, text: "How do I claim overtime?" }));
+  const pending = postUpdate(update("text", { chat_id: chat, text: "How do I claim overtime?" }));
   await settle(1000);
   await say(chat, "STOP");
+  await pending;
   for (let i = 0; i < 40 && (await texts(chat)).at(-1) !== en.stopped; i++) await settle(1000);
   assert.equal((await texts(chat)).at(-1), en.stopped);
   const { data } = await db.from("people").select("state").eq("telegram_chat_id", chat);

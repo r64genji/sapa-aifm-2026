@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
 } from "./helpers.ts";
 
@@ -42,7 +41,6 @@ async function baseline(chat: number, scores: number[], text: string) {
   for (const score of scores) await tap(chat, String(score));
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text }) }]);
   await say(chat, text);
-  await settle();
 }
 
 async function draft(driver: string, entry: number, title: string, notes: Record<string, string>) {

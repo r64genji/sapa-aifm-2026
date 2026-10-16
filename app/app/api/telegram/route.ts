@@ -9,6 +9,14 @@ import { send } from "@/lib/telegram";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: Request) {
+  if (process.env.SAPA_TEST !== "1" || !request.headers.has("x-sapa-test-wait")) return handle(request, after);
+  const tasks: Promise<unknown>[] = [];
+  const response = await handle(request, (task) => tasks.push(typeof task === "function" ? task() : task));
+  await Promise.allSettled(tasks);
+  return response;
+}
+
+async function handle(request: Request, defer: (task: Promise<unknown> | (() => Promise<unknown>)) => void) {
   if (
     !matchesSecret(
       request.headers.get("x-telegram-bot-api-secret-token"),
@@ -34,14 +42,14 @@ export async function POST(request: Request) {
   const message = update.message;
   if (message?.contact) {
     if (message.contact.user_id === message.from?.id) {
-      after(async () => {
+      defer(async () => {
         for (const reply of await savePhone(message.chat.id, message.contact.phone_number)) await send(message.chat.id, reply);
       });
     }
     return new Response("OK");
   }
   if (message && message.text === undefined) {
-    after(async () => {
+    defer(async () => {
       const person = await personByChat(message.chat.id);
       if (person && ["declined", "stopped", "left", "deleted"].includes(person.state)) return;
       await send(message.chat.id, { text: packs[person?.language ?? "en"].typeInstead });
@@ -54,6 +62,6 @@ export async function POST(request: Request) {
       headers: request.headers,
       body: JSON.stringify(update),
     }),
-    { waitUntil: (task) => after(() => task) },
+    { waitUntil: defer },
   );
 }

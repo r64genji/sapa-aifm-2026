@@ -171,7 +171,7 @@ test("R44: HR changing 3 of 10 ROLE_CLARITY spot checks in one language holds th
 test("R42: an intake of 5 shows its response rate with lapsed check-ins counted, and its score change against other teams from the seeded fix", async () => {
   const chats = [5550004211, 5550004212, 5550004213, 5550004214, 5550004215];
   await freezeClock("2026-04-06T01:00:00.000Z");
-  for (const chat of chats) await joined(chat, "2026-04-06");
+  await Promise.all(chats.map((chat) => joined(chat, "2026-04-06")));
   await freezeClock("2026-04-09T02:00:00.000Z");
   await dispatch();
   for (const chat of chats.slice(0, 3)) {

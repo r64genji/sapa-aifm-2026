@@ -82,6 +82,7 @@ export function postUpdate(body: string) {
     headers: {
       "content-type": "application/json",
       "x-telegram-bot-api-secret-token": process.env.TELEGRAM_WEBHOOK_SECRET_TOKEN!,
+      "x-sapa-test-wait": "1",
     },
     body,
   });
@@ -146,7 +147,6 @@ export async function addHire(fields: Record<string, string>) {
 
 export async function link(chatId: number, token: string) {
   await postUpdate(update("start-link", { chat_id: chatId, token }));
-  await settle(800);
 }
 
 export async function say(chatId: number, text: string) {
@@ -156,7 +156,6 @@ export async function say(chatId: number, text: string) {
       ? update("command", { chat_id: chatId, text, length: text.split(" ")[0].length })
       : update("text", { chat_id: chatId, text }),
   );
-  await settle(800);
 }
 
 export async function sentTo(chatId: number) {
@@ -177,7 +176,6 @@ export async function tap(chatId: number, label: string) {
 
 export async function tapData(chatId: number, data: string) {
   await postUpdate(update("button", { chat_id: chatId, data: data }));
-  await settle(800);
 }
 
 export async function dispatch() {
