@@ -12,7 +12,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
 } from "./helpers.ts";
 
@@ -26,13 +25,6 @@ const [yes, noThanks, silent, plain, passport, crisis, leaver, stopper] = [501, 
 );
 const replies: Record<number, string[]> = {};
 
-async function answer(chat: number, text: string) {
-  const before = (await sentTo(chat)).length;
-  await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
-  await settle();
-}
-
 async function responseIds(chat: number) {
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();
   const { data } = await db.from("responses").select("id").eq("person_id", who!.id).eq("kind", "checkin").not("text_encrypted", "is", null).order("created_at");
@@ -41,9 +33,9 @@ async function responseIds(chat: number) {
 
 async function twoReplies(chat: number) {
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ probe_id: "GENERIC_MORE" }) }]);
-  await answer(chat, quote);
+  await say(chat, quote);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
-  await answer(chat, quote);
+  await say(chat, quote);
   replies[chat] = await responseIds(chat);
   assert.equal(replies[chat].length, 2);
 }
@@ -62,7 +54,7 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   const chats = [yes, noThanks, silent, plain, passport, crisis, leaver, stopper];
-  for (const chat of chats) await joined(chat, "2026-10-02");
+  await Promise.all(chats.map((chat) => joined(chat, "2026-10-02")));
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
   assert.equal((await res.json()).sent, chats.length);
   for (const chat of chats) {
@@ -76,17 +68,17 @@ before(async () => {
   for (const chat of [yes, noThanks, silent]) await twoReplies(chat);
   for (const chat of [plain, stopper]) {
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
-    await answer(chat, quote);
+    await say(chat, quote);
     replies[chat] = await responseIds(chat);
   }
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ evidence_quote: "The agent holds my passport" }) },
   ]);
-  await answer(passport, "The agent holds my passport");
+  await say(passport, "The agent holds my passport");
   for (const chat of [crisis, leaver]) {
     await scriptModel("omniroute", [{ kind: "timeout" }]);
     await scriptModel("deepseek", [{ kind: "timeout" }]);
-    await answer(chat, "I can't take it anymore, I want to kill myself");
+    await say(chat, "I can't take it anymore, I want to kill myself");
   }
   for (const chat of [passport, crisis, leaver]) {
     await tap(chat, en.contact.yes);

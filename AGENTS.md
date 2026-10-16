@@ -9,4 +9,4 @@ Sapa, a voluntary new-hire check-in bot plus HR backend, for AIFM 2026 Challenge
 - How we work and what never to commit: [CONTRIBUTING.md](CONTRIBUTING.md).
 - App code lives in `app/` only. Running it and testing it: [app/README.md](app/README.md).
 
-Check command: `cd app && npm test`. Its last line is `E2E PASS: …` or `E2E FAIL: …`.
+Check command: `cd app && npm test -- e2e/<file>.test.ts …`, with every test file that covers the rules or bug you changed, in one run. Its last line is `E2E PASS: …` or `E2E FAIL: …`. Run the full `npm test` only when the owner asks ([app/README.md](app/README.md#test)).

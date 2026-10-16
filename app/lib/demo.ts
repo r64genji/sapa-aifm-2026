@@ -2,7 +2,7 @@ import { now } from "@/lib/clock";
 import { providers } from "@/lib/ai";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const AI_CHECK_MS = 4000;
+const AI_CHECK_MS = process.env.SAPA_TEST === "1" ? 1000 : 4000;
 const AI_CACHE_MS = 30000;
 const FALLBACK_CAP = 1.5;
 

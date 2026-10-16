@@ -82,7 +82,7 @@ test("R20: one reminder 24 hours later, then skipped 24 hours after that", async
 test("R21: three dispatch calls at the same time send each check-in once", async () => {
   const chats = [5550000111, 5550000112, 5550000113];
   await freezeClock("2026-10-14T01:00:00.000Z");
-  for (const chat of chats) await joined(chat, "2026-10-14");
+  await Promise.all(chats.map((chat) => joined(chat, "2026-10-14")));
   const before = await Promise.all(chats.map(async (chat) => (await texts(chat)).length));
   await freezeClock("2026-10-19T02:00:00.000Z");
   await Promise.all([dispatch(), dispatch(), dispatch()]);
@@ -151,7 +151,7 @@ test("R21: a failed send to one hire does not stop the check-ins of the others",
   const chats = [5550000131, 5550000132, 5550000133];
   await reset();
   await freezeClock("2026-10-14T01:00:00.000Z");
-  for (const chat of chats) await joined(chat, "2026-10-14");
+  await Promise.all(chats.map((chat) => joined(chat, "2026-10-14")));
   const before = await Promise.all(chats.map(async (chat) => (await texts(chat)).length));
   await failChat(chats[1]);
   await freezeClock("2026-10-19T02:00:00.000Z");

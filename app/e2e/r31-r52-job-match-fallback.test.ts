@@ -12,7 +12,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   telegramCalls,
 } from "./helpers.ts";
 
@@ -123,7 +122,6 @@ test("R52, R28: the hiring-side action stays with HR, names nobody and completin
   assert.equal(done.status, 200);
   assert.equal((await board()).find((a) => a.id === id)!.status, "done");
   await dispatch();
-  await settle(1500);
   assert.equal((await telegramCalls("sendMessage")).length, sentBefore);
 });
 
@@ -156,8 +154,6 @@ test("R31: an English question on a page that exists only in Bahasa Malaysia get
   ]);
   const before = (await sentTo(asker)).length;
   await say(asker, "Where can I park my car?");
-  for (let i = 0; i < 60 && (await sentTo(asker)).length === before; i++) await settle(500);
-  await settle(300);
   const replies = (await sentTo(asker)).slice(before).map((m) => String(m.text));
   assert.deepEqual(replies, [
     [

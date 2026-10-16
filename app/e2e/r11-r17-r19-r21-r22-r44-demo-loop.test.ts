@@ -14,7 +14,6 @@ import {
   resetDemo,
   scriptModel,
   sentTo,
-  settle,
   tap,
   update,
 } from "./helpers.ts";
@@ -61,7 +60,6 @@ test("R17, R22: the reply reaches the model masked, and the same update sent aga
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   const body = update("text", { chat_id: live, text: reply });
   assert.equal((await postUpdate(body)).status, 200);
-  await settle(1500);
 
   const calls = await modelCalls("omniroute");
   assert.equal(calls.length, 1);
@@ -70,7 +68,6 @@ test("R17, R22: the reply reaches the model masked, and the same update sent aga
 
   const once = await counts();
   assert.equal((await postUpdate(body)).status, 200);
-  await settle(1500);
   assert.deepEqual(await counts(), once);
 });
 

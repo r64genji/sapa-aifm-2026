@@ -43,7 +43,6 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
   await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, ...tag }) }]);
   await say(chat, text);
-  await settle();
 }
 
 const production = {
@@ -204,7 +203,7 @@ test("R7, R49: the supervisor never reads a crisis reply while it is being check
   await scriptModel("deepseek", [{ kind: "timeout" }]);
   const crisisText = "I can't take it anymore, I want to kill myself";
   const pending = postUpdate(update("text", { chat_id: waiting, text: crisisText }));
-  await settle(3000);
+  await settle(1000);
   const during = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
   assert.ok(!during.some((r) => r.text === crisisText));
   await pending;
@@ -218,7 +217,6 @@ test("R7, R49: the supervisor never reads a crisis reply while it is being check
     { kind: "json", content: classifierTag({ drivers: [], positive: true, concern_level: "none", evidence_quote: "the team is kind" }) },
   ]);
   await say(escalated, "The canteen queue is long but the team is kind");
-  for (let i = 0; i < 60 && (await lastTextTo(escalated)) !== en.checkin.thanks; i++) await settle(500);
   assert.equal(await lastTextTo(escalated), en.checkin.thanks);
   const after = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
   assert.deepEqual(after.map((r) => r.text), [sharedText]);

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { after, before, test } from "node:test";
 import { chromium, type Browser, type Page } from "playwright-core";
-import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, settle, tap } from "./helpers.ts";
+import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -47,7 +47,6 @@ test("Demo beat 2: the reply waits for HR at 23 of 64, and Confirm label moves t
   for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
-  await settle();
 
   await page.goto(`${appUrl}/`);
   await page.getByText("New labels wait for HR during calibration").first().waitFor();

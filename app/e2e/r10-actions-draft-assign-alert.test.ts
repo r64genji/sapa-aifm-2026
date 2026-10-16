@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
   tapData,
 } from "./helpers.ts";
@@ -52,7 +51,6 @@ async function reply(chat: number, text: string) {
   await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text }) }]);
   await say(chat, text);
-  await settle();
 }
 
 async function replyId(text: string) {
@@ -107,7 +105,6 @@ before(async () => {
     code_names: ["Deepa R.", "Zhi Hao R.", "Najwa R."],
   });
   await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
-  await settle();
 });
 
 test("R10: Draft action on a reply from someone who chose HR only is blocked and points to the theme card; a shared reply can be drafted", async () => {
