@@ -304,7 +304,7 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R32, R13, R14: forced labour or sexual harassment that only the model sees is escalated with its fixed outside contact", async () => {
+test("R32, R13, R14: forced labour or sexual harassment that only the model sees is escalated with the HR complaint message", async () => {
   const [labour, harassed] = [1311, 1312].map((n) => 5550000000 + n);
   await Promise.all([labour, harassed].map((chat) => joined(chat, "2026-10-14")));
 
@@ -315,8 +315,7 @@ test("R32, R13, R14: forced labour or sexual harassment that only the model sees
   );
   const labourReplies = await ask(labour, labourText);
   assert.equal(labourReplies.length, 1);
-  assert.ok(labourReplies[0].includes(en.safety.forcedLabour));
-  assert.ok(labourReplies[0].includes(en.safety.labourAuthority));
+  assert.ok(labourReplies[0].includes(en.safety.message));
 
   const harassedText = "My supervisor keeps making comments about my body and wants me to stay late alone with him";
   await script(
@@ -325,7 +324,7 @@ test("R32, R13, R14: forced labour or sexual harassment that only the model sees
   );
   const harassedReplies = await ask(harassed, harassedText);
   assert.equal(harassedReplies.length, 1);
-  assert.ok(harassedReplies[0].includes(en.safety.tribunal));
+  assert.ok(harassedReplies[0].includes(en.safety.message));
 
   assert.deepEqual((await newEscalations()).map((e) => e.category).sort(), ["forced_labour_indicator", "self_harm_crisis", "sexual_harassment"]);
 });

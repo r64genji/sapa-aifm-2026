@@ -26,11 +26,6 @@ export function detect(text: string): string | null {
   return null;
 }
 
-export function safeMessage(language: Language, category: string, contacts: Contacts) {
-  const { safety } = packs[language];
-  const lines =
-    category === "forced_labour_indicator"
-      ? [safety.forcedLabour, ...contacts.forced_labour_indicator, safety.labourAuthority]
-      : [safety.message, ...contacts.general, ...(category === "sexual_harassment" ? [safety.tribunal] : [])];
-  return lines.join("\n");
+export function safeMessage(language: Language, contacts: Contacts) {
+  return [packs[language].safety.message, ...contacts.general].join("\n");
 }

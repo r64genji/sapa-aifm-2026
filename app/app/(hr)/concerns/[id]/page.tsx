@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use } from "react";
-import { Check, ChevronLeft, Lock, Shield } from "lucide-react";
+import { Check, ChevronLeft, Lock } from "lucide-react";
 import { SENT_TO_COMPLAINTS, SOURCES, categoryName, type Concern } from "@/components/sapa/concerns";
 import { ApiError, useApi } from "@/components/sapa/data";
 import { Card, Loading, Quote, dayLabel } from "@/components/sapa/ui";
@@ -36,12 +36,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       <header className="flex flex-col gap-2">
         <Link href="/concerns" className="inline-flex items-center gap-1 text-[13px] font-semibold no-underline" style={{ color: "var(--ink-muted)" }}>
           <ChevronLeft size={14} strokeWidth={2} aria-hidden="true" />
-          All serious concerns
+          Sent to Speak Up
         </Link>
-        <div className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: "var(--serious-ink)" }}>
-          <Shield size={15} strokeWidth={2} aria-hidden="true" />
-          Serious concern
-        </div>
         <h1 className="sp-page-title">{categoryName(c.category)}</h1>
         <p className="m-0 text-[15px]">
           <span className="font-semibold">{c.code_name}</span>
@@ -73,7 +69,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         <aside aria-label="Case details" className="flex min-w-0 flex-col gap-4 lg:flex-[1_1_0]">
           <Card title="Sapa already did">
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
-              {["Told them to file an official complaint", "Hid it from their manager", "Left it out of reports and exports"].map((t) => (
+              {["Told them to report it through Contoh Speak Up", "Hid it from their manager", "Left it out of reports and exports"].map((t) => (
                 <li key={t} className="flex items-start gap-2 text-[13px]">
                   <Check size={14} strokeWidth={3} aria-hidden="true" className="mt-0.5 shrink-0" />
                   {t}

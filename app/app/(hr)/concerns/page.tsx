@@ -33,16 +33,17 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title={`Serious concerns · ${data.length}`}
+        title={`Sent to Speak Up · ${data.length}`}
         sub={
           <span className="inline-flex items-center gap-1.5">
             <Lock size={14} strokeWidth={2} aria-hidden="true" />
-            HR only. Managers never see these. {SENT_TO_COMPLAINTS}
+            HR only. Managers never see these. Not counted in any problem area.
           </span>
         }
       />
+      <p className="m-0 sp-muted">{SENT_TO_COMPLAINTS}</p>
       {data.length === 0 ? (
-        <Empty title="No serious concerns" />
+        <Empty title="Nobody sent to Speak Up yet" />
       ) : (
         <section aria-label="Serious concerns" className="sp-card overflow-hidden">
           {data.map((c) => (
