@@ -1059,14 +1059,12 @@ export default function Page() {
           value={measured.length ? `${worked} of ${measured.length}` : "–"}
           viz={
             judged.length ? (
-              <div role="img" aria-label={`${worked} worked, ${measured.length - worked} no clear change, ${tooEarly} too early`} className="flex gap-1 pb-1.5">
-                {[...measured.filter((f) => f.result === "worked"), ...measured.filter((f) => f.result !== "worked"), ...judged.filter((f) => f.result === "too_early")].map((f, i) => (
-                  <span
-                    key={f.id}
-                    className={`sp-dot box-border h-4 w-4 rounded-[3px]${f.result === "too_early" ? " sp-bar-hatch" : ""}`}
-                    style={{ ...(f.result === "worked" ? { background: "var(--fixes)" } : f.result === "no_clear_change" ? { border: "2px solid var(--line-strong)" } : {}), ...delay(300 + i * 120) }}
-                  />
-                ))}
+              <div role="img" aria-label={`${worked} worked, ${measured.length - worked} no clear change, ${tooEarly} too early`} className="sp-grow-x mb-2 flex h-3.5 min-w-12 flex-1 gap-[2px] overflow-hidden rounded-full">
+                {[
+                  { n: worked, style: { background: "var(--fixes)" } },
+                  { n: measured.length - worked, style: { background: "var(--line-strong)" } },
+                  { n: tooEarly, className: "sp-bar-hatch" },
+                ].map((s, i) => (s.n ? <span key={i} className={s.className} style={{ flexGrow: s.n, ...s.style }} /> : null))}
               </div>
             ) : null
           }
