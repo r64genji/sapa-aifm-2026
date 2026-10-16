@@ -482,7 +482,7 @@ export function Problems({ driver }: { driver?: string }) {
             <div className="sp-card flex flex-col gap-2 px-[18px] py-4">
               <h3 className="m-0 text-[15px] font-bold leading-5">What is going on</h3>
               <AiMark label="Summary of the counts" />
-              <p className="m-0">{narrative.data.narrative}</p>
+              <p className="m-0 sp-ai-voice">{narrative.data.narrative}</p>
             </div>
           ) : null}
           <div className="sp-card flex flex-col gap-2.5 px-[18px] py-4">

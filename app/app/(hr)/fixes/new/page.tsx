@@ -373,7 +373,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 <div className="sp-suggest-bar" role="group" aria-label="AI draft">
                   <span className="sp-meta flex min-w-0 flex-1 basis-[260px] flex-col gap-1">
                     <AiMark label="The AI filled in the fix, the message and the note" />
-                    <span>
+                    <span className="sp-ai-voice">
                       {suggestion.entryId ? (
                         <>
                           From the library: <strong style={{ color: "var(--ink)" }}>{library.find((e) => e.id === suggestion.entryId)?.title ?? "an entry"}</strong>. {suggestion.reason}
