@@ -80,8 +80,7 @@ function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
   );
 }
 
-function Replies({ driver, replies, groups }: { driver: string; replies: ReplyItem[]; groups: { title: string; reply_ids: string[] }[] }) {
-  const [filter, setFilter] = useState<string | null>(null);
+function Replies({ driver, replies, groups, filter, setFilter }: { driver: string; replies: ReplyItem[]; groups: { title: string; reply_ids: string[] }[]; filter: string | null; setFilter: (f: string | null) => void }) {
   const [all, setAll] = useState(false);
   const group = groups.find((g) => g.title === filter);
   const shown = group ? replies.filter((r) => group.reply_ids.includes(r.id)) : replies;
@@ -122,6 +121,7 @@ function Replies({ driver, replies, groups }: { driver: string; replies: ReplyIt
 
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [team, setTeam] = useState("");
+  const [filter, setFilter] = useState<string | null>(null);
   const detail = useApi<Detail>(`/api/hr/themes/${driver}?touchpoint=14`);
   const teamDetail = useApi<Detail>(team ? `/api/hr/themes/${driver}?touchpoint=14&team=${encodeURIComponent(team)}` : null);
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups?touchpoint=14`);
@@ -143,7 +143,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const smallRoles = (d?.by_role ?? []).length - roles.length;
   const shown = (library.data ?? []).filter((f) => !fixes.some((a) => a.library_entry_id === f.id));
   const own = fixes.filter((a) => !a.library_entry_id || !(library.data ?? []).some((f) => f.id === a.library_entry_id));
-  const readGroup = () => document.getElementById("replies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const readGroup = (title: string | null) => {
+    setFilter(title);
+    document.getElementById("replies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 flex-[999_1_560px] scroll-mt-4 overflow-hidden">
@@ -221,7 +224,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                     </div>
                     <div className="flex w-[200px] max-w-full flex-none flex-col gap-2.5">
                       {card.enough ? <CountBar count={group.n} of={card.n} label="of these replies" /> : null}
-                      <button type="button" className="sp-link" onClick={readGroup}>
+                      <button type="button" className="sp-link" onClick={() => readGroup(group.title)}>
                         Read the {group.n} replies
                       </button>
                     </div>
@@ -231,7 +234,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               {g.not_grouped > 0 ? (
                 <span className="sp-meta">
                   {g.not_grouped} more replies are not grouped: each idea came from fewer than 5 people.{" "}
-                  <button type="button" className="sp-link" onClick={readGroup}>
+                  <button type="button" className="sp-link" onClick={() => readGroup(null)}>
                     Read them
                   </button>
                 </span>
@@ -242,7 +245,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               {g.have} of {g.need} needed. Shows once {g.need} people answer Day 14.
             </span>
           ) : null}
-          {replies.data ? <Replies driver={driver} replies={mine} groups={grouped} /> : <div className="sp-skel h-24" />}
+          {replies.data ? <Replies driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} /> : <div className="sp-skel h-24" />}
         </div>
 
         <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
