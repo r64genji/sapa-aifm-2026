@@ -126,7 +126,11 @@ export async function listQuestions(organisationId: string) {
   ]);
   if (error) throw error;
   if (rowsError) throw rowsError;
-  const forwarded = new Set(groups.filter((g) => g.forwarded_at).map((g) => g.id));
+  const forwarded = new Set(
+    groups
+      .filter((g) => g.forwarded_at || rows.some((r) => r.group_id === g.id && r.outcome === "unknown"))
+      .map((g) => g.id),
+  );
   const shown = groups
     .filter((g) => forwarded.has(g.id))
     .map((g) => {

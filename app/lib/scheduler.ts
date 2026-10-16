@@ -61,14 +61,18 @@ export async function dispatch() {
       ...(person.ask_exit ? [exitQuestion(person.language)] : []),
     ]);
   }
-  const { data: notices, error: noticesError } = await createAdminClient().rpc("notices_claim", {
+  return claims.length + offers.length + left.length + nudges.length + (await sendNotices());
+}
+
+export async function sendNotices() {
+  const { data: notices, error } = await createAdminClient().rpc("notices_claim", {
     at: (await now()).toISOString(),
   });
-  if (noticesError) throw noticesError;
+  if (error) throw error;
   for (const notice of notices as { chat_id: number; language: Language; note: string }[]) {
     await deliver(notice.chat_id, [{ text: packs[notice.language].notice.replace("{note}", notice.note) }]);
   }
-  return claims.length + offers.length + left.length + nudges.length + notices.length;
+  return notices.length;
 }
 
 export async function scheduleFor(personId: string) {

@@ -178,7 +178,7 @@ test("R31: a draft page is never cited, and is quoted only after HR publishes it
 test("R32: a pay dispute gets the important-matter message, no AI answer and no escalation", async () => {
   await script(output({ important_topic: "pay_problem", answer: "Talk to payroll.", cited_path: "pay/payslip.md" }));
   const replies = await ask(payDispute, "The company paid me less than my contract says, I want to dispute it");
-  assert.deepEqual(replies, [[en.qa.important, ...organisation.escalation_contacts.general].join("\n")]);
+  assert.deepEqual(replies, [[en.qa.important, hrLine].join("\n")]);
   assert.ok(!replies[0].includes(en.qa.label));
   assert.deepEqual(await asked(payDispute), [
     { outcome: "important", important_topic: "pay_problem", cited_path: null, group_id: null },
@@ -198,16 +198,19 @@ test("R32, R13: a crisis message gets the safe message with no model call and op
   assert.equal((await asked(crisis))[0].important_topic, "self_harm_crisis");
 });
 
-test("R34: a group below 3 askers shows only in the total, and a third distinct asker forwards it with no names or words", async () => {
+test("R34: an unanswered question shows at once, an answered group below 3 askers shows only in the total, and HR never sees names or words", async () => {
   const before = await questions();
-  assert.deepEqual(before.groups.map((g) => [g.text, g.askers]), [
+  assert.deepEqual(before.groups.map((g) => [g.text, g.askers]).sort(), [
+    ["A neutral question", 1],
     ["How do I claim overtime?", 11 + 1],
+    ["Is overtime paid double on Sundays?", 1],
+    ["When is my first payday?", 2],
     ["Where can I park my motorbike?", 7],
   ]);
-  assert.equal(before.other.questions, 5);
-  assert.equal(before.other.text, "5 other questions from fewer than 3 people");
-  assert.equal(before.groups[1].handbook_path, null);
-  assert.equal(before.groups[0].handbook_path, "pay/overtime.md");
+  assert.equal(before.other.questions, 1);
+  assert.equal(before.other.text, "1 other question from fewer than 3 people");
+  assert.equal(before.groups.find((g) => g.text === "Where can I park my motorbike?")!.handbook_path, null);
+  assert.equal(before.groups.find((g) => g.text === "How do I claim overtime?")!.handbook_path, "pay/overtime.md");
 
   await script(output({ group: { id: paydayGroup, text: "" } }));
   const typed = "wen is my 1st payday ah";
@@ -218,7 +221,7 @@ test("R34: a group below 3 askers shows only in the total, and a third distinct 
   assert.equal(forwarded.askers, 3);
   assert.equal(forwarded.text, "When is my first payday?");
   assert.equal(forwarded.unknown, 3);
-  assert.equal(after.other.questions, 3);
+  assert.equal(after.other.questions, 1);
   const raw = JSON.stringify(after);
   assert.ok(!raw.includes(typed));
   assert.ok(!raw.includes(await personId(payday)));
@@ -239,8 +242,8 @@ test("R34: one person asking the same group again does not count as more askers"
   await script(output({ group: { id: created!.id, text: "" } }));
   await ask(repeater, "Any bonus in December?");
   const after = await questions();
-  assert.equal(after.groups.find((g) => g.id === created!.id), undefined);
-  assert.equal(after.other.questions, 6);
+  assert.equal(after.groups.find((g) => g.id === created!.id)!.askers, 1);
+  assert.equal(after.other.questions, 1);
 });
 
 test("R30: with the model down the text is stored as awaiting AI and the bot sends the fixed got-it text", async () => {
