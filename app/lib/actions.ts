@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
 import { jobMatchCards } from "@/lib/jobmatch";
 import { libraryWithEvidence, members, queueResolution, scoreCard, scoreOf } from "@/lib/resolution";
+import { sendNotices } from "@/lib/scheduler";
 import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
@@ -624,7 +625,10 @@ export async function stepAction(
   await audit(actor, to === "accepted" ? "accept_action" : "complete_action", id);
   if (to === "done") {
     const done = (await loadAction(organisationId, id))!;
-    if (!done.hiring_side) await queueResolution(done);
+    if (!done.hiring_side) {
+      await queueResolution(done);
+      await sendNotices();
+    }
   }
   await signal(organisationId, "action");
   return { status: to };

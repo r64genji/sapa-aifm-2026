@@ -114,7 +114,7 @@ async function important(person: Person, known: Awaited<ReturnType<typeof groupL
     return escalate(person, responseId, keyword, keyword ? null : category);
   }
   const contacts = await contactsOf(person.organisation_id);
-  return { text: [pack.qa.important, ...contacts.general].join("\n") };
+  return { text: [pack.qa.important, contacts.general[0]].join("\n") };
 }
 
 async function awaitingAi(person: Person, text: string): Promise<Reply[]> {

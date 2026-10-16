@@ -172,6 +172,8 @@ export async function checkinText(person: Person, text: string): Promise<Reply[]
   const question = checkin.questions.find((q) => q.id === sequenceOf(person.language, open.recheck_driver, open.touchpoint)[open.progress])!;
   if (question.type !== "open") {
     const keyword = detect(text);
+    const typed = text.normalize("NFKC").trim().match(/^\D{0,15}?\b([1-5])(?:\s*\/\s*5)?\b\D{0,15}$/);
+    if (!keyword && question.type === "scale" && typed) return checkinButton(person, `${open.progress}.${typed[1]}`);
     if (!keyword) return [questionReply(person, open.progress, open.recheck_driver, open.touchpoint)];
     const unprompted = await insertResponse(person, null, "QA", null, text, "unprompted");
     return [await escalate(person, unprompted, keyword, null)];

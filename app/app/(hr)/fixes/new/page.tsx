@@ -140,7 +140,15 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     });
 
   const pickedFromUrl = useRef(false);
-  const wanted = useSearchParams().get("entry");
+  const params = useSearchParams();
+  const wanted = params.get("entry");
+  const own = params.get("own");
+  useEffect(() => {
+    if (!own || pickedFromUrl.current || started.current !== id) return;
+    pickedFromUrl.current = true;
+    void addOwn(own);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [own, id]);
   useEffect(() => {
     if (!wanted || pickedFromUrl.current || !entries || started.current !== id) return;
     pickedFromUrl.current = true;
@@ -149,9 +157,9 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wanted, entries, id]);
 
-  const addOwn = () =>
+  const addOwn = (fixName = name) =>
     run(async () => {
-      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: name.trim() });
+      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName.trim().slice(0, 60) });
       setOwnFix(true);
       setEntryId(null);
       setNotes(EMPTY);
@@ -332,7 +340,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                           <input id="new-fix" className="sp-input" maxLength={60} placeholder="e.g. Weekly 1:1 with a mentor" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
                           <div className="flex gap-2">
                             <Button onClick={() => setAdding(false)}>Cancel</Button>
-                            <Button variant="primary" lane="fixes" disabled={!name.trim() || busy} why={!name.trim() ? "Name the fix first" : null} onClick={addOwn}>
+                            <Button variant="primary" lane="fixes" disabled={!name.trim() || busy} why={!name.trim() ? "Name the fix first" : null} onClick={() => addOwn()}>
                               Add and use
                             </Button>
                           </div>

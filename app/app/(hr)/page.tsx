@@ -396,12 +396,20 @@ export default function Page() {
           </Card>
 
           <Card title="Questions new hires ask" meta="Last 30 days · no names">
-            {questions.data?.groups.map((g) => (
+            {questions.data?.groups.toReversed().map((g) => (
               <div key={g.id}>
                 <div className="font-semibold">{g.text}</div>
                 <div className="sp-meta">
                   {g.askers} asked · {g.handbook_path && g.unknown === 0 ? `from the handbook page ${g.handbook_path}` : "Not in the handbook"}
                 </div>
+                {g.handbook_path && g.unknown === 0 ? null : (
+                  <Link
+                    href={`/fixes/new?driver=ONBOARDING_TRAINING&own=${encodeURIComponent(g.text)}`}
+                    className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0"
+                  >
+                    Fix this gap
+                  </Link>
+                )}
               </div>
             ))}
             {questions.data ? <div className="sp-caption">{questions.data.other.text}</div> : null}

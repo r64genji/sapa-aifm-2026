@@ -158,13 +158,13 @@ Low frequency, but visible to judges as proof of governance. HR can answer "who 
 
 ### Flow I — Questions new hires ask
 
-New hires ask the bot things like "how do I claim OT?". The bot answers from the handbook HR wrote, or says "I don't know yet" and logs the question. HR never sees who asked or their exact words. Once 3 different new hires ask the same thing within 30 days, HR sees it as a neutral line, with how many asked and whether the handbook answered it. Smaller groups show only as one total ("5 other questions from fewer than 3 people"). Questions on important matters are counted only by topic (R34). The privacy story: 5 people for themes, 3 for questions, because a question is not about the asker.
+New hires ask the bot things like "how do I claim OT?". The bot answers from the handbook HR wrote, or says "I don't know yet" and logs the question. HR never sees who asked or their exact words. A question the handbook could not answer reaches HR at once as a neutral line, with how many asked and a "Fix this gap" link that starts a fix. A question the handbook answered shows once 3 different new hires ask it within 30 days. Smaller answered groups show only as one total ("5 other questions from fewer than 3 people"). Questions on important matters are counted only by topic (R34). The privacy story: 5 people for themes, 3 for questions, because a question is not about the asker.
 
 1. **Notice a gap.** A group reaches 3 different askers in 30 days and comes to HR's attention, for example "Where can I park my motorbike? 7 asked, not in the handbook". Groups the handbook already answers are shown too, as proof the handbook is working.
 2. **Fill it.** HR writes or edits a handbook page in English and Bahasa Malaysia, sees it as a draft the bot cannot use, and publishes it. The next new hire who asks gets an answer.
 3. **Keep it tidy.** HR sees the handbook as a short folder of pages (pay, leave, onboarding, facilities), and which pages answer which groups.
 
-Branches to handle: a question about an important matter (pay problem, harassment, health and so on) is counted by topic but never answered by the AI; a group with only 1–2 askers stays inside the total; a deleted new hire stops counting. Managers never see questions.
+Branches to handle: a question about an important matter (pay problem, harassment, health and so on) is counted by topic but never answered by the AI; an answered group with only 1–2 askers stays inside the total; a deleted new hire stops counting. Managers never see questions.
 
 ### Flow J — Does it help people stay?
 
@@ -227,7 +227,7 @@ The company and its people are in [09](09-client-story.md). The demo numbers are
 - **The fix:** "Weekly priority list every Monday", owned by Raj, for Raj's team. HR starts it from the Role clarity card and not from Mei Ling's reply. The library shows "Used 3 times here. Role clarity rose 1.0 more than in other teams (41 people)". Note to new hires (EN): "Your team now agrees a top-3 priority list with your team lead every Monday." (BM): "Pasukan anda kini menetapkan 3 keutamaan utama bersama ketua pasukan setiap Isnin."
 - **Recheck:** "How clear are you on what is expected of you this week? (1–5)" Mei Ling taps 4. The live fix shows "Not enough answers yet (1 of 5)". An earlier fix, "Share the written job scope" (Raj's team, done 8 September), shows Role clarity 2.5 → 3.8 for 6 people in scope and 2.7 → 2.8 for 44 new hires outside it (+1.3 against +0.1).
 - **Job match:** Accounts payable analyst, 12 of 26 said "not really" at Day 14 (the agency advert said "Finance Analyst"). Other roles have fewer than 5 answers, so they show "Not enough people yet". Mei Ling's role is "AP analyst (Mandarin)", a different role.
-- **Questions:** "How do I claim overtime?" 11 asked, answered by `pay/overtime.md`. "Where can I park my motorbike?" 7 asked, not in the handbook, brought to HR's attention. "When is my first payday?" 2 asked, so it shows only inside the "fewer than 3" total.
+- **Questions:** "How do I claim overtime?" 11 asked, answered by `pay/overtime.md`. "Where can I park my motorbike?" 7 asked, not in the handbook, brought to HR's attention. "When is my first payday?" 2 asked, not in the handbook, so HR sees it at once.
 - **Impact:** six completed intakes, November 2025 to April 2026 (99 hired in all): 80 of 99 still employed at Month 6, against a usual 73 in 100, shown as "a trend, not proof". The Group's target is 85. Median 9 days from reply to fix done. Manager milestones done: 231 of 297. Top reasons leavers gave (12 answers): role clarity 5, onboarding and training 4, workload 2, belonging 1, beside role clarity as the top Day 14 theme Sapa found. Numbers are fictional.
 
 ## 10. Out of scope
