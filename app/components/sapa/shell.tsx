@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Home, Info, MonitorPlay } from "lucide-react";
+import { BarChart3, Home } from "lucide-react";
 import { Suspense, type ReactNode } from "react";
 import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
+import { DemoBar } from "./demo-bar";
 import { Button, LaneIcon, Loading, Waiting } from "./ui";
 
 export type Me = { name: string; role: string; organisation: string; demo_mode: boolean };
@@ -74,10 +75,6 @@ export function Shell({ children }: { children: ReactNode }) {
           <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes" />
           <NavItem href="/impact" icon={<BarChart3 size={17} aria-hidden="true" />} label="Impact" />
         </div>
-        <div className="mt-2 grid grid-cols-2 gap-0.5 border-t pt-2 md:flex md:flex-col" style={{ borderColor: "var(--line-soft)" }}>
-          <NavItem href="/how-sapa-works" icon={<Info size={17} aria-hidden="true" />} label="How Sapa treats people" />
-          {me.data.role === "hr_admin" && me.data.demo_mode ? <NavItem href="/demo" icon={<MonitorPlay size={17} aria-hidden="true" />} label="Demo" /> : null}
-        </div>
         <div className="hidden min-h-6 grow md:block" />
         <div className="mt-2 flex items-center gap-2.5 border-t px-2.5 pt-3" style={{ borderColor: "var(--line-soft)" }}>
           <span className="flex h-8 w-8 items-center justify-center font-bold" style={{ borderRadius: "var(--radius-round)", background: "var(--problems-soft)", color: "var(--problems)" }}>
@@ -93,6 +90,7 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       </nav>
       <div className="min-w-0 flex-1">
+        {me.data.role === "hr_admin" && me.data.demo_mode ? <DemoBar /> : null}
         {me.data.demo_mode ? (
           <div className="px-4 py-2 text-center text-[13px] font-medium md:px-8" style={{ background: "var(--surface-sunken)", borderBottom: "1px solid var(--line)" }}>
             This is a future year: what HR would see one year into Sapa. These numbers are fictional.

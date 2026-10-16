@@ -184,7 +184,7 @@ The demo should be the real flows A, B, D, E and J, compressed, not a separate s
 | 5. Loop closes | 15 s | The "Update from HR" note arrives on the phone; the clock jumps to the Day 30 check-in, whose first question is the neutral 1–5 one; the teammate taps 4 |
 | 6. Outcome | 15 s | An earlier fix shows "Role clarity, Raj's team +1.3, other teams +0.1 in the same weeks". The Impact view shows "Top reasons leavers gave: role clarity 5 of 12" beside "Sapa found role clarity at Day 14", and pooled retention as one line, "a trend, not proof" |
 
-Demo controls (move the clock, reset, link status lights, a live log of the AI steps) exist only in demo mode. A short "How Sapa works" explanation (the loop, what AI does versus what people decide, who sees what, what Sapa never does) helps judges during Q&A.
+Demo controls (move the clock, reset, link status lights) sit in a bar at the top of every HR page, only in demo mode. There is no separate demo page and no "How Sapa works" page.
 
 ## 8. Starting points for the design discussion
 

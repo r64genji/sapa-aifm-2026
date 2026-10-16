@@ -37,7 +37,6 @@ after(async () => {
 });
 
 test("Demo beat 1: Advance to Day 14 sends the live hire one check-in", async () => {
-  await page.goto(`${appUrl}/demo`);
   await page.getByRole("button", { name: "Advance to Day 14" }).click();
   await page.getByText("Advanced to Day 14. 1 message sent.").waitFor();
   assert.ok((await texts()).includes(question("ROLE_CLARITY")));
@@ -84,7 +83,6 @@ test("Demo beats 4 and 5: Raj marks it done, the hire gets the update, and the D
   await page.getByText("Raj marked it done").waitFor();
 
   const before = (await texts()).length;
-  await page.goto(`${appUrl}/demo`);
   await page.getByRole("button", { name: "Advance to Day 30" }).click();
   await page.getByText(/Advanced to Day 30/).waitFor();
   const sent = (await texts()).slice(before);
@@ -98,7 +96,7 @@ test("Demo beat 6: the Impact page shows 80 of 99 still employed at Month 6", as
 
 test("Every demo page loads at 390 px with no sideways scroll", async () => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/replies", "/fixes", "/impact", "/demo", "/how-sapa-works"]) {
+  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/replies", "/fixes", "/impact"]) {
     await page.goto(`${appUrl}${path}`);
     await page.waitForLoadState("networkidle");
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), 0, path);

@@ -343,7 +343,7 @@ Each rule has an ID. Tests cite the ID. A rule changes only with team approval.
   - Gemini follows a JSON schema; DeepSeek only promises valid JSON. Every output, from either model, is parsed with the same Zod schema and retried once on failure.
   - Prompts put the fixed text first (instructions, examples, the handbook) and the variable text last, so both providers' automatic prompt caching applies.
   - The DeepSeek key has only $2 of credit. R37 and R38 protect it. Automated tests never hold a real model key.
-  - The demo controls page shows a live status for each link (OmniRoute, DeepSeek), so the driver knows before going on stage.
+  - The demo bar at the top of every HR page shows a live status for each link (OmniRoute, DeepSeek), so the driver knows before going on stage.
   - Day 1 checks: OmniRoute passes JSON-schema requests intact (else JSON mode plus Zod), and Cloudflare bot or WAF settings do not block calls from Vercel.
 - **Channel.** Telegram only. The conversation engine runs consent and commands.
 - **No Langfuse in the competition build.** Each tag row stores model ID, prompt version, latency and token counts. The eval writes its own results files. No reply text is sent to any trace or log store.

@@ -34,7 +34,7 @@ Use **[05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-
 ## Pre-demo checklist (morning of the pitch)
 
 - [ ] Open the Supabase project (free projects pause after 7 days idle)
-- [ ] Check OmniRoute, the `cloudflared` tunnel and the DeepSeek fallback show green on the demo controls page; test one AI call
+- [ ] Check OmniRoute, the `cloudflared` tunnel and the DeepSeek fallback show green in the demo bar at the top of the HR app; test one AI call
 - [ ] Reset the demo seed
 - [ ] Phone charged, hotspot on, Telegram open
 - [ ] Backup recording on the desktop
