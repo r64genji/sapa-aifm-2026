@@ -24,7 +24,6 @@ import {
   shortDate,
 } from "@/components/sapa/ui";
 
-const TOUCHPOINTS = [3, 7, 14, 30, 60, 90, 182];
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
 type Me = { today: string };
@@ -105,10 +104,9 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
 }
 
 export default function Page() {
-  const [touchpoint, setTouchpoint] = useState(14);
+  const touchpoint = 14;
   const [done, setDone] = useState<{ row: QueueRow; undo: () => Promise<unknown> }[]>([]);
   const me = useApi<Me>("/api/hr/me", 60000);
-  const narrative = useApi<{ narrative: string | null }>(`/api/hr/themes/narrative?touchpoint=${touchpoint}`, 60000);
   const themes = useApi<Themes>(`/api/hr/themes?touchpoint=${touchpoint}`);
   const escalations = useApi<Escalation[]>("/api/hr/escalations");
   const queue = useApi<QueueRow[]>("/api/hr/queue");
@@ -152,25 +150,7 @@ export default function Page() {
           <>
             {me.data ? `${new Date(me.data.today).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Asia/Kuala_Lumpur" })} · ` : ""}
             {dayLabel(touchpoint)} check-in · new hires in their first six months
-            {narrative.data?.narrative ? (
-              <span className="mt-2 flex flex-wrap items-start gap-2">
-                <AiMark state="suggested" label="Summary of the counts" />
-                <span className="sp-ai-voice" style={{ color: "var(--ink)" }}>{narrative.data.narrative}</span>
-              </span>
-            ) : null}
           </>
-        }
-        right={
-          <label className="flex flex-col gap-1 text-[13px] font-semibold">
-            Check-in
-            <select className="sp-input" value={touchpoint} onChange={(e) => setTouchpoint(Number(e.target.value))}>
-              {TOUCHPOINTS.map((t) => (
-                <option key={t} value={t}>
-                  {dayLabel(t)}
-                </option>
-              ))}
-            </select>
-          </label>
         }
       />
 
