@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 
 const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin"], weight: ["400"] });
-const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["500"] });
+const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "500"] });
 
 export default function RootLayout({
   children,

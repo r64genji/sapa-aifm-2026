@@ -167,7 +167,7 @@ export default function Page() {
             {narrative.data?.narrative ? (
               <span className="mt-2 flex flex-wrap items-start gap-2">
                 <AiMark state="suggested" label="Summary of the counts" />
-                <span style={{ color: "var(--ink)" }}>{narrative.data.narrative}</span>
+                <span className="sp-ai-voice" style={{ color: "var(--ink)" }}>{narrative.data.narrative}</span>
               </span>
             ) : null}
           </>

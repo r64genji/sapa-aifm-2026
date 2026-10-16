@@ -409,7 +409,7 @@ The prompt sends: the published handbook pages with their paths, the current gro
 ### Narrative and draft (AI steps B and C)
 
 - **Narrative.** Input: the SQL counts for one window and scope, plus a sample of non-escalated summaries from that scope (never raw text). Output: up to 3 sentences on issues and 1 on what is going well. Rejected and retried once if it contains a number not in the input (R18).
-- **Draft action.** Input: driver, theme counts, the action library entries for that driver ranked by their measured evidence here (R43), and the scope. Output: the library entry it used and why, a title of at most 10 words, steps of at most 60 words, and a draft employee note of at most 40 words in each language the scope uses (English and Bahasa Malaysia at least), all naming no person. HR edits and approves the note; nothing is sent unapproved. The library from dossier F6 is data, editable by HR.
+- **Draft action.** Input: driver, theme counts, the action library entries for that driver ranked by their measured evidence here (R43), and the scope. Output: the library entry it used and why, a title of at most 10 words, steps of at most 60 words written as the message to the manager (the Telegram alert body), and a draft employee note of at most 40 words in each language the scope uses (English and Bahasa Malaysia at least), all naming no person. HR edits and approves the note; nothing is sent unapproved. The library from dossier F6 is data, editable by HR.
 
 ### Data model
 

@@ -38,7 +38,7 @@ export function Translation({ id, language }: { id: string; language?: string })
   const { data } = useApi<{ translation?: { label: string; text: string } | null }>(language === "zh" ? `/api/hr/replies/${id}/translation` : null, 0);
   if (!data?.translation) return null;
   return (
-    <p className="m-0 text-base italic leading-[23px] sp-muted" style={{ fontFamily: "var(--font-serif)" }}>
+    <p className="m-0 sp-ai-voice sp-muted">
       <AiMark label={data.translation.label} /> {data.translation.text}
     </p>
   );

@@ -170,6 +170,8 @@ textarea.sp-input { min-height: 84px; resize: vertical; }
 .sp-ai-reviewed .sp-ai-tag { border-color: var(--ink); color: var(--ink); }
 .sp-ai-reviewed .sp-ai-text { color: var(--ink); border-bottom: none; }
 .sp-input-ai { background: var(--ai-soft); border-color: var(--ai); }
+.sp-ai-text, .sp-ai-voice, textarea.sp-input-ai { font-family: var(--font-mono); font-size: 13px; }
+.sp-ai-voice { line-height: 20px; font-style: normal; }
 .sp-suggest-bar { background: var(--ai-soft); border: 1px solid var(--ai); border-radius: var(--radius-control); padding: 10px 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
 .sp-quote { margin: 0; font-family: var(--font-serif); font-size: 18px; line-height: 25px; overflow-wrap: anywhere; }

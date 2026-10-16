@@ -93,9 +93,9 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     setSuggestion(library ? null : { title: view.title, steps: view.steps, notes: { ...EMPTY, ...view.notes }, entryId: view.library_entry_id, reason: view.reason ?? "" });
     setMode(library ? "library" : "ai");
     setDecision("pending");
-    setTitle(library ? view.title : "");
-    setSteps(library ? view.steps : "");
-    setNotes(EMPTY);
+    setTitle(view.title);
+    setSteps(view.steps);
+    setNotes(library ? EMPTY : { ...EMPTY, ...view.notes });
     setEntryId(view.library_entry_id);
     setOwnFix(view.own_fix);
     setBanner(library ? view.reason : null);
@@ -162,8 +162,9 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
         setSuggestion({ title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." });
         setMode("ai");
         setDecision("pending");
-        setTitle("");
-        setSteps("");
+        setTitle(result.title);
+        setSteps(result.steps);
+        setNotes(result.notes);
         setBanner(null);
       } else {
         setSuggestion(null);
@@ -185,19 +186,19 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
       setRemoved(null);
     });
 
-  const accept = () => {
-    setTitle(suggestion!.title);
-    setSteps(suggestion!.steps);
-    setNotes(suggestion!.notes ?? EMPTY);
-    setDecision("accepted");
-  };
+  const accept = () => setDecision("accepted");
   const reject = () => {
     setTitle("");
     setSteps("");
     setNotes(EMPTY);
     setDecision("rejected");
   };
-  const useDraft = () => setDecision("pending");
+  const useDraft = () => {
+    setTitle(suggestion!.title);
+    setSteps(suggestion!.steps);
+    setNotes(suggestion!.notes ?? EMPTY);
+    setDecision("pending");
+  };
 
   const tryAgain = () =>
     run(async () => {
@@ -212,7 +213,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
   const why = pending
     ? "Accept or reject the AI draft first."
     : !title.trim() || !steps.trim()
-      ? "Add the fix and what the manager does."
+      ? "Add the fix title and the message."
       : !scope
         ? "Choose who the fix is for."
         : !noteOk
@@ -244,6 +245,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
       : `${owner.name} gets it today`
     : "It stays with you";
   const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", dueOn)];
+  const draftClass = pending ? "sp-input sp-input-ai" : "sp-input";
   const pendingMark = pending ? <AiMark label="Drafted for your new fix" /> : null;
 
   return (
@@ -263,52 +265,6 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
 
       <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex min-w-0 flex-col gap-4">
-          {pending && suggestion ? (
-            <section className="sp-suggest" aria-label="AI suggestion">
-              <div className="sp-suggest-head">
-                <AiMark label="Drafted for your new fix" />
-                <span className="sp-caption">Reject it to write your own.</span>
-              </div>
-              <div className="flex flex-col gap-3 p-4">
-                <div className="sp-meta">
-                  {suggestion.entryId ? (
-                    <>
-                      From the library: <strong style={{ color: "var(--ink)" }}>{library.find((e) => e.id === suggestion.entryId)?.title ?? "an entry"}</strong>. {suggestion.reason}
-                    </>
-                  ) : (
-                    suggestion.reason
-                  )}
-                </div>
-                <div>
-                  <div className="sp-caption" style={{ fontWeight: 600 }}>Fix</div>
-                  <div className="text-[15px] font-semibold">{suggestion.title}</div>
-                </div>
-                <div>
-                  <div className="sp-caption" style={{ fontWeight: 600 }}>What {ownerName} does</div>
-                  <p className="m-0 text-[15px] leading-[22px]">{suggestion.steps}</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="sp-caption" style={{ fontWeight: 600 }}>Note to new hires</div>
-                  {LANGS.map(([l, text]) => (
-                    <div key={l} className="flex flex-col gap-0.5">
-                      <AiMark label={`${text}${l === "en" ? "" : ", AI translation"}`} />
-                      <p className="m-0 text-[14px] leading-5">{suggestion.notes![l]}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="primary" lane="ai" onClick={accept}>
-                    Accept
-                  </Button>
-                  <Button onClick={reject}>Reject</Button>
-                  <Button onClick={tryAgain} disabled={busy}>
-                    Try again
-                  </Button>
-                </div>
-              </div>
-            </section>
-          ) : null}
-
           <section className="sp-section" aria-label="The fix">
             <div className="sp-section-head">
               <div className="sp-icontile sp-lane-fixes">
@@ -403,15 +359,41 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 <label htmlFor="fix-title" className="sp-caption" style={{ fontWeight: 600 }}>
                   Fix title
                 </label>
-                <input id="fix-title" className="sp-input" maxLength={120} value={title} disabled={pending || !!sent} onChange={(e) => setTitle(e.target.value)} placeholder={pending ? "Accept or reject the AI draft" : "Short name for the fix"} />
+                <input id="fix-title" className={draftClass} maxLength={120} value={title} disabled={!!sent} onChange={(e) => setTitle(e.target.value)} placeholder="Short name for the fix" />
               </div>
               <div className="flex flex-col gap-1">
                 <label htmlFor="fix-steps" className="sp-caption" style={{ fontWeight: 600 }}>
-                  What {ownerName} does
+                  Message to {ownerName}
                 </label>
-                <textarea id="fix-steps" className="sp-input" rows={4} value={steps} disabled={pending || !!sent} onChange={(e) => setSteps(e.target.value)} placeholder={pending ? "Accept or reject the AI draft" : "Who does what, and when."} />
+                <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent} onChange={(e) => setSteps(e.target.value)} placeholder={`What you ask ${ownerName} to do. This is the Telegram message.`} />
                 <span className="sp-caption">{words(steps)} of 60 words</span>
               </div>
+
+              {pending && suggestion ? (
+                <div className="sp-suggest-bar" role="group" aria-label="AI draft">
+                  <span className="sp-meta flex min-w-0 flex-1 basis-[260px] flex-col gap-1">
+                    <AiMark label="The AI filled in the fix, the message and the note" />
+                    <span className="sp-ai-voice">
+                      {suggestion.entryId ? (
+                        <>
+                          From the library: <strong style={{ color: "var(--ink)" }}>{library.find((e) => e.id === suggestion.entryId)?.title ?? "an entry"}</strong>. {suggestion.reason}
+                        </>
+                      ) : (
+                        suggestion.reason
+                      )}
+                    </span>
+                  </span>
+                  <span className="flex flex-wrap gap-2">
+                    <Button variant="primary" lane="ai" onClick={accept}>
+                      Accept
+                    </Button>
+                    <Button onClick={reject}>Reject</Button>
+                    <Button onClick={tryAgain} disabled={busy}>
+                      Try again
+                    </Button>
+                  </span>
+                </div>
+              ) : null}
             </div>
           </section>
 
@@ -432,11 +414,11 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
               <textarea
                 id="fix-note"
                 aria-label={`Note in ${LANGS.find(([l]) => l === lang)![1]}`}
-                className="sp-input"
+                className={draftClass}
                 rows={3}
-                disabled={pending || !!sent}
+                disabled={!!sent}
                 value={notes[lang]}
-                placeholder={pending ? "Accept or reject the AI draft" : lang === "en" ? "What changed, in one or two sentences. Do not name anyone." : ""}
+                placeholder={lang === "en" ? "What changed, in one or two sentences. Do not name anyone." : ""}
                 onChange={(e) => setNotes({ ...notes, [lang]: e.target.value })}
               />
               <span className="sp-caption">{words(notes[lang])} of 40 words</span>
