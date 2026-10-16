@@ -17,11 +17,12 @@ import {
   type Person,
 } from "@/lib/directory";
 import { now } from "@/lib/clock";
+import { answerContact } from "@/lib/escalations";
 import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 import { milestoneDone } from "@/lib/milestones";
 import { languages, packs, type CommandId, type Language } from "@/lib/packs";
 
-export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[] };
+export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[]; phone?: string };
 export type Outcome = { replies: Reply[]; menu?: Language };
 export type Input = { kind: "text"; text: string } | { kind: "button"; id: string; value: string };
 
@@ -166,6 +167,7 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (command === "delete") return { replies: [deletePrompt(person.language)] };
   if (input.kind === "button" && input.id === "delete") return { replies: await confirmDelete(person, input.value) };
   if (person.state === "stopped") return none;
+  if (input.kind === "button" && input.id === "contact") return { replies: await answerContact(person, input.value) };
   if (command === "stop") {
     await stopPerson(chatId);
     return { replies: [{ text: packs[person.language].stopped }] };

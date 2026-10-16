@@ -137,7 +137,7 @@ async function conclude(person: Person, open: Open, responseId: string, text: st
     return { status: "awaiting_ai" as const };
   });
   const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
-  if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
+  if (keyword || model) return [await escalate(person, responseId, keyword, model)];
   if (result.status === "awaiting_ai") return [{ text: checkin.gotIt }];
   const probe =
     result.status === "ok" && open.probes_used < probeCap(open.touchpoint)
@@ -174,7 +174,7 @@ export async function checkinText(person: Person, text: string): Promise<Reply[]
     const keyword = detect(text);
     if (!keyword) return [questionReply(person, open.progress, open.recheck_driver, open.touchpoint)];
     const unprompted = await insertResponse(person, null, "QA", null, text, "unprompted");
-    return [{ text: await escalate(person, unprompted, keyword, null) }];
+    return [await escalate(person, unprompted, keyword, null)];
   }
   const responseId = await store(person, open, null, text);
   if (!responseId) return null;

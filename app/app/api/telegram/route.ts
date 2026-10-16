@@ -2,6 +2,7 @@ import { after } from "next/server";
 import { bot } from "@/lib/bot";
 import { now } from "@/lib/clock";
 import { personByChat } from "@/lib/directory";
+import { savePhone } from "@/lib/escalations";
 import { packs } from "@/lib/packs";
 import { matchesSecret } from "@/lib/secret";
 import { send } from "@/lib/telegram";
@@ -31,7 +32,15 @@ export async function POST(request: Request) {
   if (error) throw error;
   if (data.length === 0) return new Response("OK");
   const message = update.message;
-  if (message && message.text === undefined && !message.contact) {
+  if (message?.contact) {
+    if (message.contact.user_id === message.from?.id) {
+      after(async () => {
+        for (const reply of await savePhone(message.chat.id, message.contact.phone_number)) await send(message.chat.id, reply);
+      });
+    }
+    return new Response("OK");
+  }
+  if (message && message.text === undefined) {
     after(async () => {
       const person = await personByChat(message.chat.id);
       if (person && ["declined", "stopped", "left", "deleted"].includes(person.state)) return;

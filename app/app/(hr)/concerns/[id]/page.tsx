@@ -9,6 +9,12 @@ import { Button, Card, Loading, Quote, dayLabel } from "@/components/sapa/ui";
 
 type Case = Concern & {
   team: string;
+  code_name: string;
+  role: string;
+  start_date: string;
+  contact_method: "call" | "meet" | null;
+  phone: string | null;
+  not_serious: boolean;
   text: string | null;
   language: string;
   closure_sent_at: string | null;
@@ -21,15 +27,16 @@ type Case = Concern & {
 const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
 const REASON = "This person is not receiving messages from Sapa now";
 
+const started = (date: string) =>
+  new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kuala_Lumpur" });
+
 const time = (iso: string) =>
   new Date(iso).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Kuala_Lumpur" });
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { data: c, error } = useApi<Case>(`/api/hr/escalations/${id}`, 0);
-  const [outcome, setOutcome] = useState<{ kind: string; note: string } | null>(null);
   const [kind, setKind] = useState("acted");
-  const [note, setNote] = useState("");
   const [failed, setFailed] = useState<string | null>(null);
 
   if (error instanceof ApiError && error.status === 404) return <p className="sp-muted">This concern was not found.</p>;
@@ -45,8 +52,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   };
 
   const contacted = !!contactedAt(c);
-  const steps = ["Read", "Acknowledge", "Contact", "Outcome", "Close"];
-  const done = [true, !!c.acknowledged_at, contacted, !!outcome || !!c.closed_at, !!c.closed_at];
+  const steps = ["Read", "Acknowledge", "Contact", "Close"];
+  const done = [true, !!c.acknowledged_at, contacted, !!c.closed_at];
+  const reach = c.dont_contact
+    ? "Asked not to be contacted"
+    : c.contact_method === "call"
+      ? c.phone
+        ? `Call them: ${c.phone}`
+        : "Wants a call. Phone number not shared yet."
+      : c.contact_method === "meet"
+        ? "Wants to meet in person"
+        : "No answer yet. Find them by code name.";
+  const notSerious = kind === "not_serious";
   const current = done.findIndex((d) => !d);
 
   return (
@@ -61,6 +78,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           Serious concern
         </div>
         <h1 className="sp-page-title">{categoryName(c.category)}</h1>
+        <p className="m-0 text-[15px]">
+          <span className="font-semibold">{c.code_name}</span>
+          <span className="sp-muted"> · {c.role} · started {started(c.start_date)}</span>
+        </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {c.closed_at ? (
             <span className="text-[13px] sp-muted">Closed {time(c.closed_at)}</span>
@@ -94,6 +115,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </div>
           </Card>
 
+          <Card title="How to reach them">
+            <p className="m-0 font-semibold">{reach}</p>
+            <p className="m-0 text-[13px] sp-muted">They chose this in Telegram. Find {c.code_name} in your own records.</p>
+          </Card>
+
           <Card title="What to do">
             <ol className="m-0 flex list-none flex-wrap gap-x-5 gap-y-2 p-0">
               {steps.map((label, i) => (
@@ -121,13 +147,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {c.acknowledged_at && !contacted ? (
               <div>
                 <p className="m-0 mb-1 font-semibold">Contact them outside Sapa</p>
-                <p className="m-0 mb-3 sp-muted">Sapa does not pass messages between you and them. Call or meet them, then record it here.</p>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="primary" lane="serious" onClick={() => act("contact")}>
-                    I contacted them
-                  </Button>
-                  <Button onClick={() => act("dont-contact")}>They asked not to be contacted</Button>
-                </div>
+                <p className="m-0 mb-3 sp-muted">Sapa does not pass messages between you and them. Use the way they chose above, then record it here.</p>
+                <Button variant="primary" lane="serious" onClick={() => act("contact")}>
+                  I contacted them
+                </Button>
               </div>
             ) : null}
 
@@ -135,13 +158,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               <p className="m-0 sp-muted">Asked not to be contacted. For some matters HR may still need to follow up.</p>
             ) : null}
 
-            {contacted && !outcome && !c.closed_at ? (
+            {contacted && !c.closed_at ? (
               <div className="flex flex-col gap-3">
                 <fieldset className="m-0 flex flex-wrap gap-3 border-0 p-0">
                   <legend className="mb-2 p-0 font-semibold">What was it?</legend>
                   {[
-                    ["acted", "A real concern", "You took action"],
-                    ["not_serious", "Not serious", "A false alarm"],
+                    ["acted", "Real concern", "You took action"],
+                    ["not_serious", "False alarm", "Nothing to act on"],
                   ].map(([value, title, sub]) => (
                     <label key={value} className="flex flex-1 basis-[200px] cursor-pointer items-start gap-2.5 border p-3" style={{ borderRadius: "var(--radius-control)", borderColor: kind === value ? "var(--ink)" : "var(--line)" }}>
                       <input type="radio" name="kind" value={value} checked={kind === value} onChange={() => setKind(value)} className="mt-1" />
@@ -152,51 +175,39 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     </label>
                   ))}
                 </fieldset>
-                <label htmlFor="outcome" className="font-semibold">
-                  What happened
-                </label>
-                <textarea id="outcome" rows={4} value={note} onChange={(e) => setNote(e.target.value)} placeholder="What you found and what was done" className="sp-input" />
-                <div>
-                  <Button variant="primary" lane="serious" disabled={!note.trim()} why={!note.trim() ? "Write what happened first." : null} onClick={() => setOutcome({ kind, note })}>
-                    Save outcome
-                  </Button>
-                </div>
+                {c.can_send_closure ? (
+                  <>
+                    <div className="flex flex-col gap-2 p-3" style={{ borderRadius: "var(--radius-control)", background: "var(--surface-sunken)" }}>
+                      <span className="text-[13px] font-semibold sp-muted">Message they get when you close</span>
+                      <span style={{ whiteSpace: "pre-line" }}>{c.closure[c.language] ?? c.closure.en}</span>
+                      {c.language !== "en" ? (
+                        <details>
+                          <summary className="cursor-pointer text-[13px] font-semibold">English</summary>
+                          <div className="mt-1" style={{ whiteSpace: "pre-line" }}>{c.closure.en}</div>
+                        </details>
+                      ) : null}
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: true, not_serious: notSerious })}>
+                        Close and send
+                      </Button>
+                      <Button onClick={() => act("close", { send_closure: false, not_serious: notSerious })}>Close without message</Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <div className="font-semibold">No closing message</div>
+                      <div className="sp-muted">{REASON}</div>
+                    </div>
+                    <div>
+                      <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: false, not_serious: notSerious })}>
+                        Close
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
-            ) : null}
-
-            {outcome && !c.closed_at ? (
-              c.can_send_closure ? (
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-2 p-3" style={{ borderRadius: "var(--radius-control)", background: "var(--surface-sunken)" }}>
-                    <span className="text-[13px] font-semibold sp-muted">Message they get when you close</span>
-                    <span style={{ whiteSpace: "pre-line" }}>{c.closure[c.language] ?? c.closure.en}</span>
-                    {c.language !== "en" ? (
-                      <details>
-                        <summary className="cursor-pointer text-[13px] font-semibold">English</summary>
-                        <div className="mt-1" style={{ whiteSpace: "pre-line" }}>{c.closure.en}</div>
-                      </details>
-                    ) : null}
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: true, not_serious: outcome?.kind === "not_serious" })}>
-                      Close and send
-                    </Button>
-                    <Button onClick={() => act("close", { send_closure: false, not_serious: outcome?.kind === "not_serious" })}>Close without message</Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  <div>
-                    <div className="font-semibold">No closing message</div>
-                    <div className="sp-muted">{REASON}</div>
-                  </div>
-                  <div>
-                    <Button variant="primary" lane="serious" onClick={() => act("close", { send_closure: false, not_serious: outcome?.kind === "not_serious" })}>
-                      Close without message
-                    </Button>
-                  </div>
-                </div>
-              )
             ) : null}
 
             {c.closed_at ? (
@@ -205,7 +216,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   <Check size={16} strokeWidth={3} aria-hidden="true" />
                 </span>
                 <div className="flex flex-col">
-                  <span className="font-bold">Case closed</span>
+                  <span className="font-bold">Case closed · {c.not_serious ? "False alarm" : "Real concern"}</span>
                   <span className="sp-muted">
                     {c.closure_sent_at ? "Closing message sent" : "No closing message"}
                   </span>

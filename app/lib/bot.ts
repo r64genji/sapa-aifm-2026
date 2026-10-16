@@ -4,6 +4,7 @@ import { PermissionError } from "@chat-adapter/shared";
 import { Chat, type CardElement } from "chat";
 import { stopPerson } from "@/lib/directory";
 import { handle, type Input, type Outcome } from "@/lib/engine";
+import { send } from "@/lib/telegram";
 import { packs } from "@/lib/packs";
 
 export const bot = new Chat({
@@ -37,6 +38,10 @@ async function respond(
   const outcome: Outcome = await handle(chatId, input);
   try {
     for (const reply of outcome.replies) {
+      if (reply.phone) {
+        await send(chatId, reply);
+        continue;
+      }
       await post(
         reply.buttons
           ? {

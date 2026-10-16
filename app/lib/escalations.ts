@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { now } from "@/lib/clock";
-import { decrypt } from "@/lib/crypto";
+import { decrypt, encrypt } from "@/lib/crypto";
 import { audit } from "@/lib/signal";
-import { notReceiving, reachable, type Person } from "@/lib/directory";
+import { notReceiving, personByChat, reachable, type Person } from "@/lib/directory";
+import type { Reply } from "@/lib/engine";
 import { packs, type Language } from "@/lib/packs";
 import { safeMessage, type Contacts } from "@/lib/safety";
 import { send } from "@/lib/telegram";
@@ -32,7 +33,70 @@ export async function escalate(person: Person, responseId: string, keyword: stri
     .eq("id", person.organisation_id)
     .single();
   if (orgError) throw orgError;
-  return safeMessage(person.language, category, data.escalation_contacts as Contacts);
+  const { contact } = packs[person.language];
+  return {
+    text: `${safeMessage(person.language, category, data.escalation_contacts as Contacts)}\n\n${contact.ask}`,
+    buttons: [
+      { label: contact.yes, id: "contact", value: "yes" },
+      { label: contact.no, id: "contact", value: "no" },
+    ],
+  };
+}
+
+async function latestOpen(personId: string) {
+  const { data, error } = await createAdminClient()
+    .from("escalations")
+    .select("id, responses!inner(person_id)")
+    .eq("responses.person_id", personId)
+    .is("closed_at", null)
+    .order("created_at", { ascending: false })
+    .limit(1);
+  if (error) throw error;
+  return data[0]?.id as string | undefined;
+}
+
+async function setContact(id: string, fields: Record<string, unknown>) {
+  const { error } = await createAdminClient().from("escalations").update(fields).eq("id", id);
+  if (error) throw error;
+}
+
+export async function answerContact(person: Person, value: string): Promise<Reply[]> {
+  const { contact } = packs[person.language];
+  const id = await latestOpen(person.id);
+  if (!id) return [];
+  if (value === "yes") {
+    return [
+      {
+        text: contact.how,
+        buttons: [
+          { label: contact.call, id: "contact", value: "call" },
+          { label: contact.meet, id: "contact", value: "meet" },
+        ],
+      },
+    ];
+  }
+  if (value === "no") {
+    await setContact(id, { dont_contact: true, contact_method: null, contact_phone_encrypted: null });
+    return [{ text: contact.noThanks }];
+  }
+  if (value === "meet") {
+    await setContact(id, { dont_contact: false, contact_method: "meet", contact_phone_encrypted: null });
+    return [{ text: contact.thanks }];
+  }
+  if (value === "call") {
+    await setContact(id, { dont_contact: false, contact_method: "call" });
+    return [{ text: contact.sharePrompt, phone: contact.share }];
+  }
+  return [];
+}
+
+export async function savePhone(chatId: number, phone: string): Promise<Reply[]> {
+  const person = await personByChat(chatId);
+  if (!person) return [];
+  const id = await latestOpen(person.id);
+  if (!id) return [];
+  await setContact(id, { dont_contact: false, contact_method: "call", contact_phone_encrypted: encrypt(phone) });
+  return [{ text: packs[person.language].contact.thanks }];
 }
 
 export function dueAt(created: Date, timeZone: string, days = 1) {
@@ -56,7 +120,7 @@ export async function listEscalations(organisationId: string, preview?: string) 
   const { data, error } = await db
     .from("escalations")
     .select(
-      "id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, closed_at, responses!inner(text_encrypted, checkin_schedule(touchpoint))",
+      "id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, contact_method, not_serious, closed_at, responses!inner(text_encrypted, checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .order("created_at", { ascending: false });
@@ -91,11 +155,16 @@ export async function getEscalation(organisationId: string, id: string, actor: s
   if (!found) return { error: "Not found", code: 404 };
   const { data, error } = await db
     .from("escalations")
-    .select("closure_sent_at, responses!inner(text_encrypted, language, person_id, people!inner(team))")
+    .select("closure_sent_at, contact_phone_encrypted, responses!inner(text_encrypted, language, person_id, people!inner(team, code_name, role, start_date))")
     .eq("id", id)
     .single();
   if (error) throw error;
-  const reply = data.responses as unknown as { text_encrypted: string | null; language: Language; person_id: string; people: { team: string } };
+  const reply = data.responses as unknown as {
+    text_encrypted: string | null;
+    language: Language;
+    person_id: string;
+    people: { team: string; code_name: string; role: string; start_date: string };
+  };
   await audit(actor, "read_reply_text", found.response_id);
   const { data: org, error: orgError } = await db
     .from("organisations")
@@ -121,6 +190,10 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     ...found,
     closure_sent_at: data.closure_sent_at,
     team: reply.people.team,
+    code_name: reply.people.code_name,
+    role: reply.people.role,
+    start_date: reply.people.start_date,
+    phone: data.contact_phone_encrypted ? decrypt(data.contact_phone_encrypted) : null,
     text: reply.text_encrypted ? decrypt(reply.text_encrypted) : null,
     language: reply.language,
     can_send_closure: !found.dont_contact && !!(await reachable(reply.person_id)),

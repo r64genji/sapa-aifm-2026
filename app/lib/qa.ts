@@ -114,7 +114,7 @@ async function important(person: Person, known: Awaited<ReturnType<typeof groupL
     return escalate(person, responseId, keyword, keyword ? null : category);
   }
   const contacts = await contactsOf(person.organisation_id);
-  return [pack.qa.important, ...contacts.general].join("\n");
+  return { text: [pack.qa.important, ...contacts.general].join("\n") };
 }
 
 async function awaitingAi(person: Person, text: string): Promise<Reply[]> {
@@ -168,7 +168,7 @@ export async function ask(person: Person, text: string, forced: boolean): Promis
   const pack = packs[person.language];
   const known = await groupList(person.organisation_id);
   const keyword = detect(text);
-  if (keyword) return [{ text: await important(person, known, text, topicOfCategory[keyword], keyword) }];
+  if (keyword) return [await important(person, known, text, topicOfCategory[keyword], keyword)];
 
   const pages = await answerPages(person.organisation_id, person.language);
   const earlier = await memory(person);
@@ -177,14 +177,14 @@ export async function ask(person: Person, text: string, forced: boolean): Promis
   if (!result) return awaitingAi(person, text);
 
   if (result.important_topic !== "none") {
-    return [{ text: await important(person, known, text, result.important_topic, null) }];
+    return [await important(person, known, text, result.important_topic, null)];
   }
 
   if (result.kind === "feedback" && !forced) {
     const responseId = await storeUnprompted(person, text);
     const tagged = await tagReply(person.organisation_id, responseId, text);
     if (tagged.status === "awaiting_ai") return [{ text: pack.checkin.gotIt }];
-    if (tagged.tag.escalate) return [{ text: await escalate(person, responseId, null, tagged.tag.escalate_category) }];
+    if (tagged.tag.escalate) return [await escalate(person, responseId, null, tagged.tag.escalate_category)];
     return [{ text: pack.checkin.thanks }];
   }
 

@@ -156,8 +156,8 @@
   "notice": "Update from HR: {note}",
   "closure": "HR has finished looking into what you shared. If you want to talk to HR again, you can reach them here:",
   "safety": {
-    "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will contact you within 1 working day. If you are in danger now, call 999.\nYou can also reach:",
-    "forcedLabour": "Thank you for telling us. Nobody may keep your passport or ID, make you pay a debt or fee to keep your job, or stop you from leaving where you live. This goes to HR only. Your manager cannot see it. HR will contact you within 1 working day.\nYou can also reach:",
+    "message": "Thank you for telling us. This is serious, so it goes to HR only. Your manager cannot see it. HR will read it within 1 working day. If you are in danger now, call 999.\nYou can also reach:",
+    "forcedLabour": "Thank you for telling us. Nobody may keep your passport or ID, make you pay a debt or fee to keep your job, or stop you from leaving where you live. This goes to HR only. Your manager cannot see it. HR will read it within 1 working day.\nYou can also reach:",
     "labourAuthority": "Labour Department (Jabatan Tenaga Kerja): [SLOT: contact, verified before launch]",
     "tribunal": "Tribunal for Anti-Sexual Harassment: [SLOT: contact, verified before launch]",
     "spellings": { "pasport": "passport", "u": "you", "ur": "your" },
@@ -250,5 +250,6 @@
     "visibility": "Who may read your answers:",
     "question": "Your question:",
     "answer": "Answer sent:"
-  }
+  },
+  "contact": {"ask": "Do you want HR to contact you?", "yes": "Yes, contact me", "no": "No, just let HR know", "how": "How should HR contact you?", "call": "Call me", "meet": "Meet me in person", "sharePrompt": "Tap the button below to share your phone number with HR. Only HR can see it.", "share": "Share my phone number", "thanks": "Thank you. HR will contact you within 1 working day.", "noThanks": "OK. HR will not contact you. You can still use the contacts above."}
 }
