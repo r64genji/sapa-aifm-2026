@@ -17,20 +17,20 @@ export class ApiError extends Error {
   }
 }
 
+function signedOut(): never {
+  if (process.env.NODE_ENV === "development") void supabase.auth.signOut({ scope: "local" }).finally(() => window.location.reload());
+  else window.location.href = "/auth/login";
+  throw new ApiError(401, "Signed out");
+}
+
 async function request(path: string, init: RequestInit = {}) {
   const access = await token();
-  if (!access) {
-    window.location.href = "/auth/login";
-    throw new ApiError(401, "Signed out");
-  }
+  if (!access) signedOut();
   const response = await fetch(path, {
     ...init,
     headers: { ...(init.body ? { "content-type": "application/json" } : {}), ...init.headers, authorization: `Bearer ${access}` },
   });
-  if (response.status === 401) {
-    window.location.href = "/auth/login";
-    throw new ApiError(401, "Signed out");
-  }
+  if (response.status === 401) signedOut();
   const text = await response.text();
   const body = text ? (() => { try { return JSON.parse(text); } catch { return text; } })() : null;
   if (!response.ok) throw new ApiError(response.status, typeof body === "object" && body?.error ? body.error : String(body ?? response.statusText));

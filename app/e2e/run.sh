@@ -6,12 +6,16 @@ exec 9>/tmp/sapa-e2e.lock
 echo "Waiting for the e2e lock..."
 flock 9
 fuser -k -n tcp 54330 54331 54332 >/dev/null 2>&1
+export DEMO_RESET_SECRET=test-demo-reset-secret
 
 log=$(mktemp -d)
 pids=()
 finish() {
   for pid in "${pids[@]}"; do kill -- "-$pid" 2>/dev/null; done
   wait 2>/dev/null
+  docker exec supabase_db_sapa psql -q -U postgres -d postgres -c "update organisations set demo_mode = true" >/dev/null 2>&1 \
+    && curl -sf -o /dev/null --max-time 120 -X POST -H "authorization: Bearer $DEMO_RESET_SECRET" http://127.0.0.1:3148/api/demo/reset \
+    || echo "Dev site seed was not restored (is sapa-dev running?)"
   echo "$1"
   exit "$2"
 }
@@ -51,7 +55,6 @@ export GEMINI_MODEL_ID=test-gemini
 export GEMINI_MODEL_ID_MEDIUM=test-gemini-medium
 export DEEPSEEK_MODEL_ID=test-deepseek
 export DISPATCH_SECRET=test-dispatch-secret
-export DEMO_RESET_SECRET=test-demo-reset-secret
 export SEED_USER_PASSWORD=test-seed-password
 export REPLY_ENCRYPTION_KEY=c2FwYS10ZXN0LXJlcGx5LWVuY3J5cHRpb24ta2V5ISE=
 
