@@ -260,12 +260,7 @@ function Hero({ impact }: { impact: Impact }) {
             </span>
           ) : null}
         </div>
-        <span className="sp-num sp-meta">
-          <b style={{ color: "var(--ink)" }}>
-            {retention.k} of {retention.n}
-          </b>{" "}
-          new hires still here after six months
-        </span>
+        <span className="sp-num sp-meta">{retention.text}</span>
         <div role="img" aria-label={`${kept}% now.${base !== null ? ` ${base}% before Sapa.` : ""} Target ${target}%.`} className="flex flex-col gap-1.5 pt-1.5">
           <div className="relative h-3.5 rounded-[7px]" style={{ background: "var(--track-empty)" }}>
             <div className="sp-grow-x absolute inset-y-0 left-0 rounded-[7px]" style={{ width: `${kept}%`, background: "linear-gradient(90deg, var(--fixes-soft), var(--fixes) 40%)", ...delay(150) }} />
