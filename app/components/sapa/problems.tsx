@@ -425,7 +425,6 @@ export function Problems({ driver }: { driver?: string }) {
   const themes = useApi<Themes>("/api/hr/themes?touchpoint=14");
   const actions = useApi<Action[]>("/api/hr/actions");
   const queue = useApi<ReplyItem[]>("/api/hr/queue");
-  const narrative = useApi<{ narrative: string | null }>("/api/hr/themes/narrative?touchpoint=14", 60000);
   if (!themes.data || !actions.data) return <Loading />;
 
   const cards = [...themes.data.cards].sort((a, b) => (b.n ?? -1) - (a.n ?? -1));
@@ -493,13 +492,6 @@ export function Problems({ driver }: { driver?: string }) {
           <span className="sp-meta">These do not change with the problem you pick.</span>
         </div>
         <div className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))" }}>
-          {narrative.data?.narrative ? (
-            <div className="sp-card flex flex-col gap-2 px-[18px] py-4">
-              <h3 className="m-0 text-[15px] font-bold leading-5">What is going on</h3>
-              <AiMark label="Summary of the counts" />
-              <p className="m-0 sp-ai-voice">{narrative.data.narrative}</p>
-            </div>
-          ) : null}
           <div className="sp-card flex flex-col gap-2.5 px-[18px] py-4">
             <div className="flex flex-col gap-0.5">
               <h3 className="m-0 text-[15px] font-bold leading-5">For HR only: context</h3>

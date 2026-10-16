@@ -366,12 +366,14 @@ export default function Page() {
             {activity.length === 0 ? <span className="sp-muted">Nothing yet</span> : null}
           </Card>
 
-          <Card title="Sent to Speak Up" meta={escalations.data ? `${escalations.data.length} so far` : undefined}>
-            <span className="sp-muted">Serious matters go to HR through Contoh Speak Up, outside Sapa. Nothing to do here.</span>
-            <Link href="/concerns" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
-              See what they wrote
-            </Link>
-          </Card>
+          {escalations.data?.length ? (
+            <p className="sp-caption m-0 px-1">
+              Sapa sent {escalations.data.length} serious {escalations.data.length === 1 ? "matter" : "matters"} to Contoh Speak Up.{" "}
+              <Link href="/concerns" className="sp-muted">
+                View
+              </Link>
+            </p>
+          ) : null}
         </aside>
       </div>
     </>
