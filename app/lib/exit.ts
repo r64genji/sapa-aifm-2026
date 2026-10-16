@@ -114,6 +114,6 @@ export async function exitText(person: Person, text: string): Promise<Reply[] | 
     return { status: "awaiting_ai" as const };
   });
   const model = result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null;
-  if (keyword || model) return [{ text: await escalate(person, responseId, keyword, model) }];
+  if (keyword || model) return [await escalate(person, responseId, keyword, model)];
   return [{ text: packs[person.language].exit.thanks }];
 }

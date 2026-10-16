@@ -40,7 +40,7 @@ function OpenRow({ c }: { c: Concern }) {
       </span>
       <span className="flex w-full flex-col gap-1.5 sm:w-[180px] sm:shrink-0">
         <span className="font-semibold">{next.label}</span>
-        <span className="flex gap-[3px]" role="img" aria-label={`Step ${next.step} of 3: ${["Acknowledge", "Contact", "Outcome and close"][next.step - 1]}`}>
+        <span className="flex gap-[3px]" role="img" aria-label={`Step ${next.step} of 3: ${["Acknowledge", "Contact", "Close"][next.step - 1]}`}>
           {[1, 2, 3].map((n) => (
             <span key={n} className="h-1 flex-1" style={{ borderRadius: "var(--radius-track)", background: n < next.step ? "var(--ink)" : n === next.step ? "var(--serious)" : "var(--track-empty)" }} />
           ))}

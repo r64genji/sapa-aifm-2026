@@ -9,6 +9,7 @@ import {
   hrRequest,
   hrToken,
   joined,
+  postUpdate,
   resetDemo,
   say,
   scriptModel,
@@ -16,6 +17,7 @@ import {
   sessionClient,
   settle,
   tap,
+  update,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -264,4 +266,35 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   const manager = await hrToken("raj@contoh.test");
   const denied = await fetch(`${appUrl}/api/hr/escalations/${alert.id}`, { headers: { authorization: `Bearer ${manager}` } });
   assert.equal(denied.status, 401);
+});
+
+async function caseOf(chat: number) {
+  const res = await hrRequest(`/api/hr/escalations/${(await escalationFor(chat)).id}`, "GET");
+  const { contact_method, phone, dont_contact } = await res.json();
+  return { contact_method, phone, dont_contact };
+}
+
+test("R14: the hire chooses to be called and shares their own number, another says no, and a shared number of someone else is ignored", async () => {
+  await tap(crisis, en.contact.yes);
+  await tap(crisis, en.contact.call);
+  const prompt = (await sentTo(crisis)).at(-1)!;
+  assert.equal(prompt.text, en.contact.sharePrompt);
+  assert.deepEqual((prompt.reply_markup as { keyboard: unknown }).keyboard, [[{ text: en.contact.share, request_contact: true }]]);
+  await postUpdate(update("contact", { chat_id: crisis, user_id: crisis, phone: "+60123456789" }));
+  await settle();
+  assert.equal((await sentTo(crisis)).at(-1)!.text, en.contact.thanks);
+  assert.deepEqual(await caseOf(crisis), { contact_method: "call", phone: "+60123456789", dont_contact: false });
+
+  await tap(modelOnly, en.contact.yes);
+  await tap(modelOnly, en.contact.meet);
+  assert.equal((await sentTo(modelOnly)).at(-1)!.text, en.contact.thanks);
+  const before = (await sentTo(modelOnly)).length;
+  await postUpdate(update("contact", { chat_id: modelOnly, user_id: 1, phone: "+60111111111" }));
+  await settle();
+  assert.equal((await sentTo(modelOnly)).length, before);
+  assert.deepEqual(await caseOf(modelOnly), { contact_method: "meet", phone: null, dont_contact: false });
+
+  await tap(passport, en.contact.no);
+  assert.equal((await sentTo(passport)).at(-1)!.text, en.contact.noThanks);
+  assert.deepEqual(await caseOf(passport), { contact_method: null, phone: null, dont_contact: true });
 });

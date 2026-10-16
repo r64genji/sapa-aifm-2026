@@ -77,8 +77,8 @@ export async function retryReply(organisationId: string, responseId: string) {
   const result = await tagReply(organisationId, responseId, decrypt(data.text_encrypted));
   if (result.status !== "awaiting_ai" && result.tag.escalate && !data.escalations) {
     const person = await reachable(data.person_id);
-    const text = await escalate(person ?? ({ organisation_id: organisationId, language: data.language } as Person), responseId, null, result.tag.escalate_category);
-    if (person) await send(person.telegram_chat_id!, { text });
+    const reply = await escalate(person ?? ({ organisation_id: organisationId, language: data.language } as Person), responseId, null, result.tag.escalate_category);
+    if (person) await send(person.telegram_chat_id!, reply);
   }
   return { status: result.status };
 }
@@ -190,8 +190,8 @@ export async function reviewReply(
     if (responseError) throw responseError;
     if (!response.escalations) {
       const person = await reachable(response.person_id);
-      const text = await escalate(person ?? ({ organisation_id: organisationId, language: response.language } as Person), responseId, null, "none");
-      if (person) await send(person.telegram_chat_id!, { text });
+      const reply = await escalate(person ?? ({ organisation_id: organisationId, language: response.language } as Person), responseId, null, "none");
+      if (person) await send(person.telegram_chat_id!, reply);
     }
   }
   await resolveChallenge(responseId);

@@ -121,8 +121,8 @@
   "notice": "HR 的最新消息：{note}",
   "closure": "HR 已经处理完你分享的事情。如果你想再和 HR 谈谈，可以通过以下方式联系 HR：",
   "safety": {
-    "message": "谢谢你告诉我们。这件事很严重，所以只会交给 HR，你的主管看不到。HR 会在 1 个工作日内联系你。如果你现在有危险，请拨打 999。\n你也可以联系：",
-    "forcedLabour": "谢谢你告诉我们。任何人都不得扣留你的护照或身份证，不得强迫你为保住工作而偿还债务或缴费，也不得阻止你离开住处。这件事只会交给 HR，你的主管看不到。HR 会在 1 个工作日内联系你。\n你也可以联系：",
+    "message": "谢谢你告诉我们。这件事很严重，所以只会交给 HR，你的主管看不到。HR 会在 1 个工作日内查看。如果你现在有危险，请拨打 999。\n你也可以联系：",
+    "forcedLabour": "谢谢你告诉我们。任何人都不得扣留你的护照或身份证，不得强迫你为保住工作而偿还债务或缴费，也不得阻止你离开住处。这件事只会交给 HR，你的主管看不到。HR 会在 1 个工作日内查看。\n你也可以联系：",
     "labourAuthority": "劳工局 (Jabatan Tenaga Kerja)：[SLOT: contact, verified before launch]",
     "tribunal": "反性骚扰法庭 (Tribunal Anti Gangguan Seksual)：[SLOT: contact, verified before launch]",
     "spellings": {},
@@ -196,5 +196,6 @@
     "visibility": "谁可以看你的回答：",
     "question": "你的问题：",
     "answer": "发给你的回答："
-  }
+  },
+  "contact": {"ask": "你希望 HR 联系你吗？", "yes": "是，请联系我", "no": "不用，告诉 HR 就好", "how": "HR 应该怎样联系你？", "call": "打电话给我", "meet": "当面见我", "sharePrompt": "请按下面的按钮，把你的电话号码分享给 HR。只有 HR 能看到。", "share": "分享我的电话号码", "thanks": "谢谢。HR 会在 1 个工作日内联系你。", "noThanks": "好的。HR 不会联系你。你仍然可以使用上面的联系方式。"}
 }

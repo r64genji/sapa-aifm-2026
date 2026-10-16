@@ -9,6 +9,9 @@ export async function send(chatId: number, reply: Reply) {
     body: JSON.stringify({
       chat_id: chatId,
       text: reply.text,
+      ...(reply.phone && {
+        reply_markup: { keyboard: [[{ text: reply.phone, request_contact: true }]], one_time_keyboard: true, resize_keyboard: true },
+      }),
       ...(reply.buttons && {
         reply_markup: {
           inline_keyboard: [

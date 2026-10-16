@@ -122,8 +122,8 @@
   "notice": "Kemas kini daripada HR: {note}",
   "closure": "HR telah selesai menyemak perkara yang anda kongsikan. Jika anda mahu bercakap dengan HR lagi, anda boleh hubungi HR di sini:",
   "safety": {
-    "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, jadi ia hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda juga boleh menghubungi:",
-    "forcedLabour": "Terima kasih kerana memberitahu kami. Tiada sesiapa boleh menyimpan pasport atau kad pengenalan anda, memaksa anda membayar hutang atau yuran untuk mengekalkan kerja anda, atau menghalang anda keluar dari tempat tinggal anda. Perkara ini hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan menghubungi anda dalam masa 1 hari bekerja.\nAnda juga boleh menghubungi:",
+    "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, jadi ia hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan membacanya dalam masa 1 hari bekerja. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda juga boleh menghubungi:",
+    "forcedLabour": "Terima kasih kerana memberitahu kami. Tiada sesiapa boleh menyimpan pasport atau kad pengenalan anda, memaksa anda membayar hutang atau yuran untuk mengekalkan kerja anda, atau menghalang anda keluar dari tempat tinggal anda. Perkara ini hanya dihantar kepada HR. Pengurus anda tidak boleh melihatnya. HR akan membacanya dalam masa 1 hari bekerja.\nAnda juga boleh menghubungi:",
     "labourAuthority": "Jabatan Tenaga Kerja: [SLOT: contact, verified before launch]",
     "tribunal": "Tribunal Anti Gangguan Seksual: [SLOT: contact, verified before launch]",
     "spellings": { "x": "tak", "tk": "tak", "pasport": "pasport", "passport": "pasport", "agen": "ejen", "sy": "saya", "aku": "saya" },
@@ -201,5 +201,6 @@
     "visibility": "Siapa boleh membaca jawapan anda:",
     "question": "Soalan anda:",
     "answer": "Jawapan yang dihantar:"
-  }
+  },
+  "contact": {"ask": "Adakah anda mahu HR menghubungi anda?", "yes": "Ya, hubungi saya", "no": "Tidak, maklumkan HR sahaja", "how": "Bagaimana HR patut menghubungi anda?", "call": "Telefon saya", "meet": "Jumpa saya", "sharePrompt": "Tekan butang di bawah untuk berkongsi nombor telefon anda dengan HR. Hanya HR boleh melihatnya.", "share": "Kongsi nombor telefon saya", "thanks": "Terima kasih. HR akan menghubungi anda dalam masa 1 hari bekerja.", "noThanks": "Baik. HR tidak akan menghubungi anda. Anda masih boleh guna hubungan di atas."}
 }

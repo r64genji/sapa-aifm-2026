@@ -37,7 +37,7 @@ export const contactedAt = (c: Concern) => c.contact_recorded_at || c.dont_conta
 export function nextStep(c: Concern) {
   if (!c.acknowledged_at) return { label: "Acknowledge", step: 1 };
   if (!contactedAt(c)) return { label: "Contact them", step: 2 };
-  return { label: "Record outcome", step: 3 };
+  return { label: "Close the case", step: 3 };
 }
 
 export function clockText(c: Concern) {
