@@ -21,7 +21,7 @@
 - Challenge 4 · RETAIN: Early Employee Disengagement
 - "We are building Sapa for HR teams so they can hear new-hire problems before they resign."
 
-**Visual:** The 3 lines appear one by one. A Telegram bubble types out Mei Ling's message: *"Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu."*
+**Visual:** The 3 lines appear one by one. A Telegram bubble types out Mei Ling's message: *"Boss said billing first, then said disputes first, now I’m confused"* (a real seed reply; the phone shows the real bot questions)
 
 **We say:** "This is Mei Ling. Day 14 at her first job. She does not know which task to do first. Today, nobody at her company will read this message. We are [team], and this is Sapa."
 
@@ -78,12 +78,12 @@
 **On the slide**
 - Input: a new hire's reply
 - AI: labels it and shows the words it used
-- Output: "4 of 6 who answered · AP Asia"
+- Output: "23 of 64 raised role clarity"
 - Human: HR confirms and sends a fix to the team lead
 
-**Visual:** Mei Ling's message travels through 4 boxes. In the AI box, the evidence words get a yellow highlight and a purple `AI · Unclear priorities` tag appears. In the human box, the tag turns into "✓ Aishah".
+**Visual:** Mei Ling's message travels through 4 boxes. In the AI box, the evidence words get a yellow highlight and a purple `AI · Unclear task priorities` tag appears. In the human box, the tag turns into "✓ Aishah".
 
-**We say:** "Follow one message. Mei Ling writes in Manglish. The AI labels it 'unclear priorities' and highlights the exact words. Sapa counts it with the others: 4 of 6 new hires in her team say the same. Aishah checks the label, accepts it, and sends a fix to Raj. A person decides every step."
+**We say:** "Follow one message. Mei Ling writes in Manglish. The AI labels it 'unclear task priorities' and highlights the exact words. Sapa counts it with the others: 23 of 64 new hires raised role clarity at Day 14. Aishah checks the label, accepts it, and sends a fix to Raj. A person decides every step."
 
 ### 6 · How AI Adds Value
 **Labels:** What AI does · Why it beats manual · Why it beats survey tools
