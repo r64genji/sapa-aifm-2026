@@ -123,10 +123,7 @@
   "notice": "Kemas kini daripada HR: {note}",
   "closure": "HR telah selesai menyemak perkara yang anda kongsikan. Jika anda mahu bercakap dengan HR lagi, anda boleh hubungi HR di sini:",
   "safety": {
-    "message": "Terima kasih kerana memberitahu kami. Perkara ini serius, dan Sapa bukan saluran yang betul untuknya. Sila buat aduan rasmi. Aduan rasmi adalah 100% tanpa nama. Pengurus anda tidak boleh melihat apa yang anda tulis di sini. Jika anda dalam bahaya sekarang, hubungi 999.\nAnda boleh menghubungi:",
-    "forcedLabour": "Terima kasih kerana memberitahu kami. Tiada sesiapa boleh menyimpan pasport atau kad pengenalan anda, memaksa anda membayar hutang atau yuran untuk mengekalkan kerja anda, atau menghalang anda keluar dari tempat tinggal anda. Sapa bukan saluran yang betul untuk perkara ini. Sila buat aduan rasmi. Aduan rasmi adalah 100% tanpa nama. Pengurus anda tidak boleh melihat apa yang anda tulis di sini.\nAnda boleh menghubungi:",
-    "labourAuthority": "Jabatan Tenaga Kerja: [SLOT: contact, verified before launch]",
-    "tribunal": "Tribunal Anti Gangguan Seksual: [SLOT: contact, verified before launch]",
+    "message": "Terima kasih kerana memberitahu kami. Perkara ini serius. Sila laporkan kepada HR melalui Contoh Speak Up. Anda boleh kekal 100% tanpa nama.",
     "spellings": { "x": "tak", "tk": "tak", "pasport": "pasport", "passport": "pasport", "agen": "ejen", "sy": "saya", "aku": "saya" },
     "keywords": {
       "forced_labour_indicator": [

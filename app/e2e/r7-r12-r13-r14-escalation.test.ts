@@ -22,7 +22,6 @@ const en = read("../data/packs/en.json");
 const [organisation] = read("../data/seed/organisations.json");
 const contacts = organisation.escalation_contacts;
 const seeded = new Set(read("../data/seed/escalations.json").map((e: { id: string }) => e.id));
-const probes: string[] = en.checkin.probes.map((p: { text: string }) => p.text);
 const [crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, held] = [401, 402, 403, 404, 405, 406, 407, 408, 409, 410].map(
   (n) => 5550000000 + n,
 );
@@ -73,14 +72,11 @@ before(async () => {
   for (const chat of [crisis, passport, epf, modelOnly, plain, mixed, retried, held]) await reachOpenQuestion(chat);
 });
 
-test("R13, R14: a crisis reply escalates by keyword while the model times out, tells the hire to file an official complaint with the configured contacts and no contact question, and HR sees it at once", async () => {
+test("R13, R14: a crisis reply escalates by keyword while the model times out, and the hire gets only the short Contoh Speak Up message, with no 999, helpline or contact question", async () => {
   await scriptModel("omniroute", [{ kind: "timeout" }]);
   await scriptModel("deepseek", [{ kind: "timeout" }]);
   const replies = await answer(crisis, "I can't take it anymore, I want to kill myself");
-  assert.equal(replies.length, 1);
-  assert.ok(replies[0].includes(en.safety.message));
-  assert.ok(en.safety.message.includes("Please file an official complaint. Official complaints are 100% anonymous."));
-  for (const contact of contacts.general) assert.ok(replies[0].includes(contact));
+  assert.deepEqual(replies, ["Thank you for telling us. This is serious. Please report it to HR through Contoh Speak Up. You can stay 100% anonymous.\nContoh Speak Up (HR): speakup.contoh.com.my\nEmail: speakup@contoh.com.my\nPhone, 24 hours: 04-5555 0199"]);
   assert.equal((await sentTo(crisis)).at(-1)!.reply_markup, undefined);
 
   const alert = await escalationFor(crisis);
@@ -88,22 +84,12 @@ test("R13, R14: a crisis reply escalates by keyword while the model times out, t
   assert.equal(alert.source, "keyword");
 });
 
-test("R14, R12: a passport held by the agent escalates by keyword, the labour authority stays after HR removes contacts, and no probe follows", async () => {
-  const res = await hrRequest("/api/hr/settings/escalation-contacts", "PUT", {
-    general: contacts.general,
-    forced_labour_indicator: [],
-  });
-  assert.equal(res.status, 200);
+test("R14, R12: a passport held by the agent escalates by keyword with the same HR complaint message and no outside authority, and no probe follows", async () => {
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ evidence_quote: "The agent holds my passport", probe_id: "ROLE_CLARITY" }) },
   ]);
   const replies = await answer(passport, "The agent holds my passport");
-  assert.equal(replies.length, 1);
-  assert.ok(replies[0].includes(en.safety.forcedLabour));
-  assert.ok(replies[0].includes(en.safety.labourAuthority));
-  assert.ok(en.safety.labourAuthority.includes("[SLOT: contact, verified before launch]"));
-  for (const contact of contacts.forced_labour_indicator) assert.ok(!replies[0].includes(contact));
-  assert.ok(!probes.some((probe) => replies.includes(probe)));
+  assert.deepEqual(replies, [[en.safety.message, ...contacts.general].join("\n")]);
 
   const alert = await escalationFor(passport);
   assert.equal(alert.category, "forced_labour_indicator");
@@ -172,7 +158,7 @@ test("R7: a manager gets nothing for escalations, and an escalated reply is in n
 test("R30, R13: a passport message typed while a 1-5 question is open gets the safety message and an escalation, and the question stays open", async () => {
   const replies = await answer(onScale, "The agent holds my passport");
   assert.equal(replies.length, 1);
-  assert.ok(replies[0].includes(en.safety.forcedLabour));
+  assert.ok(replies[0].includes(en.safety.message));
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", onScale).single();
   const { data: stored } = await db.from("responses").select("id, kind").eq("person_id", who!.id);
   assert.deepEqual(stored!.map((row) => row.kind), ["unprompted"]);
@@ -188,20 +174,19 @@ async function responsesOf(chat: number) {
   return data!.map((row) => row.id as string);
 }
 
-test("R13, R14: a disclosure typed while a 1-5 question is open escalates by keyword with the outside contact", async () => {
+test("R13, R14: a disclosure typed while a 1-5 question is open escalates by keyword with the HR complaint message", async () => {
   const replies = await answer(scale, "The agent holds my passport");
   assert.equal(replies.length, 1);
-  assert.ok(replies[0].includes(en.safety.forcedLabour));
-  assert.ok(replies[0].includes(en.safety.labourAuthority));
+  assert.ok(replies[0].includes(en.safety.message));
   const [responseId] = await responsesOf(scale);
   const alert = (await escalations()).find((row) => row.response_id === responseId)!;
   assert.equal(alert.category, "forced_labour_indicator");
 });
 
-test("R13, R14: a Manglish passport report with an English threat still gets the outside labour contact", async () => {
+test("R13, R14: a Manglish passport report with an English threat still escalates with the HR complaint message", async () => {
   const replies = await answer(mixed, "Ejen simpan pasport saya and boss threatened to cut my pay");
   assert.equal(replies.length, 1);
-  assert.ok(replies[0].includes(en.safety.labourAuthority));
+  assert.ok(replies[0].includes(en.safety.message));
   assert.equal((await escalationFor(mixed)).category, "forced_labour_indicator");
 });
 
@@ -240,7 +225,7 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   const body = await res.json();
   assert.equal(body.text, "The agent holds my passport");
   assert.equal(body.category, "forced_labour_indicator");
-  assert.ok(body.sent_by_bot.join("\n").includes(en.safety.forcedLabour));
+  assert.ok(body.sent_by_bot.join("\n").includes(en.safety.message));
   const { data: rows } = await db.from("audit_log").select("action, at").eq("target", alert.response_id).eq("action", "read_reply_text");
   assert.deepEqual(rows, [{ action: "read_reply_text", at: "2026-10-15T15:00:00+00:00" }]);
 

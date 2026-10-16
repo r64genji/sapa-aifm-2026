@@ -15,12 +15,14 @@
     "holidays": [],
     "escalation_contacts": {
       "general": [
-        "Official complaint line (anonymous): 04-5555 0199",
-        "Talian HEAL (mental health): 15555",
-        "Befrienders Kuala Lumpur: 03-7627 2929"
+        "Contoh Speak Up (HR): speakup.contoh.com.my",
+        "Email: speakup@contoh.com.my",
+        "Phone, 24 hours: 04-5555 0199"
       ],
       "forced_labour_indicator": [
-        "Official complaint line (anonymous): 04-5555 0199"
+        "Contoh Speak Up (HR): speakup.contoh.com.my",
+        "Email: speakup@contoh.com.my",
+        "Phone, 24 hours: 04-5555 0199"
       ]
     }
   }

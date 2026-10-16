@@ -122,10 +122,7 @@
   "notice": "HR 的最新消息：{note}",
   "closure": "HR 已经处理完你分享的事情。如果你想再和 HR 谈谈，可以通过以下方式联系 HR：",
   "safety": {
-    "message": "谢谢你告诉我们。这件事很严重，Sapa 不是处理它的地方。请提交正式投诉。正式投诉是 100% 匿名的。你的主管看不到你在这里写的内容。如果你现在有危险，请拨打 999。\n你可以联系：",
-    "forcedLabour": "谢谢你告诉我们。任何人都不得扣留你的护照或身份证，不得强迫你为保住工作而偿还债务或缴费，也不得阻止你离开住处。Sapa 不是处理这件事的地方。请提交正式投诉。正式投诉是 100% 匿名的。你的主管看不到你在这里写的内容。\n你可以联系：",
-    "labourAuthority": "劳工局 (Jabatan Tenaga Kerja)：[SLOT: contact, verified before launch]",
-    "tribunal": "反性骚扰法庭 (Tribunal Anti Gangguan Seksual)：[SLOT: contact, verified before launch]",
+    "message": "谢谢你告诉我们。这件事很严重。请通过 Contoh Speak Up 向 HR 报告。你可以 100% 匿名。",
     "spellings": {},
     "keywords": {
       "forced_labour_indicator": [

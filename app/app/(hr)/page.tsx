@@ -27,7 +27,7 @@ import {
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
 type Me = { today: string };
-type Escalation = { id: string; category: string; created_at: string; closed_at: string | null; waited_hours: number; overdue: boolean };
+type Escalation = { id: string };
 type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
@@ -133,7 +133,6 @@ export default function Page() {
   const group = (hires.data ?? []).filter((h) => h.start_date >= since);
   const intakes = [...new Set(group.map((h) => h.start_date.slice(0, 7)))].sort();
   const activity = [
-    ...(escalations.data ?? []).map((e) => ({ at: e.created_at, what: "A serious concern arrived" })),
     ...fixes.flatMap((a) => [
       { at: a.created_at, what: `Fix drafted: ${a.title}` },
       ...(a.done_at ? [{ at: a.done_at, what: `Fix done: ${a.title}` }] : []),
@@ -365,6 +364,13 @@ export default function Page() {
               </div>
             ))}
             {activity.length === 0 ? <span className="sp-muted">Nothing yet</span> : null}
+          </Card>
+
+          <Card title="Sent to Speak Up" meta={escalations.data ? `${escalations.data.length} so far` : undefined}>
+            <span className="sp-muted">Serious matters go to HR through Contoh Speak Up, outside Sapa. Nothing to do here.</span>
+            <Link href="/concerns" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
+              See what they wrote
+            </Link>
           </Card>
         </aside>
       </div>

@@ -133,7 +133,7 @@ The AI was unsure, could not find clear evidence, or flagged a reply for follow-
 
 ### Flow C — A serious concern
 
-A reply mentions harassment, bullying, a safety risk, self-harm, or a sign of forced labour (a held passport or ID, debt to an agent, restricted movement; wage deductions only with another sign). The bot sends the person a fixed message: file an official complaint, which is 100% anonymous, plus the complaint line and helplines. For forced labour and sexual harassment it also names an outside authority that HR cannot remove (R14). Official complaints are a separate company system, so Sapa has no case steps, clock or closure. HR sees a list with a count, each reply, the person's code name and what the bot said. The tone is quiet and serious, not alarming.
+A reply mentions harassment, bullying, a safety risk, self-harm, or a sign of forced labour (a held passport or ID, debt to an agent, restricted movement; wage deductions only with another sign). The bot sends the person one short fixed message: report it to HR through the company's speak-up channel, where they can stay 100% anonymous, plus that channel's web form, email and phone. It names no 999, helpline or outside authority (R14). Official complaints are a separate company system, so Sapa has no case steps, clock or closure. HR sees a list with a count, each reply, the person's code name and what the bot said. The tone is quiet and serious, not alarming.
 
 ### Flow D — The manager carries out a fix
 

@@ -22,4 +22,4 @@ export const categoryName = (c: string) => CATEGORIES[c] ?? c.replace(/_/g, " ")
 
 export const SOURCES: Record<string, string> = { keyword: "keyword check", model: "AI", both: "keyword check and AI" };
 
-export const SENT_TO_COMPLAINTS = "Sapa told them to file an official complaint. Official complaints are anonymous and handled outside Sapa.";
+export const SENT_TO_COMPLAINTS = "Sapa told them to report it to HR through Contoh Speak Up. HR handles it there, not in Sapa.";

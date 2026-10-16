@@ -33,7 +33,7 @@ export async function escalate(person: Person, responseId: string, keyword: stri
     .eq("id", person.organisation_id)
     .single();
   if (orgError) throw orgError;
-  return { text: safeMessage(person.language, category, data.escalation_contacts as Contacts) };
+  return { text: safeMessage(person.language, data.escalation_contacts as Contacts) };
 }
 
 async function latestOpen(personId: string) {
@@ -190,7 +190,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     text: reply.text_encrypted ? decrypt(reply.text_encrypted) : null,
     language: reply.language,
     can_send_closure: !found.dont_contact && !!(await reachable(reply.person_id)),
-    sent_by_bot: safeMessage(reply.language, found.category, contacts).split("\n"),
+    sent_by_bot: safeMessage(reply.language, contacts).split("\n"),
     closure: Object.fromEntries(
       ([...new Set([reply.language, "en"])] as Language[]).map((language) => [language, [packs[language].closure, ...contacts.general].join("\n")]),
     ),
