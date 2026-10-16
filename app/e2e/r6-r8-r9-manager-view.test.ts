@@ -135,9 +135,9 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
       team: "Accounts Payable Asia",
       week: "2026-10-19",
       enough: true,
-      respondents: 10,
+      respondents: 12,
       drivers: {
-        ROLE_CLARITY: 6,
+        ROLE_CLARITY: 8,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
         ONBOARDING_TRAINING: "fewer than 3",
@@ -161,7 +161,7 @@ test("R6, R7, R8, R9: the supervisor's own session reads no reply, tag, escalati
     {
       team: "Accounts Payable Asia",
       week: "2026-10-19",
-      drivers: { ROLE_CLARITY: 6, MANAGER_SUPPORT: "fewer than 3", WORKLOAD: "fewer than 3" },
+      drivers: { ROLE_CLARITY: 8, MANAGER_SUPPORT: "fewer than 3", WORKLOAD: "fewer than 3" },
     },
   ]);
   const { data: hrSees } = await (await sessionClient("hr@contoh.test")).from("manager_snapshots").select("team");
