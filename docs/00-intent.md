@@ -10,6 +10,15 @@ Win the AIFM 2026 pitch on 23 Oct. The live demo is the only thing that matters.
 
 Sapa is a demo, not a real product. It has no real users. Do not build for production.
 
+## Official rules come first
+
+We must not miss anything the organisers require. A missed requirement can lose the win.
+
+- Every task must follow the official rules, requirements and Challenge 4 brief. Use them as the reference.
+- Sources: [docs/07](07-official-rules-and-requirements.md), the challenge guide in [reference/AIFM_2026_Student_Challenge_Guide.md](reference/AIFM_2026_Student_Challenge_Guide.md), and the briefing transcripts in `reference/transcripts/`.
+- Before you call a task done, check it against the deliverables, judging criteria, pitch rules and Responsible AI rules in docs/07.
+- If an official requirement is not on the show-off list below, tell Abraham at once. Do not skip it in silence.
+
 ## What Sapa is
 
 A chat bot that checks in with new employees during their first six months, plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
