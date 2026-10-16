@@ -210,7 +210,10 @@ export async function impact(organisationId: string) {
     day14: day14.sent < org.min_group_size ? null : { answered: day14.answered, of: day14.sent },
     speed,
     intakes,
-    retention_by_intake: intakes.flatMap((entry) => (entry.enough && kept.has(entry.intake) ? [{ intake: entry.intake, ...kept.get(entry.intake)! }] : [])),
+    retention_by_intake: [...kept.entries()]
+      .filter(([, row]) => row.hired >= org.min_group_size)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([intake, row]) => ({ intake, ...row })),
     fixes,
     fixes_note: TREND,
     fixes_line: packs.en.action.scoreNote,

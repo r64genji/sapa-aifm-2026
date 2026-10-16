@@ -255,6 +255,48 @@ a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); 
 .sp-link { font-size: 13px; font-weight: 600; color: var(--problems); background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; transition: text-decoration-color 0.15s ease; text-align: left; }
 .sp-link:hover { text-decoration-color: currentColor; }
 
+@keyframes sp-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes sp-dot-in { from { opacity: 0; transform: scale(0); } 70% { transform: scale(1.25); } to { opacity: 1; transform: scale(1); } }
+@keyframes sp-slide { from { left: var(--from); } }
+@keyframes sp-ring { from { stroke-dasharray: 0 1; } }
+
+.sp-reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms), box-shadow 0.2s ease; }
+.sp-reveal.is-in { opacity: 1; transform: none; }
+.sp-reveal.is-in.sp-lift:hover { transform: translateY(-2px); transition-delay: 0ms; }
+.sp-live:not(.is-in) *, .sp-reveal:not(.is-in) * { animation-play-state: paused !important; }
+.sp-draw { stroke-dasharray: 1; animation: sp-draw 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.15s both; }
+.sp-ring { animation: sp-ring 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+.sp-dot { animation: sp-dot-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-grow-x { transform-origin: left; animation: sp-grow 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-grow-x-r { transform-origin: right; animation: sp-grow 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-grow-y { transform-origin: bottom; animation: sp-grow-y 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-slide { animation: sp-slide 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-pop-in { animation: sp-pop 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-badge { display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-control); font-size: 13px; line-height: 18px; font-weight: 700; }
+.sp-hero { position: relative; overflow: hidden; }
+.sp-hero::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--fixes), var(--problems)); }
+
+.sp-tip { position: relative; display: inline-flex; vertical-align: middle; }
+.sp-tip-btn { all: unset; box-sizing: border-box; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; color: var(--ink-muted); cursor: help; transition: background-color 0.15s ease, color 0.15s ease; }
+.sp-tip-btn:hover { color: var(--ink); background: var(--surface-sunken); }
+.sp-tip-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sp-tip-bubble { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translate(-50%, 4px); width: 260px; max-width: calc(100vw - 32px); box-sizing: border-box; padding: 10px 12px; background: var(--ink); color: #ffffff; font-size: 12px; line-height: 17px; font-weight: 500; border-radius: var(--radius-control); box-shadow: var(--shadow-pop); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s; z-index: 30; text-align: left; white-space: normal; }
+.sp-tip-end .sp-tip-bubble { left: auto; right: 0; transform: translateY(4px); }
+.sp-tip:hover .sp-tip-bubble, .sp-tip:focus-within .sp-tip-bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.sp-tip-end:hover .sp-tip-bubble, .sp-tip-end:focus-within .sp-tip-bubble { transform: none; }
+
+.sp-fixrow { border-top: 1px solid var(--line-soft); }
+.sp-fixrow > summary, .sp-fold > summary { list-style: none; cursor: pointer; transition: background-color 0.15s ease; }
+.sp-fixrow > summary::-webkit-details-marker, .sp-fold > summary::-webkit-details-marker { display: none; }
+.sp-fixrow > summary:hover, .sp-fold > summary:hover { background: var(--surface-sunken); }
+.sp-fixrow[open] { background: var(--surface-sunken); }
+.sp-chev { transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+details[open] > summary .sp-chev { transform: rotate(180deg); }
+details[open] > .sp-open { animation: sp-rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-trow { transition: background-color 0.15s ease; }
+.sp-trow:hover { background: var(--surface-sunken); }
+
 @media (prefers-reduced-motion: reduce) {
+  .sp-reveal { opacity: 1; transform: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
