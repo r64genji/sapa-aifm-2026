@@ -24,6 +24,11 @@ npx supabase db reset --local >>"$log/supabase.log" 2>&1 || fail "supabase db re
 docker exec -i supabase_db_sapa psql -q -U postgres -d postgres -v ON_ERROR_STOP=1 <e2e/test-clock.sql >>"$log/supabase.log" 2>&1 \
   || fail "test clock table"
 eval "$(npx supabase status -o env 2>/dev/null | sed -n 's/^\(API_URL\|PUBLISHABLE_KEY\|SECRET_KEY\)=/SB_&/p')"
+for _ in $(seq 120); do
+  curl -sf -o /dev/null -H "apikey: $SB_PUBLISHABLE_KEY" "$SB_API_URL/rest/v1/" && break
+  sleep 1
+done
+curl -sf -o /dev/null -H "apikey: $SB_PUBLISHABLE_KEY" "$SB_API_URL/rest/v1/" || fail "supabase rest after reset"
 
 export NODE_ENV=test
 export SAPA_TEST=1
