@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CountBar,
+  CountUp,
   Dialog,
   FixTrack,
   LaneSection,
@@ -189,7 +190,7 @@ export default function Page() {
         <LaneTile lane="serious" count={open.length} label={open.length === 1 ? "Serious concern" : "Serious concerns"} hint={open.length ? `Waiting ${oldest} h of 1 working day` : "None open"} href="#serious" />
         <LaneTile
           lane="problems"
-          count={top ? `${top.n} of ${top.m}` : "–"}
+          count={top ? <><CountUp value={top.n ?? 0} /> of <CountUp value={top.m ?? 0} /></> : "–"}
           label={top ? `Raised ${driverName(top.driver).toLowerCase()}` : "Shared problems"}
           hint={top ? `Top problem at ${dayLabel(touchpoint)}` : notEnough?.message}
           href="#problems"

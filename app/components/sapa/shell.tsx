@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Home, Info, MonitorPlay } from "lucide-react";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
 import { Button, LaneIcon, Loading, Waiting } from "./ui";
 
@@ -19,6 +19,15 @@ function NavItem({ href, icon, label, count, serious }: { href: string; icon: Re
       <span className="flex-auto">{label}</span>
       {count ? <span className={`sp-nav-count${serious ? " sp-lane-serious" : ""}`}>{count}</span> : null}
     </Link>
+  );
+}
+
+function Main({ children }: { children: ReactNode }) {
+  const path = usePathname();
+  return (
+    <main key={path.split("/")[1]} className="sp-enter mx-auto box-border flex max-w-[1180px] flex-col gap-6 px-4 pb-14 pt-6 md:px-8 md:pt-8">
+      {children}
+    </main>
   );
 }
 
@@ -48,11 +57,11 @@ export function Shell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col md:flex-row">
       <nav
         aria-label="Main"
-        className="box-border flex w-full flex-col gap-0.5 border-b px-3 py-4 md:sticky md:top-0 md:h-screen md:w-[232px] md:border-b-0 md:border-r md:py-5"
+        className="box-border flex w-full flex-col gap-0.5 border-b px-3 py-4 md:sticky md:top-0 md:h-screen md:w-[232px] md:flex-none md:overflow-y-auto md:border-b-0 md:border-r md:py-5"
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
         <Link href="/" className="flex items-center gap-2.5 px-2.5 pb-4 no-underline md:pb-5" style={{ color: "var(--ink)" }}>
-          <span className="flex h-7 w-7 items-center justify-center text-[15px] font-bold" style={{ borderRadius: "var(--radius-control)", background: "var(--problems)", color: "var(--on-problems)" }}>
+          <span className="flex h-7 w-7 items-center justify-center text-[15px] font-bold shadow-sm transition-transform duration-300 hover:rotate-[-6deg] hover:scale-110" style={{ borderRadius: "var(--radius-control)", background: "linear-gradient(135deg, var(--problems), #0e7a75)", color: "var(--on-problems)" }}>
             S
           </span>
           <span className="text-[17px] font-bold">Sapa</span>
@@ -92,7 +101,7 @@ export function Shell({ children }: { children: ReactNode }) {
         {open.length > 0 ? (
           <Link
             href="/concerns"
-            className="flex flex-wrap items-center gap-2 px-4 py-2 text-[13px] font-semibold no-underline md:px-8"
+            className="sp-fade-in flex flex-wrap items-center gap-2 px-4 py-2 text-[13px] font-semibold no-underline transition-colors hover:brightness-[0.98] md:px-8"
             style={{ background: "var(--serious-soft)", color: "var(--serious-ink)", borderBottom: "1px solid var(--serious-line)" }}
           >
             <LaneIcon lane="serious" size={15} />
@@ -100,7 +109,9 @@ export function Shell({ children }: { children: ReactNode }) {
             <Waiting>oldest waiting {oldest} h of 1 working day</Waiting>
           </Link>
         ) : null}
-        <main className="mx-auto box-border flex max-w-[1180px] flex-col gap-6 px-4 pb-14 pt-6 md:px-8 md:pt-8">{children}</main>
+        <Suspense fallback={<Loading />}>
+          <Main>{children}</Main>
+        </Suspense>
       </div>
     </div>
   );

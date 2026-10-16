@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Clock, MessageSquare, Shield, SquareCheck, Users } from "lucide-react";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 export type Lane = "serious" | "problems" | "ai" | "fixes";
 
@@ -45,10 +45,35 @@ export function Button({ variant = "secondary", lane = "ink", why, href, classNa
   return button;
 }
 
+export function CountUp({ value }: { value: number }) {
+  const [shown, setShown] = useState(0);
+  const from = useRef(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      from.current = value;
+      setShown(value);
+      return;
+    }
+    const start = performance.now();
+    const a = from.current;
+    let frame = 0;
+    const tick = (t: number) => {
+      const k = Math.min((t - start) / 800, 1);
+      const v = Math.round(a + (value - a) * (1 - Math.pow(1 - k, 3)));
+      from.current = v;
+      setShown(v);
+      if (k < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [value]);
+  return <span className="sp-num">{shown}</span>;
+}
+
 export function LaneTile({ lane, count, label, hint, href }: { lane: Lane; count: ReactNode; label: string; hint?: ReactNode; href?: string }) {
   const body = (
     <>
-      <div className="sp-tile-count">{count}</div>
+      <div className="sp-tile-count">{typeof count === "number" ? <CountUp value={count} /> : count}</div>
       <div className="sp-tile-label">{label}</div>
       {hint ? <div className="sp-tile-hint">{hint}</div> : null}
     </>
@@ -233,7 +258,14 @@ export function Empty({ title, sub }: { title: string; sub?: string }) {
 }
 
 export function Loading() {
-  return <div className="sp-muted px-1 py-6">Loading…</div>;
+  return (
+    <div role="status" aria-label="Loading" className="sp-fade-in flex flex-col gap-4 py-2">
+      <div className="sp-skel h-9 w-72 max-w-full" />
+      <div className="sp-skel h-4 w-96 max-w-full" />
+      <div className="sp-skel h-32" />
+      <div className="sp-skel h-32" />
+    </div>
+  );
 }
 
 export function Dialog({ title, children, onClose }: { title: string; children: ReactNode; onClose: () => void }) {

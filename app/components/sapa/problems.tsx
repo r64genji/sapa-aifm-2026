@@ -1,0 +1,512 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { MessageSquare } from "lucide-react";
+import { useApi } from "./data";
+import { Translation, type ReplyItem } from "./reply";
+import { AiMark, Button, CountBar, FixTrack, Loading, Quote, Waiting, dayLabel, driverName, shortDate } from "./ui";
+
+type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number } | { enough: false; have: number; need: number };
+type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; note?: string | null; message?: string };
+type Context = { theme: string; enough: boolean; n?: number; m?: number };
+type Themes = { cards: Card[]; context: Context[] };
+type Detail = {
+  card: Share & { note?: string | null };
+  by_day: (Share & { touchpoint: number })[];
+  by_intake: (Share & { intake: string })[];
+  by_role: (Share & { role: string })[];
+};
+type Groups = { status: "unavailable" } | { status: "ok"; enough: false; have: number; need: number } | { status: "ok"; groups: { title: string; n: number; reply_ids: string[] }[]; not_grouped: number };
+type Entry = { id: string; title: string; text: string; used: number; difference: number | null; evidence: string; result: string };
+type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
+
+const CONTEXT: Record<string, string> = { PAY_BENEFITS: "pay and benefits", GROWTH: "growth", COMMUTE_LOGISTICS: "commute and travel" };
+const STEP: Record<string, number> = { draft: 1, assigned: 2, accepted: 3 };
+const live = (a: Action) => a.status === "draft" || a.status === "assigned" || a.status === "accepted";
+const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "long", timeZone: "UTC" });
+const fixLine = (a: Action) =>
+  a.status === "draft" ? `${a.title} · draft, not sent yet` : a.status === "accepted" ? `${a.title} · ${a.owner} accepted` : `${a.title} · sent to ${a.owner}${a.assigned_at ? ` ${shortDate(a.assigned_at)}` : ""}, not accepted yet`;
+const counted = (r: ReplyItem) => r.status === "reviewed" || (r.status === "ok" && r.counted !== false);
+
+function Bar({ s, label }: { s: Share; label: string }) {
+  return s.enough ? <CountBar count={s.n} of={s.m} label={label} /> : <CountBar notEnough have={s.have} need={s.need} />;
+}
+
+function Step({ n, title, sub }: { n: number; title: string; sub: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <span aria-hidden="true" className="sp-step">
+        {n}
+      </span>
+      <div className="flex flex-col gap-0.5">
+        <h3 className="m-0 text-[18px] font-bold leading-6">{title}</h3>
+        <span className="sp-meta">{sub}</span>
+      </div>
+    </div>
+  );
+}
+
+function Spark({ points, label }: { points: { n: number; m: number }[]; label: string }) {
+  const top = Math.max(...points.map((p) => p.n / p.m), 0.01);
+  const xy = points.map((p, i) => [4 + (i * 112) / Math.max(points.length - 1, 1), 37 - (p.n / p.m / top) * 30]);
+  const last = xy[xy.length - 1];
+  return (
+    <svg viewBox="0 0 120 40" width="200" height="66" role="img" aria-label={label} className="max-w-full">
+      <polyline
+        className="sp-spark"
+        pathLength={1}
+        points={xy.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ")}
+        style={{ fill: "none", stroke: "var(--problems)", strokeWidth: 2.5, strokeLinejoin: "round", strokeLinecap: "round" }}
+      />
+      <circle cx={last[0]} cy={last[1]} r="3.5" className="sp-fade-in" style={{ fill: "var(--problems)", animationDelay: "0.9s" }} />
+    </svg>
+  );
+}
+
+function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
+  return (
+    <article className="sp-card flex flex-col gap-2 px-4 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="sp-caption">
+          {r.touchpoint !== null ? `${dayLabel(r.touchpoint)} check-in · ` : ""}
+          {shortDate(r.created_at)}
+        </span>
+        <AiMark state={r.status === "reviewed" ? (r.changed_by_hr ? "corrected" : "confirmed") : "suggested"} label={label} reviewer="HR" />
+      </div>
+      <Quote text={r.text ?? ""} evidence={r.evidence_quote} />
+      <Translation id={r.id} language={r.language} />
+    </article>
+  );
+}
+
+function Replies({ driver, replies, groups }: { driver: string; replies: ReplyItem[]; groups: { title: string; reply_ids: string[] }[] }) {
+  const [filter, setFilter] = useState<string | null>(null);
+  const [all, setAll] = useState(false);
+  const group = groups.find((g) => g.title === filter);
+  const shown = group ? replies.filter((r) => group.reply_ids.includes(r.id)) : replies;
+  const visible = all ? shown : shown.slice(0, 6);
+  return (
+    <div id="replies" className="flex scroll-mt-6 flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <h4 className="m-0 mr-2 text-[15px] font-bold">What they said</h4>
+        {groups.length ? (
+          <div role="group" aria-label="Show replies" className="sp-tabs">
+            <button type="button" className="sp-tab" aria-pressed={!filter} onClick={() => setFilter(null)}>
+              All · {replies.length}
+            </button>
+            {groups.map((g) => (
+              <button key={g.title} type="button" className="sp-tab" aria-pressed={filter === g.title} onClick={() => setFilter(g.title)}>
+                {g.title}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className="sp-caption">{replies.length} replies counted in {driverName(driver)}, newest first</span>
+        )}
+      </div>
+      {shown.length === 0 ? <span className="sp-muted">No replies counted here yet.</span> : null}
+      <div key={filter ?? "all"} className="sp-stagger grid gap-3 lg:grid-cols-2">
+        {visible.map((r) => (
+          <ReplyCard key={r.id} r={r} label={r.status === "reviewed" ? "Checked" : "AI was sure"} />
+        ))}
+      </div>
+      {shown.length > visible.length ? (
+        <Button className="self-start" onClick={() => setAll(true)}>
+          Show all {shown.length} replies
+        </Button>
+      ) : null}
+    </div>
+  );
+}
+
+function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
+  const [team, setTeam] = useState("");
+  const detail = useApi<Detail>(`/api/hr/themes/${driver}?touchpoint=14`);
+  const teamDetail = useApi<Detail>(team ? `/api/hr/themes/${driver}?touchpoint=14&team=${encodeURIComponent(team)}` : null);
+  const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups?touchpoint=14`);
+  const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
+  const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
+  const teams = useApi<string[]>("/api/hr/teams");
+  const fixes = actions.filter((a) => a.driver === driver && live(a));
+  const name = driverName(driver);
+
+  const d = detail.data;
+  const g = groups.data;
+  const grouped = g && g.status === "ok" && "groups" in g ? g.groups : [];
+  const mine = (replies.data ?? [])
+    .filter((r) => r.touchpoint === 14 && !r.escalate && r.drivers?.includes(driver) && counted(r))
+    .sort((a, b) => b.created_at.localeCompare(a.created_at));
+  const byId = new Map(mine.map((r) => [r.id, r]));
+  const intakes = (d?.by_intake ?? []).filter((s): s is Extract<typeof s, { enough: true }> => s.enough);
+  const roles = (d?.by_role ?? []).filter((s) => s.enough);
+  const smallRoles = (d?.by_role ?? []).length - roles.length;
+  const shown = (library.data ?? []).filter((f) => !fixes.some((a) => a.library_entry_id === f.id));
+  const own = fixes.filter((a) => !a.library_entry_id || !(library.data ?? []).some((f) => f.id === a.library_entry_id));
+  const readGroup = () => document.getElementById("replies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  return (
+    <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 flex-[999_1_560px] scroll-mt-4 overflow-hidden">
+      <div key={driver} className="sp-enter">
+        <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
+              {name}
+            </h2>
+            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
+              {fixes.length ? "Fix in progress" : "Needs a fix"}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-end gap-x-8 gap-y-5">
+            <div className="flex flex-none flex-col gap-0.5">
+              {card.enough ? (
+                <>
+                  <span className="sp-num text-[40px] font-bold leading-[44px]">
+                    {card.n} of {card.m}
+                  </span>
+                  <span>who answered the Day 14 check-in</span>
+                  <span className="sp-caption">
+                    {card.reviewed ?? 0} you checked · {card.ai_confident ?? 0} the AI was sure about
+                  </span>
+                </>
+              ) : (
+                <CountBar notEnough />
+              )}
+            </div>
+            {intakes.length > 1 ? (
+              <figure className="m-0 flex w-[200px] max-w-full flex-none flex-col gap-1">
+                <Spark points={intakes} label={`${name} in each intake, out of who answered: ${intakes.map((s) => `${s.n} of ${s.m}`).join(", ")}`} />
+                <figcaption className="sp-caption">
+                  Each intake, {month(intakes[0].intake)} to {month(intakes[intakes.length - 1].intake)}: {intakes.map((s) => `${s.n} of ${s.m}`).join(", ")}
+                </figcaption>
+              </figure>
+            ) : null}
+            <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-2">
+              {waiting > 0 ? (
+                <Link href="/replies" className="flex items-start gap-2 rounded-lg px-3 py-2.5 text-[13px] leading-[18px] no-underline transition-colors hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+                  <MessageSquare size={16} className="mt-px flex-none" aria-hidden="true" />
+                  <span>
+                    <b>
+                      {waiting} new {waiting === 1 ? "reply waits" : "replies wait"} for you.
+                    </b>{" "}
+                    The AI put {waiting === 1 ? "it" : "them"} here. {waiting === 1 ? "It is" : "They are"} not in the {card.n ?? 0} until you confirm. <span className="font-semibold underline">Check it</span>
+                  </span>
+                </Link>
+              ) : null}
+              {card.note ? <span className="sp-caption">The AI is still new here, so you check each new reply before it counts.</span> : null}
+              {fixes.map((a) => (
+                <span key={a.id} className="sp-meta">
+                  Fix in progress: {fixLine(a)}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+          <Step
+            n={1}
+            title="What new hires mean"
+            sub={grouped.length ? `The AI grouped the ${card.n ?? mine.length} replies by what people describe. Read a group before you act on it.` : "Read what people wrote before you act on it."}
+          />
+          {g && g.status === "ok" && "groups" in g && grouped.length ? (
+            <div className="sp-stagger flex flex-col gap-2.5">
+              {grouped.map((group) => {
+                const sample = group.reply_ids.map((id) => byId.get(id)).find((r) => r?.text);
+                return (
+                  <div key={group.title} className="flex flex-wrap items-start gap-x-6 gap-y-3.5 rounded-lg border px-4 py-3.5" style={{ borderColor: "var(--line)" }}>
+                    <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-2">
+                      <AiMark label={group.title} />
+                      {sample ? <Quote text={sample.text!} evidence={sample.evidence_quote} by={`${dayLabel(14)} check-in · ${shortDate(sample.created_at)}`} /> : null}
+                    </div>
+                    <div className="flex w-[200px] max-w-full flex-none flex-col gap-2.5">
+                      {card.enough ? <CountBar count={group.n} of={card.n} label="of these replies" /> : null}
+                      <button type="button" className="sp-link" onClick={readGroup}>
+                        Read the {group.n} replies
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+              {g.not_grouped > 0 ? (
+                <span className="sp-meta">
+                  {g.not_grouped} more replies are not grouped: each idea came from fewer than 5 people.{" "}
+                  <button type="button" className="sp-link" onClick={readGroup}>
+                    Read them
+                  </button>
+                </span>
+              ) : null}
+            </div>
+          ) : g && g.status === "ok" && !("groups" in g) ? (
+            <span className="sp-muted">
+              {g.have} of {g.need} needed. Shows once {g.need} people answer Day 14.
+            </span>
+          ) : null}
+          {replies.data ? <Replies driver={driver} replies={mine} groups={grouped} /> : <div className="sp-skel h-24" />}
+        </div>
+
+        <div className="flex flex-col gap-4 border-b px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+          <Step n={2} title="Who has it" sub="Counted by Sapa from the labels. Each group shows who it is out of." />
+          {d ? (
+            <div className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <div className="flex flex-col gap-2.5 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
+                <h4 className="m-0 text-[14px] font-bold">When it starts</h4>
+                <span className="sp-caption">The same group, at each check-in</span>
+                {d.by_day.map((s) => (
+                  <Bar key={s.touchpoint} s={s} label={`at ${dayLabel(s.touchpoint)}`} />
+                ))}
+              </div>
+              <div className="flex flex-col gap-2.5 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
+                <h4 className="m-0 text-[14px] font-bold">By intake</h4>
+                {d.by_intake.map((s) => (
+                  <Bar key={s.intake} s={s} label={`in the ${month(s.intake)} intake`} />
+                ))}
+              </div>
+              <div className="flex flex-col gap-2.5 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
+                <h4 className="m-0 text-[14px] font-bold">By role</h4>
+                {roles.map((s) => (
+                  <Bar key={s.role} s={s} label={s.role.toLowerCase()} />
+                ))}
+                {smallRoles ? (
+                  <span className="sp-caption">
+                    {roles.length ? "Other roles" : `${smallRoles} roles`}: fewer than 5 people answered in each, so no number.
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ) : (
+            <div className="sp-skel h-40" />
+          )}
+          <div className="flex flex-wrap items-end gap-x-6 gap-y-3 rounded-lg border px-4 py-3.5" style={{ borderColor: "var(--line)" }}>
+            <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-1.5">
+              <label htmlFor="team" className="text-[14px] font-bold">
+                See one team
+              </label>
+              <select id="team" className="sp-input" value={team} onChange={(e) => setTeam(e.target.value)}>
+                <option value="">Choose a team</option>
+                {(teams.data ?? []).map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-1.5">
+              {!team ? (
+                <span className="sp-meta">Pick a team to see how many in it raised {name}.</span>
+              ) : teamDetail.data ? (
+                <div key={team} className="sp-fade-in">
+                  {teamDetail.data.card.enough ? (
+                    <CountBar count={teamDetail.data.card.n} of={teamDetail.data.card.m} label="in this team" />
+                  ) : (
+                    <>
+                      <CountBar notEnough />
+                      <span className="sp-caption">
+                        {teamDetail.data.card.have} of {teamDetail.data.card.need} needed. Shows once {teamDetail.data.card.need} people answer Day 14.
+                      </span>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="sp-skel h-10" />
+              )}
+            </div>
+            <span className="sp-caption basis-full">One team at a time, from 5 people. Teams are never shown side by side.</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 px-5 py-5 sm:px-6">
+          <Step n={3} title="Fix it" sub="Fixes from your library, best match first, with how each worked here before." />
+          <div className="sp-stagger flex flex-col gap-3">
+            {fixes.map((a) => {
+              const entry = library.data?.find((f) => f.id === a.library_entry_id);
+              return (
+                <div key={a.id} className="flex flex-wrap items-start gap-x-6 gap-y-3.5 rounded-lg border px-[18px] py-4" style={{ borderColor: "var(--line)" }}>
+                  <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-2">
+                    <span className="self-start rounded-[3px] px-2 py-0.5 text-xs font-bold" style={{ background: "var(--fixes-soft)", color: "var(--fixes)" }}>
+                      Fix in progress
+                    </span>
+                    <div className="text-[17px] font-bold leading-6">{a.title}</div>
+                    {entry || a.steps ? <span className="sp-muted">{entry?.text ?? a.steps}</span> : null}
+                  </div>
+                  <div className="flex w-[190px] max-w-full flex-none flex-col items-start gap-2.5">
+                    <div className="w-full text-[13px] font-semibold">
+                      <FixTrack step={STEP[a.status] ?? 1} />
+                    </div>
+                    <span className="sp-meta">
+                      {a.owner ?? "HR"}
+                      {a.due_on ? ` · due ${shortDate(a.due_on)}` : ""}
+                    </span>
+                    {a.status === "assigned" && a.assigned_at ? <Waiting>Sent {shortDate(a.assigned_at)}, not accepted yet</Waiting> : null}
+                    <Link href={`/fixes/${a.id}`} className="text-[13px] font-semibold" style={{ color: "var(--fixes)" }}>
+                      View fix
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+            {library.data
+              ? shown.map((f, i) => {
+                  const best = i === 0 && own.length === 0;
+                  const good = (f.difference ?? 0) > 0;
+                  return (
+                    <div
+                      key={f.id}
+                      className="flex flex-wrap items-start gap-x-6 gap-y-3.5 rounded-lg px-[18px] py-4"
+                      style={{ border: `${best ? 2 : 1}px solid ${best ? "var(--problems)" : "var(--line)"}` }}
+                    >
+                      <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-2">
+                        {best ? (
+                          <span className="self-start rounded-[3px] px-2 py-0.5 text-xs font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
+                            Best match
+                          </span>
+                        ) : null}
+                        <div className="text-[17px] font-bold leading-6">{f.title}</div>
+                        <span className="sp-muted">{f.text}</span>
+                        <div className="flex flex-col gap-0.5 rounded-lg px-3 py-2.5" style={{ background: good ? "var(--fixes-soft)" : "var(--surface-sunken)" }}>
+                          <span className="text-xs font-bold" style={{ color: good ? "var(--fixes)" : "var(--ink-muted)" }}>
+                            {good ? "Worked here before" : "How it worked here"}
+                          </span>
+                          <span className="sp-num text-[14px] font-semibold" style={{ color: good ? "var(--fixes)" : "var(--ink-muted)" }}>
+                            {f.evidence}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex w-[190px] max-w-full flex-none flex-col items-start gap-2.5">
+                        <Button variant={best ? "primary" : "secondary"} lane="problems" href={`/fixes/new?driver=${driver}&entry=${f.id}`}>
+                          Draft this fix
+                        </Button>
+                        <span className="sp-caption">You edit the draft, pick who it covers and approve the note before anything is sent.</span>
+                      </div>
+                    </div>
+                  );
+                })
+              : <div className="sp-skel h-32" />}
+          </div>
+          <span className="sp-meta">
+            None of these fit?{" "}
+            <Link href={`/fixes/new?driver=${driver}`} className="font-semibold" style={{ color: "var(--problems)" }}>
+              Write your own fix
+            </Link>
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Problems({ driver }: { driver?: string }) {
+  const themes = useApi<Themes>("/api/hr/themes?touchpoint=14");
+  const actions = useApi<Action[]>("/api/hr/actions");
+  const queue = useApi<ReplyItem[]>("/api/hr/queue");
+  const narrative = useApi<{ narrative: string | null }>("/api/hr/themes/narrative?touchpoint=14", 60000);
+  if (!themes.data || !actions.data) return <Loading />;
+
+  const cards = [...themes.data.cards].sort((a, b) => (b.n ?? -1) - (a.n ?? -1));
+  const fixOf = (d: string) => actions.data!.find((a) => a.driver === d && live(a));
+  const waitingOf = (d: string) => (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed" && r.drivers?.includes(d)).length;
+  const current = cards.find((c) => c.driver === driver) ?? cards[0];
+  const answered = cards.find((c) => c.enough)?.m;
+  const context = themes.data.context.filter((c) => c.enough);
+  const pick = () => {
+    if (window.innerWidth < 1180) setTimeout(() => document.getElementById("cur")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  };
+
+  const item = (c: Card) => {
+    const fix = fixOf(c.driver);
+    const waiting = waitingOf(c.driver);
+    return (
+      <Link key={c.driver} href={`/problems/${c.driver}`} scroll={false} onClick={pick} className="sp-pick" aria-current={c.driver === current.driver ? "true" : undefined}>
+        <span className="text-[15px] font-bold leading-5">{driverName(c.driver)}</span>
+        {c.enough ? <CountBar count={c.n} of={c.m} label="who answered" /> : <CountBar notEnough />}
+        <span className="sp-caption">
+          {fix ? fixLine(fix) : "No fix yet"}
+          {waiting ? ` · ${waiting} ${waiting === 1 ? "reply waits" : "replies wait"} for you` : ""}
+        </span>
+      </Link>
+    );
+  };
+  const need = cards.filter((c) => !fixOf(c.driver));
+  const progress = cards.filter((c) => fixOf(c.driver));
+
+  return (
+    <>
+      <header className="flex flex-col gap-1.5">
+        <span className="sp-caption font-semibold">Day 14 check-in{answered ? ` · ${answered} new hires answered` : ""}</span>
+        <h1 className="sp-page-title">Shared problems</h1>
+        <p className="m-0 max-w-[760px] text-[15px] leading-[22px] sp-muted">
+          The AI reads every reply and sorts it into a problem area. Sapa counts them. Pick a problem to see what people mean, who has it, and the fix to start.
+        </p>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1.5 sp-caption">
+          <span className="inline-flex items-center gap-2">
+            <AiMark label="AI suggestion" />
+            check it before you act
+          </span>
+          <span>Counts include replies you checked and replies the AI was sure about</span>
+          <span>Under 5 people: no number</span>
+        </div>
+      </header>
+
+      <div className="flex flex-wrap items-start gap-5">
+        <div className="flex min-w-0 max-w-full flex-[1_1_300px] flex-col gap-4 min-[1180px]:sticky min-[1180px]:top-6 min-[1180px]:max-w-[340px]">
+          <section aria-labelledby="list-title" className="sp-card overflow-hidden">
+            <div className="flex flex-col gap-0.5 border-b px-4 pb-3 pt-3.5" style={{ borderColor: "var(--line)" }}>
+              <h2 id="list-title" className="m-0 text-[15px] font-bold leading-5">
+                Problems right now
+              </h2>
+              <span className="sp-caption">Sorted by the AI into five areas · biggest first</span>
+            </div>
+            <div className="px-4 pb-1 pt-3 text-xs font-bold sp-muted">Needs a fix</div>
+            <div className="sp-stagger flex flex-col gap-1.5 px-2 pb-2">{need.length ? need.map(item) : <span className="sp-meta px-2 py-1">Every problem area has a fix in progress.</span>}</div>
+            <div className="border-t px-4 pb-1 pt-2 text-xs font-bold sp-muted" style={{ borderColor: "var(--line-soft)" }}>
+              Fix in progress
+            </div>
+            <div className="sp-stagger flex flex-col gap-1.5 px-2 pb-2.5">{progress.length ? progress.map(item) : <span className="sp-meta px-2 py-1">No fix in progress yet.</span>}</div>
+          </section>
+        </div>
+        {current ? <Problem driver={current.driver} card={current} actions={actions.data} waiting={waitingOf(current.driver)} /> : null}
+      </div>
+
+      <section aria-labelledby="all-title" className="flex flex-col gap-3">
+        <div className="flex flex-col gap-0.5">
+          <h2 id="all-title" className="m-0 text-[18px] font-bold leading-6">
+            Across all new hires at Day 14
+          </h2>
+          <span className="sp-meta">These do not change with the problem you pick.</span>
+        </div>
+        <div className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))" }}>
+          {narrative.data?.narrative ? (
+            <div className="sp-card flex flex-col gap-2 px-[18px] py-4">
+              <h3 className="m-0 text-[15px] font-bold leading-5">What is going on</h3>
+              <AiMark label="Summary of the counts" />
+              <p className="m-0">{narrative.data.narrative}</p>
+            </div>
+          ) : null}
+          <div className="sp-card flex flex-col gap-2.5 px-[18px] py-4">
+            <div className="flex flex-col gap-0.5">
+              <h3 className="m-0 text-[15px] font-bold leading-5">For HR only: context</h3>
+              <span className="sp-caption">Outside a manager&apos;s control, so never sent as a manager task. Pay itself is out of scope for Sapa.</span>
+            </div>
+            {context.length ? (
+              context.map((c) => <CountBar key={c.theme} count={c.n} of={c.m} label={`raised ${CONTEXT[c.theme] ?? c.theme}`} lane="fixes" />)
+            ) : (
+              <CountBar notEnough />
+            )}
+          </div>
+        </div>
+      </section>
+
+      <p className="m-0 rounded-lg border border-dashed px-4 py-3.5 sp-meta" style={{ borderColor: "var(--line-strong)" }}>
+        This page shows what is happening now. Problems a fix already solved, and how well each fix worked, are in{" "}
+        <Link href="/fixes" className="font-semibold">
+          Fixes
+        </Link>{" "}
+        and{" "}
+        <Link href="/impact" className="font-semibold">
+          Impact
+        </Link>
+        .
+      </p>
+    </>
+  );
+}
