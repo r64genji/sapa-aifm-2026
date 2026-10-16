@@ -40,7 +40,7 @@ Two `pg_cron` jobs on the cloud Supabase project call the app with `Authorizatio
 
 ## Data and secrets
 
-- The dev server for people is `npm run dev -- -p 3148`, reached at https://dev.sapa.abrahamtan.com through a Cloudflare tunnel. It uses the local Supabase through https://devdb.sapa.abrahamtan.com. The owner can open only this dev server, so check UI work there.
+- The dev server for people is `npm run dev -- -p 3148`, reached at https://dev.sapa.abrahamtan.com through a Cloudflare tunnel. It uses its own local Supabase (`npx supabase start --workdir devdb`, API on 127.0.0.1:54421) through https://devdb.sapa.abrahamtan.com. `npm test` never touches it. After new migrations, run `npx supabase migration up --workdir devdb`. The owner can open only this dev server, so check UI work there.
 - `npm run dev` signs you in as the seed HR admin `admin@contoh.test` with `SEED_USER_PASSWORD`, so there is no login page: `/auth/login` sends you to `/`. This runs only when `NODE_ENV` is `development`. Production, `npm test` and `next start` still need a real login. To use another seed user, sign in on `/auth/login` while signed in.
 - Seed and pack texts are data files in `data/`. The seed is loaded only by the demo reset.
 - `POST /api/demo/reset` needs its own `DEMO_RESET_SECRET`, never the dispatch secret, and refuses while any organisation has demo mode off. The seed holds no usable join token: each reset makes a new one for the intake and returns its link only to the caller.
