@@ -216,7 +216,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             ) : null}
             <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-2">
               {waiting > 0 ? (
-                <Link href="/replies" className="flex items-start gap-2 rounded-lg px-3 py-2.5 text-[13px] leading-[18px] no-underline transition-colors hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+                <Link href="/#replies" className="flex items-start gap-2 rounded-lg px-3 py-2.5 text-[13px] leading-[18px] no-underline transition-colors hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
                   <MessageSquare size={16} className="mt-px flex-none" aria-hidden="true" />
                   <span>
                     <b>

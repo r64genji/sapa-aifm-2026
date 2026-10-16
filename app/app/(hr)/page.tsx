@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { apiSend, useApi } from "@/components/sapa/data";
-import { Translation } from "@/components/sapa/reply";
+import { ApiError, apiSend, useApi } from "@/components/sapa/data";
+import { ReplyRow, Translation, type ReplyItem as Reply } from "@/components/sapa/reply";
 import {
   AiMark,
   Button,
@@ -103,6 +103,47 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
   );
 }
 
+function AllReplies() {
+  const [shown, setShown] = useState(5);
+  const [error, setError] = useState<string | null>(null);
+  const replies = useApi<Reply[]>("/api/hr/replies", 30000);
+  const all = [...(replies.data ?? [])].sort((a, b) => b.created_at.localeCompare(a.created_at));
+  const guard = async (action: () => Promise<unknown>) => {
+    setError(null);
+    try {
+      await action();
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Could not save. Try again.");
+    }
+  };
+  return (
+    <LaneSection lane="ai" id="all-replies" title="All replies" meta={replies.data ? `${all.length} so far · newest first · change any label` : undefined}>
+      {error ? (
+        <div role="alert" className="px-[18px] py-3 text-sm" style={{ color: "var(--serious)" }}>
+          {error}
+        </div>
+      ) : null}
+      {replies.data && all.length === 0 ? <Row title="No replies yet" /> : null}
+      <div className="flex flex-col gap-3 px-[18px] py-4 empty:hidden">
+        {all.slice(0, shown).map((item) => (
+          <ReplyRow
+            key={item.id}
+            item={item}
+            onConfirm={() => guard(() => apiSend(`/api/hr/replies/${item.id}/review`, "POST", {}))}
+            onChange={(change) => guard(() => apiSend(`/api/hr/replies/${item.id}/review`, "POST", change))}
+            onRetry={() => guard(() => apiSend(`/api/hr/replies/${item.id}/retry`))}
+          />
+        ))}
+      </div>
+      {all.length > shown ? (
+        <div className="border-t px-[18px] py-3" style={{ borderColor: "var(--line-soft)" }}>
+          <Button onClick={() => setShown(all.length)}>Show all {all.length}</Button>
+        </div>
+      ) : null}
+    </LaneSection>
+  );
+}
+
 export default function Page() {
   const touchpoint = 14;
   const [done, setDone] = useState<{ row: QueueRow; undo: () => Promise<unknown> }[]>([]);
@@ -144,7 +185,7 @@ export default function Page() {
   return (
     <>
       <PageHeader
-        title="Needs you"
+        title="Home"
         sub={
           <>
             {me.data ? `${new Date(me.data.today).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Asia/Kuala_Lumpur" })} · ` : ""}
@@ -241,11 +282,13 @@ export default function Page() {
             ))}
             {toCheck.length === 0 && done.length === 0 ? <Row title="Nothing to check" /> : null}
             <div className="border-t px-[18px] py-3" style={{ borderColor: "var(--line-soft)" }}>
-              <Link href="/replies" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
+              <Link href="#all-replies" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
                 See all replies
               </Link>
             </div>
           </LaneSection>
+
+          <AllReplies />
 
           {tasks.length ? (
             <LaneSection lane="ai" title="Contact tasks" meta="People who said Yes to a private chat">

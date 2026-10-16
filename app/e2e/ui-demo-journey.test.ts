@@ -95,7 +95,7 @@ test("Demo beat 6: the Fixes and impact page shows 80 of 99 still employed at Mo
 
 test("Every demo page loads at 390 px with no sideways scroll", async () => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/replies", "/fixes"]) {
+  for (const path of ["/", "/concerns", "/problems", "/problems/ROLE_CLARITY", "/fixes"]) {
     await page.goto(`${appUrl}${path}`);
     await page.waitForLoadState("networkidle");
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), 0, path);

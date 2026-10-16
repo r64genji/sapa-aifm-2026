@@ -87,10 +87,9 @@ export function Shell({ children }: { children: ReactNode }) {
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
         <div className="hidden pb-5 md:block">{logo}</div>
-        <div className="grid grid-cols-4 md:flex md:flex-col md:gap-0.5">
-          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Needs you" short="Home" />
+        <div className="grid grid-cols-3 md:flex md:flex-col md:gap-0.5">
+          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Home" short="Home" count={toCheck} />
           <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
-          <NavItem href="/replies" icon={<LaneIcon lane="ai" />} label="Check AI labels" short="AI labels" count={toCheck} />
           <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes and impact" short="Fixes" />
         </div>
         <div className="hidden min-h-6 grow md:block" />
