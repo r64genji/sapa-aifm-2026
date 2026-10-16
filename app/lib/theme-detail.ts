@@ -8,7 +8,7 @@ const WEEKS = 5;
 
 const share = (c: Counts, driver: string) =>
   c.enough
-    ? { enough: true, n: c.drivers![driver]?.n ?? 0, m: c.respondents, reviewed: c.drivers![driver]?.reviewed ?? 0, ai_confident: c.drivers![driver]?.ai_confident ?? 0 }
+    ? { enough: true, n: c.drivers![driver]?.n ?? 0, m: c.respondents, reviewed: c.drivers![driver]?.reviewed ?? 0, ai_confident: c.drivers![driver]?.ai_confident ?? 0, score_only: c.drivers![driver]?.score_only ?? 0 }
     : { enough: false, have: c.respondents, need: c.min_group_size };
 
 export function themeTeam(request: Request) {

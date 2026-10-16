@@ -7,8 +7,8 @@ import { useApi } from "./data";
 import { Translation, type ReplyItem } from "./reply";
 import { AiMark, Button, CountBar, FixTrack, Loading, Quote, Waiting, dayLabel, driverName, shortDate } from "./ui";
 
-type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number } | { enough: false; have: number; need: number };
-type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; message?: string };
+type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
+type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; message?: string };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
 type Detail = {
@@ -199,7 +199,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   </span>
                   <span>who answered the Day 14 check-in</span>
                   <span className="sp-caption">
-                    {card.reviewed ?? 0} you checked · {card.ai_confident ?? 0} the AI was sure about
+                    {card.reviewed ?? 0} you checked · {card.ai_confident ?? 0} the AI was sure about · {card.score_only ?? 0} from a 1–5 score only
                   </span>
                 </>
               ) : (

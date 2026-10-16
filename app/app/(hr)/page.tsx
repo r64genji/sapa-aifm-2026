@@ -28,7 +28,7 @@ const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROW
 
 type Me = { today: string };
 type Escalation = { id: string };
-type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; held?: { language: string; reason: string }[] };
+type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string };
@@ -161,7 +161,8 @@ export default function Page() {
   const doneIds = new Set(done.map((d) => d.row.id));
   const toCheck = replies.filter((r) => !doneIds.has(r.id));
   const cards = themes.data?.cards ?? [];
-  const enough = cards.filter((c) => c.enough).sort((a, b) => (b.n ?? 0) - (a.n ?? 0));
+  const typed = (c: Card) => (c.reviewed ?? 0) + (c.ai_confident ?? 0);
+  const enough = cards.filter((c) => c.enough).sort((a, b) => (b.n ?? 0) - (a.n ?? 0) || typed(b) - typed(a));
   const top = enough[0];
   const others = enough.slice(1);
   const notEnough = cards.find((c) => !c.enough);
@@ -208,7 +209,7 @@ export default function Page() {
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex min-w-0 flex-col gap-6">
-          <LaneSection lane="problems" id="problems" title="Shared problems" meta={`${dayLabel(touchpoint)} · counted from labels HR checked or the AI was sure of`}>
+          <LaneSection lane="problems" id="problems" title="Shared problems" meta={`${dayLabel(touchpoint)} · counted from 1–5 scores of 1 or 2 and from labels HR checked or the AI was sure of`}>
             {notEnough ? (
               <div className="px-[18px] py-4">
                 <CountBar notEnough />
@@ -221,7 +222,7 @@ export default function Page() {
                   <div className="text-[22px] font-bold leading-7">{driverName(top.driver)}</div>
                   <CountBar count={top.n} of={top.m} label={`who answered at ${dayLabel(touchpoint)}`} />
                   <div className="sp-meta">
-                    {top.reviewed} reviewed{top.ai_confident ? `, ${top.ai_confident} AI-confident` : ""}
+                    {top.reviewed} reviewed{top.ai_confident ? `, ${top.ai_confident} AI-confident` : ""}{top.score_only ? `, ${top.score_only} from a 1–5 score only` : ""}
                   </div>
                   {top.held?.map((h) => (
                     <div key={h.language} className="sp-meta">{h.reason}</div>
@@ -240,7 +241,7 @@ export default function Page() {
                   <Row
                     key={c.driver}
                     title={driverName(c.driver)}
-                    meta={`${c.reviewed} reviewed${c.ai_confident ? `, ${c.ai_confident} AI-confident` : ""}`}
+                    meta={`${c.reviewed} reviewed${c.ai_confident ? `, ${c.ai_confident} AI-confident` : ""}${c.score_only ? `, ${c.score_only} from a 1–5 score only` : ""}`}
                     metric={<CountBar count={c.n} of={c.m} label="who answered" />}
                     action={
                       <Button variant="secondary" lane="problems" href={`/problems/${c.driver}`}>
