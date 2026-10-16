@@ -8,7 +8,6 @@ const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
 const live = 5550000301;
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
-const priorities = "6f1c2a3e-0000-4000-8000-000000000401";
 const note = { en: "Your team now has a weekly priority list every Monday.", ms: "Pasukan anda kini ada senarai keutamaan setiap Isnin.", zh: "你的团队现在每周一都有优先事项清单。" };
 
 let browser: Browser;
@@ -56,12 +55,13 @@ test("Demo beat 2: the reply moves the card to 24 of 65, and Confirm label marks
 });
 
 test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and send it", async () => {
-  await scriptModel("omniroute", [
-    { kind: "json", content: { library_entry_id: priorities, reason: "Fits role clarity.", title: "Weekly priority list", steps: "Raj shares a written top-3 list every Monday.", notes: note } },
-  ]);
   await page.getByRole("link", { name: "Draft a fix" }).click();
   await page.getByText("Used 3 times here").first().waitFor();
-  await page.getByRole("button", { name: "Accept" }).click();
+  await page.fill("#fix-title", "Weekly priority list");
+  for (const [tab, lang] of [["English", "en"], ["Bahasa Malaysia", "ms"], ["中文", "zh"]] as const) {
+    await page.getByRole("button", { name: tab, exact: true }).click();
+    await page.fill("#fix-note", note[lang]);
+  }
   const team = await page.locator("#f-for option", { hasText: "Raj" }).first().getAttribute("value");
   await page.selectOption("#f-for", team!);
   await page.getByRole("button", { name: /^Send/ }).click();
