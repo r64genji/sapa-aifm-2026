@@ -13,8 +13,6 @@ import {
   resetDemo,
   say,
   scriptModel,
-  settle,
-  sentTo,
   tap,
 } from "./helpers.ts";
 
@@ -167,7 +165,6 @@ const escalationIds = async () =>
 const acknowledge = async (id: string) => assert.equal((await hrRequest(`/api/hr/escalations/${id}/acknowledge`, "POST")).status, 200);
 
 async function ask(chat: number, group: string) {
-  const before = (await sentTo(chat)).length;
   await scriptModel("omniroute", [
     {
       kind: "json",
@@ -182,7 +179,6 @@ async function ask(chat: number, group: string) {
     },
   ]);
   await say(chat, "Neutral question for the handbook");
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
 }
 
 async function raiseConcern(chat: number) {

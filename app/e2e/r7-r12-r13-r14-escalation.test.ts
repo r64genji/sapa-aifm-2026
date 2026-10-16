@@ -15,7 +15,6 @@ import {
   scriptModel,
   sentTo,
   sessionClient,
-  settle,
   tap,
   update,
 } from "./helpers.ts";
@@ -42,8 +41,6 @@ async function reachOpenQuestion(chat: number) {
 async function answer(chat: number, text: string) {
   const before = (await sentTo(chat)).length;
   await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
-  await settle();
   return (await sentTo(chat)).slice(before).map((m) => String(m.text));
 }
 
@@ -72,7 +69,7 @@ async function escalationFor(chat: number) {
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
-  for (const chat of [crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, held]) await joined(chat, "2026-10-02");
+  await Promise.all([crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, held].map((chat) => joined(chat, "2026-10-02")));
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
   assert.equal((await res.json()).sent, 10);
   for (const chat of [crisis, passport, epf, modelOnly, plain, mixed, retried, held]) await reachOpenQuestion(chat);
@@ -281,7 +278,6 @@ test("R14: the hire chooses to be called and shares their own number, another sa
   assert.equal(prompt.text, en.contact.sharePrompt);
   assert.deepEqual((prompt.reply_markup as { keyboard: unknown }).keyboard, [[{ text: en.contact.share, request_contact: true }]]);
   await postUpdate(update("contact", { chat_id: crisis, user_id: crisis, phone: "+60123456789" }));
-  await settle();
   assert.equal((await sentTo(crisis)).at(-1)!.text, en.contact.thanks);
   assert.deepEqual(await caseOf(crisis), { contact_method: "call", phone: "+60123456789", dont_contact: false });
 
@@ -290,7 +286,6 @@ test("R14: the hire chooses to be called and shares their own number, another sa
   assert.equal((await sentTo(modelOnly)).at(-1)!.text, en.contact.thanks);
   const before = (await sentTo(modelOnly)).length;
   await postUpdate(update("contact", { chat_id: modelOnly, user_id: 1, phone: "+60111111111" }));
-  await settle();
   assert.equal((await sentTo(modelOnly)).length, before);
   assert.deepEqual(await caseOf(modelOnly), { contact_method: "meet", phone: null, dont_contact: false });
 

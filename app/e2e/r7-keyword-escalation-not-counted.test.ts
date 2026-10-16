@@ -12,8 +12,6 @@ import {
   resetDemo,
   say,
   scriptModel,
-  sentTo,
-  settle,
   tap,
 } from "./helpers.ts";
 
@@ -34,10 +32,7 @@ before(async () => {
   await tap(chat, "3");
   await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary }) }]);
-  const sent = (await sentTo(chat)).length;
   await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === sent; i++) await settle(500);
-  await settle();
 });
 
 test("R7: a reply escalated by keyword alone, with a label HR confirmed, is in no theme count, narrative or manager snapshot", async () => {
