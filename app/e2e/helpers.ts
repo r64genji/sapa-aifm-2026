@@ -19,8 +19,8 @@ export async function resetSeed() {
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
   if (!res.ok) throw new Error(`demo reset failed: ${res.status}`);
-  const { invites } = await res.json();
-  liveInvite = String(invites.find((invite: { code_name: string }) => invite.code_name === "Live hire").invite_link).split("?start=")[1];
+  const { join_link } = await res.json();
+  liveInvite = String(join_link).split("?start=")[1];
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
   await fetch(`${modelUrl}/calls`, { method: "DELETE" });
 }
@@ -193,6 +193,11 @@ export async function hrRequest(path: string, method: string, body?: Record<stri
     headers: { authorization: `Bearer ${await hrToken()}`, "content-type": "application/json" },
     body: body && JSON.stringify(body),
   });
+}
+
+export async function chatPerson(chat: number) {
+  const { data } = await db.from("people").select("id, code_name").eq("telegram_chat_id", chat).single();
+  return data as { id: string; code_name: string };
 }
 
 export async function joined(chat: number, startDate: string) {

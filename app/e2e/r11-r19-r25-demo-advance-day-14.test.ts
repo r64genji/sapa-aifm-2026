@@ -18,6 +18,7 @@ test("R19, R23: Advance to Day 14 sends the Day 14 check-in to the live hire onl
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
   const before = (await sentTo(live)).length;
 
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });

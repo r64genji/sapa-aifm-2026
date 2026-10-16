@@ -11,6 +11,7 @@ import {
   joined,
   link,
   liveInvite,
+  chatPerson,
   postUpdate,
   resetDemo,
   say,
@@ -68,6 +69,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
   await tap(live, en.visibilityHrManager);
   await joined(shared, "2026-10-02");
   await tap(shared, en.visibilityHrManager);
@@ -101,7 +103,7 @@ test("R6, R7: the supervisor reads reply text only from hires who chose share wi
   assert.deepEqual(
     replies.map(({ author, text }) => ({ author, text })),
     [
-      { author: "Live hire", text: sharedText },
+      { author: (await chatPerson(live)).code_name, text: sharedText },
       { author: "Hire 5550000601", text: "My supervisor never says which job matters most" },
     ],
   );
@@ -111,7 +113,7 @@ test("R6, R7: the supervisor reads reply text only from hires who chose share wi
 test("R6: a hire who changes to HR only takes their words away from the supervisor at once", async () => {
   await tap(shared, en.visibilityHrOnly);
   const replies = (await (await asManager("/api/manager/replies", rajToken)).json()) as { author: string }[];
-  assert.deepEqual(replies.map((r) => r.author), ["Live hire"]);
+  assert.deepEqual(replies.map((r) => r.author), [(await chatPerson(live)).code_name]);
 });
 
 test("R9: the snapshot does not move when HR confirms a label, and the nightly job takes it only on the snapshot day", async () => {

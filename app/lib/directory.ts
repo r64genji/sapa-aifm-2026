@@ -10,14 +10,14 @@ export type Person = {
   id: string;
   organisation_id: string;
   language: Language;
-  state: "invited" | "consent_shown" | "declined" | "active" | "stopped" | "left" | "deleted";
+  state: "invited" | "consent_shown" | "choosing_team" | "declined" | "active" | "stopped" | "left" | "deleted";
   telegram_chat_id: number | null;
-  invite_expires_at: string;
-  invite_used_at: string | null;
+  intake_id: string | null;
+  team: string | null;
 };
 
 const personColumns =
-  "id, organisation_id, language, state, telegram_chat_id, invite_expires_at, invite_used_at";
+  "id, organisation_id, language, state, telegram_chat_id, intake_id, team";
 
 export async function addHire(
   organisationId: string,
@@ -47,10 +47,10 @@ export async function addHire(
       invite_expires_at: expires.toISOString(),
     });
   if (error) return { error: error.message };
-  return { invite_link: inviteLink(token) };
+  return { invite_link: joinLink(token) };
 }
 
-export const inviteLink = (token: string) => `https://t.me/${process.env.TELEGRAM_BOT_USERNAME}?start=${token}`;
+export const joinLink = (token: string) => `https://t.me/${process.env.TELEGRAM_BOT_USERNAME}?start=${token}`;
 
 export async function listHires(organisationId: string) {
   const { data, error } = await createAdminClient()
@@ -72,26 +72,70 @@ export async function personByChat(chatId: number) {
   return data;
 }
 
-export async function personByToken(token: string) {
+export async function redeemInvite(token: string, chatId: number) {
+  const at = await now();
   const { data, error } = await createAdminClient()
     .from("people")
-    .select(personColumns)
+    .update({ telegram_chat_id: chatId, invite_used_at: at.toISOString() })
     .eq("invite_token", token)
+    .is("invite_used_at", null)
+    .gt("invite_expires_at", at.toISOString())
+    .neq("state", "left")
+    .select(personColumns)
     .maybeSingle<Person>();
   if (error) throw error;
   return data;
 }
 
-export async function redeemInvite(token: string, chatId: number) {
+export async function joinIntake(token: string, chatId: number) {
+  const db = createAdminClient();
+  const at = await now();
+  const { data: intake, error } = await db
+    .from("intakes")
+    .select("id, organisation_id, start_date")
+    .eq("join_token", token)
+    .gt("expires_at", at.toISOString())
+    .maybeSingle();
+  if (error) throw error;
+  if (!intake) return null;
+  const { data, error: insertError } = await db
+    .from("people")
+    .insert({
+      organisation_id: intake.organisation_id,
+      intake_id: intake.id,
+      code_name: `Hire ${randomBytes(3).toString("hex").toUpperCase()}`,
+      start_date: intake.start_date,
+      language: "en",
+      telegram_chat_id: chatId,
+      invite_used_at: at.toISOString(),
+    })
+    .select(personColumns)
+    .single<Person>();
+  if (insertError) throw insertError;
+  return data;
+}
+
+export async function intakeTeams(person: Person) {
+  const { data, error } = await createAdminClient()
+    .from("intakes")
+    .select("teams")
+    .eq("id", person.intake_id!)
+    .single<{ teams: { team: string; manager_id: string }[] }>();
+  if (error) throw error;
+  return data.teams;
+}
+
+export async function setTeam(person: Person, index: number) {
+  const choice = (await intakeTeams(person))[index];
+  if (!choice) return false;
   const { data, error } = await createAdminClient()
     .from("people")
-    .update({ telegram_chat_id: chatId, invite_used_at: (await now()).toISOString() })
-    .eq("invite_token", token)
-    .is("invite_used_at", null)
-    .select(personColumns)
-    .maybeSingle<Person>();
+    .update({ team: choice.team, manager_id: choice.manager_id, state: "active" })
+    .eq("id", person.id)
+    .eq("state", "choosing_team")
+    .select("id");
   if (error) throw error;
-  return data;
+  return data.length === 1;
 }
 
 export async function moveState(person: Person, from: Person["state"], to: Person["state"]) {

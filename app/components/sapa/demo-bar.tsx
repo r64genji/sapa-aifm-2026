@@ -51,8 +51,8 @@ export function DemoBar() {
   const reset = () =>
     run(async () => {
       setConfirming(false);
-      const result = await apiSend<{ invite_link: string | null }>("/api/hr/demo/reset");
-      setInvite(result.invite_link);
+      const result = await apiSend<{ join_link: string }>("/api/hr/demo/reset");
+      setInvite(result.join_link);
       setMessage("Reset to seed.");
     });
 
@@ -88,14 +88,14 @@ export function DemoBar() {
           {message ? <span className="font-semibold">{message}</span> : null}
           {invite ? (
             <span>
-              New invite link for the live hire: <a href={invite} className="break-all">{invite}</a>
+              New join link for the intake: <a href={invite} className="break-all">{invite}</a>
             </span>
           ) : null}
         </div>
       ) : null}
       {confirming ? (
         <Dialog title="Reset to seed?" onClose={() => setConfirming(false)}>
-          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. The live hire gets a new invite link.</p>
+          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. The intake gets a new join link.</p>
           <div className="flex flex-wrap gap-2">
             <Button variant="primary" onClick={reset}>Reset to seed</Button>
             <Button onClick={() => setConfirming(false)}>Cancel</Button>

@@ -112,7 +112,7 @@ Five components, each built on one existing framework, with the product logic la
 
 The bot is a Chat SDK app whose webhook lives at `/api/webhooks/telegram` inside the same Next.js project.
 
-- **Onboarding:** HR shows a QR code that opens `t.me/<bot>?start=<invite_token>`. The bot binds the Telegram chat ID to a pseudonymous person record, then shows consent, language (Bahasa Malaysia or English, spec 05 R46) and visibility ("HR only" default, or "OK to share with my manager") as buttons.
+- **Onboarding:** HR shows one QR code per intake that opens `t.me/<bot>?start=<intake_token>`. Each new chat creates a new person with a random code name (spec 05 R27). The bot then shows language, consent, team and visibility ("HR only" default, or "OK to share with my manager") as buttons.
 - **Check-in:** 3–4 scripted questions per touchpoint from the dossier's question bank (scale buttons plus one open question), then at most 1–2 follow-ups from a fixed probe bank. The AI only picks a probe ID; it never writes a follow-up question.
 - **Commands first:** LANGKAU/SKIP, BERHENTI/STOP and PADAM/DELETE are matched before any AI call, so opting out never depends on a model.
 

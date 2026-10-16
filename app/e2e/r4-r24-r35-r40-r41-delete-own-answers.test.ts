@@ -12,6 +12,7 @@ import {
   joined,
   link,
   liveInvite,
+  chatPerson,
   resetDemo,
   say,
   scriptModel,
@@ -83,6 +84,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
   await tap(live, "4");
   await tap(live, "3");
@@ -136,7 +138,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
 });
 
 test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete removes the hire's rows and questions, drops live counts by one, leaves snapshots alone and writes one anonymous audit row", async () => {
-  const id = await personId("Live hire");
+  const { id } = await chatPerson(live);
   const raj = { authorization: `Bearer ${await hrToken("raj@contoh.test")}` };
   const snapshots = async () => (await fetch(`${appUrl}/api/manager/snapshots`, { headers: raj })).json();
   const published = await snapshots();

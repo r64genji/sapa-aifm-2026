@@ -80,7 +80,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         <h1 className="sp-page-title">{categoryName(c.category)}</h1>
         <p className="m-0 text-[15px]">
           <span className="font-semibold">{c.code_name}</span>
-          <span className="sp-muted"> · {c.role} · started {started(c.start_date)}</span>
+          <span className="sp-muted"> · {c.team} · started {started(c.start_date)}</span>
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {c.closed_at ? (

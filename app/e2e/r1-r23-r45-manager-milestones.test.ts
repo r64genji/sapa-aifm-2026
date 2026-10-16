@@ -18,7 +18,7 @@ import {
 const seeded: { code_name: string; synthetic: boolean }[] = JSON.parse(readFileSync(new URL("../data/seed/people.json", import.meta.url), "utf8"));
 const raj = 5550000801;
 const [invited, active, stopped, left, extra, fifth] = [811, 812, 813, 815, 816, 817].map((n) => 5550000000 + n);
-const names = [...[invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`), "Live hire"];
+const names = [invited, active, stopped, extra, fifth].map((n) => `Hire ${n}`);
 const mondayMorning = "2026-10-05T03:00:00.000Z";
 const mondayEvening = "2026-10-05T12:00:00.000Z";
 

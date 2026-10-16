@@ -248,7 +248,7 @@ export async function draftView(organisationId: string, id: string) {
   const today = localDate(await now(), org.time_zone);
   const held = await isHeld(action);
   const [people, consents, snapshots, cards] = await Promise.all([
-    db.from("people").select("id, code_name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).order("start_date"),
+    db.from("people").select("id, code_name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
     db.from("consents").select("person_id, scope").is("withdrawn_at", null),
     db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }),
     themeCards(organisationId, 14, null),

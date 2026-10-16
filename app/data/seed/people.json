@@ -1,18 +1,5 @@
 [
   {
-    "id": "6f1c2a3e-0000-4000-8000-000000000201",
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "code_name": "Live hire",
-    "team": "Accounts Payable Asia",
-    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
-    "start_date": "2026-10-02",
-    "role": "AP analyst (Mandarin)",
-    "language": "en",
-    "invite_expires_at": "2026-10-28T01:00:00Z",
-    "state": "invited",
-    "synthetic": false
-  },
-  {
     "id": "6f1c2a3e-0000-4000-8000-000000010001",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "code_name": "Aina R.",

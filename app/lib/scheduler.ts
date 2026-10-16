@@ -1,5 +1,6 @@
 import { checkinReminder, checkinStart } from "@/lib/checkin";
 import { now } from "@/lib/clock";
+import { demoIntake } from "@/lib/demo";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { offerReply } from "@/lib/offers";
 import { exitQuestion } from "@/lib/exit";
@@ -99,15 +100,7 @@ export async function advanceDemo(organisationId: string, day?: number) {
   if (!org.demo_mode) return { error: "Demo mode is off" };
   let offset = org.demo_offset_days + 1;
   if (day !== undefined) {
-    const { data: live, error: liveError } = await db
-      .from("people")
-      .select("start_date")
-      .eq("organisation_id", organisationId)
-      .eq("synthetic", false)
-      .order("start_date")
-      .limit(1)
-      .single();
-    if (liveError) throw liveError;
+    const live = await demoIntake(organisationId);
     const today = localDay(await now(), org.time_zone);
     const due = Date.parse(live.start_date) + day * 86400000;
     const weekend = ({ 6: 2, 0: 1 } as Record<number, number>)[new Date(due).getUTCDay()] ?? 0;

@@ -62,6 +62,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tap(live, "Accounts Payable Asia");
   for (const chat of [wrongTwice, wrongOnce, badJson, down, fallback, capped, spender]) await joined(chat, "2026-10-02");
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
   assert.equal((await res.json()).sent, 8);
