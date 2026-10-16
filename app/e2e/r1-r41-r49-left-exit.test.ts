@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
   tapData,
 } from "./helpers.ts";
@@ -38,13 +37,6 @@ async function personId(chat: number) {
 async function exitRows(chat: number) {
   const { data } = await db.from("responses").select("id, question_id").eq("person_id", await personId(chat)).eq("kind", "exit").order("created_at");
   return data!;
-}
-
-async function reply(chat: number, text: string) {
-  const before = (await sentTo(chat)).length;
-  await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
-  await settle();
 }
 
 before(async () => {
@@ -96,7 +88,7 @@ test("R49: the hire who ticked gets one question; its answer is tagged as an exi
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], concern_level: "none", evidence_quote: "too many hours" }) },
   ]);
-  await reply(ticked, "I left because of too many hours");
+  await say(ticked, "I left because of too many hours");
   assert.equal((await texts(ticked)).at(-1), en.exit.thanks);
 
   const rows = await exitRows(ticked);
@@ -108,7 +100,7 @@ test("R49: the hire who ticked gets one question; its answer is tagged as an exi
   assert.deepEqual(await counts(), themes);
 
   const after = (await texts(ticked)).length;
-  await reply(ticked, "one more thing");
+  await say(ticked, "one more thing");
   await tapData(ticked, 'chat:{"a":"exit","v":"BELONGING"}');
   assert.equal((await texts(ticked)).length, after);
   assert.equal((await exitRows(ticked)).length, 2);
@@ -116,7 +108,7 @@ test("R49: the hire who ticked gets one question; its answer is tagged as an exi
 
 test("R49: a hire who did not tick, and one ended by the company even with the tick, get no question and keep no exit answer", async () => {
   for (const chat of [unticked, company]) {
-    await reply(chat, "I left because of too many hours");
+    await say(chat, "I left because of too many hours");
     await tapData(chat, 'chat:{"a":"exit","v":"WORKLOAD"}');
     assert.deepEqual(await exitRows(chat), []);
     assert.ok(!(await texts(chat)).includes(en.exit.question));
@@ -125,7 +117,7 @@ test("R49: a hire who did not tick, and one ended by the company even with the t
 
 test("R49, R13: an exit answer goes through the safety check", async () => {
   await tap(safety, "Manager support");
-  await reply(safety, "The unsafe machine hurt my friend");
+  await say(safety, "The unsafe machine hurt my friend");
   await tap(safety, en.contact.no);
   const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as { response_id: string; category: string }[];
   const rows = await exitRows(safety);
@@ -153,7 +145,7 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   await tap(sharer, "3");
   await tap(sharer, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
-  await reply(sharer, "tak tahu mana nak buat dulu");
+  await say(sharer, "tak tahu mana nak buat dulu");
 
   assert.equal((await markLeft(sharer, "resigned")).status, 200);
   await dispatch();
@@ -161,7 +153,7 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], concern_level: "none", evidence_quote: "too many hours" }) },
   ]);
-  await reply(sharer, "I left because of too many hours");
+  await say(sharer, "I left because of too many hours");
   assert.deepEqual((await exitRows(sharer)).map((r) => r.question_id), ["exit.WORKLOAD", "exit_open"]);
 
   const res = await fetch(`${appUrl}/api/manager/replies`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
@@ -182,7 +174,7 @@ test("R41: an offer to a hire who left shows the same generic reason as for one 
     await tap(chat, "3");
     await tap(chat, "3");
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
-    await reply(chat, "tak tahu mana nak buat dulu");
+    await say(chat, "tak tahu mana nak buat dulu");
   }
   const replies = async (chat: number) => {
     const { data } = await db.from("responses").select("id").eq("person_id", await personId(chat)).eq("kind", "checkin").not("text_encrypted", "is", null);

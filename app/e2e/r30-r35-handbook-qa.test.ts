@@ -16,7 +16,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
   tapData,
 } from "./helpers.ts";
@@ -68,8 +67,6 @@ async function script(...contents: unknown[]) {
 async function ask(chat: number, text: string) {
   const before = (await sentTo(chat)).length;
   await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === before; i++) await settle(500);
-  await settle(300);
   return (await sentTo(chat)).slice(before).map((m) => String(m.text));
 }
 
@@ -307,7 +304,7 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
 
 test("R32, R13, R14: forced labour or sexual harassment that only the model sees is escalated with its fixed outside contact", async () => {
   const [labour, harassed] = [1311, 1312].map((n) => 5550000000 + n);
-  for (const chat of [labour, harassed]) await joined(chat, "2026-10-14");
+  await Promise.all([labour, harassed].map((chat) => joined(chat, "2026-10-14")));
 
   const labourText = "The agency deducts half my pay every month and the warden says I need permission to go out on Sunday";
   await script(

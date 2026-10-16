@@ -15,6 +15,7 @@ This is the only test command, and the only thing that may start or reset the lo
 - Run only the test files for the rules or bug you changed: `npm test -- e2e/<file>.test.ts`. File names carry rule IDs, so pick them by the R numbers you touched. Run the full `npm test` only when the owner asks for it. Every run holds the one shared lock, so a full run makes every other worktree wait.
 - Tests follow "Testing Decisions" in docs/05: rules R1–R53 and bug fixes only, end to end over HTTP, expected values from the spec and the data files. One file per journey, named by rule IDs.
 - Each test file resets to the seed first through `POST /api/demo/reset`, the same reset the demo uses, and freezes the clock with `freezeClock`. With `SAPA_TEST=1` the clock reads the `test_clock` row; that table and code path exist only in the test build.
+- With `SAPA_TEST=1` a webhook call with the `x-sapa-test-wait` header answers only after the bot's work for it is done, so tests wait on that and never sleep for a guessed time. Model calls time out after 2 s, not 8 s.
 - With `SAPA_TEST=1` the app refuses to start if any base URL is not on localhost. `NODE_ENV=test` stops Next from loading `.env.local`, so no real key or token reaches a test run.
 
 ## Eval runners

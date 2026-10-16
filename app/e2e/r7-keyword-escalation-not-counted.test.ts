@@ -12,8 +12,6 @@ import {
   resetDemo,
   say,
   scriptModel,
-  sentTo,
-  settle,
   tap,
   tapData,
 } from "./helpers.ts";
@@ -35,10 +33,7 @@ before(async () => {
   await tap(chat, "3");
   await tap(chat, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary }) }]);
-  const sent = (await sentTo(chat)).length;
   await say(chat, text);
-  for (let i = 0; i < 60 && (await sentTo(chat)).length === sent; i++) await settle(500);
-  await settle();
   await tapData(chat, 'chat:{"a":"contact","v":"no"}');
 });
 

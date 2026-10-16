@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  settle,
   tap,
   tapData,
   telegramCalls,
@@ -135,7 +134,6 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await tap(other, "3");
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
   await say(other, withPhone);
-  await settle();
 
   const calls = (await modelCalls("omniroute")).length;
   await scriptModel("omniroute", [
@@ -156,7 +154,6 @@ test("R46: a voice note gets the fixed type-it text and nothing from it is store
   const calls = (await modelCalls("omniroute")).length;
   const res = await postUpdate(update("voice", { chat_id: chat }));
   assert.equal(res.status, 200);
-  await settle();
   assert.equal((await texts()).at(-1), zh.typeInstead);
   assert.deepEqual(await counts(), before);
   assert.equal((await modelCalls("omniroute")).length, calls);
@@ -166,6 +163,5 @@ test("R3, R50: a stopped person who sends a voice note gets no message", async (
   await db.from("people").update({ state: "stopped" }).eq("telegram_chat_id", chat);
   const before = (await texts()).length;
   assert.equal((await postUpdate(update("voice", { chat_id: chat }))).status, 200);
-  await settle();
   assert.equal((await texts()).length, before);
 });

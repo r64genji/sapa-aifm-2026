@@ -1,7 +1,7 @@
 import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const TIMEOUT_MS = 8000;
+const TIMEOUT_MS = process.env.SAPA_TEST === "1" ? 2000 : 8000;
 const FALLBACK_CAP = 1.5;
 
 type CallType = "classify" | "answer" | "narrative" | "draft" | "translate" | "group";
