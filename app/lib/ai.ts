@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 const TIMEOUT_MS = process.env.SAPA_TEST === "1" ? 2000 : 8000;
 const FALLBACK_CAP = 1.5;
 
-type CallType = "classify" | "answer" | "narrative" | "draft" | "translate" | "group";
+type CallType = "classify" | "answer" | "draft" | "translate" | "group";
 
 export const providers = (schema: object, medium: boolean) => [
   {
@@ -79,7 +79,7 @@ export async function complete(
   user: string,
   schema: object,
 ) {
-  for (const provider of providers(schema, callType === "narrative" || callType === "draft" || callType === "group")) {
+  for (const provider of providers(schema, callType === "draft" || callType === "group")) {
     if (provider.name === "deepseek" && (await fallbackSpend()) > FALLBACK_CAP) continue;
     const { content, input, cached, output, cost, latencyMs } = await request(provider, system, user);
     const { error } = await createAdminClient()

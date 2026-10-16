@@ -277,7 +277,6 @@ test("R51: no HR or export endpoint returns teams or managers side by side", asy
   const bodies: [string, unknown][] = [];
   for (const path of [
     "/api/hr/themes",
-    "/api/hr/themes/narrative",
     "/api/hr/impact",
     "/api/hr/milestones",
     "/api/hr/quality",

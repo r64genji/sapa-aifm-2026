@@ -112,42 +112,6 @@ test("R25: a reply arriving writes a change signal that holds no text", async ()
   assert.deepEqual(anonymous.data, []);
 });
 
-test("R18: a narrative holding a number that is not in its input is rejected and retried once", async () => {
-  const bad = { text: `Role clarity was raised by ${seed.n + 79} of ${seed.m + 1} people who answered.` };
-  const good = { text: `Role clarity was raised by ${seed.n + 1} of ${seed.m + 1} people who answered at Day 14.` };
-  await scriptModel("omniroute", [
-    { kind: "json", content: bad },
-    { kind: "json", content: good },
-  ]);
-  const retried = await (await hrRequest("/api/hr/themes/narrative", "GET")).json();
-  assert.deepEqual(retried, { narrative: good.text });
-  assert.equal((await modelCalls("omniroute")).filter((c) => JSON.stringify(c.body).includes("test-gemini-medium")).length, 2);
-
-  await scriptModel("omniroute", [
-    { kind: "json", content: bad },
-    { kind: "json", content: bad },
-  ]);
-  assert.deepEqual(await (await hrRequest("/api/hr/themes/narrative", "GET")).json(), { narrative: null });
-});
-
-test("R7, R18: the narrative input holds no summary from an exit answer", async () => {
-  const { data: person } = await db.from("people").select("id, organisation_id").eq("telegram_chat_id", live).single();
-  const at = "2026-10-15T15:00:00.000Z";
-  const { data: exit } = await db
-    .from("responses")
-    .insert({ organisation_id: person!.organisation_id, person_id: person!.id, question_id: "exit_open", language: "en", kind: "exit", created_at: at })
-    .select("id")
-    .single();
-  const summary = "The leaver names the exit reason in the narrative";
-  await db.from("ai_tags").insert({ organisation_id: person!.organisation_id, response_id: exit!.id, status: "ok", counted: true, escalate: false, summary, created_at: at });
-  const before = (await modelCalls("omniroute")).length;
-  await scriptModel("omniroute", [{ kind: "json", content: { text: "Role clarity was raised most often by people who answered at Day 14." } }]);
-  await hrRequest("/api/hr/themes/narrative", "GET");
-  const calls = (await modelCalls("omniroute")).slice(before);
-  assert.equal(calls.length, 1);
-  assert.ok(!JSON.stringify(calls[0].body).includes(summary));
-});
-
 test("R25: a corrected tag, a follow-up change and a minimum-group change each write an audit row", async () => {
   const queue = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
   const id = queue[0].id;
