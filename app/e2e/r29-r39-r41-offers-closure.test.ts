@@ -88,6 +88,10 @@ before(async () => {
     await scriptModel("deepseek", [{ kind: "timeout" }]);
     await answer(chat, "I can't take it anymore, I want to kill myself");
   }
+  for (const chat of [passport, crisis, leaver]) {
+    await tap(chat, en.contact.yes);
+    await tap(chat, en.contact.meet);
+  }
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
 });
 

@@ -123,6 +123,7 @@ export async function listEscalations(organisationId: string, preview?: string) 
       "id, response_id, category, source, created_at, acknowledged_at, contact_recorded_at, dont_contact, contact_method, not_serious, closed_at, responses!inner(text_encrypted, checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
+    .or("dont_contact.eq.true,contact_method.eq.meet,contact_phone_encrypted.not.is.null")
     .order("created_at", { ascending: false });
   if (error) throw error;
   const at = await now();

@@ -126,6 +126,7 @@ test("R49: a hire who did not tick, and one ended by the company even with the t
 test("R49, R13: an exit answer goes through the safety check", async () => {
   await tap(safety, "Manager support");
   await reply(safety, "The unsafe machine hurt my friend");
+  await tap(safety, en.contact.no);
   const escalations = (await (await hrRequest("/api/hr/escalations", "GET")).json()) as { response_id: string; category: string }[];
   const rows = await exitRows(safety);
   assert.deepEqual(

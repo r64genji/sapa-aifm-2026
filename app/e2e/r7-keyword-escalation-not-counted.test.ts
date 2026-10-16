@@ -15,6 +15,7 @@ import {
   sentTo,
   settle,
   tap,
+  tapData,
 } from "./helpers.ts";
 
 const seeded = new Set(JSON.parse(readFileSync(new URL("../data/seed/escalations.json", import.meta.url), "utf8")).map((e: { id: string }) => e.id));
@@ -38,6 +39,7 @@ before(async () => {
   await say(chat, text);
   for (let i = 0; i < 60 && (await sentTo(chat)).length === sent; i++) await settle(500);
   await settle();
+  await tapData(chat, 'chat:{"a":"contact","v":"no"}');
 });
 
 test("R7: a reply escalated by keyword alone, with a label HR confirmed, is in no theme count, narrative or manager snapshot", async () => {

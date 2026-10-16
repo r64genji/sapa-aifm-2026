@@ -92,8 +92,9 @@ export async function resetDemo() {
       : { ...person, ...liveStart, invite_token: randomBytes(16).toString("base64url") },
   );
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
+  const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, people: invited, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();

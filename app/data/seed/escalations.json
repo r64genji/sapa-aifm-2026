@@ -10,7 +10,9 @@
     "contact_recorded_at": null,
     "dont_contact": false,
     "closed_at": null,
-    "not_serious": false
+    "not_serious": false,
+    "contact_method": "call",
+    "phone": "+60123456781"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050002",
@@ -23,7 +25,9 @@
     "contact_recorded_at": null,
     "dont_contact": false,
     "closed_at": null,
-    "not_serious": false
+    "not_serious": false,
+    "contact_method": "meet",
+    "phone": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050003",
@@ -36,7 +40,9 @@
     "contact_recorded_at": "2026-10-14T02:30:00Z",
     "dont_contact": false,
     "closed_at": null,
-    "not_serious": false
+    "not_serious": false,
+    "contact_method": "call",
+    "phone": "+60123456783"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050004",
@@ -49,7 +55,9 @@
     "contact_recorded_at": "2026-10-05T03:00:00Z",
     "dont_contact": false,
     "closed_at": "2026-10-12T07:00:00Z",
-    "not_serious": false
+    "not_serious": false,
+    "contact_method": "meet",
+    "phone": null
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050005",
@@ -62,7 +70,9 @@
     "contact_recorded_at": "2026-10-06T06:00:00Z",
     "dont_contact": false,
     "closed_at": "2026-10-08T08:00:00Z",
-    "not_serious": false
+    "not_serious": false,
+    "contact_method": "call",
+    "phone": "+60123456785"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000050006",
@@ -75,6 +85,8 @@
     "contact_recorded_at": "2026-09-29T03:00:00Z",
     "dont_contact": false,
     "closed_at": "2026-10-02T08:00:00Z",
-    "not_serious": true
+    "not_serious": true,
+    "contact_method": "meet",
+    "phone": null
   }
 ]

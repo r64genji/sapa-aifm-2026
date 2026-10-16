@@ -169,7 +169,7 @@ export async function sentTo(chatId: number) {
 
 export async function tap(chatId: number, label: string) {
   const buttons = (await sentTo(chatId))
-    .flatMap((m) => (m.reply_markup as { inline_keyboard: { text: string; callback_data: string }[][] } | undefined)?.inline_keyboard.flat() ?? []);
+    .flatMap((m) => (m.reply_markup as { inline_keyboard?: { text: string; callback_data: string }[][] } | undefined)?.inline_keyboard?.flat() ?? []);
   const button = buttons.findLast((b) => b.text === label);
   if (!button) throw new Error(`no button "${label}" was shown`);
   await tapData(chatId, button.callback_data);
