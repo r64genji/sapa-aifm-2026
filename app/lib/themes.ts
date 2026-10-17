@@ -8,7 +8,7 @@ export type Counts = {
   respondents: number;
   min_group_size: number;
   enough: boolean;
-  drivers?: Record<string, { n: number; reviewed: number; ai_confident: number; score_only: number }>;
+  drivers?: Record<string, { n: number; reviewed: number; ai_confident: number; score_only: number; avg: number | null }>;
   context?: Record<string, number>;
 };
 
@@ -59,6 +59,7 @@ export async function themeCards(organisationId: string, touchpoint: number, mon
       reviewed: c.drivers![driver]?.reviewed ?? 0,
       ai_confident: c.drivers![driver]?.ai_confident ?? 0,
       score_only: c.drivers![driver]?.score_only ?? 0,
+      avg: c.drivers![driver]?.avg ?? null,
       ...(held.some((hold) => hold.driver === driver) && {
         held: held.filter((hold) => hold.driver === driver).map(({ language, reason }) => ({ language, reason })),
       }),

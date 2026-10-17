@@ -19,8 +19,8 @@ type Detail = {
 type Groups = { status: "unavailable" } | { status: "ok"; enough: false; have: number; need: number } | { status: "ok"; groups: { title: string; n: number; reply_ids: string[] }[]; not_grouped: number };
 type Entry = { id: string; title: string; text: string; used: number; difference: number | null; evidence: string; result: string };
 type Lead = { id: string; name: string };
-type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; leads: Lead[] };
-type Teams = { enough: false } | { enough: true; week: string; company: { n: number; m: number }; verdict: "none" | "some" | "most"; rows: TeamRow[]; eligible: number; small: number; safety: number };
+type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[] };
+type Teams = { enough: false } | { enough: true; week: string; company: { n: number; m: number; avg: number | null }; verdict: "none" | "some" | "most"; rows: TeamRow[]; eligible: number; small: number; safety: number };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
 
@@ -183,7 +183,9 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
         <>
           <div className="flex flex-col gap-0.5">
             <h4 className="m-0 text-[14px] font-bold">Teams above the company rate ({rate}%)</h4>
-            <span className="sp-caption">A to Z. Only teams with 5 or more answers, at least 2 more than expected.</span>
+            <span className="sp-caption">
+              A to Z. Only teams with 5 or more answers, at least 2 more than expected.{where.company.avg !== null ? ` Company average 1–5 score: ${where.company.avg}.` : ""}
+            </span>
           </div>
           <div className="flex flex-col">
             {where.rows.map((r) => (
@@ -198,8 +200,9 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
                     </span>
                   </span>
                 </label>
-                <div className="w-[160px] max-w-full flex-none">
+                <div className="flex w-[160px] max-w-full flex-none flex-col gap-1">
                   <CountBar count={r.n} of={r.m} />
+                  {r.avg !== null ? <span className="sp-caption">Average score {r.avg} of 5</span> : null}
                 </div>
                 <Link href={fixHref(driver, entry, r.teams)} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
                   {r.kind === "team" && r.leads.length === 1 ? `Send fix to ${r.leads[0].name}` : "Draft a fix for these teams"}

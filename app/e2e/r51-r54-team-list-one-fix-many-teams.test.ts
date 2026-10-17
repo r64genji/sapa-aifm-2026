@@ -33,26 +33,26 @@ test("R51: the team list holds only teams with 5 or more answers at least 2 abov
   assert.deepEqual(await res.json(), {
     enough: true,
     week: "2026-10-12",
-    company: { n: 13, m: 64 },
+    company: { n: 13, m: 64, avg: 3.5 },
     verdict: "some",
-    rows: [{ kind: "team", name: "Accounts Payable Europe", teams: ["Accounts Payable Europe"], n: 7, m: 22, leads: [{ id: huiLing, name: "Hui Ling" }] }],
+    rows: [{ kind: "team", name: "Accounts Payable Europe", teams: ["Accounts Payable Europe"], n: 7, m: 22, avg: 3.3, leads: [{ id: huiLing, name: "Hui Ling" }] }],
     eligible: 3,
     small: 2,
     safety: 0,
   });
   const clarity = await (await teams("ROLE_CLARITY")).json();
   assert.deepEqual([clarity.company, clarity.verdict, clarity.rows], [
-    { n: 23, m: 64 },
+    { n: 23, m: 64, avg: 3.1 },
     "some",
-    [{ kind: "team", name: "Accounts Payable Asia", teams: ["Accounts Payable Asia"], n: 6, m: 9, leads: [{ id: raj, name: "Raj" }] }],
+    [{ kind: "team", name: "Accounts Payable Asia", teams: ["Accounts Payable Asia"], n: 6, m: 9, avg: 2.4, leads: [{ id: raj, name: "Raj" }] }],
   ]);
 });
 
 test("R51: teams under 5 in one tower pool into one tower row, listed by the same test", async () => {
   const belonging = await (await teams("BELONGING")).json();
   assert.deepEqual([belonging.company, belonging.rows], [
-    { n: 7, m: 64 },
-    [{ kind: "tower", name: "Customer care language desks", teams: ["Japanese Desk", "Korean Desk", "Thai Desk"], n: 3, m: 8, leads: desks }],
+    { n: 7, m: 64, avg: 3.8 },
+    [{ kind: "tower", name: "Customer care language desks", teams: ["Japanese Desk", "Korean Desk", "Thai Desk"], n: 3, m: 8, avg: 3.3, leads: desks }],
   ]);
 });
 

@@ -3,9 +3,9 @@ import { themeCards } from "@/lib/themes";
 
 const MARGIN = 2;
 
-type Snapshot = { respondents: number; suppressed: boolean; counts: Record<string, { n: number }> | null };
+type Snapshot = { respondents: number; suppressed: boolean; counts: Record<string, { n: number; avg?: number | null }> | null };
 type Lead = { id: string; name: string };
-export type Row = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; leads: Lead[] };
+export type Row = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[] };
 
 export async function teamList(organisationId: string, driver: string) {
   const db = createAdminClient();
@@ -32,7 +32,7 @@ export async function teamList(organisationId: string, driver: string) {
     }
     return [...found].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
   };
-  const row = (kind: Row["kind"], name: string, names: string[], s: Snapshot): Row => ({ kind, name, teams: names, n: s.counts?.[driver]?.n ?? 0, m: s.respondents, leads: leads(names) });
+  const row = (kind: Row["kind"], name: string, names: string[], s: Snapshot): Row => ({ kind, name, teams: names, n: s.counts?.[driver]?.n ?? 0, m: s.respondents, avg: s.counts?.[driver]?.avg ?? null, leads: leads(names) });
 
   const teamRows = teams.data as (Snapshot & { team: string })[];
   const eligible = teamRows.filter((s) => !s.suppressed).map((s) => row("team", s.team, [s.team], s));
@@ -53,7 +53,7 @@ export async function teamList(organisationId: string, driver: string) {
   return {
     enough: true as const,
     week,
-    company: { n: card.n, m: card.m },
+    company: { n: card.n, m: card.m, avg: card.avg },
     verdict: shown.length === 0 ? ("none" as const) : listedTeams * 2 > eligible.length ? ("most" as const) : ("some" as const),
     rows: shown.sort((a, b) => a.name.localeCompare(b.name)),
     eligible: eligible.length,

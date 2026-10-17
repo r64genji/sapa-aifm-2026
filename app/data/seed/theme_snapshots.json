@@ -10,17 +10,20 @@
       "ROLE_CLARITY": {
         "n": 6,
         "reviewed": 4,
-        "ai_confident": 2
+        "ai_confident": 2,
+        "avg": 2.4
       },
       "MANAGER_SUPPORT": {
         "n": 2,
         "reviewed": 1,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.8
       },
       "WORKLOAD": {
         "n": 1,
         "reviewed": 1,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.4
       }
     }
   },
@@ -35,27 +38,32 @@
       "ROLE_CLARITY": {
         "n": 7,
         "reviewed": 4,
-        "ai_confident": 3
+        "ai_confident": 3,
+        "avg": 3.2
       },
       "MANAGER_SUPPORT": {
         "n": 7,
         "reviewed": 3,
-        "ai_confident": 4
+        "ai_confident": 4,
+        "avg": 3.3
       },
       "BELONGING": {
         "n": 2,
         "reviewed": 1,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.8
       },
       "ONBOARDING_TRAINING": {
         "n": 4,
         "reviewed": 3,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.2
       },
       "WORKLOAD": {
         "n": 2,
         "reviewed": 0,
-        "ai_confident": 2
+        "ai_confident": 2,
+        "avg": 3.3
       }
     }
   },
@@ -115,27 +123,32 @@
       "ROLE_CLARITY": {
         "n": 2,
         "reviewed": 2,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.4
       },
       "MANAGER_SUPPORT": {
         "n": 2,
         "reviewed": 2,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.2
       },
       "ONBOARDING_TRAINING": {
         "n": 2,
         "reviewed": 1,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.2
       },
       "BELONGING": {
         "n": 1,
         "reviewed": 0,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 4.6
       },
       "WORKLOAD": {
         "n": 1,
         "reviewed": 1,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.6
       }
     }
   }

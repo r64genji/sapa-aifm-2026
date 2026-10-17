@@ -15,27 +15,32 @@
       "ROLE_CLARITY": {
         "n": 2,
         "reviewed": 1,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.3
       },
       "MANAGER_SUPPORT": {
         "n": 2,
         "reviewed": 0,
-        "ai_confident": 2
+        "ai_confident": 2,
+        "avg": 3.6
       },
       "BELONGING": {
         "n": 3,
         "reviewed": 1,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.3
       },
       "ONBOARDING_TRAINING": {
         "n": 1,
         "reviewed": 0,
-        "ai_confident": 1
+        "ai_confident": 1,
+        "avg": 3.4
       },
       "WORKLOAD": {
         "n": 1,
         "reviewed": 1,
-        "ai_confident": 0
+        "ai_confident": 0,
+        "avg": 3.3
       }
     }
   }
