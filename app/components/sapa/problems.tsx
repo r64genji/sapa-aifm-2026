@@ -45,22 +45,6 @@ function Bar({ s, label }: { s: Share; label: string }) {
   );
 }
 
-const at = (value: number) => ((Math.min(Math.max(value, 1), 5) - 1) / 4) * 100;
-
-function MiniScale({ team, company }: { team: number; company: number | null }) {
-  const label = `Average score ${team} of 5${company === null ? "" : `, company ${company}`}`;
-  return (
-    <div className="flex items-center gap-2" role="img" aria-label={label} data-tip={label}>
-      <div className="relative h-2 flex-1">
-        <div className="absolute inset-x-0 top-[3px] h-0.5 rounded" style={{ background: "var(--line-soft)" }} />
-        {company !== null ? <div className="absolute top-0 h-2 w-0.5 -ml-px" style={{ left: `${at(company)}%`, background: "var(--line-strong)" }} /> : null}
-        <div className="absolute h-2 w-2 -ml-1 rounded-full" style={{ left: `${at(team)}%`, background: "var(--problems)" }} />
-      </div>
-      <span className="sp-num text-[13px] font-semibold">{team}</span>
-    </div>
-  );
-}
-
 function Timeline({ stops }: { stops: (Share & { touchpoint: number })[] }) {
   return (
     <ol className="m-0 flex list-none flex-col p-0">
@@ -216,9 +200,9 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
                     </span>
                   </span>
                 </label>
-                <div className="flex w-[160px] max-w-full flex-none flex-col gap-1.5">
+                <div className="flex w-[160px] max-w-full flex-none flex-col gap-1">
                   <CountBar count={r.n} of={r.m} />
-                  {r.avg !== null ? <MiniScale team={r.avg} company={where.company.avg} /> : null}
+                  {r.avg !== null ? <span className="sp-caption">Avg {r.avg}</span> : null}
                 </div>
                 <Link href={fixHref(driver, entry, r.teams)} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
                   {r.kind === "team" && r.leads.length === 1 ? `Send fix to ${r.leads[0].name}` : "Draft a fix for these teams"}
