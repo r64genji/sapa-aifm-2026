@@ -15,6 +15,7 @@ import {
   say,
   scriptModel,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -52,12 +53,12 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await tap(live, "English");
   await tap(live, en.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  await tap(live, "4");
-  await tap(live, "3");
-  await tap(live, "5");
-  await tap(live, "3");
-  await tap(live, "3");
-  await tap(live, "3");
+  await tapScore(live, 4);
+  await tapScore(live, 3);
+  await tapScore(live, 5);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 

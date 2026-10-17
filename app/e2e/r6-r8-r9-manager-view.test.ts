@@ -20,6 +20,7 @@ import {
   sessionClient,
   settle,
   tap,
+  tapScore,
   update,
 } from "./helpers.ts";
 
@@ -35,12 +36,12 @@ const asManager = (path: string, token: string) =>
   fetch(`${appUrl}${path}`, { headers: { authorization: `Bearer ${token}` } });
 
 async function reply(chat: number, text: string, tag: Record<string, unknown>) {
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, ...tag }) }]);
   await say(chat, text);
 }
@@ -195,9 +196,9 @@ async function lastTextTo(chat: number) {
 }
 
 test("R7, R49: the supervisor never reads a crisis reply while it is being checked, nor a sharing hire's unprompted text", async () => {
-  await tap(waiting, "4");
-  await tap(waiting, "3");
-  await tap(waiting, "5");
+  await tapScore(waiting, 4);
+  await tapScore(waiting, 3);
+  await tapScore(waiting, 5);
   await scriptModel("omniroute", [{ kind: "timeout" }]);
   await scriptModel("deepseek", [{ kind: "timeout" }]);
   const crisisText = "I can't take it anymore, I want to kill myself";

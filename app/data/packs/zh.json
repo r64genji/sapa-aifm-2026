@@ -40,7 +40,7 @@
     "fallback": "此回答使用{language}。如不清楚，请询问人事部。"
   },
   "checkin": {
-    "intro": "你好，该做 Sapa 问候了，大约一分钟。请点选答案，或在被问到时打字。",
+    "intro": "你好，该做 Sapa 问候了。点几下就好，让 HR 看到你的团队有没有变好。\nSapa 不知道你的名字。公司能看到你写的内容，但永远不知道是谁写的。如果你想保持匿名，请不要写名字和细节。",
     "reminder": "温馨提醒：你的 Sapa 问候还没完成。可以从上次中断的地方继续，也可以忽略，它会自动关闭。",
     "thanks": "谢谢，你的回答已保存。",
     "questions": [
@@ -48,31 +48,66 @@
         "id": "ROLE_CLARITY",
         "driver": "ROLE_CLARITY",
         "type": "scale",
-        "text": "本周你对自己被期望做什么有多清楚？（1–5）"
+        "text": "本周你对自己被期望做什么有多清楚？",
+        "labels": [
+          "完全不清楚",
+          "有点不清楚",
+          "还算清楚",
+          "大部分清楚",
+          "非常清楚"
+        ]
       },
       {
         "id": "MANAGER_SUPPORT",
         "driver": "MANAGER_SUPPORT",
         "type": "scale",
-        "text": "本周你觉得主管给你的支持有多少？（1–5）"
+        "text": "本周你从主管那里得到了多少支持？",
+        "labels": [
+          "没有",
+          "很少",
+          "一些",
+          "挺多",
+          "很多"
+        ]
       },
       {
         "id": "BELONGING",
         "driver": "BELONGING",
         "type": "scale",
-        "text": "本周你有多觉得自己是团队的一员？（1–5）"
+        "text": "本周你和团队的联系有多紧密？",
+        "labels": [
+          "完全没有",
+          "有一点",
+          "还可以",
+          "大部分时候紧密",
+          "非常紧密"
+        ]
       },
       {
         "id": "ONBOARDING_TRAINING",
         "driver": "ONBOARDING_TRAINING",
         "type": "scale",
-        "text": "本周的培训对你的工作帮助有多大？（1–5）"
+        "text": "本周的培训对你的工作帮助有多大？",
+        "labels": [
+          "完全没有",
+          "帮助很少",
+          "有些帮助",
+          "帮助不错",
+          "帮助很大"
+        ]
       },
       {
         "id": "WORKLOAD",
         "driver": "WORKLOAD",
         "type": "scale",
-        "text": "本周你的工作量是否可以应付？（1–5）"
+        "text": "本周你的工作量是否可以应付？",
+        "labels": [
+          "应付不了",
+          "很难应付",
+          "勉强应付",
+          "可以应付",
+          "轻松应付"
+        ]
       },
       {
         "id": "OPEN",
@@ -82,17 +117,54 @@
       {
         "id": "JOB_MATCH",
         "type": "scale",
-        "text": "你现在的工作与入职时被告知的内容有多相符？（1–5）"
+        "text": "你现在的工作与入职时被告知的内容有多相符？",
+        "labels": [
+          "完全不符",
+          "有一点相符",
+          "部分相符",
+          "大部分相符",
+          "完全相符"
+        ]
+      },
+      {
+        "id": "FIX_CHANGE",
+        "type": "scale",
+        "text": "自从上次 HR 的最新消息以来，这方面对你来说有什么变化？",
+        "labels": [
+          "差了很多",
+          "差了一点",
+          "没有变化",
+          "好了一点",
+          "好了很多"
+        ]
       }
     ],
     "gotIt": "好的，收到了。你的回答已保存，HR 会查看。",
     "probes": [
-      { "id": "GENERIC_MORE", "text": "可以再多说一点吗？" },
-      { "id": "GENERIC_HELP", "text": "怎样做会对这件事有帮助？" },
-      { "id": "ROLE_CLARITY", "text": "现在有哪些任务或优先事项你还不清楚？" },
-      { "id": "MANAGER_SUPPORT", "text": "你希望主管给你什么样的支持？" },
-      { "id": "BELONGING", "text": "怎样做会让你更有团队归属感？" },
-      { "id": "WORKLOAD", "text": "你的工作量中哪一部分最难应付？" }
+      {
+        "id": "GENERIC_MORE",
+        "text": "可以再多说一点吗？"
+      },
+      {
+        "id": "GENERIC_HELP",
+        "text": "怎样做会对这件事有帮助？"
+      },
+      {
+        "id": "ROLE_CLARITY",
+        "text": "现在有哪些任务或优先事项你还不清楚？"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "text": "你希望主管给你什么样的支持？"
+      },
+      {
+        "id": "BELONGING",
+        "text": "怎样做会让你更有团队归属感？"
+      },
+      {
+        "id": "WORKLOAD",
+        "text": "你的工作量中哪一部分最难应付？"
+      }
     ],
     "sequence": [
       "ROLE_CLARITY",
@@ -101,7 +173,15 @@
       "ONBOARDING_TRAINING",
       "WORKLOAD",
       "OPEN"
-    ]
+    ],
+    "chat": {
+      "opener": "你选了“{label}”。发生了什么事？",
+      "light": "有什么能让你下周工作更顺利吗？",
+      "changed": "你选了“{label}”。有什么变化？",
+      "stillNot": "你选了“{label}”。还有什么不顺利？",
+      "askHr": "我不能提供建议，也不能回答关于工资、试用期、健康或法律的问题。请直接问 HR。",
+      "done": "完成"
+    }
   },
   "offer": {
     "text": "HR 想帮助你处理你分享的事情。你愿意和 HR 私下聊一聊吗？",

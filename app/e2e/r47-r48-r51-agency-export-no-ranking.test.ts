@@ -14,6 +14,7 @@ import {
   say,
   scriptModel,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 type Person = { id: string; code_name: string; team: string; start_date: string; role: string; agency?: string };
@@ -206,7 +207,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
 
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
   for (const chat of answerers) {
-    for (const score of ["4", "3", "5", "3", "3", "3"]) await tap(chat, score);
+    for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
     await say(chat, "Bos bagi tiga tugas semua penting, saya tak tahu mana nak buat dulu");
   }

@@ -24,13 +24,15 @@ createServer(async (req, res) => {
     res.end(JSON.stringify(calls));
     return;
   }
-  const provider = req.url?.split("/")[1] ?? "";
-  if (req.url === `/${provider}/script`) {
-    scripts[provider] = JSON.parse(raw);
+  const path = req.url?.split("/")[1] ?? "";
+  if (req.url === `/${path}/script`) {
+    scripts[path] = JSON.parse(raw);
     res.end("{}");
     return;
   }
   const body = JSON.parse(raw);
+  const chat = String(body.messages?.[0]?.content ?? "").startsWith("You are Sapa's check-in helper");
+  const provider = chat ? `${path}:chat` : path;
   calls.push({ provider, body });
   const script = scripts[provider]?.shift() ?? { kind: "error", status: 503 };
   if (script.kind === "timeout") return;

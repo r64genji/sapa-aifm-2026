@@ -17,6 +17,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
   tapData,
 } from "./helpers.ts";
 
@@ -275,12 +276,12 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
   const checkinReply = "Zebra stripes everywhere, tak tahu mana nak buat dulu";
   const advance = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
   assert.equal(advance.status, 200);
-  await tap(memo, "4");
-  await tap(memo, "3");
-  await tap(memo, "5");
-  await tap(memo, "3");
-  await tap(memo, "3");
-  await tap(memo, "3");
+  await tapScore(memo, 4);
+  await tapScore(memo, 3);
+  await tapScore(memo, 5);
+  await tapScore(memo, 3);
+  await tapScore(memo, 3);
+  await tapScore(memo, 3);
   await script(classifierTag());
   await ask(memo, checkinReply);
 

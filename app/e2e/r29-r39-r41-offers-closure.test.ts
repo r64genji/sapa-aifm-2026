@@ -13,6 +13,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -31,8 +32,10 @@ async function responseIds(chat: number) {
 }
 
 async function twoReplies(chat: number) {
-  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ probe_id: "GENERIC_MORE" }) }]);
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, quote);
+  const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();
+  await db.from("checkin_schedule").update({ status: "sent", progress: 5 }).eq("person_id", who!.id).eq("touchpoint", 30);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, quote);
   replies[chat] = await responseIds(chat);
@@ -51,12 +54,12 @@ before(async () => {
   const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
   assert.equal((await res.json()).sent, chats.length);
   for (const chat of chats) {
-    await tap(chat, "4");
-    await tap(chat, "3");
-    await tap(chat, "5");
-    await tap(chat, "3");
-    await tap(chat, "3");
-    await tap(chat, "3");
+    await tapScore(chat, 4);
+    await tapScore(chat, 3);
+    await tapScore(chat, 5);
+    await tapScore(chat, 3);
+    await tapScore(chat, 3);
+    await tapScore(chat, 3);
   }
   for (const chat of [yes, noThanks, silent]) await twoReplies(chat);
   for (const chat of [plain, stopper]) {

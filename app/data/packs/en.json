@@ -75,7 +75,7 @@
     "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },
   "checkin": {
-    "intro": "Hi, it's time for your Sapa check-in. It takes about a minute. Tap an answer, or type when asked.",
+    "intro": "Hi, it's time for your Sapa check-in. A few quick taps so HR can see if things get better for your team.\nSapa does not know your name. Your company sees what you write, never who wrote it. Leave out names and details if you want to stay anonymous.",
     "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",
     "thanks": "Thank you, your answers are saved.",
     "questions": [
@@ -83,31 +83,66 @@
         "id": "ROLE_CLARITY",
         "driver": "ROLE_CLARITY",
         "type": "scale",
-        "text": "How clear are you on what is expected of you this week? (1–5)"
+        "text": "How clear are you on what is expected of you this week?",
+        "labels": [
+          "Not clear at all",
+          "A bit unclear",
+          "Somewhat clear",
+          "Mostly clear",
+          "Very clear"
+        ]
       },
       {
         "id": "MANAGER_SUPPORT",
         "driver": "MANAGER_SUPPORT",
         "type": "scale",
-        "text": "How supported do you feel by your manager this week? (1–5)"
+        "text": "How much support did you get from your manager this week?",
+        "labels": [
+          "None",
+          "Very little",
+          "Some",
+          "A good amount",
+          "A lot"
+        ]
       },
       {
         "id": "BELONGING",
         "driver": "BELONGING",
         "type": "scale",
-        "text": "How much do you feel part of the team this week? (1–5)"
+        "text": "How connected are you with your team this week?",
+        "labels": [
+          "Not at all",
+          "A little",
+          "Somewhat",
+          "Mostly",
+          "Very connected"
+        ]
       },
       {
         "id": "ONBOARDING_TRAINING",
         "driver": "ONBOARDING_TRAINING",
         "type": "scale",
-        "text": "How well has your training prepared you for your work this week? (1–5)"
+        "text": "How well has your training prepared you for your work this week?",
+        "labels": [
+          "Not at all",
+          "Poorly",
+          "Partly",
+          "Well",
+          "Very well"
+        ]
       },
       {
         "id": "WORKLOAD",
         "driver": "WORKLOAD",
         "type": "scale",
-        "text": "How manageable is your workload this week? (1–5)"
+        "text": "How manageable is your workload this week?",
+        "labels": [
+          "Not manageable",
+          "Hard to manage",
+          "Just about",
+          "Manageable",
+          "Easy to manage"
+        ]
       },
       {
         "id": "OPEN",
@@ -117,17 +152,54 @@
       {
         "id": "JOB_MATCH",
         "type": "scale",
-        "text": "How much does the job match what you were told when you were hired? (1–5)"
+        "text": "How much does the job match what you were told when you were hired?",
+        "labels": [
+          "Not at all",
+          "A little",
+          "Partly",
+          "Mostly",
+          "Completely"
+        ]
+      },
+      {
+        "id": "FIX_CHANGE",
+        "type": "scale",
+        "text": "Since the last Update from HR, how has this changed for you?",
+        "labels": [
+          "Much worse",
+          "A bit worse",
+          "No change",
+          "A bit better",
+          "Much better"
+        ]
       }
     ],
     "gotIt": "Got it. Your answer is saved and HR will look at it.",
     "probes": [
-      { "id": "GENERIC_MORE", "text": "Could you tell me a bit more about that?" },
-      { "id": "GENERIC_HELP", "text": "What would help with that?" },
-      { "id": "ROLE_CLARITY", "text": "Which tasks or priorities are unclear to you right now?" },
-      { "id": "MANAGER_SUPPORT", "text": "What support would you like from your manager?" },
-      { "id": "BELONGING", "text": "What would help you feel more part of the team?" },
-      { "id": "WORKLOAD", "text": "Which part of your workload is hardest to manage?" }
+      {
+        "id": "GENERIC_MORE",
+        "text": "Could you tell me a bit more about that?"
+      },
+      {
+        "id": "GENERIC_HELP",
+        "text": "What would help with that?"
+      },
+      {
+        "id": "ROLE_CLARITY",
+        "text": "Which tasks or priorities are unclear to you right now?"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "text": "What support would you like from your manager?"
+      },
+      {
+        "id": "BELONGING",
+        "text": "What would help you feel more part of the team?"
+      },
+      {
+        "id": "WORKLOAD",
+        "text": "Which part of your workload is hardest to manage?"
+      }
     ],
     "sequence": [
       "ROLE_CLARITY",
@@ -136,7 +208,15 @@
       "ONBOARDING_TRAINING",
       "WORKLOAD",
       "OPEN"
-    ]
+    ],
+    "chat": {
+      "opener": "You tapped \"{label}\". What is happening?",
+      "light": "Anything that would make next week easier?",
+      "changed": "You tapped \"{label}\". What changed?",
+      "stillNot": "You tapped \"{label}\". What is still not working?",
+      "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+      "done": "Done"
+    }
   },
   "offer": {
     "text": "HR would like to help with what you shared. Would you like a short private chat?",

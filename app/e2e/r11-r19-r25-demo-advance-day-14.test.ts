@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, liveInvite, chatPerson } from "./helpers.ts";
+import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, liveInvite, chatPerson } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -33,12 +33,12 @@ test("R19, R23: Advance to Day 14 sends the Day 14 check-in to the live hire onl
 
 test("R11, R25: the check-in uses only bank text, the reply is stored encrypted, and each read is audited", async () => {
   const before = (await sentTo(live)).length;
-  await tap(live, "4");
-  await tap(live, "3");
-  await tap(live, "5");
-  await tap(live, "3");
-  await tap(live, "3");
-  await tap(live, "3");
+  await tapScore(live, 4);
+  await tapScore(live, 3);
+  await tapScore(live, 5);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
@@ -48,7 +48,7 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
     question("ONBOARDING_TRAINING"),
     question("WORKLOAD"),
     question("JOB_MATCH"),
-    question("OPEN"),
+    en.checkin.chat.light,
     en.checkin.thanks,
   ]);
 

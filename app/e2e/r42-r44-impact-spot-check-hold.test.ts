@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, appUrl, classifierTag, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
+import { addHire, appUrl, classifierTag, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap, tapScore } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const trend = "This shows a trend, not proof that Sapa caused it";
@@ -108,7 +108,7 @@ test("R44: each Monday the nightly job queues 3 AI-confident tags per driver and
   await tap(hire, "Bahasa Malaysia");
   await tap(hire, ms_.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(hire, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(hire, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], evidence_quote: "Kerja terlalu banyak" }) }]);
   await say(hire, "Kerja terlalu banyak minggu ini");
   await freezeClock(`${mondays[0]}T03:00:00.000Z`);
@@ -175,7 +175,7 @@ test("R42: an intake of 5 shows its response rate with lapsed check-ins counted,
   await freezeClock("2026-04-09T02:00:00.000Z");
   await dispatch();
   for (const chat of chats.slice(0, 3)) {
-    for (let step = 0; step < 6; step++) await tap(chat, "3");
+    for (let step = 0; step < 6; step++) await tapScore(chat, 3);
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
     await say(chat, "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
   }

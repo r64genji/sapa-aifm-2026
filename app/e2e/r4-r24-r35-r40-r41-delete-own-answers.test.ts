@@ -18,6 +18,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
   tapData,
 } from "./helpers.ts";
 
@@ -85,12 +86,12 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await tap(live, "English");
   await tap(live, en.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  await tap(live, "4");
-  await tap(live, "3");
-  await tap(live, "5");
-  await tap(live, "3");
-  await tap(live, "3");
-  await tap(live, "3");
+  await tapScore(live, 4);
+  await tapScore(live, 3);
+  await tapScore(live, 5);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const [queued] = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
@@ -205,12 +206,12 @@ test("R41: only an HR admin can send a hire's data, only to that hire, only with
   await joined(exported, "2026-10-13");
   await freezeClock("2026-10-16T03:00:00.000Z");
   assert.equal((await dispatch()).status, 200);
-  await tap(exported, "4");
-  await tap(exported, "3");
-  await tap(exported, "5");
-  await tap(exported, "3");
-  await tap(exported, "3");
-  await tap(exported, "3");
+  await tapScore(exported, 4);
+  await tapScore(exported, 3);
+  await tapScore(exported, 5);
+  await tapScore(exported, 3);
+  await tapScore(exported, 3);
+  await tapScore(exported, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(exported, reply);
   await scriptModel("omniroute", [

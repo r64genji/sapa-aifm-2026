@@ -37,11 +37,11 @@ export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
 type Usage = { prompt_tokens: number; completion_tokens: number };
 type ModelScript = { kind: "json"; content: unknown; usage?: Usage } | { kind: "text"; content: string; usage?: Usage } | { kind: "error"; status: number } | { kind: "timeout" };
 
-export async function scriptModel(provider: "omniroute" | "deepseek", scripts: ModelScript[]) {
+export async function scriptModel(provider: "omniroute" | "deepseek" | "omniroute:chat" | "deepseek:chat", scripts: ModelScript[]) {
   await fetch(`${modelUrl}/${provider}/script`, { method: "POST", body: JSON.stringify(scripts) });
 }
 
-export async function modelCalls(provider: "omniroute" | "deepseek") {
+export async function modelCalls(provider: "omniroute" | "deepseek" | "omniroute:chat" | "deepseek:chat") {
   const res = await fetch(`${modelUrl}/calls`);
   const calls: { provider: string; body: { messages: { content: string }[] } }[] = await res.json();
   return calls.filter((call) => call.provider === provider);
@@ -174,6 +174,15 @@ export async function tap(chatId: number, label: string) {
   const button = buttons.findLast((b) => b.text === label);
   if (!button) throw new Error(`no button "${label}" was shown`);
   await tapData(chatId, button.callback_data);
+}
+
+export async function tapScore(chatId: number, score: number) {
+  const message = (await sentTo(chatId)).findLast((m) =>
+    (m.reply_markup as { inline_keyboard?: { callback_data: string }[][] } | undefined)?.inline_keyboard?.flat().some((b) => /"v":"\d+\.\d"/.test(b.callback_data)),
+  );
+  const buttons = (message?.reply_markup as { inline_keyboard: { text: string; callback_data: string }[][] } | undefined)?.inline_keyboard.flat() ?? [];
+  if (buttons.length !== 5) throw new Error("no 5-word scale was shown");
+  await tap(chatId, buttons[score - 1].text);
 }
 
 export async function tapData(chatId: number, data: string) {

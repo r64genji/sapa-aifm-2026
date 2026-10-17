@@ -18,7 +18,7 @@ The AI reads new hires' check-in replies and questions. It helps HR find shared 
 | Draft a suggested fix | Nobody sees it until HR opens it, and nothing happens until HR approves it. |
 | Answer a new hire's handbook question | Only from a page HR published. The answer is labelled "AI answer" and quotes the page (R31). |
 | Show a new hire the AI's reading of their own replies (`/myanswers`) | Only that person sees it. It is labelled as AI and has a "This is wrong" button (R40). |
-| Ask a new hire up to 3 follow-up questions in a check-in | One short, neutral question about work each time. No feelings, causes, names, advice or promises. It stops at once on a serious concern (R12). |
+| Ask a new hire up to 2 follow-up questions in a check-in chat, after the fixed first question | One short, neutral question about work each time. No feelings, causes, names, advice or promises; code blocks feelings words and name or contact requests. The keyword check runs before the AI on every message, and the chat stops at once on a serious concern. The AI writes no summary for the new hire and there is no "what I will tell HR" step. HR sees the person's own words as one reply with a label and an exact quote (R12, R55, R56). |
 | Translate a Chinese reply for HR | Labelled "AI translation". It is never stored, counted or shown to anyone else (R53). |
 | Flag a reply as a serious concern | See section 3. |
 
@@ -26,9 +26,9 @@ The AI reads new hires' check-in replies and questions. It helps HR find shared 
 
 A named person checks each text in each language before it goes live (R46). After that, Sapa sends it without asking again.
 
-- Check-in questions and follow-up probes.
+- Check-in questions with their word buttons, the fixed first chat question, the light question and the "please ask HR" line (R55).
 - The safe reply with helpline numbers (R14).
-- The 1–5 recheck question (R26).
+- The neutral recheck question (R26) and the fix follow-up question "Since the last Update from HR, how has this changed for you?" (R56).
 - Manager milestone nudges (R45).
 - The contact-choice buttons (section 4).
 
@@ -46,7 +46,7 @@ A named person checks each text in each language before it goes live (R46). Afte
 
 ### Level 4: never, even with approval
 
-- The AI writes free text to an employee. The only exceptions are the check-in follow-up questions (R12), the handbook answer and `/myanswers` (R11).
+- The AI writes free text to an employee. The only exceptions are the check-in follow-up questions (R12, R55), the handbook answer and `/myanswers` (R11). The AI never writes the employee a summary of their chat.
 - The AI scores a person, rates sentiment or personality, reads emotions, or predicts who will quit (R16).
 - The AI closes, downgrades or hides a serious concern.
 - A manager sees the words of a person who chose "HR only", or sees any serious concern (R7).

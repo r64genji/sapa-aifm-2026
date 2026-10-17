@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { before, test } from "node:test";
-import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, resetSeed, say, scriptModel, tap } from "./helpers.ts";
+import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, resetSeed, say, scriptModel, tap, tapScore } from "./helpers.ts";
 
 const [first, second] = [5550004601, 5550004602];
 
@@ -12,12 +12,12 @@ async function tagOf(chat: number) {
 }
 
 async function reply(chat: number) {
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
 }

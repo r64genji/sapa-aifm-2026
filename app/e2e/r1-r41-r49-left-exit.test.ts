@@ -15,6 +15,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
   tapData,
 } from "./helpers.ts";
 
@@ -137,12 +138,12 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   names[sharer] = data!.code_name;
   await freezeClock("2026-10-16T02:00:00.000Z");
   await dispatch();
-  await tap(sharer, "4");
-  await tap(sharer, "3");
-  await tap(sharer, "5");
-  await tap(sharer, "3");
-  await tap(sharer, "3");
-  await tap(sharer, "3");
+  await tapScore(sharer, 4);
+  await tapScore(sharer, 3);
+  await tapScore(sharer, 5);
+  await tapScore(sharer, 3);
+  await tapScore(sharer, 3);
+  await tapScore(sharer, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(sharer, "tak tahu mana nak buat dulu");
 
@@ -166,12 +167,12 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
 test("R41: an offer to a hire who left shows the same generic reason as for one who stopped", async () => {
   await freezeClock("2026-10-16T02:00:00.000Z");
   for (const chat of [replier, stopper]) {
-    await tap(chat, "4");
-    await tap(chat, "3");
-    await tap(chat, "5");
-    await tap(chat, "3");
-    await tap(chat, "3");
-    await tap(chat, "3");
+    await tapScore(chat, 4);
+    await tapScore(chat, 3);
+    await tapScore(chat, 5);
+    await tapScore(chat, 3);
+    await tapScore(chat, 3);
+    await tapScore(chat, 3);
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
     await say(chat, "tak tahu mana nak buat dulu");
   }

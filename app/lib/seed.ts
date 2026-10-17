@@ -23,6 +23,7 @@ import users from "@/data/seed/users.json";
 import escalations from "@/data/seed/escalations.json";
 import milestone_nudges from "@/data/seed/milestone_nudges.json";
 import demo_history from "@/data/seed/demo_history.json";
+import fix_follow_up from "@/data/seed/fix_follow_up.json";
 import { encrypt } from "@/lib/crypto";
 import { joinLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -78,6 +79,16 @@ async function seedSpotChecks() {
   if (error) throw error;
 }
 
+async function seedFixFollowUp() {
+  if (process.env.SAPA_TEST === "1") return;
+  const db = createAdminClient();
+  const replies = fix_follow_up.responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
+  for (const [table, rows] of [["checkin_schedule", fix_follow_up.checkin_schedule], ["responses", replies], ["ai_tags", fix_follow_up.ai_tags]] as [string, object[]][]) {
+    const { error } = await db.from(table).insert(rows);
+    if (error) throw error;
+  }
+}
+
 function passedPacks() {
   if (process.env.SAPA_TEST === "1") return language_packs;
   const results = { test_passed_on: "2026-10-15", test_results_file: "eval/results/2026-10-15T21-54-14-063Z-gemini-classify-test.json" };
@@ -99,6 +110,7 @@ export async function resetDemo() {
   });
   if (error) throw error;
   await seedSpotChecks();
+  await seedFixFollowUp();
   await seedUsers();
   const { data: lead } = await db.from("managers").select("id, display_name");
   const names = new Map(lead!.map((row) => [row.id, row.display_name]));

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { db, freezeClock, hrRequest, joined, resetDemo, say, sentTo, tap } from "./helpers.ts";
+import { db, freezeClock, hrRequest, joined, resetDemo, say, sentTo, tap, tapScore } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const en = read("../data/packs/en.json");
@@ -20,7 +20,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   for (const { chat } of cases) await joined(chat, "2026-10-02");
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  for (const { chat } of cases) for (const score of ["4", "3", "5", "3", "3", "3"]) await tap(chat, score);
+  for (const { chat } of cases) for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
 });
 
 for (const { chat, text, category } of cases) {

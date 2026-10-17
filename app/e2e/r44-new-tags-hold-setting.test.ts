@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, tap } from "./helpers.ts";
+import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, tap, tapScore } from "./helpers.ts";
 
 const ms = JSON.parse(readFileSync(new URL("../data/packs/ms.json", import.meta.url), "utf8"));
 const reply = "Kerja terlalu banyak minggu ini";
@@ -15,7 +15,7 @@ async function onboard(chat: number) {
 }
 
 async function answer(chat: number, drivers: string[]) {
-  for (const score of ["4", "3", "5", "3", "3", "3"]) await tap(chat, score);
+  for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers, evidence_quote: reply }) }]);
   await say(chat, reply);
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();

@@ -4,16 +4,19 @@ import { createAdminClient } from "@/lib/supabase/admin";
 const TIMEOUT_MS = process.env.SAPA_TEST === "1" ? 2000 : 8000;
 const FALLBACK_CAP = 1.5;
 
-type CallType = "classify" | "answer" | "draft" | "translate" | "group";
+type CallType = "classify" | "answer" | "draft" | "translate" | "group" | "chat";
 
-export const providers = (schema: object, medium: boolean) => [
+export const providers = (schema: object, medium: boolean, chat = false) => [
   {
     name: "gemini" as const,
     url: `${process.env.OMNIROUTE_BASE_URL}/chat/completions`,
     key: process.env.OMNIROUTE_API_KEY!,
-    model: (medium ? process.env.GEMINI_MODEL_ID_MEDIUM : process.env.GEMINI_MODEL_ID)!,
+    model: (chat ? (process.env.CHAT_MODEL_ID ?? process.env.GEMINI_MODEL_ID) : medium ? process.env.GEMINI_MODEL_ID_MEDIUM : process.env.GEMINI_MODEL_ID)!,
     price: { input: 0.75, output: 3.75 },
-    extra: { response_format: { type: "json_schema", json_schema: { name: "output", strict: true, schema } }, reasoning_effort: "none" },
+    extra: {
+      response_format: { type: "json_schema", json_schema: { name: "output", strict: true, schema } },
+      ...(chat ? {} : { reasoning_effort: "none" }),
+    },
   },
   {
     name: "deepseek" as const,
@@ -79,7 +82,7 @@ export async function complete(
   user: string,
   schema: object,
 ) {
-  for (const provider of providers(schema, callType === "draft" || callType === "group")) {
+  for (const provider of providers(schema, callType === "draft" || callType === "group", callType === "chat")) {
     if (provider.name === "deepseek" && (await fallbackSpend()) > FALLBACK_CAP) continue;
     const { content, input, cached, output, cost, latencyMs } = await request(provider, system, user);
     const { error } = await createAdminClient()

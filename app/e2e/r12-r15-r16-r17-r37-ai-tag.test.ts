@@ -15,10 +15,20 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
-const probe = (id: string) => en.checkin.probes.find((p: { id: string }) => p.id === id).text;
+const interviewerDone = {
+  action: "done",
+  question: "",
+  goals_met: ["what_happened"],
+  work_detail: true,
+  serious_concern: false,
+  concern_category: "none",
+  ask_hr: false,
+  stop_reason: "nothing_to_dig",
+};
 const live = 5550000201;
 const [wrongTwice, wrongOnce, badJson, down, fallback, capped, spender] = [301, 302, 303, 304, 305, 306, 307].map(
   (n) => 5550000000 + n,
@@ -28,12 +38,12 @@ const reply = `Boss bagi 3 task semua urgent, ${quote}. Call me 012-345 6789`;
 const person = (chat: number) => db.from("people").select("id").eq("telegram_chat_id", chat).single();
 
 async function reachOpenQuestion(chat: number) {
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
 }
 
 async function storedTag(chat: number) {
@@ -67,20 +77,23 @@ before(async () => {
   assert.equal((await res.json()).sent, 8);
 });
 
-test("R17, R16, R12: the model gets masked text, extra fields are not stored, and probes stop at the cap", async () => {
+test("R17, R16: the model gets masked text and extra fields are not stored", async () => {
   const seen = await usageIds();
   await reachOpenQuestion(live);
+  await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [
-    { kind: "json", content: { ...classifierTag({ probe_id: "ROLE_CLARITY" }), emotion: "angry", sentiment_score: -0.8 } },
+    { kind: "json", content: { ...classifierTag(), emotion: "angry", sentiment_score: -0.8 } },
   ]);
   await say(live, reply);
 
-  const calls = await modelCalls("omniroute");
-  assert.equal(calls.length, 1);
-  const sent = JSON.stringify(calls[0].body);
-  assert.ok(!sent.includes("012-345 6789") && !sent.includes("0123456789"));
-  assert.ok(sent.includes(`${quote}. Call me [PHONE]`));
-  assert.equal(await lastText(live), probe("ROLE_CLARITY"));
+  const calls = [...(await modelCalls("omniroute:chat")), ...(await modelCalls("omniroute"))];
+  assert.equal(calls.length, 2);
+  for (const call of calls) {
+    const sent = JSON.stringify(call.body);
+    assert.ok(!sent.includes("012-345 6789") && !sent.includes("0123456789"));
+    assert.ok(sent.includes(`${quote}. Call me [PHONE]`));
+  }
+  assert.equal(await lastText(live), en.checkin.thanks);
 
   const { tag } = await storedTag(live);
   assert.equal(tag.status, "ok");
@@ -88,20 +101,11 @@ test("R17, R16, R12: the model gets masked text, extra fields are not stored, an
   assert.equal(tag.model, "test-gemini");
   assert.equal(tag.prompt_version, "classify-v1");
   assert.ok(!Object.keys(tag).some((key) => /emotion|sentiment|personality|quit|risk/.test(key)));
-  const usage = await newUsage(seen, "provider, model, call_type, input_tokens, output_tokens, cost, ok");
-  assert.deepEqual(usage, [
+  const usage = (await newUsage(seen, "provider, model, call_type, input_tokens, output_tokens, cost, ok")) as unknown as { call_type: string }[];
+  assert.deepEqual(usage.sort((x, y) => x.call_type.localeCompare(y.call_type)), [
+    { provider: "gemini", model: "test-chat", call_type: "chat", input_tokens: 100, output_tokens: 50, cost: 0.0002625, ok: true },
     { provider: "gemini", model: "test-gemini", call_type: "classify", input_tokens: 100, output_tokens: 50, cost: 0.0002625, ok: true },
   ]);
-
-  await scriptModel("omniroute", [
-    { kind: "json", content: classifierTag({ probe_id: "GENERIC_MORE", evidence_quote: "Everything is urgent" }) },
-    { kind: "json", content: classifierTag({ probe_id: "GENERIC_HELP", evidence_quote: "Still unclear" }) },
-  ]);
-  await say(live, "Everything is urgent");
-  assert.equal(await lastText(live), probe("GENERIC_MORE"));
-  await say(live, "Still unclear");
-  assert.equal(await lastText(live), en.checkin.thanks);
-  assert.equal((await modelCalls("omniroute")).length, 3);
 });
 
 test("R15: a quote that is not in the reply is retried once, then stored as needs review", async () => {
@@ -162,10 +166,12 @@ test("DeepSeek answers when OmniRoute is down, and both calls are recorded", asy
   const { tag } = await storedTag(fallback);
   assert.equal(tag.status, "ok");
   assert.equal(tag.model, "test-deepseek");
-  assert.deepEqual(await newUsage(seen, "provider, ok"), [
-    { provider: "gemini", ok: false },
-    { provider: "deepseek", ok: true },
+  const usage = (await newUsage(seen, "provider, ok, call_type")) as unknown as Record<string, unknown>[];
+  assert.deepEqual(usage.filter((row) => row.call_type === "classify"), [
+    { provider: "gemini", ok: false, call_type: "classify" },
+    { provider: "deepseek", ok: true, call_type: "classify" },
   ]);
+  assert.equal(usage.filter((row) => row.call_type === "chat").length, 2);
 });
 
 test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {

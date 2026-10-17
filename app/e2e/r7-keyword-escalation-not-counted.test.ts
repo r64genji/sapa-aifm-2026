@@ -12,6 +12,7 @@ import {
   say,
   scriptModel,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const seeded = new Set(JSON.parse(readFileSync(new URL("../data/seed/escalations.json", import.meta.url), "utf8")).map((e: { id: string }) => e.id));
@@ -24,12 +25,12 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   await joined(chat, "2026-10-02");
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary }) }]);
   await say(chat, text);
 });

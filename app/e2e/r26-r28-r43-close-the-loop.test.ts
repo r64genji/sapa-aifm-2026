@@ -15,6 +15,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -38,7 +39,7 @@ async function onboard(chat: number, fields: Record<string, string>, language = 
 }
 
 async function baseline(chat: number, scores: number[], text: string) {
-  for (const score of scores) await tap(chat, String(score));
+  for (const score of scores) await tapScore(chat, score);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text }) }]);
   await say(chat, text);
 }
@@ -196,8 +197,8 @@ test("R26: the next check-in of each person in scope starts with the neutral 1-5
   assert.deepEqual(first2, [ms.checkin.intro, question(ms, "MANAGER_SUPPORT")]);
   assert.deepEqual(first6, [en.checkin.intro, question(en, "WORKLOAD")]);
 
-  await tap(p1, "4");
-  await tap(p1, "3");
+  await tapScore(p1, 4);
+  await tapScore(p1, 3);
   const { data } = await db.from("responses").select("person_id, question_id, scale_value").eq("action_id", main);
   assert.equal(data!.length, 1);
   assert.equal(data![0].question_id, "MANAGER_SUPPORT");

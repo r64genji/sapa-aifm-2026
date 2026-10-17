@@ -15,6 +15,7 @@ import {
   sentTo,
   sessionClient,
   tap,
+  tapScore,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -27,12 +28,12 @@ const [crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, 
 );
 
 async function reachOpenQuestion(chat: number) {
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
 }
 
 async function answer(chat: number, text: string) {

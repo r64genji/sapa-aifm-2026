@@ -42,6 +42,7 @@ type Detail = {
   library: { title: string; rank: number; used: number; difference: number | null } | null;
   hires: number | null;
   recheck: { asked: number; answered: number };
+  follow_up: { answers: number; counts: { label: string; n: number }[] | null; quotes: string[] };
   question: string | null;
 };
 
@@ -101,6 +102,38 @@ function Result({ a }: { a: Detail }) {
       <div className="sp-caption">
         Recheck answered: {a.recheck.answered} of {a.recheck.asked}
       </div>
+    </Card>
+  );
+}
+
+function FollowUp({ a }: { a: Detail }) {
+  const { answers, counts, quotes } = a.follow_up;
+  return (
+    <Card title="What they say" meta="Since the last Update from HR, how has this changed for you?">
+      {counts ? (
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {counts.map(({ label, n }) => (
+            <li key={label} className="grid grid-cols-[120px_minmax(0,1fr)_32px] items-center gap-3 text-[15px]">
+              <span>{label}</span>
+              <div className="sp-bar" style={{ margin: 0 }} role="img" aria-label={`${label}: ${n} of ${answers}`}>
+                <div className="sp-bar-fill sp-lane-fixes" style={{ width: `${(n / answers) * 100}%` }} />
+              </div>
+              <span className="sp-num font-bold">{n}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="font-semibold">Not enough answers yet ({answers} of 5)</div>
+      )}
+      <div className="sp-caption">People often say things got better when asked. Compare with the score change above.</div>
+      {quotes.length ? (
+        <div className="flex flex-col gap-2">
+          <h3 className="m-0 text-[17px] font-bold">In their words</h3>
+          {quotes.map((quote) => (
+            <Quote key={quote} text={quote} />
+          ))}
+        </div>
+      ) : null}
     </Card>
   );
 }
@@ -340,6 +373,7 @@ export default function Page() {
             )}
           </Card>
           {done && !a.hiring_side ? <Result a={a} /> : null}
+          {done && !a.hiring_side && a.notes ? <FollowUp a={a} /> : null}
           <Card title="Activity">
             <ol className="m-0 flex list-none flex-col gap-2 p-0">
               {activity.map(([what, date]) => (

@@ -3,6 +3,7 @@ import type { Reply } from "@/lib/engine";
 
 export async function send(chatId: number, reply: Reply) {
   const base = process.env.TELEGRAM_API_BASE_URL ?? "https://api.telegram.org";
+  const keys = (reply.buttons ?? []).map((b) => ({ text: b.label, callback_data: `chat:${JSON.stringify({ a: b.id, v: b.value })}` }));
   const res = await fetch(`${base}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -14,12 +15,7 @@ export async function send(chatId: number, reply: Reply) {
       }),
       ...(reply.buttons && {
         reply_markup: {
-          inline_keyboard: [
-            reply.buttons.map((b) => ({
-              text: b.label,
-              callback_data: `chat:${JSON.stringify({ a: b.id, v: b.value })}`,
-            })),
-          ],
+          inline_keyboard: reply.buttons.every((b) => b.id === "ans") ? keys.map((key) => [key]) : [keys],
         },
       }),
     }),

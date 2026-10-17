@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { after, before, test } from "node:test";
 import { chromium, type Browser, type Page } from "playwright-core";
-import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, tap } from "./helpers.ts";
+import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, tap, tapScore } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -42,7 +42,7 @@ test("Demo beat 1: Advance to Day 14 sends the live hire one check-in", async ()
 });
 
 test("Demo beat 2: the reply moves the card to 24 of 65, and Confirm label marks it reviewed", async () => {
-  for (const answer of ["4", "3", "5", "3", "3", "3"]) await tap(live, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 

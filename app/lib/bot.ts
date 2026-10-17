@@ -49,10 +49,10 @@ async function respond(
                 type: "card",
                 children: [
                   { type: "text", content: reply.text },
-                  {
-                    type: "actions",
-                    children: reply.buttons.map((b) => ({ type: "button", ...b })),
-                  },
+                  ...(reply.buttons.every((b) => b.id === "ans") ? reply.buttons.map((b) => [b]) : [reply.buttons]).map((row) => ({
+                    type: "actions" as const,
+                    children: row.map((b) => ({ type: "button" as const, ...b })),
+                  })),
                 ],
               },
             }

@@ -41,7 +41,7 @@
     "fallback": "Jawapan ini dalam {language}. Tanya HR jika tidak jelas."
   },
   "checkin": {
-    "intro": "Hai, tiba masanya untuk semakan Sapa anda. Ia mengambil masa kira-kira seminit. Tekan jawapan, atau taip apabila diminta.",
+    "intro": "Hai, tiba masanya untuk semakan Sapa anda. Hanya beberapa tekan ringkas supaya HR boleh lihat sama ada keadaan pasukan anda bertambah baik.\nSapa tidak tahu nama anda. Syarikat anda nampak apa yang anda tulis, tetapi tidak pernah tahu siapa yang menulisnya. Jangan tulis nama dan butiran jika anda mahu kekal tanpa nama.",
     "reminder": "Peringatan ringkas: semakan Sapa anda masih terbuka. Sambung di mana anda tinggalkan, atau abaikan dan ia akan ditutup.",
     "thanks": "Terima kasih, jawapan anda telah disimpan.",
     "questions": [
@@ -49,31 +49,66 @@
         "id": "ROLE_CLARITY",
         "driver": "ROLE_CLARITY",
         "type": "scale",
-        "text": "Sejauh mana anda jelas tentang apa yang diharapkan daripada anda minggu ini? (1–5)"
+        "text": "Sejauh mana anda jelas tentang apa yang diharapkan daripada anda minggu ini?",
+        "labels": [
+          "Langsung tidak jelas",
+          "Kurang jelas",
+          "Agak jelas",
+          "Kebanyakannya jelas",
+          "Sangat jelas"
+        ]
       },
       {
         "id": "MANAGER_SUPPORT",
         "driver": "MANAGER_SUPPORT",
         "type": "scale",
-        "text": "Sejauh mana anda rasa disokong oleh pengurus anda minggu ini? (1–5)"
+        "text": "Berapa banyak sokongan yang anda dapat daripada pengurus anda minggu ini?",
+        "labels": [
+          "Tiada",
+          "Sangat sedikit",
+          "Sederhana",
+          "Agak banyak",
+          "Banyak"
+        ]
       },
       {
         "id": "BELONGING",
         "driver": "BELONGING",
         "type": "scale",
-        "text": "Sejauh mana anda rasa menjadi sebahagian daripada pasukan minggu ini? (1–5)"
+        "text": "Sejauh mana anda rapat dengan pasukan anda minggu ini?",
+        "labels": [
+          "Langsung tidak",
+          "Sedikit",
+          "Agak rapat",
+          "Kebanyakannya rapat",
+          "Sangat rapat"
+        ]
       },
       {
         "id": "ONBOARDING_TRAINING",
         "driver": "ONBOARDING_TRAINING",
         "type": "scale",
-        "text": "Sejauh mana latihan anda menyediakan anda untuk kerja anda minggu ini? (1–5)"
+        "text": "Sejauh mana latihan anda menyediakan anda untuk kerja anda minggu ini?",
+        "labels": [
+          "Langsung tidak",
+          "Kurang baik",
+          "Sebahagian",
+          "Baik",
+          "Sangat baik"
+        ]
       },
       {
         "id": "WORKLOAD",
         "driver": "WORKLOAD",
         "type": "scale",
-        "text": "Sejauh mana beban kerja anda boleh diuruskan minggu ini? (1–5)"
+        "text": "Sejauh mana beban kerja anda boleh diuruskan minggu ini?",
+        "labels": [
+          "Tidak boleh diurus",
+          "Susah diurus",
+          "Cukup-cukup",
+          "Boleh diurus",
+          "Mudah diurus"
+        ]
       },
       {
         "id": "OPEN",
@@ -83,17 +118,54 @@
       {
         "id": "JOB_MATCH",
         "type": "scale",
-        "text": "Sejauh mana kerja ini sepadan dengan apa yang diberitahu kepada anda semasa diambil bekerja? (1–5)"
+        "text": "Sejauh mana kerja ini sepadan dengan apa yang diberitahu kepada anda semasa diambil bekerja?",
+        "labels": [
+          "Langsung tidak",
+          "Sedikit",
+          "Sebahagian",
+          "Kebanyakannya",
+          "Sepenuhnya"
+        ]
+      },
+      {
+        "id": "FIX_CHANGE",
+        "type": "scale",
+        "text": "Sejak Kemas kini daripada HR yang lepas, bagaimana perkara ini berubah untuk anda?",
+        "labels": [
+          "Jauh lebih teruk",
+          "Sedikit teruk",
+          "Tiada perubahan",
+          "Sedikit lebih baik",
+          "Jauh lebih baik"
+        ]
       }
     ],
     "gotIt": "Baik, difahami. Jawapan anda telah disimpan dan HR akan melihatnya.",
     "probes": [
-      { "id": "GENERIC_MORE", "text": "Boleh ceritakan sedikit lagi tentang perkara itu?" },
-      { "id": "GENERIC_HELP", "text": "Apakah yang boleh membantu dalam hal itu?" },
-      { "id": "ROLE_CLARITY", "text": "Tugasan atau keutamaan mana yang masih tidak jelas bagi anda sekarang?" },
-      { "id": "MANAGER_SUPPORT", "text": "Apakah sokongan yang anda mahu daripada pengurus anda?" },
-      { "id": "BELONGING", "text": "Apakah yang boleh membantu anda berasa lebih menjadi sebahagian daripada pasukan?" },
-      { "id": "WORKLOAD", "text": "Bahagian mana dalam beban kerja anda yang paling sukar diuruskan?" }
+      {
+        "id": "GENERIC_MORE",
+        "text": "Boleh ceritakan sedikit lagi tentang perkara itu?"
+      },
+      {
+        "id": "GENERIC_HELP",
+        "text": "Apakah yang boleh membantu dalam hal itu?"
+      },
+      {
+        "id": "ROLE_CLARITY",
+        "text": "Tugasan atau keutamaan mana yang masih tidak jelas bagi anda sekarang?"
+      },
+      {
+        "id": "MANAGER_SUPPORT",
+        "text": "Apakah sokongan yang anda mahu daripada pengurus anda?"
+      },
+      {
+        "id": "BELONGING",
+        "text": "Apakah yang boleh membantu anda berasa lebih menjadi sebahagian daripada pasukan?"
+      },
+      {
+        "id": "WORKLOAD",
+        "text": "Bahagian mana dalam beban kerja anda yang paling sukar diuruskan?"
+      }
     ],
     "sequence": [
       "ROLE_CLARITY",
@@ -102,7 +174,15 @@
       "ONBOARDING_TRAINING",
       "WORKLOAD",
       "OPEN"
-    ]
+    ],
+    "chat": {
+      "opener": "Anda tekan \"{label}\". Apa yang berlaku?",
+      "light": "Ada apa-apa yang boleh buat minggu depan lebih senang?",
+      "changed": "Anda tekan \"{label}\". Apa yang berubah?",
+      "stillNot": "Anda tekan \"{label}\". Apa yang masih tidak berjalan baik?",
+      "askHr": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
+      "done": "Selesai"
+    }
   },
   "offer": {
     "text": "HR ingin membantu berkenaan perkara yang anda kongsikan. Adakah anda mahu berbual secara peribadi dengan HR?",

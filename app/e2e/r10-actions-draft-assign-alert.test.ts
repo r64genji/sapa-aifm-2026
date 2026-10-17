@@ -15,6 +15,7 @@ import {
   scriptModel,
   sentTo,
   tap,
+  tapScore,
   tapData,
 } from "./helpers.ts";
 
@@ -37,12 +38,12 @@ const asManager = (path: string, token: string, method = "GET", body?: Record<st
 const library = (n: number) => `6f1c2a3e-0000-4000-8000-0000000004${String(n).padStart(2, "0")}`;
 
 async function reply(chat: number, text: string) {
-  await tap(chat, "4");
-  await tap(chat, "3");
-  await tap(chat, "5");
-  await tap(chat, "3");
-  await tap(chat, "3");
-  await tap(chat, "3");
+  await tapScore(chat, 4);
+  await tapScore(chat, 3);
+  await tapScore(chat, 5);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text }) }]);
   await say(chat, text);
 }

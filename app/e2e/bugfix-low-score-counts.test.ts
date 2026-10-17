@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, freezeClock, hrRequest, link, liveInvite, resetDemo, say, scriptModel, tap } from "./helpers.ts";
+import { classifierTag, freezeClock, hrRequest, link, liveInvite, resetDemo, say, scriptModel, tap, tapScore } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const live = 5550000201;
@@ -26,7 +26,7 @@ test("Bug fix: a hire who scores workload 1 and types nothing about it counts fo
   await tap(live, "English");
   await tap(live, en.agree);
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
-  for (const score of ["4", "3", "5", "3", "1", "3"]) await tap(live, score);
+  for (const score of [4, 3, 5, 3, 1, 3]) await tapScore(live, score);
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ drivers: [], positive: true, concern_level: "none", evidence_quote: "team baik", summary: "The employee says all is fine." }) },
   ]);

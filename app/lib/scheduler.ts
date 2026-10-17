@@ -1,4 +1,4 @@
-import { checkinReminder, checkinStart } from "@/lib/checkin";
+import { checkinReminder, checkinStart, SCHEDULE, type Schedule } from "@/lib/checkin";
 import { now } from "@/lib/clock";
 import { demoIntake } from "@/lib/demo";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
@@ -29,16 +29,14 @@ export async function dispatch() {
   const claims = data as Claim[];
   const { data: rechecks, error: rechecksError } = await createAdminClient()
     .from("checkin_schedule")
-    .select("id, recheck_driver, touchpoint")
-    .in("id", claims.map((claim) => claim.schedule_id));
+    .select(SCHEDULE)
+    .in("id", claims.map((claim) => claim.schedule_id))
+    .returns<Schedule[]>();
   if (rechecksError) throw rechecksError;
   for (const claim of claims) {
     const person = { language: claim.language };
-    const row = rechecks.find((r) => r.id === claim.schedule_id)!;
-    const replies =
-      claim.kind === "reminder"
-        ? checkinReminder(person, claim.progress, row.recheck_driver, row.touchpoint)
-        : checkinStart(person, row.recheck_driver, row.touchpoint);
+    const row = { ...rechecks.find((r) => r.id === claim.schedule_id)!, progress: claim.progress };
+    const replies = claim.kind === "reminder" ? checkinReminder(person, row) : checkinStart(person, row);
     await deliver(claim.chat_id, replies);
   }
   const { data: offers, error: offersError } = await createAdminClient().rpc("offers_claim", {

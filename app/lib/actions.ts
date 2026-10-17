@@ -771,17 +771,31 @@ export async function actionDetail(organisationId: string, id: string) {
     .select("id", { count: "exact", head: true })
     .eq("recheck_action_id", id);
   if (askedError) throw askedError;
-  const { count: answered, error: answeredError } = await db
+  const { data: linked, error: linkedError } = await db
     .from("responses")
-    .select("id", { count: "exact", head: true })
-    .eq("action_id", id);
-  if (answeredError) throw answeredError;
-  const question = packs.en.checkin.questions.find((candidate) => candidate.id === row.driver)?.text.replace(/\s*\(1–5\)$/, "") ?? null;
+    .select("question_id, scale_value, ai_tags(status, evidence_quote, escalate)")
+    .eq("action_id", id)
+    .order("created_at");
+  if (linkedError) throw linkedError;
+  const taps = linked.filter((response) => response.question_id === "FIX_CHANGE");
+  const labels = (packs.en.checkin.questions.find((candidate) => candidate.id === "FIX_CHANGE") as { labels: string[] }).labels;
+  const quotes = linked
+    .filter((response) => response.question_id === "OPEN")
+    .map((response) => response.ai_tags as unknown as { status: string; evidence_quote: string | null; escalate: boolean | null } | null)
+    .filter((tag) => tag && ["ok", "reviewed"].includes(tag.status) && !tag.escalate && tag.evidence_quote)
+    .map((tag) => tag!.evidence_quote!)
+    .slice(0, 3);
+  const question = packs.en.checkin.questions.find((candidate) => candidate.id === row.driver)?.text ?? null;
   return {
     ...row,
     library: library < 0 ? null : { title: entry.title, rank: library + 1, used: entry.used, difference: entry.difference },
     hires: row.hiring_side || !row.scope_type ? null : (await members(row, false)).length,
-    recheck: { asked: asked ?? 0, answered: answered ?? 0 },
+    recheck: { asked: asked ?? 0, answered: linked.filter((response) => response.question_id === row.driver).length },
+    follow_up: {
+      answers: taps.length,
+      counts: taps.length < 5 ? null : labels.map((label, i) => ({ label, n: taps.filter((tap) => tap.scale_value === i + 1).length })),
+      quotes,
+    },
     question,
   };
 }
