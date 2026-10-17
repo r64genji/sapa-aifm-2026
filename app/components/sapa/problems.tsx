@@ -36,6 +36,7 @@ const fixHref = (driver: string, entry: string | undefined, teams: string[]) =>
 const rate = (p: { n: number; m: number }) => (p.m ? p.n / p.m : 0);
 const pct = (p: { n: number; m: number }) => `${Math.round(rate(p) * 100)}%`;
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
+const average = (points: Point[]) => rate({ n: points.reduce((t, p) => t + p.n, 0), m: points.reduce((t, p) => t + p.m, 0) });
 const intakePoints = (d: Detail | undefined): Point[] => (d?.by_intake ?? []).flatMap((s) => (s.enough ? [{ label: month(s.intake), n: s.n, m: s.m }] : []));
 
 function Spark({ points, label }: { points: Point[]; label: string }) {
@@ -43,16 +44,18 @@ function Spark({ points, label }: { points: Point[]; label: string }) {
   const xy = points.map((p, i) => [4 + (i * 152) / Math.max(points.length - 1, 1), 44 - (rate(p) / top) * 38]);
   const line = xy.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
   const last = xy[xy.length - 1];
+  const avg = 44 - (average(points) / top) * 38;
   return (
     <svg viewBox="0 0 160 48" role="img" aria-label={label} className="block h-auto w-full overflow-visible">
       <polygon className="sp-fade-in" points={`${xy[0][0]},48 ${line} ${last[0]},48`} style={{ fill: "var(--problems-soft)", ...delay(400) }} />
+      <line x1="0" x2="160" y1={avg} y2={avg} style={{ stroke: "var(--line-strong)", strokeWidth: 1, strokeDasharray: "3 3" }} />
       <polyline className="sp-spark" pathLength={1} points={line} style={{ fill: "none", stroke: "var(--problems)", strokeWidth: 2.25, strokeLinejoin: "round", strokeLinecap: "round" }} />
       <circle cx={last[0]} cy={last[1]} r="3.5" className="sp-fade-in" style={{ fill: "var(--problems)", ...delay(900) }} />
     </svg>
   );
 }
 
-function Tile({ c, active, fix, waiting, onPick }: { c: Card; active: boolean; fix: boolean; waiting: number; onPick: () => void }) {
+function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boolean; start: boolean; fix: boolean; waiting: number; onPick: () => void }) {
   const detail = useApi<Detail>(`/api/hr/themes/${c.driver}?touchpoint=14`);
   const where = useApi<Teams>(`/api/hr/themes/${c.driver}/teams`).data;
   const points = intakePoints(detail.data);
@@ -67,18 +70,28 @@ function Tile({ c, active, fix, waiting, onPick }: { c: Card; active: boolean; f
         : { icon: <Users size={13} />, text: where.verdict === "most" ? "Most teams" : `${stands} ${stands === 1 ? "team" : "teams"} above rate`, color: "var(--problems)" };
   return (
     <Link href={`/problems/${c.driver}`} scroll={false} onClick={onPick} className="sp-area" aria-current={active ? "true" : undefined}>
-      <span className="text-[14px] font-bold leading-5">{name}</span>
+      <span className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <span className="text-[14px] font-bold leading-5">{name}</span>
+        {start ? (
+          <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
+            Start here
+          </span>
+        ) : null}
+      </span>
       {c.enough ? (
-        <span className="sp-num text-[28px] font-bold leading-8">
-          {c.n}
-          <span className="text-[14px] font-semibold sp-muted"> of {c.m}</span>
+        <span className="flex items-baseline justify-between gap-2">
+          <span className="sp-num text-[28px] font-bold leading-8">
+            {c.n}
+            <span className="text-[14px] font-semibold sp-muted"> of {c.m}</span>
+          </span>
+          <span className="sp-num text-[13px] font-semibold sp-muted">{pct({ n: c.n ?? 0, m: c.m ?? 0 })}</span>
         </span>
       ) : (
         <CountBar notEnough />
       )}
       {points.length > 1 ? (
         <div className="flex flex-col gap-0.5">
-          <Spark points={points} label={`${name} in each intake: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}`} />
+          <Spark points={points} label={`${name} in each intake: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}. Dashed line: average ${Math.round(average(points) * 100)}%`} />
           <span className="flex justify-between sp-caption">
             <span>{points[0].label}</span>
             <span>{points[points.length - 1].label}</span>
@@ -138,15 +151,23 @@ function Waffle({ c }: { c: Card }) {
 
 function Columns({ points }: { points: Point[] }) {
   const top = Math.max(...points.map(rate), 0.01);
+  const avg = average(points);
   return (
-    <div role="img" aria-label={points.map((p) => `${p.label}: ${p.n} of ${p.m}`).join(", ")} className="flex h-[132px] items-end gap-2">
-      {points.map((p, i) => (
-        <div key={p.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title={`${p.label}: ${p.n} of ${p.m}`}>
-          <span className="sp-num text-[11px] font-semibold sp-muted">{pct(p)}</span>
-          <span className="sp-grow-y w-full max-w-9 rounded-t" style={{ height: `${Math.max((rate(p) / top) * 84, 3)}px`, background: i === points.length - 1 ? "var(--problems)" : "var(--problems-soft)", ...delay(i * 70) }} />
-          <span className="sp-caption">{p.label}</span>
-        </div>
-      ))}
+    <div role="img" aria-label={`${points.map((p) => `${p.label}: ${p.n} of ${p.m}`).join(", ")}. Average ${Math.round(avg * 100)}%`} className="flex flex-col gap-1">
+      <span aria-hidden="true" className="flex items-center justify-end gap-1.5 text-[11px] font-semibold sp-muted">
+        <span className="w-4 border-t border-dashed" style={{ borderColor: "var(--line-strong)" }} />
+        Avg {Math.round(avg * 100)}%
+      </span>
+      <div className="relative flex h-[132px] items-end gap-2">
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 border-t border-dashed" style={{ bottom: `${20 + (avg / top) * 84}px`, borderColor: "var(--line-strong)" }} />
+        {points.map((p, i) => (
+          <div key={p.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title={`${p.label}: ${p.n} of ${p.m}`}>
+            <span className="sp-num relative px-0.5 text-[11px] font-semibold sp-muted" style={{ background: "var(--surface-raised)" }}>{pct(p)}</span>
+            <span className="sp-grow-y w-full max-w-9 rounded-t" style={{ height: `${Math.max((rate(p) / top) * 84, 3)}px`, background: i === points.length - 1 ? "var(--problems)" : "var(--problems-soft)", ...delay(i * 70) }} />
+            <span className="sp-caption">{p.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -254,6 +275,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
                     <span className="font-semibold">{r.kind === "tower" ? `${r.name} tower` : r.name}</span>
                     <span className="sp-num text-[13px] font-bold">
                       {r.n} of {r.m}
+                      <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} pts vs company</span>
                     </span>
                   </span>
                   <span className="sp-caption">
@@ -433,6 +455,12 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             ) : (
               <CountBar notEnough />
             )}
+            {intakes.length ? (
+              <div className="flex flex-col gap-2 pt-1">
+                <h3 className="m-0 text-[13px] font-bold">Each intake</h3>
+                <Columns points={intakes} />
+              </div>
+            ) : null}
             {waiting > 0 ? (
               <Link href="/#replies" className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
                 <MessageSquare size={14} aria-hidden="true" />
@@ -464,11 +492,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 )}
                 {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 && grouped.length ? <span className="sp-caption">+{g.not_grouped} not grouped</span> : null}
               </Panel>
-              {intakes.length ? (
-                <Panel title="Each intake">
-                  <Columns points={intakes} />
-                </Panel>
-              ) : null}
               {days.length > 1 ? (
                 <Panel title="Each check-in">
                   <Columns points={days} />
@@ -574,6 +597,8 @@ export function Problems({ driver }: { driver?: string }) {
   const question = driver?.startsWith("q-") ? groups.find((g) => `q-${g.id}` === driver) : undefined;
   const current = question || driver === "no-area" ? undefined : (cards.find((c) => c.driver === driver) ?? cards[0]);
   const answered = cards.find((c) => c.enough)?.m;
+  const fixed = (d: string) => actions.data!.some((a) => a.driver === d && live(a));
+  const start = cards.find((c) => c.enough && !fixed(c.driver))?.driver;
   const pick = () => {
     if (window.innerWidth < 1024) setTimeout(() => document.getElementById("cur")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
@@ -588,7 +613,7 @@ export function Problems({ driver }: { driver?: string }) {
       <nav aria-label="Problem areas" className="flex flex-col gap-3">
         <div className="sp-stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {cards.map((c) => (
-            <Tile key={c.driver} c={c} active={c.driver === current?.driver} fix={actions.data!.some((a) => a.driver === c.driver && live(a))} waiting={waitingOf(c.driver)} onPick={pick} />
+            <Tile key={c.driver} c={c} active={c.driver === current?.driver} start={c.driver === start} fix={fixed(c.driver)} waiting={waitingOf(c.driver)} onPick={pick} />
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
