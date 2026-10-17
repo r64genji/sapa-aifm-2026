@@ -250,9 +250,12 @@ a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); 
 .sp-dialog { animation: sp-pop 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .sp-skel { border-radius: var(--radius-card); background: linear-gradient(90deg, var(--track-empty) 0%, var(--surface-sunken) 50%, var(--track-empty) 100%); background-size: 200% 100%; animation: sp-shimmer 1.4s linear infinite; }
 
-.sp-pick { font: inherit; text-align: left; cursor: pointer; width: 100%; box-sizing: border-box; padding: 10px 10px 12px; border-radius: var(--radius-control); border: 1px solid transparent; background: var(--surface-raised); color: var(--ink); display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
-.sp-pick:hover { background: var(--surface-sunken); color: var(--ink); }
-.sp-pick[aria-current="true"] { border-color: var(--problems); background: var(--problems-soft); }
+.sp-area { min-width: 0; padding: 14px 14px 12px; border-radius: var(--radius-card); border: 1px solid var(--line); background: var(--surface-raised); color: var(--ink); display: flex; flex-direction: column; gap: 6px; text-decoration: none; transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease; }
+.sp-area:hover { color: var(--ink); transform: translateY(-2px); box-shadow: 0 10px 24px -12px rgba(28, 34, 38, 0.35); }
+.sp-area[aria-current="true"] { border-color: var(--problems); box-shadow: 0 0 0 1px var(--problems), 0 10px 24px -14px rgba(11, 93, 90, 0.5); }
+.sp-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: var(--radius-round); border: 1px solid var(--line); background: var(--surface-raised); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; transition: background-color 0.2s ease, border-color 0.2s ease; }
+.sp-chip:hover { background: var(--surface-sunken); color: var(--ink); }
+.sp-chip[aria-current="true"] { border-color: var(--problems); background: var(--problems-soft); }
 .sp-step { flex: 0 0 28px; width: 28px; height: 28px; border-radius: var(--radius-round); background: var(--problems); color: var(--on-problems); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
 .sp-link { font-size: 13px; font-weight: 600; color: var(--problems); background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; transition: text-decoration-color 0.15s ease; text-align: left; }
 .sp-link:hover { text-decoration-color: currentColor; }
