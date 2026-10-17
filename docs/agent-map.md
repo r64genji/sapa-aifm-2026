@@ -14,6 +14,7 @@ Pick the one doc for your task. Read only that doc.
 | The reference customer, Contoh GBS, and its numbers | [09 client story](09-client-story.md) |
 | Overnight build rules | [11 overnight build brief](11-overnight-build-brief.md) |
 | Why classify stays on Gemini, and the latency risk | [13 classifier bake-off](13-classifier-bakeoff.md) |
+| Whether Groq models can replace Gemini, per AI feature | [15 Groq vs Gemini](15-groq-vs-gemini.md) |
 | What the AI may do alone and what needs a person | [14 AI use contract](14-ai-use-contract.md) |
 | The organisers' guide (the only official requirements) | [reference/](reference/AIFM_2026_Student_Challenge_Guide_All_Challenges.pdf) |
 

@@ -1,0 +1,164 @@
+{
+ "run_id": "3889cb30-27f4-4e06-8c3e-50f63da3453b",
+ "command": "group",
+ "model": "groq:openai/gpt-oss-20b",
+ "model_id": "openai/gpt-oss-20b",
+ "prompt_version": "classify-v1",
+ "started": "2026-10-17T04:11:33.389Z",
+ "sample": null,
+ "latency": {
+  "n": 3,
+  "p50_ms": 485,
+  "p90_ms": 621,
+  "max_ms": 621
+ },
+ "usage": {
+  "calls": 3,
+  "failed": 0,
+  "input": 1719,
+  "output": 395,
+  "cost": 0.00025,
+  "rate_waits": 4,
+  "errors": []
+ },
+ "split": "all",
+ "metrics": {
+  "valid": {
+   "k": 3,
+   "n": 3,
+   "share": 1,
+   "ci95": [
+    0.438,
+    1
+   ]
+  },
+  "titles_hold": {
+   "k": 3,
+   "n": 3,
+   "share": 1,
+   "ci95": [
+    0.438,
+    1
+   ]
+  },
+  "pair_precision": 1,
+  "pair_recall": 0.944,
+  "max_title_words": 8
+ },
+ "records": [
+  {
+   "id": "g01",
+   "valid": true,
+   "titles_hold": true,
+   "pair_precision": 1,
+   "pair_recall": 0.8333333333333334,
+   "gold_groups": 3,
+   "out": [
+    {
+     "title": "Missing Machine Training",
+     "items": [
+      "Nobody showed the new hire how to use the packing machine.",
+      "The new hire learned the machine only by watching others.",
+      "Machine training was skipped in the first week.",
+      "No one explained how to operate the line equipment."
+     ]
+    },
+    {
+     "title": "Language Barriers in Training",
+     "items": [
+      "Training documents are only in Malay and hard to read.",
+      "The new hire cannot understand the English-only SOP."
+     ]
+    },
+    {
+     "title": "System Access Delays",
+     "items": [
+      "The new hire still has no login for the stock system.",
+      "System access took two weeks to arrive.",
+      "The new hire waited days for a staff card and password."
+     ]
+    },
+    {
+     "title": "Missing Safety Resources",
+     "items": [
+      "Safety slides were not available in Chinese."
+     ]
+    },
+    {
+     "title": "Canteen Food Issues",
+     "items": [
+      "The canteen food is too salty."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g02",
+   "valid": true,
+   "titles_hold": true,
+   "pair_precision": 1,
+   "pair_recall": 1,
+   "gold_groups": 3,
+   "out": [
+    {
+     "title": "Late Night Overtime",
+     "items": [
+      "Overtime happens every day until late at night.",
+      "The new hire works past 10 pm most days.",
+      "Shifts often run three hours longer than planned."
+     ]
+    },
+    {
+     "title": "Weekend Work Expectations",
+     "items": [
+      "Weekend work is expected every week.",
+      "The new hire must come in on Saturdays and Sundays.",
+      "Rest days are often cancelled for weekend orders."
+     ]
+    },
+    {
+     "title": "Idle Work Periods",
+     "items": [
+      "There is very little work and long idle periods.",
+      "The new hire waits for hours with nothing to do.",
+      "Tasks run out before lunch most days."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g03",
+   "valid": true,
+   "titles_hold": true,
+   "pair_precision": 1,
+   "pair_recall": 1,
+   "gold_groups": 3,
+   "out": [
+    {
+     "title": "Lunch exclusion",
+     "items": [
+      "Colleagues eat lunch together but never invite the new hire.",
+      "The new hire always sits alone in the canteen.",
+      "Nobody asks the new hire to join for lunch."
+     ]
+    },
+    {
+     "title": "Language barrier in chats",
+     "items": [
+      "The team chats in a language the new hire does not speak.",
+      "Meetings switch to Cantonese and the new hire is left out.",
+      "Jokes in the group chat are in a dialect the new hire cannot follow."
+     ]
+    },
+    {
+     "title": "Missing from chat group",
+     "items": [
+      "The new hire was not added to the team group chat.",
+      "Shift updates go to a chat the new hire is not in.",
+      "The new hire hears about team news last because they are not in the chat group."
+     ]
+    }
+   ]
+  }
+ ]
+}
