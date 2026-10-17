@@ -144,7 +144,8 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   const outcome = await route(chatId, input);
   if (input.kind !== "button" || !input.label || outcome.replies.length === 0) return outcome;
   const language = outcome.menu ?? (await personByChat(chatId))?.language ?? "en";
-  return { ...outcome, replies: [{ text: packs[language].tapped.replace("{label}", input.label) }, ...outcome.replies] };
+  const [first, ...rest] = outcome.replies;
+  return { ...outcome, replies: [{ ...first, text: `${packs[language].tapped.replace("{label}", input.label)} ${first.text}` }, ...rest] };
 }
 
 async function route(chatId: number, input: Input): Promise<Outcome> {

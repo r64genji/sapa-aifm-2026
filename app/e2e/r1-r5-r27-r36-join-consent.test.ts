@@ -30,7 +30,7 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), ['You tapped "English".', en.consent, `You tapped "${en.agree}".`, en.visibilityPrompt]);
+  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.visibilityPrompt}`]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
@@ -59,7 +59,7 @@ test("R36: a hire who picks Bahasa Malaysia gets the BM consent text and a BM me
   const { token } = await addHire({ code_name: "Hire BM", language: "ms" });
   await link(chat, token);
   await tap(chat, "Bahasa Malaysia");
-  assert.equal((await texts(chat)).at(-1), ms.consent);
+  assert.equal((await texts(chat)).at(-1), `Anda tekan "Bahasa Malaysia". ${ms.consent}`);
   const menu = (await telegramCalls("setMyCommands")).find((m: any) => m.scope.chat_id === chat) as any;
   assert.deepEqual(menu.commands.map((c: any) => c.command), Object.values(ms.commands).map((c: any) => c.name));
 });
@@ -80,7 +80,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), ['You tapped "English".', en.consent, `You tapped "${en.agree}".`, en.visibilityPrompt]);
+    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.visibilityPrompt}`]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }
@@ -122,7 +122,7 @@ test("R1: after No thanks the hire gets a confirmation and nothing more", async 
   await link(chat, token);
   await tap(chat, "English");
   await tap(chat, en.decline);
-  assert.equal((await texts(chat)).at(-1), en.declined);
+  assert.equal((await texts(chat)).at(-1), `You tapped "${en.decline}". ${en.declined}`);
   const before = (await texts(chat)).length;
   await tapData(chat, 'chat:{"a":"consent","v":"yes"}');
   const { data: person } = await db.from("people").select("id, state").eq("telegram_chat_id", chat).single();

@@ -206,12 +206,12 @@ test("Telegram: the manager accepts and marks done from the buttons, and done is
   const [other] = await alertTo(aishaChat, "Workload check");
 
   await tapData(aishaChat, buttonOf(other, "Mark done"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, en.action.acceptFirst);
+  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Mark done". ${en.action.acceptFirst}`);
 
   await tapData(aishaChat, buttonOf(message, "Accept"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, en.action.accepted);
+  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Accept". ${en.action.accepted}`);
   await tapData(aishaChat, buttonOf(message, "Mark done"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, en.action.askOutcome);
+  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Mark done". ${en.action.askOutcome}`);
   await say(aishaChat, "Ran the Monday priorities talk\nwith all three.");
   assert.equal((await sentTo(aishaChat)).at(-1)!.text, en.action.finished);
 

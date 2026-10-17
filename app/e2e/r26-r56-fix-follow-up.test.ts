@@ -73,12 +73,12 @@ test("R26, R56: the recheck comes first with no hint of the fix, and the fix que
   await tapScore(a, 4);
   await otherTaps(a);
   const [change] = ((await sentTo(a)) as Message[]).slice(-1);
-  assert.equal(change.text, "Since the last Update from HR about your role, how has it changed for you?");
+  assert.equal(change.text, 'You tapped "Just about". Since the last Update from HR about your role, how has it changed for you?');
   assert.deepEqual(change.reply_markup!.inline_keyboard.map((row) => row.map((k) => k.text)), changeLabels);
 
   const from = (await sentTo(a)).length;
   await tap(a, "A bit better");
-  assert.deepEqual(await texts(a, from), ['You tapped "A bit better".', "What changed?"]);
+  assert.deepEqual(await texts(a, from), ['You tapped "A bit better". What changed?']);
   await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ action: "done", stop_reason: "goals_met" }) }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: [], positive: true, evidence_quote: quote }) }]);
   await say(a, `Now ${quote}, so I start on Malaysia`);
@@ -97,7 +97,7 @@ test("R56: a low fix answer asks what is still not working", async () => {
   await otherTaps(b);
   const from = (await sentTo(b)).length;
   await tap(b, "No change");
-  assert.deepEqual(await texts(b, from), ['You tapped "No change".', "What is still not working?"]);
+  assert.deepEqual(await texts(b, from), ['You tapped "No change". What is still not working?']);
   await tap(b, "Done");
 });
 
@@ -106,7 +106,7 @@ test("R56: a fix with no note to new hires asks no fix question", async () => {
   const from = (await sentTo(other)).length;
   await tapScore(other, 4);
   await otherTaps(other);
-  assert.deepEqual((await texts(other, from)).filter((text) => !text.startsWith("You tapped")), [
+  assert.deepEqual((await texts(other, from)).map((text) => text.replace(/^You tapped "[^"]*"\. /, "")), [
     "How clear are you on what is expected of you this week?",
     "How much support did you get from your manager this week?",
     "How connected are you with your team this week?",

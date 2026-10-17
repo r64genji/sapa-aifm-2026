@@ -71,7 +71,7 @@ test("R55: the check-in starts with the privacy line and shows word buttons, one
 test("R55, R12: typed words count as taps, the lowest tap opens the chat, the AI asks at most 2 follow-ups, a feelings word is asked again, and HR gets one reply", async () => {
   await taps(low, lowTaps.slice(0, 4));
   await say(low, "Manageable");
-  const support = ((await sentTo(low)) as Message[]).findLast((m) => m.text === "How much support did you get from your manager this week?")!;
+  const support = ((await sentTo(low)) as Message[]).findLast((m) => m.text.endsWith("How much support did you get from your manager this week?"))!;
   assert.deepEqual(labels(support), [["None"], ["Very little"], ["Some"], ["A good amount"], ["A lot"]]);
   const job = await answer(low, "4");
   assert.deepEqual(job, ["What is happening?"]);
@@ -166,7 +166,7 @@ test("R55: with no low tap the light question comes, and Done ends the chat", as
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: [], positive: true, evidence_quote: "who to ask for what" }) }]);
   const before = (await sentTo(light)).length;
   await tap(light, "Done");
-  assert.deepEqual(((await sentTo(light)).slice(before) as Message[]).map((m) => m.text), ['You tapped "Done".', thanks]);
+  assert.deepEqual(((await sentTo(light)).slice(before) as Message[]).map((m) => m.text), ['You tapped "Done". ' + thanks]);
   const [reply] = await openReply(light);
   const { data: tag } = await db.from("ai_tags").select("status, evidence_quote").eq("response_id", reply.id).single();
   assert.deepEqual(tag, { status: "ok", evidence_quote: "who to ask for what" });

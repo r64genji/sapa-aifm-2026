@@ -85,7 +85,7 @@ test("R49: the hire who ticked gets one question; its answer is tagged as an exi
     (((await (await hrRequest("/api/hr/themes", "GET")).json()) as { cards: Record<string, unknown>[] }).cards).map(({ note, ...card }) => card);
   const themes = await counts();
   await tap(ticked, "Workload");
-  assert.equal((await texts(ticked)).at(-1), en.exit.open);
+  assert.equal((await texts(ticked)).at(-1), `You tapped "Workload". ${en.exit.open}`);
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], concern_level: "none", evidence_quote: "too many hours" }) },
   ]);

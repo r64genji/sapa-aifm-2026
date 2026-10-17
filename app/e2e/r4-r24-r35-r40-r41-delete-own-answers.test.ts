@@ -117,7 +117,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
 
   assert.deepEqual(
     await newMessages(live, () => tapData(live, wrongButton.callback_data)).then((m) => m.map((x) => x.text)),
-    ['You tapped "This is wrong".', en.myAnswers.challenged],
+    [`You tapped "This is wrong". ${en.myAnswers.challenged}`],
   );
   assert.deepEqual(await card("ROLE_CLARITY"), seedRole);
   const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");
@@ -167,13 +167,13 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   const prompt = await newMessages(live, () => say(live, "DELETE"));
   assert.deepEqual(prompt.map((m) => [m.text, buttons(m)]), [[en.delete.confirm, [en.delete.yes, en.delete.no]]]);
   await tap(live, en.delete.no);
-  assert.equal((await texts(live)).at(-1), en.delete.kept);
+  assert.equal((await texts(live)).at(-1), `You tapped "Keep my answers". ${en.delete.kept}`);
   assert.deepEqual(await rows(), held);
 
   await say(live, "padam");
   assert.equal((await texts(live)).at(-1), en.delete.confirm);
   await tap(live, en.delete.yes);
-  assert.equal((await texts(live)).at(-1), en.delete.done);
+  assert.equal((await texts(live)).at(-1), `You tapped "${en.delete.yes}". ${en.delete.done}`);
 
   assert.deepEqual(await rows(), {
     responses: 0,

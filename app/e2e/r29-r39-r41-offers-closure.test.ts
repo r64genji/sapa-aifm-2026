@@ -94,9 +94,9 @@ test("R39: the offer waits for the next working-hours slot, one open offer per p
   }
 
   await tap(noThanks, "No thanks");
-  assert.equal((await texts(noThanks)).at(-1), en.offer.declined);
+  assert.equal((await texts(noThanks)).at(-1), `You tapped "No thanks". ${en.offer.declined}`);
   await tap(yes, "Yes");
-  assert.equal((await texts(yes)).at(-1), en.offer.accepted);
+  assert.equal((await texts(yes)).at(-1), `You tapped "Yes". ${en.offer.accepted}`);
   const task = (await offers()).find((row) => row.response_id === first)!;
   assert.equal(task.answer, "yes");
   assert.equal(new Date(task.contact_due_at as string).toISOString(), "2026-10-20T02:00:00.000Z");

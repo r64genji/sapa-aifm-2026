@@ -149,7 +149,7 @@ test("R36, R25: /privacy shows the visibility buttons and the choice is saved an
   await say(chat, "/privacy");
   assert.equal((await sentTo(chat)).at(-1)!.text, en.visibilityPrompt);
   await tap(chat, en.visibilityHrManager);
-  assert.ok((await texts(chat)).includes(en.visibilitySaved));
+  assert.ok((await texts(chat)).includes(`You tapped "${en.visibilityHrManager}". ${en.visibilitySaved}`));
   const { id } = await personRow(chat);
   const { data: consents } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", id).order("granted_at");
   assert.deepEqual(
@@ -171,7 +171,7 @@ test("R36: /bahasa offers the languages and switching changes the person's langu
   );
   await tap(chat, ms.name);
   assert.equal((await personRow(chat)).language, "ms");
-  assert.equal((await texts(chat)).at(-1), ms.help);
+  assert.equal((await texts(chat)).at(-1), `Anda tekan "${ms.name}". ${ms.help}`);
   const menu = (await telegramCalls("setMyCommands")).findLast((m: any) => m.scope.chat_id === chat) as any;
   assert.equal(menu.commands[0].description, ms.commands.start.description);
 });
