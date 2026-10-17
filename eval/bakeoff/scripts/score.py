@@ -45,7 +45,7 @@ def tune(res):
     th = {}
     for l in LABELS:
         best = None
-        for t in [x / 100 for x in range(5, 96, 5)]:
+        for t in [x / 100 for x in [*range(5, 96, 5), 97, 98, 99]]:
             p = binarise(res, {**{k: .5 for k in LABELS}, l: t})
             tp, fp, fn, tn = counts(p, dev, l)
             beta2 = 4 if l == 'ESCALATE' else 1

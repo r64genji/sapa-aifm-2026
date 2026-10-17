@@ -11,6 +11,29 @@
  },
  "results": [
   {
+   "model": "gemini @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.887,
+   "drivers_macro_kappa": 0.863,
+   "f1_by_lang": {
+    "bm": 0.855,
+    "en": 0.83,
+    "manglish": 0.913
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.971,
+    "MANAGER_SUPPORT": 0.824,
+    "BELONGING": 0.88,
+    "ONBOARDING_TRAINING": 0.952,
+    "WORKLOAD": 0.809
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "1/91",
+   "failed_calls": 0,
+   "latency_median_s": 3.13,
+   "latency_p95_s": 5.52
+  },
+  {
    "model": "clef @0.5",
    "n": 105,
    "drivers_macro_f1": 0.742,
@@ -119,27 +142,544 @@
    }
   },
   {
-   "model": "gemini @0.5",
+   "model": "clef-omni @0.5",
    "n": 105,
-   "drivers_macro_f1": 0.9,
-   "drivers_macro_kappa": 0.88,
+   "drivers_macro_f1": 0.762,
+   "drivers_macro_kappa": 0.706,
    "f1_by_lang": {
-    "bm": 0.855,
-    "en": 0.836,
-    "manglish": 0.943
+    "bm": 0.781,
+    "en": 0.668,
+    "manglish": 0.785
    },
    "f1_by_driver": {
-    "ROLE_CLARITY": 0.941,
-    "MANAGER_SUPPORT": 0.8,
-    "BELONGING": 0.917,
-    "ONBOARDING_TRAINING": 1.0,
-    "WORKLOAD": 0.844
+    "ROLE_CLARITY": 0.773,
+    "MANAGER_SUPPORT": 0.622,
+    "BELONGING": 0.96,
+    "ONBOARDING_TRAINING": 0.769,
+    "WORKLOAD": 0.686
+   },
+   "escalation_recall": "13/14",
+   "escalation_false_alarms": "0/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.28,
+   "latency_p95_s": 6.29
+  },
+  {
+   "model": "clef-omni @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.827,
+   "drivers_macro_kappa": 0.791,
+   "f1_by_lang": {
+    "bm": 0.687,
+    "en": 0.837,
+    "manglish": 0.854
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.733,
+    "MANAGER_SUPPORT": 0.815,
+    "BELONGING": 0.957,
+    "ONBOARDING_TRAINING": 0.9,
+    "WORKLOAD": 0.731
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "5/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.28,
+   "latency_p95_s": 6.29,
+   "thresholds": {
+    "ROLE_CLARITY": 0.8,
+    "MANAGER_SUPPORT": 0.75,
+    "BELONGING": 0.75,
+    "ONBOARDING_TRAINING": 0.75,
+    "WORKLOAD": 0.1,
+    "ESCALATE": 0.05
+   }
+  },
+  {
+   "model": "clef-tuned @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.701,
+   "drivers_macro_kappa": 0.627,
+   "f1_by_lang": {
+    "bm": 0.7,
+    "en": 0.608,
+    "manglish": 0.758
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.708,
+    "MANAGER_SUPPORT": 0.56,
+    "BELONGING": 0.727,
+    "ONBOARDING_TRAINING": 0.702,
+    "WORKLOAD": 0.81
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "2/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.66,
+   "latency_p95_s": 6.51
+  },
+  {
+   "model": "clef-tuned @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.777,
+   "drivers_macro_kappa": 0.721,
+   "f1_by_lang": {
+    "bm": 0.739,
+    "en": 0.673,
+    "manglish": 0.894
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.839,
+    "MANAGER_SUPPORT": 0.622,
+    "BELONGING": 0.957,
+    "ONBOARDING_TRAINING": 0.678,
+    "WORKLOAD": 0.791
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "2/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.66,
+   "latency_p95_s": 6.51,
+   "thresholds": {
+    "ROLE_CLARITY": 0.9,
+    "MANAGER_SUPPORT": 0.55,
+    "BELONGING": 0.75,
+    "ONBOARDING_TRAINING": 0.4,
+    "WORKLOAD": 0.45,
+    "ESCALATE": 0.55
+   }
+  },
+  {
+   "model": "clef-tuned-text @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.712,
+   "drivers_macro_kappa": 0.639,
+   "f1_by_lang": {
+    "bm": 0.773,
+    "en": 0.615,
+    "manglish": 0.733
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.654,
+    "MANAGER_SUPPORT": 0.571,
+    "BELONGING": 0.8,
+    "ONBOARDING_TRAINING": 0.714,
+    "WORKLOAD": 0.821
    },
    "escalation_recall": "14/14",
    "escalation_false_alarms": "1/91",
    "failed_calls": 0,
-   "latency_median_s": 3.86,
-   "latency_p95_s": 20.73
+   "latency_median_s": 1.05,
+   "latency_p95_s": 6.82
+  },
+  {
+   "model": "clef-tuned-text @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.852,
+   "drivers_macro_kappa": 0.824,
+   "f1_by_lang": {
+    "bm": 0.827,
+    "en": 0.889,
+    "manglish": 0.808
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.733,
+    "MANAGER_SUPPORT": 0.88,
+    "BELONGING": 0.957,
+    "ONBOARDING_TRAINING": 0.93,
+    "WORKLOAD": 0.762
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "3/91",
+   "failed_calls": 0,
+   "latency_median_s": 1.05,
+   "latency_p95_s": 6.82,
+   "thresholds": {
+    "ROLE_CLARITY": 0.9,
+    "MANAGER_SUPPORT": 0.95,
+    "BELONGING": 0.85,
+    "ONBOARDING_TRAINING": 0.75,
+    "WORKLOAD": 0.45,
+    "ESCALATE": 0.3
+   }
+  },
+  {
+   "model": "clef-omni-tuned @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.786,
+   "drivers_macro_kappa": 0.734,
+   "f1_by_lang": {
+    "bm": 0.753,
+    "en": 0.706,
+    "manglish": 0.853
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.696,
+    "MANAGER_SUPPORT": 0.636,
+    "BELONGING": 0.96,
+    "ONBOARDING_TRAINING": 0.884,
+    "WORKLOAD": 0.756
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "5/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.58,
+   "latency_p95_s": 6.27
+  },
+  {
+   "model": "clef-omni-tuned @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.762,
+   "drivers_macro_kappa": 0.707,
+   "f1_by_lang": {
+    "bm": 0.765,
+    "en": 0.641,
+    "manglish": 0.828
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.75,
+    "MANAGER_SUPPORT": 0.683,
+    "BELONGING": 0.8,
+    "ONBOARDING_TRAINING": 0.826,
+    "WORKLOAD": 0.75
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "15/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.58,
+   "latency_p95_s": 6.27,
+   "thresholds": {
+    "ROLE_CLARITY": 0.7,
+    "MANAGER_SUPPORT": 0.6,
+    "BELONGING": 0.25,
+    "ONBOARDING_TRAINING": 0.35,
+    "WORKLOAD": 0.45,
+    "ESCALATE": 0.25
+   }
+  },
+  {
+   "model": "clef-omni-tuned-text @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.759,
+   "drivers_macro_kappa": 0.703,
+   "f1_by_lang": {
+    "bm": 0.736,
+    "en": 0.691,
+    "manglish": 0.791
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.638,
+    "MANAGER_SUPPORT": 0.7,
+    "BELONGING": 0.8,
+    "ONBOARDING_TRAINING": 0.884,
+    "WORKLOAD": 0.773
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "5/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.36,
+   "latency_p95_s": 6.26
+  },
+  {
+   "model": "clef-omni-tuned-text @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.847,
+   "drivers_macro_kappa": 0.812,
+   "f1_by_lang": {
+    "bm": 0.798,
+    "en": 0.776,
+    "manglish": 0.873
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.882,
+    "MANAGER_SUPPORT": 0.788,
+    "BELONGING": 0.957,
+    "ONBOARDING_TRAINING": 0.809,
+    "WORKLOAD": 0.8
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "6/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.36,
+   "latency_p95_s": 6.26,
+   "thresholds": {
+    "ROLE_CLARITY": 0.85,
+    "MANAGER_SUPPORT": 0.7,
+    "BELONGING": 0.85,
+    "ONBOARDING_TRAINING": 0.4,
+    "WORKLOAD": 0.4,
+    "ESCALATE": 0.45
+   }
+  },
+  {
+   "model": "clef-flash-tuned @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.784,
+   "drivers_macro_kappa": 0.737,
+   "f1_by_lang": {
+    "bm": 0.781,
+    "en": 0.655,
+    "manglish": 0.821
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.722,
+    "MANAGER_SUPPORT": 0.757,
+    "BELONGING": 0.88,
+    "ONBOARDING_TRAINING": 0.844,
+    "WORKLOAD": 0.714
+   },
+   "escalation_recall": "13/14",
+   "escalation_false_alarms": "0/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.64,
+   "latency_p95_s": 6.76
+  },
+  {
+   "model": "clef-flash-tuned @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.791,
+   "drivers_macro_kappa": 0.74,
+   "f1_by_lang": {
+    "bm": 0.768,
+    "en": 0.705,
+    "manglish": 0.816
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.75,
+    "MANAGER_SUPPORT": 0.778,
+    "BELONGING": 0.917,
+    "ONBOARDING_TRAINING": 0.816,
+    "WORKLOAD": 0.694
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "28/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.64,
+   "latency_p95_s": 6.76,
+   "thresholds": {
+    "ROLE_CLARITY": 0.4,
+    "MANAGER_SUPPORT": 0.55,
+    "BELONGING": 0.55,
+    "ONBOARDING_TRAINING": 0.4,
+    "WORKLOAD": 0.3,
+    "ESCALATE": 0.05
+   }
+  },
+  {
+   "model": "clef-flash-tuned-text @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.805,
+   "drivers_macro_kappa": 0.762,
+   "f1_by_lang": {
+    "bm": 0.757,
+    "en": 0.751,
+    "manglish": 0.819
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.756,
+    "MANAGER_SUPPORT": 0.867,
+    "BELONGING": 0.88,
+    "ONBOARDING_TRAINING": 0.889,
+    "WORKLOAD": 0.632
+   },
+   "escalation_recall": "13/14",
+   "escalation_false_alarms": "1/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.65,
+   "latency_p95_s": 7.7
+  },
+  {
+   "model": "clef-flash-tuned-text @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.752,
+   "drivers_macro_kappa": 0.696,
+   "f1_by_lang": {
+    "bm": 0.674,
+    "en": 0.657,
+    "manglish": 0.835
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.667,
+    "MANAGER_SUPPORT": 0.867,
+    "BELONGING": 0.815,
+    "ONBOARDING_TRAINING": 0.702,
+    "WORKLOAD": 0.711
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "13/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.65,
+   "latency_p95_s": 7.7,
+   "thresholds": {
+    "ROLE_CLARITY": 0.8,
+    "MANAGER_SUPPORT": 0.55,
+    "BELONGING": 0.4,
+    "ONBOARDING_TRAINING": 0.3,
+    "WORKLOAD": 0.25,
+    "ESCALATE": 0.2
+   }
+  },
+  {
+   "model": "clef-atomic @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.658,
+   "drivers_macro_kappa": 0.579,
+   "f1_by_lang": {
+    "bm": 0.724,
+    "en": 0.597,
+    "manglish": 0.647
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.708,
+    "MANAGER_SUPPORT": 0.636,
+    "BELONGING": 0.688,
+    "ONBOARDING_TRAINING": 0.704,
+    "WORKLOAD": 0.556
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "1/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.59,
+   "latency_p95_s": 1.32
+  },
+  {
+   "model": "clef-atomic @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.709,
+   "drivers_macro_kappa": 0.649,
+   "f1_by_lang": {
+    "bm": 0.654,
+    "en": 0.725,
+    "manglish": 0.753
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.64,
+    "MANAGER_SUPPORT": 0.727,
+    "BELONGING": 0.8,
+    "ONBOARDING_TRAINING": 0.656,
+    "WORKLOAD": 0.72
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "1/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.59,
+   "latency_p95_s": 1.32,
+   "thresholds": {
+    "ROLE_CLARITY": 0.95,
+    "MANAGER_SUPPORT": 0.9,
+    "BELONGING": 0.7,
+    "ONBOARDING_TRAINING": 0.35,
+    "WORKLOAD": 0.3,
+    "ESCALATE": 0.5
+   }
+  },
+  {
+   "model": "clef-omni-atomic @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.649,
+   "drivers_macro_kappa": 0.567,
+   "f1_by_lang": {
+    "bm": 0.656,
+    "en": 0.573,
+    "manglish": 0.661
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.653,
+    "MANAGER_SUPPORT": 0.464,
+    "BELONGING": 0.733,
+    "ONBOARDING_TRAINING": 0.783,
+    "WORKLOAD": 0.611
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "4/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.35,
+   "latency_p95_s": 1.31
+  },
+  {
+   "model": "clef-omni-atomic @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.678,
+   "drivers_macro_kappa": 0.608,
+   "f1_by_lang": {
+    "bm": 0.51,
+    "en": 0.735,
+    "manglish": 0.662
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.789,
+    "MANAGER_SUPPORT": 0.571,
+    "BELONGING": 0.72,
+    "ONBOARDING_TRAINING": 0.667,
+    "WORKLOAD": 0.64
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "5/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.35,
+   "latency_p95_s": 1.31,
+   "thresholds": {
+    "ROLE_CLARITY": 0.75,
+    "MANAGER_SUPPORT": 0.95,
+    "BELONGING": 0.8,
+    "ONBOARDING_TRAINING": 0.25,
+    "WORKLOAD": 0.15,
+    "ESCALATE": 0.45
+   }
+  },
+  {
+   "model": "clef-flash-atomic @0.5",
+   "n": 105,
+   "drivers_macro_f1": 0.633,
+   "drivers_macro_kappa": 0.546,
+   "f1_by_lang": {
+    "bm": 0.661,
+    "en": 0.528,
+    "manglish": 0.653
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.667,
+    "MANAGER_SUPPORT": 0.538,
+    "BELONGING": 0.526,
+    "ONBOARDING_TRAINING": 0.784,
+    "WORKLOAD": 0.65
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "1/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.73,
+   "latency_p95_s": 1.28
+  },
+  {
+   "model": "clef-flash-atomic @tuned-on-dev",
+   "n": 105,
+   "drivers_macro_f1": 0.706,
+   "drivers_macro_kappa": 0.645,
+   "f1_by_lang": {
+    "bm": 0.593,
+    "en": 0.73,
+    "manglish": 0.662
+   },
+   "f1_by_driver": {
+    "ROLE_CLARITY": 0.69,
+    "MANAGER_SUPPORT": 0.833,
+    "BELONGING": 0.64,
+    "ONBOARDING_TRAINING": 0.714,
+    "WORKLOAD": 0.652
+   },
+   "escalation_recall": "14/14",
+   "escalation_false_alarms": "20/91",
+   "failed_calls": 0,
+   "latency_median_s": 0.73,
+   "latency_p95_s": 1.28,
+   "thresholds": {
+    "ROLE_CLARITY": 0.8,
+    "MANAGER_SUPPORT": 0.9,
+    "BELONGING": 0.75,
+    "ONBOARDING_TRAINING": 0.45,
+    "WORKLOAD": 0.3,
+    "ESCALATE": 0.1
+   }
   }
  ]
 }
