@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { before, test } from "node:test";
 import { appUrl, freezeClock, hrRequest, hrToken, link, resetDemo, sentTo } from "./helpers.ts";
 
+const raj = "6f1c2a3e-0000-4000-8000-000000000101";
 const huiLing = "6f1c2a3e-0000-4000-8000-000000000103";
+const desks = [
+  { id: "6f1c2a3e-0000-4000-8000-000000000104", name: "Aiko" },
+  { id: "6f1c2a3e-0000-4000-8000-000000000105", name: "Ji-woo" },
+  { id: "6f1c2a3e-0000-4000-8000-000000000108", name: "Nok" },
+];
 const [aishaChat, budiChat, chenChat] = [5550005401, 5550005402, 5550005403];
 const notes = { en: "Team leads will hold a weekly check-in with new hires.", ms: "Ketua pasukan akan mengadakan sesi mingguan dengan pekerja baharu.", zh: "组长将每周与新员工见面一次。" };
 
@@ -30,19 +36,30 @@ test("R51: the team list holds only teams with 5 or more answers at least 2 abov
     company: { n: 13, m: 64 },
     verdict: "some",
     rows: [{ kind: "team", name: "Accounts Payable Europe", teams: ["Accounts Payable Europe"], n: 7, m: 22, leads: [{ id: huiLing, name: "Hui Ling" }] }],
-    eligible: 4,
-    small: 3,
+    eligible: 3,
+    small: 2,
     safety: 0,
   });
   const clarity = await (await teams("ROLE_CLARITY")).json();
-  assert.equal(clarity.verdict, "none");
-  assert.deepEqual(clarity.rows, []);
+  assert.deepEqual([clarity.company, clarity.verdict, clarity.rows], [
+    { n: 23, m: 64 },
+    "some",
+    [{ kind: "team", name: "Accounts Payable Asia", teams: ["Accounts Payable Asia"], n: 6, m: 9, leads: [{ id: raj, name: "Raj" }] }],
+  ]);
+});
+
+test("R51: teams under 5 in one tower pool into one tower row, listed by the same test", async () => {
+  const belonging = await (await teams("BELONGING")).json();
+  assert.deepEqual([belonging.company, belonging.rows], [
+    { n: 7, m: 64 },
+    [{ kind: "tower", name: "Customer care language desks", teams: ["Japanese Desk", "Korean Desk", "Thai Desk"], n: 3, m: 8, leads: desks }],
+  ]);
 });
 
 test("R51: a team under 5 never appears alone, and a manager gets a refusal on the list", async () => {
   for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"]) {
     const body = await (await teams(driver)).json();
-    for (const row of body.rows) assert.ok(!(row.kind === "team" && ["Korean Desk", "Order-to-Cash Asia", "Record-to-Report"].includes(row.name)), `${driver} lists ${row.name}`);
+    for (const row of body.rows) assert.ok(!(row.kind === "team" && ["Japanese Desk", "Korean Desk", "Thai Desk", "Order-to-Cash Asia", "Record-to-Report"].includes(row.name)), `${driver} lists ${row.name}`);
   }
   assert.equal((await teams("MANAGER_SUPPORT", await hrToken("raj@contoh.test"))).status, 401);
 });

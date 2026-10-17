@@ -62,7 +62,7 @@ test("R7: a reply escalated by keyword alone, with a label HR confirmed, is in n
       enough: true,
       respondents: 9,
       drivers: {
-        ROLE_CLARITY: 5,
+        ROLE_CLARITY: 6,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
         ONBOARDING_TRAINING: "fewer than 3",

@@ -8,9 +8,9 @@
     "suppressed": false,
     "counts": {
       "ROLE_CLARITY": {
-        "n": 5,
+        "n": 6,
         "reviewed": 4,
-        "ai_confident": 1
+        "ai_confident": 2
       },
       "MANAGER_SUPPORT": {
         "n": 2,
@@ -33,29 +33,29 @@
     "suppressed": false,
     "counts": {
       "ROLE_CLARITY": {
-        "n": 8,
+        "n": 7,
         "reviewed": 4,
-        "ai_confident": 4
-      },
-      "WORKLOAD": {
-        "n": 2,
-        "reviewed": 0,
-        "ai_confident": 2
+        "ai_confident": 3
       },
       "MANAGER_SUPPORT": {
         "n": 7,
         "reviewed": 3,
         "ai_confident": 4
       },
+      "BELONGING": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1
+      },
       "ONBOARDING_TRAINING": {
         "n": 4,
         "reviewed": 3,
         "ai_confident": 1
       },
-      "BELONGING": {
+      "WORKLOAD": {
         "n": 2,
-        "reviewed": 1,
-        "ai_confident": 1
+        "reviewed": 0,
+        "ai_confident": 2
       }
     }
   },
@@ -64,30 +64,9 @@
     "week": "2026-10-12",
     "touchpoint": 14,
     "team": "Japanese Desk",
-    "respondents": 5,
-    "suppressed": false,
-    "counts": {
-      "ROLE_CLARITY": {
-        "n": 1,
-        "reviewed": 0,
-        "ai_confident": 1
-      },
-      "ONBOARDING_TRAINING": {
-        "n": 1,
-        "reviewed": 0,
-        "ai_confident": 1
-      },
-      "WORKLOAD": {
-        "n": 1,
-        "reviewed": 1,
-        "ai_confident": 0
-      },
-      "MANAGER_SUPPORT": {
-        "n": 1,
-        "reviewed": 0,
-        "ai_confident": 1
-      }
-    }
+    "respondents": 4,
+    "suppressed": true,
+    "counts": null
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
@@ -113,6 +92,15 @@
     "touchpoint": 14,
     "team": "Record-to-Report",
     "respondents": 3,
+    "suppressed": true,
+    "counts": null
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "team": "Thai Desk",
+    "respondents": 1,
     "suppressed": true,
     "counts": null
   },

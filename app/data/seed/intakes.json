@@ -34,6 +34,10 @@
       {
         "team": "IT Service Desk",
         "manager_id": "6f1c2a3e-0000-4000-8000-000000000107"
+      },
+      {
+        "team": "Thai Desk",
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000108"
       }
     ]
   }

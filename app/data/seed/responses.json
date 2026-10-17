@@ -720,7 +720,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010014",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020014",
     "question_id": "BELONGING",
-    "scale_value": 3,
+    "scale_value": 2,
     "language": "ms",
     "kind": "checkin",
     "created_at": "2026-05-18T04:10:00Z"
@@ -4108,7 +4108,7 @@
     "person_id": "6f1c2a3e-0000-4000-8000-000000010076",
     "schedule_id": "6f1c2a3e-0000-4000-8000-000000020076",
     "question_id": "BELONGING",
-    "scale_value": 3,
+    "scale_value": 2,
     "language": "ms",
     "kind": "checkin",
     "created_at": "2026-09-21T05:17:00Z"

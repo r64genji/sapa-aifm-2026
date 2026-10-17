@@ -144,7 +144,7 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   const published = await snapshots();
   const production = published.find((s: { team: string }) => s.team === "Accounts Payable Asia");
   assert.equal(production.respondents, 9);
-  assert.equal(production.drivers.ROLE_CLARITY, 5);
+  assert.equal(production.drivers.ROLE_CLARITY, 6);
 
   const rows = async () => {
     const { data: responses } = await db.from("responses").select("id").eq("person_id", id);

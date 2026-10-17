@@ -162,12 +162,17 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
   const rate = Math.round((where.company.n / where.company.m) * 100);
   const ticked = where.rows.filter((r) => !off.includes(r.name));
   const listed = where.rows.filter((r) => r.kind === "team").length;
+  const towers = where.rows.length - listed;
+  const places = [
+    ...(listed ? [`${listed} of ${where.eligible} teams`] : []),
+    ...(towers ? [`${towers} pooled ${towers === 1 ? "tower" : "towers"}`] : []),
+  ].join(" and ");
   const verdict =
     where.verdict === "none"
       ? { title: `${name} is not more common in any one team`, sub: "A company-wide fix fits better than a team fix." }
       : where.verdict === "most"
         ? { title: `In most teams: ${listed} of ${where.eligible}`, sub: "A company-wide fix may fit better. You can still send one fix to each team lead below." }
-        : { title: `In ${listed} of ${where.eligible} teams, not everywhere`, sub: "Send a fix to these teams." };
+        : { title: `In ${places}, not everywhere`, sub: "Send a fix to these teams." };
   return (
     <div className="flex flex-col gap-3 rounded-lg border px-4 py-3.5" style={{ borderColor: "var(--line)" }}>
       <div className="flex flex-col gap-0.5 rounded-lg px-3 py-2.5" style={{ background: "var(--surface-sunken)" }}>

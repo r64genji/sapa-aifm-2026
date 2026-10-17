@@ -63,11 +63,11 @@ test("Every count on the detail route matches GET /api/hr/themes for the same to
   }
 });
 
-test("Role clarity 23 of 64, Raj's team 5 of 9 and the Korean desk 3 of 5 needed", { todo: "waits for #25 seed" }, async () => {
+test("Role clarity 23 of 64, Raj's team 6 of 9 and the Korean desk 3 of 5 needed", { todo: "waits for #25 seed" }, async () => {
   const all = await detail("");
   assert.deepEqual([all.card.n, all.card.m], [23, 64]);
   const raj = await detail("?team=Accounts%20Payable%20Asia");
-  assert.deepEqual([raj.weekly.at(-1).n, raj.weekly.at(-1).m], [5, 9]);
+  assert.deepEqual([raj.weekly.at(-1).n, raj.weekly.at(-1).m], [6, 9]);
   const korean = await detail("?team=Korean%20Desk");
   assert.deepEqual([korean.card.have, korean.card.need], [3, 5]);
 });

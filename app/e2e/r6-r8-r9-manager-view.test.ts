@@ -51,7 +51,7 @@ const production = {
   enough: true,
   respondents: 9,
   drivers: {
-    ROLE_CLARITY: 5,
+    ROLE_CLARITY: 6,
     MANAGER_SUPPORT: "fewer than 3",
     BELONGING: "fewer than 3",
     ONBOARDING_TRAINING: "fewer than 3",
@@ -128,7 +128,7 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
 
   await freezeClock("2026-10-19T10:00:00.000Z");
   const monday = await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key });
-  assert.equal((await monday.json()).snapshots, 7);
+  assert.equal((await monday.json()).snapshots, 8);
   assert.equal((await (await fetch(`${appUrl}/api/nightly`, { method: "POST", headers: key })).json()).snapshots, 0);
   assert.deepEqual(await (await asManager("/api/manager/snapshots", rajToken)).json(), [
     {
@@ -137,7 +137,7 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
       enough: true,
       respondents: 12,
       drivers: {
-        ROLE_CLARITY: 8,
+        ROLE_CLARITY: 9,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
         ONBOARDING_TRAINING: "fewer than 3",
@@ -161,7 +161,7 @@ test("R6, R7, R8, R9: the supervisor's own session reads no reply, tag, escalati
     {
       team: "Accounts Payable Asia",
       week: "2026-10-19",
-      drivers: { ROLE_CLARITY: 8, MANAGER_SUPPORT: "fewer than 3", WORKLOAD: "fewer than 3" },
+      drivers: { ROLE_CLARITY: 9, MANAGER_SUPPORT: "fewer than 3", WORKLOAD: "fewer than 3" },
     },
   ]);
   const { data: hrSees } = await (await sessionClient("hr@contoh.test")).from("manager_snapshots").select("team");

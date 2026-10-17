@@ -1,0 +1,42 @@
+[
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-10-12",
+    "touchpoint": 14,
+    "tower": "Customer care language desks",
+    "teams": [
+      "Japanese Desk",
+      "Korean Desk",
+      "Thai Desk"
+    ],
+    "respondents": 8,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1
+      },
+      "MANAGER_SUPPORT": {
+        "n": 2,
+        "reviewed": 0,
+        "ai_confident": 2
+      },
+      "BELONGING": {
+        "n": 3,
+        "reviewed": 1,
+        "ai_confident": 0
+      },
+      "ONBOARDING_TRAINING": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1
+      },
+      "WORKLOAD": {
+        "n": 1,
+        "reviewed": 1,
+        "ai_confident": 0
+      }
+    }
+  }
+]
