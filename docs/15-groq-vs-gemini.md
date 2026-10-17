@@ -67,6 +67,27 @@ Groq prices are from third-party trackers that cite the Groq docs; check the Gro
 - **Translations:** all four kept the meaning on all 15. The Groq models wrote "200 yuan" for a Malaysian salary; Gemini wrote "dollars". The source has no currency. All kept `[PHONE]` and translated the injection as text.
 - **Drafts:** gpt-oss-120b drafts are short, plain and follow the brief. Gemini's are longer and more polished when they arrive. Qwen once wrote "this coming Friday" for a weekly fix.
 
+## Gemini 3.5 Flash Lite (same day, same items)
+
+`agy/gemini-3.5-flash-lite` through OmniRoute, on all six features (it also took the draft and group calls).
+
+| | Gemini 3.8 Flash | Gemini 3.5 Flash Lite |
+|---|---|---|
+| Classify latency median / p90 | **2.8 s / 4.6 s** | 5.0 s / 6.6 s |
+| Classify κ / escalations / forced labour | 0.77 / 26 of 27 / 5 of 5 | 0.78 / **27 of 27** / 5 of 5 |
+| κ BM / EN / ZH / Manglish | 0.68 / 0.70 / 0.59 / 0.91 | 0.63 / 0.67 / **0.72** / 0.93 |
+| False alarms | **1 of 63** | 2 of 63 |
+| Q&A latency / grounded / failed | **3.0 s** / 13 of 15 / 0 | 4.5 s / 14 of 15 / 2 |
+| Draft latency / usable | 7.2 s / 5 of 10 | **5.0 s / 10 of 10** |
+| Group, translate | equal | equal |
+| Adversarial safe | 15 of 16 | 14 of 16 |
+| Output tokens per classify call | **139** | 1,646 |
+
+- **Lite is not faster on this route.** It writes about 1,650 hidden thinking tokens per call, against 139 for Flash. Its p90 of 6.6 s is close to the app's 8 s limit.
+- Its accuracy equals Flash on classify. It caught all 27 escalations, but Flash's one miss was a timeout, not a wrong call. Its two false alarms are "normal retail stuff lol" and a hot factory that is "okay sikit" now.
+- **It does not change the decision.** gpt-oss-120b is still 5 times faster on the four non-classify features, with the same quality. Flash stays on classify, because it is faster than Lite at the same accuracy.
+- Cost is not known: OmniRoute does not say what Lite costs, and its 12 times larger output would dominate any price.
+
 ## Limits
 
 - 90 classify items, about 20 per language: per-language κ is rough. One run per model.
