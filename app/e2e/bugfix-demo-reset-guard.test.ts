@@ -40,8 +40,9 @@ test("HR-side demo reset: plain HR gets 403, no reset runs outside demo mode, ad
   const res = await asHr("reset", "admin@contoh.test", "POST");
   assert.equal(res.status, 200);
   const body = await res.json();
-  assert.deepEqual(Object.keys(body), ["invite_link"]);
-  assert.match(body.invite_link, /\?start=.+/);
+  assert.deepEqual(Object.keys(body), ["team_links"]);
+  assert.equal(body.team_links.length, 8);
+  assert.match(body.team_links[0].link, /\?start=.+/);
   assert.deepEqual(await kept(), []);
 });
 

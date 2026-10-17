@@ -29,7 +29,7 @@ export function DemoBar() {
   const status = useApi<Status>("/api/hr/demo/status", 10000);
   const [busy, setBusy] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [invite, setInvite] = useState<string | null>(null);
+  const [invite, setInvite] = useState<{ team: string; link: string }[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -51,8 +51,8 @@ export function DemoBar() {
   const reset = () =>
     run(async () => {
       setConfirming(false);
-      const result = await apiSend<{ join_link: string }>("/api/hr/demo/reset");
-      setInvite(result.join_link);
+      const result = await apiSend<{ team_links: { team: string; link: string }[] }>("/api/hr/demo/reset");
+      setInvite(result.team_links);
       setMessage("Reset to seed.");
     });
 
@@ -79,19 +79,19 @@ export function DemoBar() {
           </span>
         ) : status.error ? <span className="sp-caption md:ml-auto">Status not available</span> : null}
       </div>
-      {message || invite ? (
+      {message || invite.length ? (
         <div className="flex flex-col gap-0.5" aria-live="polite">
           {message ? <span className="font-semibold">{message}</span> : null}
-          {invite ? (
-            <span>
-              New join link for the intake: <a href={invite} className="break-all">{invite}</a>
+          {invite.map((row) => (
+            <span key={row.team}>
+              {row.team}: <a href={row.link} className="break-all">{row.link}</a>
             </span>
-          ) : null}
+          ))}
         </div>
       ) : null}
       {confirming ? (
         <Dialog title="Reset to seed?" onClose={() => setConfirming(false)}>
-          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. The intake gets a new join link.</p>
+          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. Every team gets a new join link.</p>
           <div className="flex flex-wrap gap-2">
             <Button variant="primary" onClick={reset}>Reset to seed</Button>
             <Button onClick={() => setConfirming(false)}>Cancel</Button>

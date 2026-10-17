@@ -51,7 +51,6 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
-  await tap(live, "Accounts Payable Asia");
   assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
   await tap(live, "4");
   await tap(live, "3");

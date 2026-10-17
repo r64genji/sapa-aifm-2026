@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Shield } from "lucide-react";
+import { Home, QrCode, Shield } from "lucide-react";
 import { Suspense, type ReactNode } from "react";
 import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
@@ -91,6 +91,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Home" short="Home" count={toCheck} />
           <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
           <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes and impact" short="Fixes" />
+          {me.data.role === "hr_admin" ? <NavItem href="/join" icon={<QrCode size={17} aria-hidden="true" />} label="Join codes" short="Join" /> : null}
         </div>
         <div className="hidden min-h-6 grow md:block" />
         <Link href="/concerns" className="sp-caption hidden min-h-11 items-center gap-2 px-2.5 no-underline md:flex" style={{ color: "var(--ink-muted)" }}>

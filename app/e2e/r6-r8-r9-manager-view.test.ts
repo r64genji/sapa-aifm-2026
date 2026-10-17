@@ -68,7 +68,6 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
-  await tap(live, "Accounts Payable Asia");
   await tap(live, en.visibilityHrManager);
   await joined(shared, "2026-10-02");
   await tap(shared, en.visibilityHrManager);

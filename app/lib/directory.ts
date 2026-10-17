@@ -10,7 +10,7 @@ export type Person = {
   id: string;
   organisation_id: string;
   language: Language;
-  state: "invited" | "consent_shown" | "choosing_team" | "declined" | "active" | "stopped" | "left" | "deleted";
+  state: "invited" | "consent_shown" | "declined" | "active" | "stopped" | "left" | "deleted";
   telegram_chat_id: number | null;
   intake_id: string | null;
   team: string | null;
@@ -87,23 +87,28 @@ export async function redeemInvite(token: string, chatId: number) {
   return data;
 }
 
+type IntakeTeam = { team: string; manager_id: string; join_token: string };
+
 export async function joinIntake(token: string, chatId: number) {
   const db = createAdminClient();
   const at = await now();
   const { data: intake, error } = await db
     .from("intakes")
-    .select("id, organisation_id, start_date")
-    .eq("join_token", token)
+    .select("id, organisation_id, start_date, teams")
+    .filter("teams", "cs", JSON.stringify([{ join_token: token }]))
     .gt("expires_at", at.toISOString())
-    .maybeSingle();
+    .maybeSingle<{ id: string; organisation_id: string; start_date: string; teams: IntakeTeam[] }>();
   if (error) throw error;
-  if (!intake) return null;
+  const team = intake?.teams.find((row) => row.join_token === token);
+  if (!intake || !team) return null;
   const { data, error: insertError } = await db
     .from("people")
     .insert({
       organisation_id: intake.organisation_id,
       intake_id: intake.id,
       code_name: `Hire ${randomBytes(3).toString("hex").toUpperCase()}`,
+      team: team.team,
+      manager_id: team.manager_id,
       start_date: intake.start_date,
       language: "en",
       telegram_chat_id: chatId,
@@ -115,27 +120,25 @@ export async function joinIntake(token: string, chatId: number) {
   return data;
 }
 
-export async function intakeTeams(person: Person) {
+export async function teamLinks(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("intakes")
-    .select("teams")
-    .eq("id", person.intake_id!)
-    .single<{ teams: { team: string; manager_id: string }[] }>();
+    .select("label, teams")
+    .eq("organisation_id", organisationId)
+    .order("start_date", { ascending: false })
+    .limit(1)
+    .single<{ label: string; teams: IntakeTeam[] }>();
   if (error) throw error;
-  return data.teams;
-}
-
-export async function setTeam(person: Person, index: number) {
-  const choice = (await intakeTeams(person))[index];
-  if (!choice) return false;
-  const { data, error } = await createAdminClient()
-    .from("people")
-    .update({ team: choice.team, manager_id: choice.manager_id, state: "active" })
-    .eq("id", person.id)
-    .eq("state", "choosing_team")
-    .select("id");
-  if (error) throw error;
-  return data.length === 1;
+  const { data: managers, error: managersError } = await createAdminClient()
+    .from("managers")
+    .select("id, display_name")
+    .eq("organisation_id", organisationId);
+  if (managersError) throw managersError;
+  const lead = new Map(managers.map((row) => [row.id, row.display_name]));
+  return {
+    intake: data.label,
+    teams: data.teams.map((row) => ({ team: row.team, lead: lead.get(row.manager_id) ?? "", link: joinLink(row.join_token) })),
+  };
 }
 
 export async function moveState(person: Person, from: Person["state"], to: Person["state"]) {

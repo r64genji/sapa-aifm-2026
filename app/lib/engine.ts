@@ -7,14 +7,12 @@ import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
   moveState,
-  intakeTeams,
   joinIntake,
   personByChat,
   recordConsent,
   redeemInvite,
   setLanguage,
   setScope,
-  setTeam,
   stopPerson,
   type Person,
 } from "@/lib/directory";
@@ -69,10 +67,6 @@ const visibilityReply = (language: Language): Reply => {
 async function prompt(person: Person, languages: Language[]): Promise<Reply[]> {
   const pack = packs[person.language];
   if (person.state === "invited") return [languageReply(languages)];
-  if (person.state === "choosing_team") {
-    const teams = await intakeTeams(person);
-    return [{ text: pack.teamPrompt, buttons: teams.map(({ team }, i) => ({ label: team, id: "team", value: String(i) })) }];
-  }
   if (person.state === "consent_shown") {
     return [
       {
@@ -111,16 +105,11 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "no" && (await moveState(person, "consent_shown", "declined"))) {
       return { replies: [{ text: pack.declined }] };
     }
-    const next = person.team ? "active" : "choosing_team";
-    if (value === "yes" && (await moveState(person, "consent_shown", next))) {
+    if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      if (next === "choosing_team") return { replies: await prompt({ ...person, state: next }, languages) };
       return { replies: [visibilityReply(person.language)] };
     }
-  }
-  if (id === "team" && person.state === "choosing_team" && (await setTeam(person, Number(value)))) {
-    return { replies: [visibilityReply(person.language)] };
   }
   if (
     id === "visibility" &&

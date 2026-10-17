@@ -11,6 +11,7 @@ export const db = createClient(
 );
 
 export let liveInvite = "";
+export let teamInvites: Record<string, string> = {};
 
 export async function resetSeed() {
   await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
@@ -19,8 +20,9 @@ export async function resetSeed() {
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
   if (!res.ok) throw new Error(`demo reset failed: ${res.status}`);
-  const { join_link } = await res.json();
-  liveInvite = String(join_link).split("?start=")[1];
+  const { team_links } = await res.json();
+  teamInvites = Object.fromEntries(team_links.map((row: { team: string; link: string }) => [row.team, String(row.link).split("?start=")[1]]));
+  liveInvite = teamInvites["Accounts Payable Asia"];
   await fetch(`${telegramUrl}/calls`, { method: "DELETE" });
   await fetch(`${modelUrl}/calls`, { method: "DELETE" });
 }

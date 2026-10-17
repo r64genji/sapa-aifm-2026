@@ -30,8 +30,8 @@ async function resetDemo() {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },
   });
-  const { join_link } = await json(res, 200, "demo reset");
-  return String(join_link).split("?start=")[1];
+  const { team_links } = await json(res, 200, "demo reset");
+  return String(team_links[0].link).split("?start=")[1];
 }
 
 const roleClarity = async () => {
@@ -45,7 +45,6 @@ async function run() {
   await link(chat, await resetDemo());
   await tapData(chat, button("lang", "en"));
   await tapData(chat, button("consent", "yes"));
-  await tapData(chat, button("team", "0"));
   await tapData(chat, button("visibility", "share_with_manager"));
   await until("the live hire to be active", async () => {
     const { data } = await db.from("people").select("id, state").eq("telegram_chat_id", chat).maybeSingle();

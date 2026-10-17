@@ -90,7 +90,8 @@ export async function resetDemo() {
   if (modeError) throw modeError;
   if (live.length > 0) return { error: "Demo mode is off", code: 409 };
   const liveStart = liveDates(organisations[0].time_zone);
-  const intake = { ...intakes[0], ...liveStart, join_token: randomBytes(16).toString("base64url") };
+  const teams = intakes[0].teams.map((row) => ({ ...row, join_token: randomBytes(16).toString("base64url") }));
+  const intake = { ...intakes[0], ...liveStart, teams };
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
@@ -99,5 +100,7 @@ export async function resetDemo() {
   if (error) throw error;
   await seedSpotChecks();
   await seedUsers();
-  return { join_link: joinLink(intake.join_token) };
+  const { data: lead } = await db.from("managers").select("id, display_name");
+  const names = new Map(lead!.map((row) => [row.id, row.display_name]));
+  return { team_links: teams.map((row) => ({ team: row.team, lead: names.get(row.manager_id) ?? "", link: joinLink(row.join_token) })) };
 }

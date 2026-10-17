@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, chatPerson, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite } from "./helpers.ts";
+import { addHire, chatPerson, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite, teamInvites } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -23,15 +23,14 @@ test("Bug fix: the intake join token written in the public seed file binds no ch
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
 });
 
-test("R5, R36, R1, R27: a hire joins on the intake link in English, consents, picks a team, gets HR only and an English menu", async () => {
+test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is never asked for a team, gets HR only and an English menu", async () => {
   const chat = 5550000001;
   await link(chat, liveInvite);
   assert.deepEqual(await texts(chat), [`${en.languagePrompt}\n${ms.languagePrompt}\n${zh.languagePrompt}`]);
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  await tap(chat, "Accounts Payable Asia");
-  assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.teamPrompt, en.visibilityPrompt]);
+  assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
@@ -65,6 +64,28 @@ test("R36: a hire who picks Bahasa Malaysia gets the BM consent text and a BM me
   assert.deepEqual(menu.commands.map((c: any) => c.command), Object.values(ms.commands).map((c: any) => c.name));
 });
 
+test("R27: each team link puts the joiner in that team with its manager and asks no team question", async () => {
+  const expected: [string, string][] = [
+    ["Order-to-Cash Asia", "6f1c2a3e-0000-4000-8000-000000000102"],
+    ["Accounts Payable Europe", "6f1c2a3e-0000-4000-8000-000000000103"],
+    ["Japanese Desk", "6f1c2a3e-0000-4000-8000-000000000104"],
+    ["Korean Desk", "6f1c2a3e-0000-4000-8000-000000000105"],
+    ["Record-to-Report", "6f1c2a3e-0000-4000-8000-000000000106"],
+    ["IT Service Desk", "6f1c2a3e-0000-4000-8000-000000000107"],
+    ["Thai Desk", "6f1c2a3e-0000-4000-8000-000000000108"],
+  ];
+  let chat = 5550000100;
+  for (const [team, manager] of expected) {
+    chat += 1;
+    await link(chat, teamInvites[team]);
+    await tap(chat, "English");
+    await tap(chat, en.agree);
+    assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
+    const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
+    assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
+  }
+});
+
 test("R27: a second chat on the intake link joins as a new person, a chat that joined is refused, and HR sees no names", async () => {
   const other = 5550000003;
   await link(other, liveInvite);
@@ -95,6 +116,8 @@ test("R27: an invite 15 days old and an expired intake link are refused", async 
   assert.deepEqual(await texts(chat), [en.invalidInvite]);
   await link(5550000007, liveInvite);
   assert.deepEqual(await texts(5550000007), [en.invalidInvite]);
+  await link(5550000008, teamInvites["Thai Desk"]);
+  assert.deepEqual(await texts(5550000008), [en.invalidInvite]);
   await freezeClock(frozen);
 });
 
