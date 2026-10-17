@@ -144,9 +144,13 @@
         "tidak boleh keluar asrama",
         "tidak dibenarkan keluar asrama",
         "tak dibenarkan keluar asrama",
-        "dikurung di asrama"
+        "dikurung di asrama",
+        "berhutang dengan ejen",
+        "berhutang ejen",
+        "berhenti kena bayar",
+        "berhenti perlu bayar"
       ],
-      "sexual_harassment": ["gangguan seksual", "diganggu secara seksual", "raba saya", "meraba saya", "pegang badan saya"],
+      "sexual_harassment": ["gangguan seksual", "diganggu secara seksual", "raba saya", "meraba saya", "pegang badan saya", "sentuh badan saya", "komen pasal badan saya"],
       "self_harm_crisis": ["bunuh diri", "rasa nak mati", "ingin mati", "tamatkan hidup", "cederakan diri", "sakiti diri"],
       "bullying_threats": ["dibuli", "buli saya", "ugut saya", "diugut", "pukul saya", "dipukul"],
       "harassment": ["diganggu", "ganggu saya"],

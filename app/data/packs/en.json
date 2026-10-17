@@ -179,7 +179,14 @@
         "not allowed to leave the hostel",
         "cannot leave the hostel",
         "can't leave the hostel",
-        "locked in the hostel"
+        "locked in the hostel",
+        "in debt to the agent",
+        "debt with the agent",
+        "repay the fees before",
+        "pay back the fees before",
+        "pay before i can leave",
+        "if i quit i must pay",
+        "cannot quit until i pay"
       ],
       "sexual_harassment": [
         "sexually harassed",
@@ -187,7 +194,11 @@
         "touched me",
         "touch my body",
         "sent me naked",
-        "asked me for sex"
+        "asked me for sex",
+        "touching me",
+        "keeps touching my",
+        "comments on my body",
+        "comments about my body"
       ],
       "self_harm_crisis": [
         "kill myself",
