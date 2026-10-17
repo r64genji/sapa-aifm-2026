@@ -346,8 +346,7 @@ function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
     <article className="sp-card flex flex-col gap-2 px-4 py-3.5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="sp-caption">
-          {r.touchpoint !== null ? `${dayLabel(r.touchpoint)} · ` : ""}
-          {shortDate(r.created_at)}
+          {r.byline} · {shortDate(r.created_at)}
         </span>
         <AiMark state={r.status === "reviewed" ? (r.changed_by_hr ? "corrected" : "confirmed") : "suggested"} label={label} reviewer="HR" />
       </div>
@@ -415,7 +414,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const g = groups.data;
   const grouped = g && g.status === "ok" && "groups" in g ? g.groups : [];
   const mine = (replies.data ?? [])
-    .filter((r) => r.touchpoint === 14 && !r.escalate && r.drivers?.includes(driver) && counted(r))
+    .filter((r) => r.byline.endsWith("Day 14") && !r.escalate && r.drivers?.includes(driver) && counted(r))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   const byId = new Map(mine.map((r) => [r.id, r]));
   const intakes = intakePoints(d);

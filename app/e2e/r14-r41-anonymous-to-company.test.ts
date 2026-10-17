@@ -86,12 +86,11 @@ test("R14, R41: no HR response holds a code name or a person ID", async () => {
 });
 
 test("R14, R41: HR sees a reply with its team and day, and a phone number and an email are masked around the highlighted quote", async () => {
-  const replies = (await (await hrRequest("/api/hr/replies", "GET")).json()) as { text: string; evidence_quote: string; team: string; touchpoint: number }[];
+  const replies = (await (await hrRequest("/api/hr/replies", "GET")).json()) as { text: string; evidence_quote: string; byline: string }[];
   const mine = replies.find((r) => r.text.includes(quote))!;
   assert.equal(mine.text, `Boss bagi 3 task semua urgent, ${quote}. Call me [PHONE] or [EMAIL]`);
   assert.equal(mine.evidence_quote, quote);
-  assert.equal(mine.team, "Accounts Payable Asia");
-  assert.equal(mine.touchpoint, 14);
+  assert.equal(mine.byline, "A new hire · Accounts Payable Asia · Day 14");
   const queue = (await (await hrRequest("/api/hr/queue", "GET")).json()) as { text: string | null }[];
   for (const row of queue) assert.ok(!/012-345 6789|aisyah\.tan@example\.com/.test(row.text ?? ""));
 });

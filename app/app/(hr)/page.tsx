@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
-import { ReplyRow, Translation, byline, type ReplyItem as Reply } from "@/components/sapa/reply";
+import { ReplyRow, Translation, type ReplyItem as Reply } from "@/components/sapa/reply";
 import {
   AiMark,
   Button,
@@ -31,7 +31,7 @@ type Escalation = { id: string };
 type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
-type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; team?: string | null; touchpoint: number | null };
+type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; byline: string };
 type Offer = { id: string; answer: string | null; contact_due_at: string | null; contact_done_at: string | null; overdue: boolean };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Score = { headline: string; detail: string | null; note: string };
@@ -76,7 +76,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
       }
     >
       <div className="sp-caption" style={{ color: "var(--ai)", fontWeight: 600 }}>
-        {byline(row)} · {shortDate(row.created_at)}
+        {row.byline} · {shortDate(row.created_at)}
         {row.language === "zh" ? " · Chinese" : ""}
       </div>
       {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}

@@ -111,7 +111,7 @@ test("R55, R12: typed words count as taps, the lowest tap opens the chat, the AI
   const shown = ((await res.json()) as { id: string; text: string }[]).find((r) => r.id === replies[0].id)!;
   assert.equal(
     shown.text,
-    "Three seniors give me urgent invoices at once, call me on 012-345 6789\nThe Malaysia ones, but then Singapore was late\nA written list of which country goes first",
+    "Three seniors give me urgent invoices at once, call me on [PHONE]\nThe Malaysia ones, but then Singapore was late\nA written list of which country goes first",
   );
   const { data: tag } = await db.from("ai_tags").select("status, evidence_quote").eq("response_id", replies[0].id).single();
   assert.deepEqual(tag, { status: "ok", evidence_quote: "Three seniors give me urgent invoices at once" });

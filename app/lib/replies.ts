@@ -10,6 +10,9 @@ import { send } from "@/lib/telegram";
 import { translation } from "@/lib/translate";
 import { createAdminClient } from "@/lib/supabase/admin";
 
+const byline = (team: string | null | undefined, touchpoint: number | null | undefined) =>
+  ["A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`].filter(Boolean).join(" · ");
+
 export async function readReplies(organisationId: string, actor: string) {
   const db = createAdminClient();
   const { data, error } = await db
@@ -36,8 +39,7 @@ export async function readReplies(organisationId: string, actor: string) {
         text: mask(decrypt(row.text_encrypted!)),
         language: row.language,
         created_at: row.created_at,
-        team: joined.people?.team ?? null,
-        touchpoint: joined.checkin_schedule?.touchpoint ?? null,
+        byline: byline(joined.people?.team, joined.checkin_schedule?.touchpoint),
         ...joined.ai_tags,
         evidence_quote: joined.ai_tags?.evidence_quote ? mask(joined.ai_tags.evidence_quote) : null,
       };
@@ -124,8 +126,7 @@ export async function readQueue(organisationId: string, actor: string) {
         summary: row.summary ? mask(row.summary) : null,
         text,
         language: responses.language,
-        team: responses.people?.team ?? null,
-        touchpoint: responses.checkin_schedule?.touchpoint ?? null,
+        byline: byline(responses.people?.team, responses.checkin_schedule?.touchpoint),
         note:
           challenged_at && !challenge_resolved_at
             ? challenged

@@ -142,7 +142,7 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
     { kind: "json", content: { translation: translated } },
   ]);
   const all = await (await hrRequest("/api/hr/replies", "GET")).json();
-  const opened = all.find((r: any) => r.text === withPhone);
+  const opened = all.find((r: any) => r.text === "我不知道先做哪个，请打电话 [PHONE] 给我");
   assert.ok(opened);
   assert.equal((await hrRequest(`/api/hr/replies/${opened.id}/translation`, "GET")).status, 200);
   const sent = (await modelCalls("omniroute")).slice(calls).map((c) => JSON.stringify(c.body));
