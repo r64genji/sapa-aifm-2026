@@ -544,6 +544,50 @@ export async function assignAction(
   };
 }
 
+export async function sendBatch(
+  organisationId: string,
+  actor: string,
+  id: string,
+  teams: { team: string; manager_id: string }[],
+  dueInDays: number,
+) {
+  const db = createAdminClient();
+  const { data: template, error } = await db.from("actions").select("*").eq("organisation_id", organisationId).eq("id", id).maybeSingle();
+  if (error) throw error;
+  if (!template) return { error: "Not found", code: 404 };
+  if (template.status !== "draft" || template.hiring_side) return { error: "Only a draft can be sent", code: 409 };
+  const batchId = crypto.randomUUID();
+  const fields = { ...template };
+  delete fields.id;
+  const results: { team: string; manager_id: string; id?: string; error?: string }[] = [];
+  for (const { team, manager_id } of teams) {
+    const { data: copy, error: copyError } = await db
+      .from("actions")
+      .insert({ ...fields, batch_id: batchId, scope_type: "team", scope_team: team, scope_person_id: null, scope_intake: null })
+      .select("id")
+      .single();
+    if (copyError) throw copyError;
+    const result = await assignAction(organisationId, actor, copy.id, manager_id, dueInDays);
+    if ("error" in result) {
+      const { error: dropError } = await db.from("actions").delete().eq("id", copy.id);
+      if (dropError) throw dropError;
+      results.push({ team, manager_id, error: result.error });
+      continue;
+    }
+    results.push({ team, manager_id, id: copy.id });
+    if (fields.own_fix) {
+      const { data: sent, error: sentError } = await db.from("actions").select("library_entry_id").eq("id", copy.id).single();
+      if (sentError) throw sentError;
+      Object.assign(fields, { own_fix: false, library_entry_id: sent.library_entry_id });
+    }
+  }
+  if (results.some((r) => r.id)) {
+    const { error: dropError } = await db.from("actions").delete().eq("id", id);
+    if (dropError) throw dropError;
+  }
+  return { batch_id: batchId, sent: results };
+}
+
 function demoLabel(org: { demo_mode: boolean; snapshot_weekday: number }, held: boolean) {
   return org.demo_mode && held ? text.demoLabel.replace("{weekday}", WEEKDAYS[org.snapshot_weekday - 1]) : null;
 }
@@ -662,7 +706,7 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");

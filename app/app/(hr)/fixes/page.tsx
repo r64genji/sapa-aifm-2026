@@ -26,6 +26,7 @@ type Fix = {
 };
 type Action = {
   id: string;
+  batch_id: string | null;
   driver: string;
   hiring_side: boolean;
   title: string;
@@ -663,6 +664,8 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
     [open.filter((a) => a.status !== "draft").length, "In progress"],
   ];
   const quiet = (text: string) => <div className="sp-muted px-[18px] py-4">{text}</div>;
+  const batchOf = (a: Action) => (a.batch_id ? actions.filter((b) => b.batch_id === a.batch_id && b.status !== "dismissed") : []);
+  const rows = open.filter((a) => batchOf(a).length < 2 || open.find((b) => b.batch_id === a.batch_id) === a);
   return (
     <section className="sp-section" aria-label="Your fixes">
       <div className="sp-section-head">
@@ -727,7 +730,37 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
           </div>
           {open.length ? (
             <ShowMore
-              rows={open.map((a) => {
+              rows={rows.map((a) => {
+                const batch = batchOf(a);
+                if (batch.length > 1) {
+                  const accepted = batch.filter((b) => b.status === "accepted" || b.status === "done").length;
+                  const finished = batch.filter((b) => b.status === "done").length;
+                  return (
+                    <Row
+                      key={a.batch_id}
+                      title={a.title}
+                      meta={`${driverName(a.driver)} · one fix for ${batch.length} teams`}
+                      metric={
+                        <div className="flex flex-col gap-1.5">
+                          <span className="text-[13px] font-semibold">
+                            {accepted} of {batch.length} accepted · {finished} done
+                          </span>
+                          <details>
+                            <summary className="sp-caption cursor-pointer">Each team</summary>
+                            <ul className="m-0 flex list-none flex-col gap-1 p-0 pt-1.5">
+                              {batch.map((b) => (
+                                <li key={b.id} className="text-[13px]">
+                                  <Link href={fixHref(b)}>{b.scope_team}</Link> · {b.owner ?? "HR"} · {b.status === "assigned" ? "not accepted yet" : b.status}
+                                </li>
+                              ))}
+                            </ul>
+                          </details>
+                        </div>
+                      }
+                      action={<Button href={fixHref(a)}>Open</Button>}
+                    />
+                  );
+                }
                 const waiting = waitingText(a);
                 return (
                   <Row

@@ -15,6 +15,7 @@ import handbook_pages from "@/data/seed/handbook_pages.json";
 import question_groups from "@/data/seed/question_groups.json";
 import asked_questions from "@/data/seed/asked_questions.json";
 import theme_snapshots from "@/data/seed/theme_snapshots.json";
+import team_towers from "@/data/seed/team_towers.json";
 import action_library from "@/data/seed/action_library.json";
 import actions from "@/data/seed/actions.json";
 import users from "@/data/seed/users.json";
@@ -92,7 +93,7 @@ export async function resetDemo() {
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots: [], action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();

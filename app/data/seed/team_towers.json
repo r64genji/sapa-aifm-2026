@@ -1,0 +1,37 @@
+[
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Accounts Payable Asia",
+    "tower": "Procure-to-Pay"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Accounts Payable Europe",
+    "tower": "Procure-to-Pay"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Japanese Desk",
+    "tower": "Customer care language desks"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Korean Desk",
+    "tower": "Customer care language desks"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Order-to-Cash Asia",
+    "tower": "Order-to-Cash"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "Record-to-Report",
+    "tower": "Record-to-Report"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "team": "IT Service Desk",
+    "tower": "IT service desk"
+  }
+]

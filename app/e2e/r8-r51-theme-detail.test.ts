@@ -22,9 +22,10 @@ test("R8: a group under 5 people returns have and need and no count, on every sp
   assert.ok(korean.card.have < korean.card.need);
   assert.equal(korean.card.need, 5);
   assert.ok(!("n" in korean.card));
-  for (const body of [await detail(""), korean, await detail("?team=Accounts%20Payable%20Asia")]) {
+  const raj = await detail("?team=Accounts%20Payable%20Asia");
+  for (const body of [await detail(""), korean, raj]) {
     const small = shares(body).filter((share) => share.enough === false);
-    assert.ok(small.length > 0);
+    if (body !== raj) assert.ok(small.length > 0);
     for (const share of small) {
       assert.deepEqual(Object.keys(share).filter((key) => !["week", "touchpoint", "intake", "role"].includes(key)).sort(), ["enough", "have", "need"]);
       assert.ok((share.have as number) < 5);
@@ -44,6 +45,11 @@ test("R51: a request for more than one team is refused and no route lists teams"
   const text = JSON.stringify(await detail(""));
   assert.equal(/"(teams|manager|managers|manager_id|manager_name)"/.test(text), false);
   assert.equal((await hrRequest("/api/hr/themes/UNKNOWN", "GET")).status, 404);
+});
+
+test("R51: a team view never splits further by intake or role", async () => {
+  const raj = await detail("?team=Accounts%20Payable%20Asia");
+  assert.deepEqual([raj.by_intake, raj.by_role], [[], []]);
 });
 
 test("Every count on the detail route matches GET /api/hr/themes for the same touchpoint", async () => {

@@ -42,6 +42,7 @@ type Suggestion = { title: string; steps: string; notes: Notes | null; entryId: 
 type Mode = "ai" | "library" | "none";
 type Decision = "pending" | "accepted" | "rejected";
 type Sent = { held: boolean; alert_sent: boolean; alert_label: string | null; alert_on: string; manager: string | null };
+type Batch = { sent: { team: string; manager_id: string; id?: string; error?: string }[] };
 
 const EMPTY: Notes = { en: "", ms: "", zh: "" };
 const LANGS: ["en" | "ms" | "zh", string][] = [["en", "English"], ["ms", "Bahasa Malaysia"], ["zh", "中文"]];
@@ -61,7 +62,7 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
   );
 }
 
-function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[] | undefined }) {
+function Editor({ id, view, entries, teams }: { id: string; view: View; entries: Entry[] | undefined; teams: string[] }) {
   const me = useApi<Me>("/api/hr/me", 60000);
   const hr = me.data?.name ?? "HR";
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
@@ -85,6 +86,9 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
   const [error, setError] = useState<string | null>(null);
   const [removed, setRemoved] = useState<Entry | null>(null);
   const [sent, setSent] = useState<Sent | null>(null);
+  const [batch, setBatch] = useState<Batch | null>(null);
+  const [leads, setLeads] = useState<Record<string, string>>({});
+  const [dropped, setDropped] = useState<string[]>([]);
   const started = useRef<string | null>(null);
 
   useEffect(() => {
@@ -103,7 +107,13 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     setScopeId(view.scopes.find((s) => !s.why) ? scopeKey(view.scopes.find((s) => !s.why)!) : "");
   }, [id, view]);
 
-  const scope = view.scopes.find((s) => scopeKey(s) === scopeId) ?? null;
+  const many = teams
+    .map((t) => view.scopes.find((s) => s.type === "team" && s.key === t))
+    .filter((s): s is Scope => !!s)
+    .map((s) => ({ scope: s, lead: s.managers.find((m) => m.id === leads[s.key]) ?? s.managers[0] ?? null, on: !dropped.includes(s.key) }));
+  const multi = teams.length > 0;
+  const chosen = many.filter((t) => t.on && t.lead);
+  const scope = multi ? (chosen[0]?.scope ?? null) : (view.scopes.find((s) => scopeKey(s) === scopeId) ?? null);
   const managers = scope?.managers ?? [];
   const owner = ownerId === "hr" ? null : (managers.find((m) => m.id === ownerId) ?? managers[0] ?? null);
   const ownerName = owner?.name ?? "the manager";
@@ -222,23 +232,27 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     : !title.trim() || !steps.trim()
       ? "Add the fix title and the message."
       : !scope
-        ? "Choose who the fix is for."
+        ? multi ? "Tick at least one team with a team lead." : "Choose who the fix is for."
         : !noteOk
           ? "Add the note in English and Bahasa Malaysia."
           : tooLong
             ? "A note has at most 40 words."
             : null;
-  const label = owner ? `Send to ${owner.name}` : "Assign to me";
+  const label = multi ? `Send to ${chosen.length} team ${chosen.length === 1 ? "lead" : "leads"}` : owner ? `Send to ${owner.name}` : "Assign to me";
 
   const send = () =>
     run(async () => {
-      const chosen = scope!;
+      const target = scope!;
       await apiSend(`/api/hr/actions/${id}`, "PATCH", {
         title: title.trim(),
         steps: steps.trim(),
-        scope: chosen.type === "team" ? { type: "team", team: chosen.key } : chosen.type === "intake" ? { type: "intake", month: chosen.key } : { type: "person", code_name: chosen.key },
+        scope: target.type === "team" ? { type: "team", team: target.key } : target.type === "intake" ? { type: "intake", month: target.key } : { type: "person", code_name: target.key },
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
+      if (multi) {
+        setBatch(await apiSend<Batch>(`/api/hr/actions/${id}/batch`, "POST", { teams: chosen.map((t) => ({ team: t.scope.key, manager_id: t.lead!.id })), due_in_days: weeks * 7 }));
+        return;
+      }
       const result = await apiSend<{ held: boolean; alert_sent: boolean; alert_label: string | null }>(`/api/hr/actions/${id}/assign`, "POST", {
         owner: owner ? { manager_id: owner.id } : "hr",
         due_in_days: weeks * 7,
@@ -259,7 +273,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
     <>
       <PageHeader
         title={`New fix for ${driverName(view.driver)}`}
-        sub={scope ? `${scope.label} · ${scope.n} new ${scope.n === 1 ? "hire" : "hires"}` : undefined}
+        sub={multi ? `${chosen.length} ${chosen.length === 1 ? "team" : "teams"} · one fix for each team lead` : scope ? `${scope.label} · ${scope.n} new ${scope.n === 1 ? "hire" : "hires"}` : undefined}
         right={
           sent ? (
             <span className="sp-ai sp-ai-reviewed">
@@ -439,7 +453,24 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
             </div>
           </section>
 
-          {sent ? (
+          {batch ? (
+            <section className="sp-section" aria-label="Sent">
+              <div className="flex flex-col gap-2 p-4" role="status">
+                {batch.sent.map((r) => (
+                  <div key={r.team} className="flex flex-wrap items-center justify-between gap-2">
+                    <span className={r.id ? "font-semibold" : "sp-meta"}>
+                      {r.team}: {r.id ? `sent to ${many.find((t) => t.scope.key === r.team)?.lead?.name ?? "the team lead"}` : `not sent. ${r.error}`}
+                    </span>
+                    {r.id ? (
+                      <Button lane="fixes" href={`/fixes/${r.id}`}>
+                        Open fix
+                      </Button>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : sent ? (
             <section className="sp-section" aria-label="Sent">
               <div className="flex flex-wrap items-center gap-3 p-4">
                 <span className="flex min-w-0 flex-1 basis-[260px] flex-col gap-0.5" role="status">
@@ -464,7 +495,36 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                 <h2 className="sp-section-title">Send</h2>
               </div>
               <div className="flex flex-col gap-4 p-4">
+                {multi ? (
+                  <fieldset className="m-0 flex flex-col gap-2 border-0 p-0">
+                    <legend className="sp-caption mb-1" style={{ fontWeight: 600 }}>
+                      For these teams
+                    </legend>
+                    {many.map((t) => (
+                      <div key={t.scope.key} className="flex flex-wrap items-center gap-3">
+                        <label className="flex min-w-0 flex-1 basis-[200px] items-center gap-2">
+                          <input type="checkbox" checked={t.on} onChange={() => setDropped((d) => (t.on ? [...d, t.scope.key] : d.filter((k) => k !== t.scope.key)))} />
+                          <span>
+                            {t.scope.key} · {t.scope.n} new hires
+                          </span>
+                        </label>
+                        {t.scope.managers.length > 1 ? (
+                          <select aria-label={`Team lead for ${t.scope.key}`} className="sp-input w-auto" value={t.lead?.id ?? ""} onChange={(e) => setLeads((l) => ({ ...l, [t.scope.key]: e.target.value }))}>
+                            {t.scope.managers.map((m) => (
+                              <option key={m.id} value={m.id}>
+                                {m.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span className="sp-caption">{t.lead ? t.lead.name : "No team lead"}</span>
+                        )}
+                      </div>
+                    ))}
+                  </fieldset>
+                ) : null}
                 <div className="flex flex-wrap gap-3">
+                  {multi ? null : (
                   <Field label="For" htmlFor="f-for">
                     <select id="f-for" className="sp-input" value={scopeId} onChange={(e) => { setScopeId(e.target.value); setOwnerId(""); }}>
                       {view.scopes.map((s) => (
@@ -475,6 +535,8 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                       ))}
                     </select>
                   </Field>
+                  )}
+                  {multi ? null : (
                   <Field label="Owner" htmlFor="f-owner">
                     <select id="f-owner" className="sp-input" value={owner ? owner.id : "hr"} onChange={(e) => setOwnerId(e.target.value)}>
                       {managers.map((m) => (
@@ -485,6 +547,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                       <option value="hr">Me · {hr}</option>
                     </select>
                   </Field>
+                  )}
                   <Field label="Due" htmlFor="f-due">
                     <select id="f-due" className="sp-input" value={weeks} onChange={(e) => setWeeks(Number(e.target.value))}>
                       {[1, 2, 3].map((w) => (
@@ -505,7 +568,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
                   <span className="sp-waiting flex-1 basis-[240px]">
                     <Clock size={16} aria-hidden="true" />
                     <span className="flex flex-col">
-                      <span>{gets}</span>
+                      <span>{multi ? "Each team lead gets their own fix. No lead sees the other teams." : gets}</span>
                       {owner && view.demo_mode && view.alert_label ? <span className="sp-caption" style={{ fontWeight: 500 }}>{view.alert_label}</span> : null}
                     </span>
                   </span>
@@ -552,7 +615,7 @@ function Editor({ id, view, entries }: { id: string; view: View; entries: Entry[
           </section>
           <section className="sp-section">
             <div className="sp-section-head">
-              <h2 className="sp-section-title">What {ownerName} gets</h2>
+              <h2 className="sp-section-title">What {multi ? "each team lead" : ownerName} gets</h2>
               <span className="sp-section-meta">Telegram</span>
             </div>
             <div className="flex flex-col gap-3 p-4">
@@ -605,7 +668,7 @@ function Page() {
   if (view.error) return <Empty title="This fix is not available" sub={fail(view.error)} />;
   if (!id || !first) return <Loading />;
   if (first.status !== "draft") return <Empty title="This fix has been sent" sub="Open it from the Fixes list." />;
-  return <Editor key={id} id={id} view={first} entries={entries.data} />;
+  return <Editor key={id} id={id} view={first} entries={entries.data} teams={params.getAll("team")} />;
 }
 
 export default function Wrapped() {

@@ -46,8 +46,8 @@ export async function themeDetail(organisationId: string, driver: string, touchp
   });
 
   const touchpoints = [...new Set(schedule.data!.map((row) => row.touchpoint as number))].sort((a, b) => a - b);
-  const intakes = [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
-  const roles = [...new Set(people.data!.map((row) => row.role as string))].sort();
+  const intakes = team ? [] : [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
+  const roles = team ? [] : [...new Set(people.data!.map((row) => row.role as string))].sort();
   const [days, byIntake, byRole] = await Promise.all([
     Promise.all(touchpoints.map(async (day) => ({ day, c: await counts(organisationId, day, null, null, team) }))),
     Promise.all(intakes.map(async (intake) => ({ intake, c: await counts(organisationId, touchpoint, `${intake}-01`, null, team) }))),

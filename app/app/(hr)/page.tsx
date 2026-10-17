@@ -398,6 +398,9 @@ export default function Page() {
               </div>
             ))}
             {questions.data ? <div className="sp-caption">{questions.data.other.text}</div> : null}
+            <Link href="/problems" className="inline-flex min-h-11 items-center self-start text-[13px] font-semibold md:min-h-0">
+              Open Shared problems
+            </Link>
           </Card>
 
           <Card title="Recent activity">
