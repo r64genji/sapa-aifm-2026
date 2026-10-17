@@ -48,24 +48,15 @@ function Bar({ s, label }: { s: Share; label: string }) {
 const at = (value: number) => ((Math.min(Math.max(value, 1), 5) - 1) / 4) * 100;
 
 function MiniScale({ team, company }: { team: number; company: number | null }) {
-  const from = company === null ? null : at(company);
-  const to = at(team);
   const label = `Average score ${team} of 5${company === null ? "" : `, company ${company}`}`;
   return (
-    <div className="flex flex-col gap-0.5" role="img" aria-label={label} data-tip={label}>
-      <div className="flex items-center gap-1.5">
-        <span className="sp-num sp-muted text-[11px]">1</span>
-        <div className="relative h-2.5 flex-1">
-          <div className="absolute inset-x-0 top-1 h-0.5" style={{ background: "var(--line-soft)" }} />
-          {from !== null ? <div className="absolute top-[3px] h-1" style={{ left: `${Math.min(from, to)}%`, width: `${Math.abs(to - from)}%`, background: "var(--problems-soft)" }} /> : null}
-          {from !== null ? <div className="absolute box-border h-2.5 w-2.5 -ml-[5px] rounded-full border-2" style={{ left: `${from}%`, borderColor: "var(--line-strong)", background: "var(--surface-raised)" }} /> : null}
-          <div className="absolute h-2.5 w-2.5 -ml-[5px] rounded-full" style={{ left: `${to}%`, background: "var(--problems)" }} />
-        </div>
-        <span className="sp-num sp-muted text-[11px]">5</span>
+    <div className="flex items-center gap-2" role="img" aria-label={label} data-tip={label}>
+      <div className="relative h-2 flex-1">
+        <div className="absolute inset-x-0 top-[3px] h-0.5 rounded" style={{ background: "var(--line-soft)" }} />
+        {company !== null ? <div className="absolute top-0 h-2 w-0.5 -ml-px" style={{ left: `${at(company)}%`, background: "var(--line-strong)" }} /> : null}
+        <div className="absolute h-2 w-2 -ml-1 rounded-full" style={{ left: `${at(team)}%`, background: "var(--problems)" }} />
       </div>
-      <span className="sp-caption">
-        <b style={{ color: "var(--ink)" }}>{team}</b> team{company === null ? "" : ` · ${company} company`}
-      </span>
+      <span className="sp-num text-[13px] font-semibold">{team}</span>
     </div>
   );
 }
@@ -209,7 +200,7 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
           <div className="flex flex-col gap-0.5">
             <h4 className="m-0 text-[14px] font-bold">Teams above the company rate ({rate}%)</h4>
             <span className="sp-caption">
-              A to Z. Only teams with 5 or more answers, at least 2 more than expected.{where.company.avg !== null ? " The dot is the team's average 1–5 score; the ring is the company's." : ""}
+              A to Z. Only teams with 5 or more answers, at least 2 more than expected.
             </span>
           </div>
           <div className="flex flex-col">
@@ -225,7 +216,7 @@ function Where({ driver, name, where, entry }: { driver: string; name: string; w
                     </span>
                   </span>
                 </label>
-                <div className="flex w-[160px] max-w-full flex-none flex-col gap-2">
+                <div className="flex w-[160px] max-w-full flex-none flex-col gap-1.5">
                   <CountBar count={r.n} of={r.m} />
                   {r.avg !== null ? <MiniScale team={r.avg} company={where.company.avg} /> : null}
                 </div>
