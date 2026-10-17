@@ -1,6 +1,7 @@
 import { Tag, tagReply } from "@/lib/classify";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
+import { mask } from "@/lib/mask";
 import { reachable, type Person } from "@/lib/directory";
 import { escalate } from "@/lib/escalations";
 import { resolveChallenge } from "@/lib/privacy";
@@ -14,13 +15,13 @@ export async function readReplies(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("responses")
     .select(
-      "id, question_id, text_encrypted, language, created_at, checkin_schedule(touchpoint), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr)",
+      "id, question_id, text_encrypted, language, created_at, people(team), checkin_schedule(touchpoint), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr)",
     )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;
-  type Joined = { checkin_schedule: { touchpoint: number } | null; ai_tags: object | null };
+  type Joined = { people: { team: string | null } | null; checkin_schedule: { touchpoint: number } | null; ai_tags: { evidence_quote?: string | null } | null };
   const at = (await now()).toISOString();
   const { error: auditError } = await db
     .from("audit_log")
@@ -28,16 +29,17 @@ export async function readReplies(organisationId: string, actor: string) {
   if (auditError) throw auditError;
   return Promise.all(
     data.map(async (row) => {
-      const text = decrypt(row.text_encrypted!);
       const joined = row as unknown as Joined;
       return {
         id: row.id,
         question_id: row.question_id,
-        text,
+        text: mask(decrypt(row.text_encrypted!)),
         language: row.language,
         created_at: row.created_at,
+        team: joined.people?.team ?? null,
         touchpoint: joined.checkin_schedule?.touchpoint ?? null,
         ...joined.ai_tags,
+        evidence_quote: joined.ai_tags?.evidence_quote ? mask(joined.ai_tags.evidence_quote) : null,
       };
     }),
   );
@@ -52,7 +54,8 @@ export async function translateReply(organisationId: string, responseId: string)
     .maybeSingle();
   if (error) throw error;
   if (!data?.text_encrypted) return { error: "Not found", code: 404 };
-  return translation(organisationId, data.language, decrypt(data.text_encrypted));
+  const result = await translation(organisationId, data.language, decrypt(data.text_encrypted));
+  return result.translation ? { ...result, translation: { ...result.translation, text: mask(result.translation.text) } } : result;
 }
 
 export async function retryReply(organisationId: string, responseId: string) {
@@ -92,7 +95,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -101,7 +104,7 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; checkin_schedule: { touchpoint: number } | null } })[];
+  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string | null } | null; checkin_schedule: { touchpoint: number } | null } })[];
   const { data: held, error: heldError } = await db
     .from("quality_holds")
     .select("driver, language, reason")
@@ -113,12 +116,15 @@ export async function readQueue(organisationId: string, actor: string) {
   }
   return Promise.all(
     rows.map(async ({ responses, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
-      const text = responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
+      const text = responses.text_encrypted ? mask(decrypt(responses.text_encrypted)) : null;
       return {
         id: response_id,
         ...row,
+        evidence_quote: row.evidence_quote ? mask(row.evidence_quote) : null,
+        summary: row.summary ? mask(row.summary) : null,
         text,
         language: responses.language,
+        team: responses.people?.team ?? null,
         touchpoint: responses.checkin_schedule?.touchpoint ?? null,
         note:
           challenged_at && !challenge_resolved_at

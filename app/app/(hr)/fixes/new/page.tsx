@@ -10,7 +10,7 @@ import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Tabs, d
 type Notes = { en: string; ms: string; zh: string };
 type Entry = { id: string; title: string; text: string; custom: boolean; result: string };
 type Scope = {
-  type: "team" | "intake" | "person";
+  type: "team" | "intake";
   key: string;
   label: string;
   n: number;
@@ -246,7 +246,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       await apiSend(`/api/hr/actions/${id}`, "PATCH", {
         title: title.trim(),
         steps: steps.trim(),
-        scope: target.type === "team" ? { type: "team", team: target.key } : target.type === "intake" ? { type: "intake", month: target.key } : { type: "person", code_name: target.key },
+        scope: target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
       if (multi) {
@@ -529,7 +529,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                     <select id="f-for" className="sp-input" value={scopeId} onChange={(e) => { setScopeId(e.target.value); setOwnerId(""); }}>
                       {view.scopes.map((s) => (
                         <option key={scopeKey(s)} value={scopeKey(s)} disabled={!!s.why}>
-                          {s.type === "person" ? s.label : `${s.label} · ${s.n} new hires`}
+                          {`${s.label} · ${s.n} new hires`}
                           {s.why ? ` · ${s.why}` : ""}
                         </option>
                       ))}
@@ -559,11 +559,6 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                   </Field>
                 </div>
                 {total === 0 ? <span className="sp-caption">No new hires to send this to yet.</span> : null}
-                {view.scopes.filter((s) => s.type === "person" && s.why).map((s) => (
-                  <span key={s.key} className="sp-caption">
-                    {s.label}: {s.why}
-                  </span>
-                ))}
                 <div className="flex flex-wrap items-start gap-3">
                   <span className="sp-waiting flex-1 basis-[240px]">
                     <Clock size={16} aria-hidden="true" />

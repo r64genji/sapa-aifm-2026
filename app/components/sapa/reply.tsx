@@ -8,6 +8,7 @@ import { AiMark, Button, DRIVERS, Dialog, Quote, dayLabel, driverName, shortDate
 export type ReplyItem = {
   id: string;
   text: string | null;
+  team?: string | null;
   touchpoint: number | null;
   created_at: string;
   status: "ok" | "awaiting_ai" | "needs_review" | "reviewed" | null;
@@ -42,6 +43,9 @@ export function Translation({ id, language }: { id: string; language?: string })
     </p>
   );
 }
+
+export const byline = (item: { team?: string | null; touchpoint: number | null }) =>
+  ["A new hire", item.team, item.touchpoint !== null ? dayLabel(item.touchpoint) : null].filter(Boolean).join(" · ");
 
 export const labelOf = (item: Pick<ReplyItem, "drivers" | "context_tags">) => {
   const names = [...item.drivers.map(driverName), ...item.context_tags.map(driverName)];
@@ -122,7 +126,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo }: ReplyRo
             </span>
           ) : null}
           <span className="sp-caption">
-            {item.touchpoint !== null ? `${dayLabel(item.touchpoint)} · ` : ""}{shortDate(item.created_at)}
+            {byline(item)} · {shortDate(item.created_at)}
           </span>
         </div>
         <Quote text={item.text ?? ""} evidence={item.evidence_quote} />

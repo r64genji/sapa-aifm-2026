@@ -13,8 +13,7 @@ export type Resolvable = {
   id: string;
   organisation_id: string;
   driver: string;
-  scope_type: "person" | "team" | "intake" | null;
-  scope_person_id: string | null;
+  scope_type: "team" | "intake" | null;
   scope_team: string | null;
   scope_intake: string | null;
   notes: Record<string, string> | null;
@@ -34,7 +33,6 @@ const change = (side: Side) => side.after - side.before;
 export async function members(action: Resolvable, eligible: boolean) {
   const db = createAdminClient();
   let query = db.from("people").select("id, language, start_date").eq("organisation_id", action.organisation_id);
-  if (action.scope_type === "person") query = query.eq("id", action.scope_person_id!);
   if (action.scope_type === "team") query = query.eq("team", action.scope_team!);
   if (action.scope_type === "intake") {
     const next = new Date(Date.parse(action.scope_intake!) + 31 * 86400000).toISOString().slice(0, 7) + "-01";
@@ -126,11 +124,6 @@ async function scopeLabel(action: Resolvable) {
   if (action.scope_type === "intake") {
     const month = new Date(action.scope_intake!).toLocaleString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
     return `${month} intake`;
-  }
-  if (action.scope_type === "person") {
-    const { data, error } = await db.from("people").select("code_name").eq("id", action.scope_person_id!).single();
-    if (error) throw error;
-    return data.code_name as string;
   }
   const { data, error } = await db
     .from("people")

@@ -9,17 +9,12 @@ import { Card, Loading, Quote, dayLabel } from "@/components/sapa/ui";
 
 type Case = Concern & {
   team: string;
-  code_name: string;
-  start_date: string;
   text: string | null;
   language: string;
   sent_by_bot: string[];
 };
 
 const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
-
-const started = (date: string) =>
-  new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kuala_Lumpur" });
 
 const time = (iso: string) =>
   new Date(iso).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Kuala_Lumpur" });
@@ -40,8 +35,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </Link>
         <h1 className="sp-page-title">{categoryName(c.category)}</h1>
         <p className="m-0 text-[15px]">
-          <span className="font-semibold">{c.code_name}</span>
-          <span className="sp-muted"> · {c.team} · started {started(c.start_date)}</span>
+          <span className="font-semibold">A new hire</span>
+          <span className="sp-muted"> · {c.team}{c.touchpoint !== null ? ` · ${dayLabel(c.touchpoint)}` : ""}</span>
         </p>
         <span className="inline-flex items-center gap-1.5 text-[13px] sp-muted">
           <Lock size={14} strokeWidth={2} aria-hidden="true" />

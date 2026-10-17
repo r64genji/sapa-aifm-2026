@@ -18,10 +18,9 @@ type Detail = {
   no_notice_reason: string | null;
   note_approved_by: string | null;
   note_approved_at: string | null;
-  scope_type: "person" | "team" | "intake" | null;
+  scope_type: "team" | "intake" | null;
   scope_team: string | null;
   scope_intake: string | null;
-  scope_person: string | null;
   status: string;
   owner: string | null;
   due_on: string | null;

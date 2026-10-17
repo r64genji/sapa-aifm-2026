@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
-import { ReplyRow, Translation, type ReplyItem as Reply } from "@/components/sapa/reply";
+import { ReplyRow, Translation, byline, type ReplyItem as Reply } from "@/components/sapa/reply";
 import {
   AiMark,
   Button,
@@ -31,13 +31,13 @@ type Escalation = { id: string };
 type Card = { driver: string; enough: boolean; message?: string; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; held?: { language: string; reason: string }[] };
 type Context = { theme: string; enough: boolean; n?: number; m?: number };
 type Themes = { cards: Card[]; context: Context[] };
-type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string };
+type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; team?: string | null; touchpoint: number | null };
 type Offer = { id: string; answer: string | null; contact_due_at: string | null; contact_done_at: string | null; overdue: boolean };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Score = { headline: string; detail: string | null; note: string };
 type Action = { id: string; driver: string; title: string; status: string; due_on: string | null; done_at: string | null; created_at: string; owner: string | null; overdue: boolean; notice: { status: string }; score: Score | null };
 type Impact = { retention: { enough: boolean; text?: string; message?: string; note: string }; leavers: { enough: boolean; top_reasons?: { driver: string; n: number }[]; total?: number } };
-type Hire = { start_date: string };
+type Hire = { intake: string };
 
 const monthName = (date: string) => new Date(date).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" });
 
@@ -76,7 +76,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
       }
     >
       <div className="sp-caption" style={{ color: "var(--ai)", fontWeight: 600 }}>
-        {shortDate(row.created_at)}
+        {byline(row)} · {shortDate(row.created_at)}
         {row.language === "zh" ? " · Chinese" : ""}
       </div>
       {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
@@ -172,8 +172,8 @@ export default function Page() {
   const finished = fixes.filter((a) => a.status === "done" && a.score).sort((a, b) => (b.done_at ?? "").localeCompare(a.done_at ?? ""));
   const latest = finished[0];
   const since = me.data ? new Date(new Date(me.data.today.slice(0, 10)).setUTCMonth(new Date(me.data.today.slice(0, 10)).getUTCMonth() - 6)).toISOString().slice(0, 10) : "";
-  const group = (hires.data ?? []).filter((h) => h.start_date >= since);
-  const intakes = [...new Set(group.map((h) => h.start_date.slice(0, 7)))].sort();
+  const group = (hires.data ?? []).filter((h) => h.intake >= since.slice(0, 7));
+  const intakes = [...new Set(group.map((h) => h.intake))].sort();
   const activity = [
     ...fixes.flatMap((a) => [
       { at: a.created_at, what: `Fix drafted: ${a.title}` },

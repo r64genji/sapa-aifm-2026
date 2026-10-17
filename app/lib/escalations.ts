@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { now } from "@/lib/clock";
 import { decrypt, encrypt } from "@/lib/crypto";
+import { mask } from "@/lib/mask";
 import { audit } from "@/lib/signal";
 import { notReceiving, personByChat, reachable, type Person } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
@@ -127,7 +128,7 @@ export async function listEscalations(organisationId: string, preview?: string) 
     const created = new Date(row.created_at);
     const until = row.acknowledged_at ? new Date(row.acknowledged_at) : at;
     const due = dueAt(created, org.time_zone);
-    const text = preview && responses.text_encrypted ? decrypt(responses.text_encrypted) : null;
+    const text = preview && responses.text_encrypted ? mask(decrypt(responses.text_encrypted)) : null;
     if (text && preview) await audit(preview, "read_reply_text", row.response_id);
     result.push({
       ...row,
@@ -148,7 +149,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
   if (!found) return { error: "Not found", code: 404 };
   const { data, error } = await db
     .from("escalations")
-    .select("closure_sent_at, contact_phone_encrypted, responses!inner(text_encrypted, language, person_id, people!inner(team, code_name, role, start_date))")
+    .select("closure_sent_at, contact_phone_encrypted, responses!inner(text_encrypted, language, person_id, people!inner(team, role))")
     .eq("id", id)
     .single();
   if (error) throw error;
@@ -156,7 +157,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     text_encrypted: string | null;
     language: Language;
     person_id: string;
-    people: { team: string; code_name: string; role: string; start_date: string };
+    people: { team: string; role: string };
   };
   await audit(actor, "read_reply_text", found.response_id);
   const { data: org, error: orgError } = await db
@@ -183,11 +184,9 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     ...found,
     closure_sent_at: data.closure_sent_at,
     team: reply.people.team,
-    code_name: reply.people.code_name,
     role: reply.people.role,
-    start_date: reply.people.start_date,
     phone: data.contact_phone_encrypted ? decrypt(data.contact_phone_encrypted) : null,
-    text: reply.text_encrypted ? decrypt(reply.text_encrypted) : null,
+    text: reply.text_encrypted ? mask(decrypt(reply.text_encrypted)) : null,
     language: reply.language,
     can_send_closure: !found.dont_contact && !!(await reachable(reply.person_id)),
     sent_by_bot: safeMessage(reply.language, contacts).split("\n"),

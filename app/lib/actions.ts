@@ -9,6 +9,7 @@ import { send } from "@/lib/telegram";
 import { jobMatchCards } from "@/lib/jobmatch";
 import { libraryWithEvidence, members, pooled, queueResolution, scoreCard, scoreOf, verdict } from "@/lib/resolution";
 import { sendNotices } from "@/lib/scheduler";
+import { mask } from "@/lib/mask";
 import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
@@ -27,8 +28,7 @@ type Action = {
   source_response_id: string | null;
   title: string;
   steps: string;
-  scope_type: "person" | "team" | "intake" | null;
-  scope_person_id: string | null;
+  scope_type: "team" | "intake" | null;
   scope_team: string | null;
   scope_intake: string | null;
   owner_manager_id: string | null;
@@ -90,6 +90,12 @@ async function replyAuthor(responseId: string) {
   return data?.person_id as string | undefined;
 }
 
+async function teamOf(personId: string) {
+  const { data, error } = await createAdminClient().from("people").select("team").eq("id", personId).single();
+  if (error) throw error;
+  return data.team as string | null;
+}
+
 async function isHeld(action: Action) {
   if (action.source === "reply") {
     const author = action.source_response_id ? await replyAuthor(action.source_response_id) : undefined;
@@ -112,6 +118,7 @@ export async function draftAction(
 ): Promise<{ id: string } | Failure> {
   const db = createAdminClient();
   if (!DRIVERS.includes(body.driver)) return { error: "Unknown driver", code: 422 };
+  let replyTeam: string | null = null;
   if (body.response_id) {
     const { data: tag, error } = await db
       .from("ai_tags")
@@ -130,6 +137,7 @@ export async function draftAction(
         theme_card: THEME_CARD,
       };
     }
+    replyTeam = await teamOf(author);
   }
   const [entry] = await libraryWithEvidence(organisationId, body.driver);
   if (!entry) return { error: "The action library has no entry for this driver", code: 409 };
@@ -143,6 +151,7 @@ export async function draftAction(
       draft_reason: "",
       source: body.response_id ? "reply" : "theme",
       source_response_id: body.response_id ?? null,
+      ...(replyTeam && { scope_type: "team", scope_team: replyTeam }),
       title: entry.title,
       steps: entry.text,
       created_by: actor,
@@ -204,7 +213,7 @@ export async function draftOwnFix(
   return { id, title, steps: draft.steps, notes: draft.notes };
 }
 
-type Option = { type: "team" | "intake" | "person"; key: string; label: string; n: number; managers: { id: string; name: string }[]; lines: string[]; counts: { n: number; m: number; week: string } | null; why: string | null };
+type Option = { type: "team" | "intake"; key: string; label: string; n: number; managers: { id: string; name: string }[]; lines: string[]; counts: { n: number; m: number; week: string } | null; why: string | null };
 
 export async function draftView(organisationId: string, id: string) {
   const action = (await loadAction(organisationId, id)) as (Action & { draft_reason: string | null; draft_notes: Record<string, string> | null }) | null;
@@ -213,13 +222,12 @@ export async function draftView(organisationId: string, id: string) {
   const org = await organisation(organisationId);
   const today = localDate(await now(), org.time_zone);
   const held = await isHeld(action);
-  const [people, consents, snapshots, cards] = await Promise.all([
-    db.from("people").select("id, code_name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
-    db.from("consents").select("person_id, scope").is("withdrawn_at", null),
+  const [people, snapshots, cards] = await Promise.all([
+    db.from("people").select("id, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
     db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }),
     themeCards(organisationId, 14, null),
   ]);
-  for (const { error } of [people, consents, snapshots]) if (error) throw error;
+  for (const { error } of [people, snapshots]) if (error) throw error;
   const driver = text.drivers[action.driver as keyof typeof text.drivers];
   const snapshot = (team: string) => snapshots.data!.find((row) => row.team === team && !row.suppressed);
   const line = (team: string) => {
@@ -228,7 +236,7 @@ export async function draftView(organisationId: string, id: string) {
     const n = row.counts?.[action.driver]?.n ?? 0;
     return [(n >= 3 ? text.several : text.fewer).replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))];
   };
-  const rows = people.data as unknown as { id: string; code_name: string; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
+  const rows = people.data as unknown as { id: string; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
   const group = (match: (row: (typeof rows)[number]) => boolean) => {
     const members = rows.filter(match);
     const managers = new Map(members.flatMap((row) => (row.manager_id && row.managers ? [[row.manager_id, row.managers.display_name] as const] : [])));
@@ -245,13 +253,6 @@ export async function draftView(organisationId: string, id: string) {
     const { members, managers, lines } = group((row) => row.start_date.startsWith(month));
     const label = new Date(`${month}-01`).toLocaleString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
     return { type: "intake", key: month, label: `${label} intake`, n: members.length, managers, lines, counts: null, why: null };
-  });
-  const people_options: Option[] = rows.flatMap((row) => {
-    const scope = consents.data!.find((consent) => consent.person_id === row.id)?.scope;
-    if (!scope) return [];
-    const why = scope !== "share_with_manager" ? "She chose HR only" : held ? "This fix rests on replies that were not shared, so it cannot name one person" : null;
-    const { managers, lines } = group((other) => other.id === row.id);
-    return [{ type: "person", key: row.code_name, label: `${row.code_name} only`, n: 1, managers, lines, counts: null, why } as Option];
   });
   const card = cards.cards.find((candidate) => candidate.driver === action.driver);
   const alertOn = held && !org.demo_mode ? nextSnapshotDay(today, org.snapshot_weekday) : today;
@@ -270,7 +271,7 @@ export async function draftView(organisationId: string, id: string) {
     today,
     alert_on: alertOn,
     alert_label: demoLabel(org, held),
-    scopes: [...teams, ...intakes, ...people_options],
+    scopes: [...teams, ...intakes],
     all_counts: card && "n" in card ? { n: card.n, m: card.m } : null,
     telegram: { alert: text.alert, due: text.due, accept: text.accept, done: text.done },
   };
@@ -346,7 +347,7 @@ export async function draftHiringAction(
 }
 
 type Scope =
-  | { type: "person"; code_name: string }
+  | { type: "person" }
   | { type: "team"; team: string }
   | { type: "intake"; month: string };
 
@@ -365,19 +366,7 @@ async function scopeFields(action: Action, scope: Scope): Promise<Record<string,
     if (data.length === 0) return { error: "No new hires in this team", code: 422 };
     return { ...none, scope_team: scope.team };
   }
-  const { data, error } = await db
-    .from("people")
-    .select("id")
-    .eq("organisation_id", action.organisation_id)
-    .eq("code_name", scope.code_name)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) return { error: "No such new hire", code: 422 };
-  if (!(await isSharing(data.id))) return { error: "This person did not agree to share with a manager", code: 422 };
-  if (action.source === "reply" ? (await replyAuthor(action.source_response_id!)) !== data.id : await isHeld(action)) {
-    return { error: "An action that rests on replies from people who did not share must name nobody", code: 422 };
-  }
-  return { ...none, scope_person_id: data.id };
+  return { error: "A fix goes to a team, several teams or an intake, never to one person", code: 422 };
 }
 
 export async function editAction(
@@ -478,12 +467,6 @@ export async function assignAction(
     return { error: "Approve a note in English and Bahasa Malaysia, or tick no notice with a reason", code: 422 };
   }
   const held = !action.hiring_side && (await isHeld(action));
-  if (held && action.scope_type === "person") {
-    return { error: "An action that rests on replies from people who did not share must name nobody", code: 422 };
-  }
-  if (action.scope_type === "person" && !(await isSharing(action.scope_person_id!))) {
-    return { error: "This person did not agree to share with a manager", code: 422 };
-  }
   const org = await organisation(organisationId);
   const at = await now();
   const today = localDate(at, org.time_zone);
@@ -706,13 +689,12 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, people(code_name), managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");
   if (error) throw error;
   const rows = data as unknown as ((typeof data)[number] & {
-    people: { code_name: string } | null;
     managers: { display_name: string } | null;
   })[];
   const { data: notices, error: noticesError } = await createAdminClient()
@@ -721,14 +703,13 @@ export async function listActions(organisationId: string) {
     .eq("organisation_id", organisationId);
   if (noticesError) throw noticesError;
   return Promise.all(
-    rows.map(async ({ people, managers, ...row }) => {
+    rows.map(async ({ managers, ...row }) => {
       const queued = notices.filter((notice) => notice.action_id === row.id);
       const sent = queued.filter((notice) => notice.sent_at);
       const last = sent.map((notice) => notice.sent_at as string).sort().at(-1);
       const result = row.status === "done" ? await scoreOf(row) : null;
       return {
         ...row,
-        scope_person: people?.code_name ?? null,
         owner: managers?.display_name ?? (row.status === "draft" ? null : "HR"),
         overdue: ["assigned", "accepted"].includes(row.status) && row.due_on !== null && row.due_on < today,
         alert_label: demoLabel(org, row.held && managers !== null),
@@ -783,7 +764,7 @@ export async function actionDetail(organisationId: string, id: string) {
     .filter((response) => response.question_id === "OPEN")
     .map((response) => response.ai_tags as unknown as { status: string; evidence_quote: string | null; escalate: boolean | null } | null)
     .filter((tag) => tag && ["ok", "reviewed"].includes(tag.status) && !tag.escalate && tag.evidence_quote)
-    .map((tag) => tag!.evidence_quote!)
+    .map((tag) => mask(tag!.evidence_quote!))
     .slice(0, 3);
   const question = packs.en.checkin.questions.find((candidate) => candidate.id === row.driver)?.text ?? null;
   return {

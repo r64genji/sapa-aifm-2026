@@ -55,11 +55,11 @@ export const joinLink = (token: string) => `https://t.me/${process.env.TELEGRAM_
 export async function listHires(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("people")
-    .select("code_name, team, start_date, role, invite_used_at")
+    .select("team, start_date, invite_used_at")
     .eq("organisation_id", organisationId)
     .order("start_date");
   if (error) throw error;
-  return data.map(({ invite_used_at, ...hire }) => ({ ...hire, invite_used: invite_used_at !== null }));
+  return data.map(({ start_date, invite_used_at, ...hire }) => ({ ...hire, intake: String(start_date).slice(0, 7), invite_used: invite_used_at !== null }));
 }
 
 export async function personByChat(chatId: number) {

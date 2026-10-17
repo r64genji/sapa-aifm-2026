@@ -8,7 +8,7 @@ const Body = z.object({
   library_entry_id: z.string().uuid().optional(),
   scope: z
     .discriminatedUnion("type", [
-      z.object({ type: z.literal("person"), code_name: z.string() }),
+      z.object({ type: z.literal("person") }),
       z.object({ type: z.literal("team"), team: z.string() }),
       z.object({ type: z.literal("intake"), month: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/) }),
     ])

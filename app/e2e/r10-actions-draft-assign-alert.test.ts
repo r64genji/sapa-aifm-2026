@@ -118,7 +118,7 @@ test("R10: Draft action on a reply from someone who chose HR only is blocked and
   assert.equal(row.status, "draft");
 });
 
-test("R10: scope one person is refused for a non-sharing author, and for any action that rests on replies from people who did not share", async () => {
+test("R10, R41: scope one person is always refused, and an action drafted from a reply starts scoped to that reply's team", async () => {
   const [fromReply] = await board();
   const fromCard = await draft("Card action", "ROLE_CLARITY", 2);
   assert.equal(fromCard.status, 201);
@@ -132,7 +132,9 @@ test("R10: scope one person is refused for a non-sharing author, and for any act
   await tap(sharer, en.visibilityHrOnly);
   assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 422);
   await tap(sharer, en.visibilityHrManager);
-  assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 200);
+  assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 422);
+  assert.equal(fromReply.scope_type, "team");
+  assert.equal(fromReply.scope_team, "Accounts Payable Asia");
   assert.equal((await patch(fromCard.body.id, { scope: { type: "team", team: "Accounts Payable Asia" } })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${fromCard.body.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${fromReply.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);

@@ -98,21 +98,22 @@ test("R6, R7: the supervisor reads reply text only from hires who chose share wi
 
   const res = await asManager("/api/manager/replies", rajToken);
   assert.equal(res.status, 200);
-  const replies = (await res.json()) as { author: string; text: string }[];
+  const replies = (await res.json()) as { team: string; text: string }[];
   assert.deepEqual(
-    replies.map(({ author, text }) => ({ author, text })),
+    replies.map(({ team, text }) => ({ team, text })),
     [
-      { author: (await chatPerson(live)).code_name, text: sharedText },
-      { author: "Hire 5550000601", text: "My supervisor never says which job matters most" },
+      { team: "Accounts Payable Asia", text: sharedText },
+      { team: "Accounts Payable Asia", text: "My supervisor never says which job matters most" },
     ],
   );
+  assert.ok(replies.every((r) => !("author" in r)));
   assert.equal((await asManager("/api/manager/replies", await hrToken())).status, 401);
 });
 
 test("R6: a hire who changes to HR only takes their words away from the supervisor at once", async () => {
   await tap(shared, en.visibilityHrOnly);
-  const replies = (await (await asManager("/api/manager/replies", rajToken)).json()) as { author: string }[];
-  assert.deepEqual(replies.map((r) => r.author), [(await chatPerson(live)).code_name]);
+  const replies = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
+  assert.deepEqual(replies.map((r) => r.text), [sharedText]);
 });
 
 test("R9: the snapshot does not move when HR confirms a label, and the nightly job takes it only on the snapshot day", async () => {

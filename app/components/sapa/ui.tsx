@@ -296,10 +296,9 @@ export function shortDate(iso: string | null | undefined) {
   return new Date(iso).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Asia/Kuala_Lumpur" });
 }
 
-export function fixScope(a: { hiring_side: boolean; scope_type: string | null; scope_team: string | null; scope_intake: string | null; scope_person: string | null }) {
+export function fixScope(a: { hiring_side: boolean; scope_type: string | null; scope_team: string | null; scope_intake: string | null }) {
   if (a.hiring_side) return "Hiring";
   if (a.scope_type === "team") return `${a.scope_team} team`;
-  if (a.scope_type === "person") return a.scope_person ?? "One new hire";
   if (a.scope_type === "intake") return `${new Date(a.scope_intake!).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })} intake`;
   return "No scope yet";
 }

@@ -159,8 +159,8 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   const res = await fetch(`${appUrl}/api/manager/replies`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
   assert.equal(res.status, 200);
   assert.deepEqual(
-    ((await res.json()) as { author: string; text: string }[]).map(({ author, text }) => ({ author, text })),
-    [{ author: names[sharer], text: "tak tahu mana nak buat dulu" }],
+    ((await res.json()) as { text: string }[]).map(({ text }) => ({ text })),
+    [{ text: "tak tahu mana nak buat dulu" }],
   );
 });
 

@@ -98,14 +98,9 @@ test("R27: a second chat on the intake link joins as a new person, a chat that j
   assert.equal((await texts(5550000001)).at(-1), en.invalidInvite);
 
   const res = await fetch(`${appUrl}/api/hr/hires`, { headers: { authorization: `Bearer ${await hrToken()}` } });
-  const live = (await res.json()).find((h: any) => h.code_name === first.code_name);
-  assert.deepEqual(live, {
-    code_name: first.code_name,
-    team: "Accounts Payable Asia",
-    start_date: "2026-10-02",
-    role: null,
-    invite_used: true,
-  });
+  const hires = (await res.json()) as Record<string, unknown>[];
+  assert.ok(hires.every((h) => Object.keys(h).sort().join() === "intake,invite_used,team"));
+  assert.ok(hires.some((h) => h.team === "Accounts Payable Asia" && h.intake === "2026-10" && h.invite_used === true));
 });
 
 test("R27: an invite 15 days old and an expired intake link are refused", async () => {
