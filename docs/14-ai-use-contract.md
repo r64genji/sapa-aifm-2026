@@ -18,6 +18,7 @@ The AI reads new hires' check-in replies and questions. It helps HR find shared 
 | Draft a suggested fix | Nobody sees it until HR opens it, and nothing happens until HR approves it. |
 | Answer a new hire's handbook question | Only from a page HR published. The answer is labelled "AI answer" and quotes the page (R31). |
 | Show a new hire the AI's reading of their own replies (`/myanswers`) | Only that person sees it. It is labelled as AI and has a "This is wrong" button (R40). |
+| Ask a new hire up to 3 follow-up questions in a check-in | One short, neutral question about work each time. No feelings, causes, names, advice or promises. It stops at once on a serious concern (R12). |
 | Translate a Chinese reply for HR | Labelled "AI translation". It is never stored, counted or shown to anyone else (R53). |
 | Flag a reply as a serious concern | See section 3. |
 
@@ -45,7 +46,7 @@ A named person checks each text in each language before it goes live (R46). Afte
 
 ### Level 4: never, even with approval
 
-- The AI writes free text to an employee. The only exceptions are the handbook answer and `/myanswers` (R11).
+- The AI writes free text to an employee. The only exceptions are the check-in follow-up questions (R12), the handbook answer and `/myanswers` (R11).
 - The AI scores a person, rates sentiment or personality, reads emotions, or predicts who will quit (R16).
 - The AI closes, downgrades or hides a serious concern.
 - A manager sees the words of a person who chose "HR only", or sees any serious concern (R7).
