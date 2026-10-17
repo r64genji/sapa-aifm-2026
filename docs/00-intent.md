@@ -25,15 +25,18 @@ We must not miss anything the organisers require. A missed requirement can lose 
 
 A chat bot that checks in with new employees during their first six months, plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
 
-## Privacy: one link per intake
+## Privacy: anonymous to the company
 
-Agreed 16 Oct 2026.
+Agreed 16 Oct 2026. Raised to "anonymous to the company" on 17 Oct 2026.
 
 - HR gives one join link (QR code) to a whole intake. There is no personal invite link.
-- Sapa never asks for or keeps a new hire's real name or Telegram name. Each new hire gets a random code name. The new hire picks their team in the bot.
-- HR and managers cannot see who wrote a reply. Sapa never asks for a name or phone, not even on a serious concern.
-- Sapa still keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
-- Say "HR cannot see who you are unless you choose to tell them". Never say "fully anonymous".
+- Sapa never asks for or keeps a new hire's real name or Telegram name. The new hire picks their team in the bot.
+- HR and managers see what a new hire wrote, never who wrote it. HR sees no code name and no ID that links one person's replies. A reply shows only its team and day, for example "A new hire · AP Asia · Day 14".
+- Names, phone numbers and emails in a reply are masked in what HR sees, not only in what the AI sees.
+- Sapa never asks for a name or phone, not even on a serious concern.
+- Sapa still keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats. A person's own words can still show who they are.
+- Each check-in starts with: "Sapa does not know your name. Your company sees what you write, never who wrote it. Leave out names and details if you want to stay anonymous."
+- Say "anonymous to your company". Never say "fully anonymous" or "100% anonymous": the chat ID, Telegram and a person's own words make that untrue.
 
 ## Show-off list
 
