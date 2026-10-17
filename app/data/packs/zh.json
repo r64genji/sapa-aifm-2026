@@ -20,6 +20,7 @@
   "commands": {
     "start": { "name": "start", "description": "开始使用 Sapa" },
     "ask": { "name": "ask", "description": "询问有关公司的问题" },
+    "say": { "name": "say", "description": "帮我向主管表达" },
     "skip": { "name": "skip", "description": "跳过本次问候" },
     "privacy": { "name": "privacy", "description": "查看谁能看到你的回答" },
     "language": { "name": "language", "description": "更改语言" },
@@ -30,6 +31,7 @@
   },
   "typedStop": "停止",
   "typedDelete": "删除",
+  "say": {"prompt": "请输入你想发给主管的话，可以用任何语言。", "label": "AI 建议。发送前请先检查：", "send": "请复制后自己发给主管。Sapa 不会发送，也不会保存。", "down": "抱歉，我现在无法帮忙。请稍后再试。"},
   "qa": {
     "askPrompt": "请在 /ask 后输入你的问题，或直接在这里输入。",
     "label": "AI 回答",

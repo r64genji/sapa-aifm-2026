@@ -55,6 +55,7 @@
   "commands": {
     "start": { "name": "start", "description": "Start Sapa" },
     "ask": { "name": "ask", "description": "Ask a question about the company" },
+    "say": { "name": "say", "description": "Help me say it to my lead" },
     "skip": { "name": "skip", "description": "Skip this check-in" },
     "privacy": { "name": "privacy", "description": "See who can read your answers" },
     "language": { "name": "language", "description": "Change your language" },
@@ -65,6 +66,7 @@
   },
   "typedStop": "stop",
   "typedDelete": "delete",
+  "say": {"prompt": "Type the message you want to send to your lead, in any language.", "label": "AI suggestion. Check it before you send:", "send": "Copy it and send it to your lead yourself. Sapa does not send or keep it.", "down": "Sorry, I cannot help with that right now. Please try again later."},
   "qa": {
     "askPrompt": "Type your question after /ask, or just type it here.",
     "label": "AI answer",

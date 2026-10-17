@@ -18,6 +18,7 @@ import {
 } from "@/lib/directory";
 import { answerContact } from "@/lib/escalations";
 import { bindManager, MANAGER_TOKEN_PREFIX } from "@/lib/managers";
+import { say } from "@/lib/say";
 import { milestoneDone } from "@/lib/milestones";
 import { languages, packs, type CommandId, type Language } from "@/lib/packs";
 
@@ -185,6 +186,10 @@ export async function handle(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "active" && command === "language") return { replies: [languageReply(languages)] };
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };
+  }
+  if (person.state === "active" && input.kind === "text" && command === "say") {
+    const message = input.text.trim().replace(/^\S+\s*/, "");
+    return { replies: message ? await say(person, message) : [{ text: packs[person.language].say.prompt }] };
   }
   if (person.state === "active" && input.kind === "text" && (!command || command === "ask")) {
     if (!command) {

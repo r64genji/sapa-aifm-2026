@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 const TIMEOUT_MS = process.env.SAPA_TEST === "1" ? 2000 : 8000;
 const FALLBACK_CAP = 1.5;
 
-type CallType = "classify" | "answer" | "draft" | "translate" | "group" | "chat";
+type CallType = "classify" | "answer" | "draft" | "translate" | "group" | "chat" | "say";
 
 export const providers = (schema: object, medium: boolean, chat = false) => [
   {

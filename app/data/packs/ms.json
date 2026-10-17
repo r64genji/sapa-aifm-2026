@@ -21,6 +21,7 @@
   "commands": {
     "start": { "name": "start", "description": "Mulakan Sapa" },
     "ask": { "name": "tanya", "description": "Tanya soalan tentang syarikat" },
+    "say": { "name": "cakap", "description": "Bantu saya sampaikan kepada ketua saya" },
     "skip": { "name": "langkau", "description": "Langkau semakan ini" },
     "privacy": { "name": "privasi", "description": "Lihat siapa boleh membaca jawapan anda" },
     "language": { "name": "bahasa", "description": "Tukar bahasa anda" },
@@ -31,6 +32,7 @@
   },
   "typedStop": "berhenti",
   "typedDelete": "padam",
+  "say": {"prompt": "Taip mesej yang anda mahu hantar kepada ketua anda, dalam apa-apa bahasa.", "label": "Cadangan AI. Semak sebelum anda hantar:", "send": "Salin dan hantar sendiri kepada ketua anda. Sapa tidak menghantar atau menyimpannya.", "down": "Maaf, saya tidak dapat membantu sekarang. Sila cuba lagi nanti."},
   "qa": {
     "askPrompt": "Taip soalan anda selepas /tanya, atau taip sahaja di sini.",
     "label": "Jawapan AI",
