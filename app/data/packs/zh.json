@@ -14,6 +14,7 @@
   "visibilityHrOnly": "仅 HR",
   "visibilityHrManager": "HR 和我的主管",
   "visibilitySaved": "已保存。你以后可以用 /privacy 更改。",
+  "tapped": "你选了“{label}”。",
   "skipped": "已跳过。本次问候已关闭。Sapa 会在下一次问候时联系你。",
   "stopped": "你已停止。Sapa 不会再给你发送消息。",
   "help": "你可以随时输入 /help、/stop 或 停止。Sapa 会在下一次问候时联系你。",
@@ -131,7 +132,7 @@
       {
         "id": "FIX_CHANGE",
         "type": "scale",
-        "text": "自从上次 HR 的最新消息以来，这方面对你来说有什么变化？",
+        "text": "自从上次 HR 关于{topic}的最新消息以来，情况对你来说有什么变化？",
         "labels": [
           "差了很多",
           "差了一点",
@@ -141,6 +142,13 @@
         ]
       }
     ],
+    "topics": {
+      "ROLE_CLARITY": "角色和任务",
+      "MANAGER_SUPPORT": "主管的支持",
+      "BELONGING": "团队归属感",
+      "ONBOARDING_TRAINING": "培训",
+      "WORKLOAD": "工作量"
+    },
     "gotIt": "好的，收到了。你的回答已保存，HR 会查看。",
     "probes": [
       {
@@ -177,10 +185,10 @@
       "OPEN"
     ],
     "chat": {
-      "opener": "你选了“{label}”。发生了什么事？",
+      "opener": "发生了什么事？",
       "light": "有什么能让你下周工作更顺利吗？",
-      "changed": "你选了“{label}”。有什么变化？",
-      "stillNot": "你选了“{label}”。还有什么不顺利？",
+      "changed": "有什么变化？",
+      "stillNot": "还有什么不顺利？",
       "askHr": "我不能提供建议，也不能回答关于工资、试用期、健康或法律的问题。请直接问 HR。",
       "done": "完成"
     }

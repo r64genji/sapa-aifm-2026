@@ -49,6 +49,7 @@
   "visibilityHrOnly": "HR only",
   "visibilityHrManager": "HR and my manager",
   "visibilitySaved": "Saved. You can change this later with /privacy.",
+  "tapped": "You tapped \"{label}\".",
   "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
   "help": "You can type /help, /stop, or STOP at any time. Sapa will message you for your next check-in.",
@@ -166,7 +167,7 @@
       {
         "id": "FIX_CHANGE",
         "type": "scale",
-        "text": "Since the last Update from HR, how has this changed for you?",
+        "text": "Since the last Update from HR about {topic}, how has it changed for you?",
         "labels": [
           "Much worse",
           "A bit worse",
@@ -176,6 +177,13 @@
         ]
       }
     ],
+    "topics": {
+      "ROLE_CLARITY": "your role",
+      "MANAGER_SUPPORT": "support from your manager",
+      "BELONGING": "your team",
+      "ONBOARDING_TRAINING": "your training",
+      "WORKLOAD": "your workload"
+    },
     "gotIt": "Got it. Your answer is saved and HR will look at it.",
     "probes": [
       {
@@ -212,10 +220,10 @@
       "OPEN"
     ],
     "chat": {
-      "opener": "You tapped \"{label}\". What is happening?",
+      "opener": "What is happening?",
       "light": "Anything that would make next week easier?",
-      "changed": "You tapped \"{label}\". What changed?",
-      "stillNot": "You tapped \"{label}\". What is still not working?",
+      "changed": "What changed?",
+      "stillNot": "What is still not working?",
       "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
       "done": "Done"
     }

@@ -47,6 +47,9 @@ const sequenceOf = (language: Language, schedule: Schedule) => {
 const questionOf = (language: Language, id: string) =>
   packs[language].checkin.questions.find((q) => q.id === id) as { id: string; type: string; text: string; labels?: string[] };
 
+export const fillTopic = (language: Language, text: string, driver: string | null) =>
+  text.replace("{topic}", (packs[language].checkin.topics as Record<string, string>)[driver ?? ""] ?? "");
+
 const doneButton = (language: Language) => ({ label: packs[language].checkin.chat.done, id: "ans", value: "done" });
 
 export function questionReply(person: Pick<Person, "language">, schedule: Schedule, progress: number): Reply {
@@ -55,7 +58,7 @@ export function questionReply(person: Pick<Person, "language">, schedule: Schedu
   if (id === "OPEN") return { text: schedule.chat?.turns[0]?.text ?? question.text, buttons: [doneButton(person.language)] };
   if (question.type !== "scale") return { text: question.text };
   return {
-    text: question.text,
+    text: fillTopic(person.language, question.text, schedule.recheck_driver),
     buttons: question.labels!.map((label, i) => ({ label, id: "ans", value: `${progress}.${i + 1}` })),
   };
 }
@@ -168,9 +171,9 @@ async function startChat(person: Person, open: Schedule) {
   const change = data.find((row) => row.question_id === "FIX_CHANGE");
   const low = taps.reduce<(typeof taps)[number] | null>((min, tap) => (tap.score <= 2 && (!min || tap.score < min.score) ? tap : min), null);
   const [topic, focus, text]: [Input["topic"], string | null, string] = change
-    ? ["fix_follow_up", open.recheck_driver, (change.scale_value >= 4 ? checkin.chat.changed : checkin.chat.stillNot).replace("{label}", label("FIX_CHANGE", change.scale_value))]
+    ? ["fix_follow_up", open.recheck_driver, change.scale_value >= 4 ? checkin.chat.changed : checkin.chat.stillNot]
     : low
-      ? ["low_tap", low.driver, checkin.chat.opener.replace("{label}", low.answer)]
+      ? ["low_tap", low.driver, checkin.chat.opener]
       : ["light", null, checkin.chat.light];
   const chat: Chat = { open: true, at: "", topic, taps, focus, turns: [{ from: "bot", text }], asked: 1, no_detail: 0, response_id: null };
   await saveChat(open.id, chat);

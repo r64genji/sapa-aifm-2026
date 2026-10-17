@@ -117,7 +117,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
 
   assert.deepEqual(
     await newMessages(live, () => tapData(live, wrongButton.callback_data)).then((m) => m.map((x) => x.text)),
-    [en.myAnswers.challenged],
+    ['You tapped "This is wrong".', en.myAnswers.challenged],
   );
   assert.deepEqual(await card("ROLE_CLARITY"), seedRole);
   const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");

@@ -42,7 +42,7 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [
+  assert.deepEqual(texts.filter((text) => !String(text).startsWith("You tapped")), [
     question("MANAGER_SUPPORT"),
     question("BELONGING"),
     question("ONBOARDING_TRAINING"),

@@ -77,10 +77,15 @@ bot.onDirectMessage((thread, message) =>
   respond((m) => thread.post(m), thread.id, { kind: "text", text: message.text }),
 );
 
-bot.onAction((event) =>
-  respond((m) => event.thread!.post(m), event.threadId, {
+type Tap = { data: string; message?: { reply_markup?: { inline_keyboard: { text: string; callback_data: string }[][] } } };
+
+bot.onAction((event) => {
+  const tap = event.raw as Tap;
+  const label = tap.message?.reply_markup?.inline_keyboard.flat().find((key) => key.callback_data === tap.data)?.text;
+  return respond((m) => event.thread!.post(m), event.threadId, {
     kind: "button",
     id: event.actionId,
     value: event.value ?? "",
-  }),
-);
+    label,
+  });
+});

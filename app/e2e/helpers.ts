@@ -186,7 +186,10 @@ export async function tapScore(chatId: number, score: number) {
 }
 
 export async function tapData(chatId: number, data: string) {
-  await postUpdate(update("button", { chat_id: chatId, data: data }));
+  const buttons = (await sentTo(chatId))
+    .flatMap((m) => (m.reply_markup as { inline_keyboard?: { text: string; callback_data: string }[][] } | undefined)?.inline_keyboard?.flat() ?? []);
+  const label = buttons.findLast((b) => b.callback_data === data)?.text ?? "";
+  await postUpdate(update("button", { chat_id: chatId, data: data, label }));
 }
 
 export async function dispatch() {

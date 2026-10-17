@@ -50,7 +50,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - HR confirms the AI label.
 - HR drafts a fix and assigns it to a manager.
 - The manager accepts the fix and marks it done in Telegram.
-- New hires get "Update from HR". The next check-in asks the same scale question again, first and with no hint of the fix. Later in that check-in it asks "Since the last Update from HR, how has this changed for you?" (Much worse … Much better), and the chat asks what changed or what still does not work. HR sees the answers and quotes on the fix.
+- New hires get "Update from HR". The next check-in asks the same scale question again, first and with no hint of the fix. Later in that check-in it asks "Since the last Update from HR about <topic>, how has it changed for you?" (Much worse … Much better; <topic> names the fixed driver, such as "your workload"), and the chat asks what changed or what still does not work. HR sees the answers and quotes on the fix.
 - Outcome: the score change against other teams, and the Impact view.
 - AI quality watch.
 - "What new hires mean": the AI groups replies inside one problem area.

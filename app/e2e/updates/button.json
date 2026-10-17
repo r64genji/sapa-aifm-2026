@@ -8,7 +8,8 @@
       "from": { "id": 1000000001, "is_bot": true, "first_name": "Sapa", "username": "sapa_test_bot" },
       "chat": { "id": "{{chat_id}}", "first_name": "Hire", "type": "private" },
       "date": 1792018800,
-      "text": "button"
+      "text": "button",
+      "reply_markup": { "inline_keyboard": [[{ "text": "{{label}}", "callback_data": "{{data}}" }]] }
     },
     "chat_instance": "1",
     "data": "{{data}}"

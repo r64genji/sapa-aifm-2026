@@ -29,7 +29,7 @@ A named person checks each text in each language before it goes live (R46). Afte
 
 - Check-in questions with their word buttons, the fixed first chat question, the light question and the "please ask HR" line (R55).
 - The safe reply with helpline numbers (R14).
-- The neutral recheck question (R26) and the fix follow-up question "Since the last Update from HR, how has this changed for you?" (R56).
+- The neutral recheck question (R26) and the fix follow-up question "Since the last Update from HR about <topic>, how has it changed for you?" (R56).
 - Manager milestone nudges (R45).
 - The contact-choice buttons (section 4).
 

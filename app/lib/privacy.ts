@@ -1,3 +1,4 @@
+import { fillTopic } from "@/lib/checkin";
 import { now } from "@/lib/clock";
 import { decrypt } from "@/lib/crypto";
 import { notReceiving, reachable, type Person } from "@/lib/directory";
@@ -25,6 +26,7 @@ type Stored = {
     changed_by_hr: boolean | null;
   } | null;
   escalations: { id: string } | null;
+  actions: { driver: string } | null;
 };
 
 export function deletePrompt(language: Language): Reply {
@@ -72,7 +74,7 @@ async function stored(personId: string, limit?: number) {
   let query = createAdminClient()
     .from("responses")
     .select(
-      "id, question_id, scale_value, text_encrypted, created_at, ai_tags(status, drivers, context_tags, summary, changed_by_hr), escalations(id)",
+      "id, question_id, scale_value, text_encrypted, created_at, ai_tags(status, drivers, context_tags, summary, changed_by_hr), escalations(id), actions!action_id(driver)",
     )
     .eq("person_id", personId)
     .order("created_at", { ascending: false });
@@ -194,7 +196,7 @@ export async function exportPerson(organisationId: string, actor: string, codeNa
   for (const row of await stored(person.id)) {
     if (row.scale_value !== null) {
       const question = pack.checkin.questions.find((q) => q.id === row.question_id);
-      parts.push(`${day(row.created_at, zone)}\n${question?.text ?? row.question_id}\n${row.scale_value}`);
+      parts.push(`${day(row.created_at, zone)}\n${question ? fillTopic(language, question.text, row.actions?.driver ?? null) : row.question_id}\n${row.scale_value}`);
     } else {
       parts.push(entry(language, row, zone).text);
     }

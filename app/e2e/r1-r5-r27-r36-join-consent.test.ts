@@ -30,7 +30,7 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
+  assert.deepEqual((await texts(chat)).slice(1), ['You tapped "English".', en.consent, `You tapped "${en.agree}".`, en.visibilityPrompt]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
@@ -80,7 +80,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), [en.consent, en.visibilityPrompt]);
+    assert.deepEqual((await texts(chat)).slice(1), ['You tapped "English".', en.consent, `You tapped "${en.agree}".`, en.visibilityPrompt]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }

@@ -24,7 +24,7 @@ import { languages, packs, type CommandId, type Language } from "@/lib/packs";
 
 export type Reply = { text: string; buttons?: { label: string; id: string; value: string }[]; phone?: string };
 export type Outcome = { replies: Reply[]; menu?: Language };
-export type Input = { kind: "text"; text: string } | { kind: "button"; id: string; value: string };
+export type Input = { kind: "text"; text: string } | { kind: "button"; id: string; value: string; label?: string };
 
 const none: Outcome = { replies: [] };
 
@@ -141,6 +141,13 @@ async function press(person: Person, id: string, value: string, languages: Langu
 }
 
 export async function handle(chatId: number, input: Input): Promise<Outcome> {
+  const outcome = await route(chatId, input);
+  if (input.kind !== "button" || !input.label || outcome.replies.length === 0) return outcome;
+  const language = outcome.menu ?? (await personByChat(chatId))?.language ?? "en";
+  return { ...outcome, replies: [{ text: packs[language].tapped.replace("{label}", input.label) }, ...outcome.replies] };
+}
+
+async function route(chatId: number, input: Input): Promise<Outcome> {
   const person = await personByChat(chatId);
   if (!person) {
     if (input.kind === "button" && input.id === "ms") {

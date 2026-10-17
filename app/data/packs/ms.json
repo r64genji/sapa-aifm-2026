@@ -15,6 +15,7 @@
   "visibilityHrOnly": "HR sahaja",
   "visibilityHrManager": "HR dan pengurus saya",
   "visibilitySaved": "Disimpan. Anda boleh menukarnya kemudian dengan /privasi.",
+  "tapped": "Anda tekan \"{label}\".",
   "skipped": "Dilangkau. Semakan ini ditutup. Sapa akan menghubungi anda pada semakan seterusnya.",
   "stopped": "Anda telah berhenti. Sapa tidak akan menghantar mesej lagi kepada anda.",
   "help": "Anda boleh menaip /bantuan, /berhenti, atau BERHENTI pada bila-bila masa. Sapa akan menghubungi anda untuk semakan seterusnya.",
@@ -132,7 +133,7 @@
       {
         "id": "FIX_CHANGE",
         "type": "scale",
-        "text": "Sejak Kemas kini daripada HR yang lepas, bagaimana perkara ini berubah untuk anda?",
+        "text": "Sejak Kemas kini daripada HR yang lepas tentang {topic}, bagaimana keadaannya berubah untuk anda?",
         "labels": [
           "Jauh lebih teruk",
           "Sedikit teruk",
@@ -142,6 +143,13 @@
         ]
       }
     ],
+    "topics": {
+      "ROLE_CLARITY": "peranan dan tugas anda",
+      "MANAGER_SUPPORT": "sokongan daripada pengurus anda",
+      "BELONGING": "pasukan anda",
+      "ONBOARDING_TRAINING": "latihan anda",
+      "WORKLOAD": "beban kerja anda"
+    },
     "gotIt": "Baik, difahami. Jawapan anda telah disimpan dan HR akan melihatnya.",
     "probes": [
       {
@@ -178,10 +186,10 @@
       "OPEN"
     ],
     "chat": {
-      "opener": "Anda tekan \"{label}\". Apa yang berlaku?",
+      "opener": "Apa yang berlaku?",
       "light": "Ada apa-apa yang boleh buat minggu depan lebih senang?",
-      "changed": "Anda tekan \"{label}\". Apa yang berubah?",
-      "stillNot": "Anda tekan \"{label}\". Apa yang masih tidak berjalan baik?",
+      "changed": "Apa yang berubah?",
+      "stillNot": "Apa yang masih tidak berjalan baik?",
       "askHr": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
       "done": "Selesai"
     }
