@@ -42,7 +42,10 @@ const GROQ_PRICES: Record<string, { input: number; output: number }> = {
 };
 
 function pick(schema: object, medium: boolean) {
-  if (!modelName.startsWith("groq:")) return providers(schema, medium).find((p) => p.name === modelName)!;
+  if (!modelName.startsWith("groq:")) {
+    const provider = providers(schema, medium).find((p) => p.name === modelName)!;
+    return modelName === "gemini" && process.env.GEMINI_REASONING ? { ...provider, extra: { ...provider.extra, reasoning_effort: process.env.GEMINI_REASONING } } : provider;
+  }
   const model = modelName.slice(5);
   return {
     name: "groq" as const,
@@ -410,5 +413,5 @@ const sorted = [...latencies].sort((a, b) => a - b);
 const pct = (q: number) => (sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))] : null);
 const latency = { n: sorted.length, p50_ms: pct(0.5), p90_ms: pct(0.9), max_ms: sorted.at(-1) ?? null };
 const file = new URL(`${started.replace(/[:.]/g, "-")}-${modelName.replace(/\W+/g, "_")}-${command}-${body.split.replace(/\W+/g, "")}.json`, results);
-writeFileSync(file, JSON.stringify({ run_id: runId, command, model: modelName, model_id: modelId, prompt_version: PROMPT_VERSION, started, sample: sampleArg, latency, usage: { ...usage, cost: Math.round(usage.cost * 1e5) / 1e5 }, ...body }, null, 1));
+writeFileSync(file, JSON.stringify({ run_id: runId, command, model: modelName, model_id: modelId, prompt_version: PROMPT_VERSION, reasoning: process.env.GEMINI_REASONING ?? process.env.GROQ_REASONING ?? null, started, sample: sampleArg, latency, usage: { ...usage, cost: Math.round(usage.cost * 1e5) / 1e5 }, ...body }, null, 1));
 console.log(JSON.stringify({ file: file.pathname, latency, usage, metrics: body.metrics }, null, 1));

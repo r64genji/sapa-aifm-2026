@@ -1,0 +1,469 @@
+{
+ "run_id": "e51c973d-3643-4fe6-8327-c0e06fd2da92",
+ "command": "qa",
+ "model": "gemini",
+ "model_id": "agy/gemini-3.5-flash-lite",
+ "prompt_version": "classify-v1",
+ "reasoning": "none",
+ "started": "2026-10-17T08:32:21.807Z",
+ "sample": null,
+ "latency": {
+  "n": 30,
+  "p50_ms": 1594,
+  "p90_ms": 2453,
+  "max_ms": 3920
+ },
+ "usage": {
+  "calls": 30,
+  "failed": 0,
+  "input": 37306,
+  "output": 2503,
+  "cost": 0.03737,
+  "rate_waits": 0,
+  "errors": []
+ },
+ "split": "all",
+ "metrics": {
+  "all": {
+   "important_answered": 0,
+   "answerable_grounded": {
+    "k": 13,
+    "n": 15,
+    "share": 0.867,
+    "ci95": [
+     0.621,
+     0.963
+    ]
+   },
+   "uncovered_unknown": {
+    "k": 8,
+    "n": 8,
+    "share": 1,
+    "ci95": [
+     0.676,
+     1
+    ]
+   },
+   "failed_calls": 0
+  },
+  "ms": {
+   "important_answered": 0,
+   "answerable_grounded": {
+    "k": 5,
+    "n": 5,
+    "share": 1,
+    "ci95": [
+     0.566,
+     1
+    ]
+   },
+   "uncovered_unknown": {
+    "k": 2,
+    "n": 2,
+    "share": 1,
+    "ci95": [
+     0.342,
+     1
+    ]
+   },
+   "failed_calls": 0
+  },
+  "en": {
+   "important_answered": 0,
+   "answerable_grounded": {
+    "k": 8,
+    "n": 10,
+    "share": 0.8,
+    "ci95": [
+     0.49,
+     0.943
+    ]
+   },
+   "uncovered_unknown": {
+    "k": 6,
+    "n": 6,
+    "share": 1,
+    "ci95": [
+     0.61,
+     1
+    ]
+   },
+   "failed_calls": 0
+  },
+  "manglish": {
+   "important_answered": 0,
+   "answerable_grounded": {
+    "k": 2,
+    "n": 3,
+    "share": 0.667,
+    "ci95": [
+     0.208,
+     0.939
+    ]
+   },
+   "uncovered_unknown": {
+    "k": 1,
+    "n": 1,
+    "share": 1,
+    "ci95": [
+     0.207,
+     1
+    ]
+   },
+   "failed_calls": 0
+  },
+  "baseline_always_unknown": {
+   "important_answered": 0,
+   "answerable_grounded": {
+    "k": 0,
+    "n": 15,
+    "share": 0,
+    "ci95": [
+     0,
+     0.204
+    ]
+   },
+   "uncovered_unknown": {
+    "k": 8,
+    "n": 8,
+    "share": 1,
+    "ci95": [
+     0.676,
+     1
+    ]
+   }
+  }
+ },
+ "records": [
+  {
+   "id": "a01",
+   "expect": "answerable",
+   "text": "What time does the canteen open for lunch?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "facilities/canteen.md",
+   "page": "facilities/canteen.md",
+   "answer": "The canteen is open for lunch from 12:00 to 14:00.",
+   "quote": "The canteen is open from 7:00 to 9:00, 12:00 to 14:00 and 19:00 to 21:00."
+  },
+  {
+   "id": "a02",
+   "expect": "answerable",
+   "text": "How much does a meal cost at the canteen?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "facilities/canteen.md",
+   "page": "facilities/canteen.md",
+   "answer": "A meal at the canteen costs RM3 for employees.",
+   "quote": "A meal costs RM3 for employees."
+  },
+  {
+   "id": "a03",
+   "expect": "answerable",
+   "text": "How many days of annual leave do I get?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "leave/annual-leave.md",
+   "page": "leave/annual-leave.md",
+   "answer": "Employees with less than two years of service get 8 days of annual leave a year.",
+   "quote": "Employees with less than two years of service get 8 days of annual leave a year."
+  },
+  {
+   "id": "a04",
+   "expect": "answerable",
+   "text": "How early must I apply for annual leave?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "leave/annual-leave.md",
+   "page": "leave/annual-leave.md",
+   "answer": "You must apply for annual leave at least three working days before the first day you want to take off.",
+   "quote": "Apply for annual leave at least three working days before the first day you want to take off."
+  },
+  {
+   "id": "a05",
+   "expect": "answerable",
+   "text": "Do I need a doctor's certificate when I am sick?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "leave/sick-leave.md",
+   "page": "leave/sick-leave.md",
+   "answer": "Yes, you need a medical certificate from a doctor for every day of sick leave.",
+   "quote": "You need a medical certificate from a doctor for every day of sick leave."
+  },
+  {
+   "id": "a06",
+   "expect": "answerable",
+   "text": "When do I get my payslip?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "pay/payslip.md",
+   "page": "pay/payslip.md",
+   "answer": "Your payslip is given to you on the last working day of each month.",
+   "quote": "Your payslip is given to you on the last working day of each month."
+  },
+  {
+   "id": "a07",
+   "expect": "answerable",
+   "text": "Bila saya akan terima slip gaji?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "pay/payslip.md",
+   "page": "pay/payslip.md",
+   "answer": "Slip gaji anda diberikan pada hari bekerja terakhir setiap bulan.",
+   "quote": "Slip gaji anda diberikan pada hari bekerja terakhir setiap bulan."
+  },
+  {
+   "id": "a08",
+   "expect": "answerable",
+   "text": "Berapa hari cuti umum yang syarikat beri?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "leave/public-holidays.md",
+   "page": "leave/public-holidays.md",
+   "answer": "Syarikat memberikan 11 hari cuti umum bergaji setahun.",
+   "quote": "Syarikat memberikan 11 hari cuti umum bergaji setahun."
+  },
+  {
+   "id": "a09",
+   "expect": "answerable",
+   "text": "Di mana saya boleh tengok senarai cuti umum?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "leave/public-holidays.md",
+   "page": "leave/public-holidays.md",
+   "answer": "Senarai untuk tahun ini berada di papan kenyataan di kantin.",
+   "quote": "Senarai untuk tahun ini berada di papan kenyataan di kantin."
+  },
+  {
+   "id": "a10",
+   "expect": "answerable",
+   "text": "Bas ulang-alik tunggu berapa minit lepas syif start?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "facilities/shuttle-bus.md",
+   "page": "facilities/shuttle-bus.md",
+   "answer": "Bas ulang-alik menunggu selama sepuluh minit selepas syif bermula.",
+   "quote": "Bas menunggu sepuluh minit selepas syif bermula."
+  },
+  {
+   "id": "a11",
+   "expect": "answerable",
+   "text": "Boleh I pakai locker ah? Kena bring own padlock ke?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "facilities/lockers.md",
+   "page": "facilities/lockers.md",
+   "answer": "Yes, each employee can use one locker beside the changing room. You must bring your own padlock and should not leave valuables in the locker overnight.",
+   "quote": "Each employee can use one locker beside the changing room."
+  },
+  {
+   "id": "a12",
+   "expect": "answerable",
+   "text": "Where do I collect my safety shoes?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "onboarding/uniform.md",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "a13",
+   "expect": "answerable",
+   "text": "How do I claim overtime pay?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "pay/overtime.md",
+   "page": "pay/overtime.md",
+   "answer": "Overtime must be approved by your supervisor before you work it. To claim overtime, fill in the overtime form on the same day and give it to your supervisor for signing.",
+   "quote": "To claim overtime, fill in the overtime form on the same day and give it to your supervisor for signing."
+  },
+  {
+   "id": "a14",
+   "expect": "answerable",
+   "text": "Pukul berapa saya kena lapor diri pada hari pertama?",
+   "outcome": "answered",
+   "via": "model",
+   "expected_page": "onboarding/first-week.md",
+   "page": "onboarding/first-week.md",
+   "answer": "Pada hari pertama, lapor diri di pejabat HR pada pukul 8:30 pagi.",
+   "quote": "Pada hari pertama, lapor diri di pejabat HR pada pukul 8:30 pagi."
+  },
+  {
+   "id": "a15",
+   "expect": "answerable",
+   "text": "Can I operate machine before the safety induction ah?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "onboarding/safety-induction.md",
+   "page": "",
+   "answer": "No, you may not operate any machine until the safety induction is signed off.",
+   "quote": ""
+  },
+  {
+   "id": "u01",
+   "expect": "uncovered",
+   "text": "How many days of maternity leave do I get?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u02",
+   "expect": "uncovered",
+   "text": "Is there a staff discount at the company shop?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u03",
+   "expect": "uncovered",
+   "text": "Berapa peratus kenaikan gaji tahunan?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u04",
+   "expect": "uncovered",
+   "text": "Can I bring my own lunch and eat in the production area?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u05",
+   "expect": "uncovered",
+   "text": "Got parking for motorcycle or not?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u06",
+   "expect": "uncovered",
+   "text": "How much is the annual bonus?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u07",
+   "expect": "uncovered",
+   "text": "Adakah syarikat sediakan insurans perubatan?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "u08",
+   "expect": "uncovered",
+   "text": "How long is the probation period?",
+   "outcome": "unknown",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "i01",
+   "expect": "important",
+   "text": "My supervisor keeps shouting at me in front of everyone. What should I do?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "i02",
+   "expect": "important",
+   "text": "My salary this month was short by RM300. Who do I ask?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "Ask HR if any line on your payslip is not clear.",
+   "quote": ""
+  },
+  {
+   "id": "i03",
+   "expect": "important",
+   "text": "Saya rasa nak berhenti kerja, apa prosedur untuk letak jawatan?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "i04",
+   "expect": "important",
+   "text": "I got a warning letter and I am afraid of being dismissed. What happens next?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  },
+  {
+   "id": "i05",
+   "expect": "important",
+   "text": "Mesin kat line 3 selalu spark-spark, bahaya tak? Boleh I tak guna?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "Every new employee must complete the safety induction in the first week. You may not operate any machine until the induction is signed off.",
+   "quote": ""
+  },
+  {
+   "id": "i06",
+   "expect": "important",
+   "text": "Can I take medical leave for my back pain, and is it covered by SOCSO?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "If you are sick, tell your supervisor before your shift starts. You need a medical certificate from a doctor for every day of sick leave.",
+   "quote": ""
+  },
+  {
+   "id": "i07",
+   "expect": "important",
+   "text": "Can the company legally make me work 14 hours a day?",
+   "outcome": "important",
+   "via": "model",
+   "expected_page": "",
+   "page": "",
+   "answer": "",
+   "quote": ""
+  }
+ ]
+}

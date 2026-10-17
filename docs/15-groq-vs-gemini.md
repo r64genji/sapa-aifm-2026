@@ -10,6 +10,7 @@
 - **Keep classify on Gemini.** gpt-oss-120b is almost 3 times faster there, but it tags drivers worse (κ 0.64 vs 0.77) and it did not escalate a debt-bondage reply. Classify feeds every number HR sees and the safety path, so accuracy wins.
 - **Never use `openai/gpt-oss-20b`.** It missed 13 of 27 escalations and obeyed an injected instruction.
 - **`qwen/qwen3.8-27b` is the fastest (0.5 s) and close to Gemini on drivers, but it missed 2 of 5 forced-labour replies and rated both as no concern, and it is weak in Chinese (κ 0.36).** It is also a preview model at about 5 times gpt-oss-120b's price.
+- **If a paid Groq tier is not wanted, use Gemini 3.5 Flash Lite with thinking off for those four features instead.** Same quality, no new account, but about 2 times slower than gpt-oss-120b. See the Flash Lite section.
 - **The free Groq key cannot run the app.** It allows 8,000 tokens a minute and 200,000 a day per model. One classify call uses about 1,500. A paid Groq tier is needed before any switch.
 
 Code change for the switch is in `app/lib/ai.ts` `providers()` and is not made here.
@@ -69,24 +70,29 @@ Groq prices are from third-party trackers that cite the Groq docs; check the Gro
 
 ## Gemini 3.5 Flash Lite (same day, same items)
 
-`agy/gemini-3.5-flash-lite` through OmniRoute, on all six features (it also took the draft and group calls).
+`agy/gemini-3.5-flash-lite` through OmniRoute, on all six features (it also took the draft and group calls). Run twice: at its default thinking, and with `reasoning_effort: none` (`GEMINI_REASONING=none`).
 
-| | Gemini 3.8 Flash | Gemini 3.5 Flash Lite |
-|---|---|---|
-| Classify latency median / p90 | **2.8 s / 4.6 s** | 5.0 s / 6.6 s |
-| Classify κ / escalations / forced labour | 0.77 / 26 of 27 / 5 of 5 | 0.78 / **27 of 27** / 5 of 5 |
-| κ BM / EN / ZH / Manglish | 0.68 / 0.70 / 0.59 / 0.91 | 0.63 / 0.67 / **0.72** / 0.93 |
-| False alarms | **1 of 63** | 2 of 63 |
-| Q&A latency / grounded / failed | **3.0 s** / 13 of 15 / 0 | 4.5 s / 14 of 15 / 2 |
-| Draft latency / usable | 7.2 s / 5 of 10 | **5.0 s / 10 of 10** |
-| Group, translate | equal | equal |
-| Adversarial safe | 15 of 16 | 14 of 16 |
-| Output tokens per classify call | **139** | 1,646 |
+| | Gemini 3.8 Flash (low) | Flash Lite, default | Flash Lite, thinking off |
+|---|---|---|---|
+| Classify latency median / p90 | 2.8 s / 4.6 s | 5.0 s / 6.6 s | **1.5 s / 2.4 s** |
+| Classify failed calls | 3 | 1 | 5 |
+| Classify κ / escalations / forced labour | 0.77 / 26 of 27 / 5 of 5 | **0.78 / 27 of 27** / 5 of 5 | 0.73 / 27 of 27 / 5 of 5 |
+| κ BM / EN / ZH / Manglish | **0.68 / 0.70** / 0.59 / 0.91 | 0.63 / 0.67 / **0.72** / 0.93 | 0.52 / 0.63 / 0.61 / 0.93 |
+| False alarms | **1 of 63** | 2 of 63 | **1 of 63** |
+| Q&A latency / grounded / failed | 3.0 s / 13 of 15 / 0 | 4.5 s / 14 of 15 / 2 | **1.6 s** / 13 of 15 / 0 |
+| Draft latency / usable | 7.2 s / 5 of 10 | 5.0 s / 10 of 10 | **2.0 s / 10 of 10** |
+| Group latency, translate latency | 6.2 s, 2.7 s | 4.9 s, 2.9 s | **2.5 s, 1.7 s** |
+| Group and translate quality | equal | equal | equal |
+| Adversarial safe | 15 of 16 | 14 of 16 | 15 of 16 |
+| Output tokens per classify call | 139 | 1,646 | **112** |
 
-- **Lite is not faster on this route.** It writes about 1,650 hidden thinking tokens per call, against 139 for Flash. Its p90 of 6.6 s is close to the app's 8 s limit.
-- Its accuracy equals Flash on classify. It caught all 27 escalations, but Flash's one miss was a timeout, not a wrong call. Its two false alarms are "normal retail stuff lol" and a hot factory that is "okay sikit" now.
-- **It does not change the decision.** gpt-oss-120b is still 5 times faster on the four non-classify features, with the same quality. Flash stays on classify, because it is faster than Lite at the same accuracy.
-- Cost is not known: OmniRoute does not say what Lite costs, and its 12 times larger output would dominate any price.
+- **At its default, Lite is slower than Flash.** It writes about 1,650 hidden thinking tokens per call.
+- **With thinking off, Lite is the fastest Gemini: about 2 times faster than Flash on every feature.** It still caught all 27 escalations and all 5 forced-labour replies. Its driver tagging drops (κ 0.73 vs 0.77), most in BM (0.52 vs 0.68). On 90 items that gap is not certain.
+- Its 5 failed classify calls were 5 items in a row (b094–b120). Each made one call and got no reply, and OmniRoute logged every call as OK, so they were most likely calls past the 8 s limit during a slow patch.
+- Its one false alarm is a RM20 late-coming deduction the writer accepts ("memang salah saya").
+- **A second option for the four non-classify features: Lite with thinking off.** It has the same quality as gpt-oss-120b there, needs no new account and no paid Groq tier, but it is about 2 times slower (1.6–2.5 s vs 0.6–1.0 s).
+- **Classify stays on Flash (low).** Lite with thinking off is faster, but tags drivers worse in BM, the main language of the reference customer.
+- Cost is not known: OmniRoute does not say what Lite costs.
 
 ## Limits
 
