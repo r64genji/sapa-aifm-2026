@@ -38,8 +38,8 @@ const overtimeBody = pages.find((p) => p.path === "pay/overtime.md" && p.languag
 const overtimeQuote =
   "To claim overtime, fill in the overtime form on the same day and give it to your supervisor for signing.";
 const draftBody = pages.find((p) => p.status === "draft")!.body;
-const [overtime, wrongQuote, draft, payDispute, crisis, payday, repeater, down, feedback, memo] = [
-  1301, 1302, 1303, 1304, 1305, 1306, 1307, 1308, 1309, 1310,
+const [overtime, wrongQuote, draft, payDispute, crisis, payday, repeater, down, feedback, memo, greeter] = [
+  1301, 1302, 1303, 1304, 1305, 1306, 1307, 1308, 1309, 1310, 1311,
 ].map((n) => 5550000000 + n);
 
 const output = (fields: Record<string, unknown> = {}) => ({
@@ -103,7 +103,7 @@ async function answerPrompt() {
 before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
-  for (const chat of [overtime, wrongQuote, draft, payDispute, crisis, payday, repeater, down, feedback]) {
+  for (const chat of [overtime, wrongQuote, draft, payDispute, crisis, payday, repeater, down, feedback, greeter]) {
     await joined(chat, "2026-10-14");
   }
   await joined(memo, "2026-10-02");
@@ -270,6 +270,16 @@ test("R30: feedback is stored as an unprompted reply, classified and thanked, an
   await script(output({ kind: "feedback" }));
   assert.deepEqual(await ask(feedback, "/ask Who do I tell about my work problem"), [en.qa.unknown]);
   assert.equal((await asked(feedback)).length, 1);
+});
+
+test("R30: a greeting gets the fixed Sapa text, and nothing is stored or logged for HR", async () => {
+  await script(output({ kind: "greeting", group: { id: "new", text: "" } }));
+  assert.deepEqual(await ask(greeter, "who are you"), [
+    "Hi, I am Sapa. Ask me anything about the company handbook, like leave, pay day or overtime. You can also type /help.",
+  ]);
+  assert.deepEqual(await asked(greeter), []);
+  const { data } = await db.from("responses").select("id").eq("person_id", await personId(greeter)).eq("kind", "unprompted");
+  assert.deepEqual(data, []);
 });
 
 test("R33: the model sees at most the last 6 Q&A messages from the last 10 minutes, and never check-in replies", async () => {

@@ -74,6 +74,7 @@
     "from": "From the handbook:",
     "hr": "To check with HR:",
     "unknown": "I don't know yet. I have logged your question for HR, without your name.",
+    "greeting": "Hi, I am Sapa. Ask me anything about the company handbook, like leave, pay day or overtime. You can also type /help.",
     "important": "This is an important matter, so I will not answer it. Please speak to HR directly:",
     "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },

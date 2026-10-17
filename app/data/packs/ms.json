@@ -40,6 +40,7 @@
     "from": "Daripada buku panduan:",
     "hr": "Untuk menyemak dengan HR:",
     "unknown": "Saya belum tahu. Soalan anda telah dicatat untuk HR, tanpa nama anda.",
+    "greeting": "Hai, saya Sapa. Tanya saya apa-apa tentang buku panduan syarikat, seperti cuti, hari gaji atau kerja lebih masa. Anda juga boleh taip /bantuan.",
     "important": "Ini perkara penting, jadi saya tidak akan menjawabnya. Sila bercakap terus dengan HR:",
     "fallback": "Jawapan ini dalam {language}. Tanya HR jika tidak jelas."
   },
