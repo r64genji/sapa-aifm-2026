@@ -4,7 +4,7 @@
 
 > **This is the original architecture.** The [implementation spec (05)](05-implementation-spec.md) wins where they disagree. Lines that conflicted with 05 (model route, tunnel, tracing, follow-ups, manager steps, demo) were updated on 15 Oct. For rules, data model, Q&A and the demo, read 05.
 
-Sapa runs as one Next.js app on Vercel, one Supabase project, and one chat bot built on Vercel's Chat SDK, with every AI call going to Gemini 3.8 Flash through the OmniRoute gateway, and DeepSeek V4.1 Flash as the direct fallback. Almost everything is assembled from existing frameworks; the custom code is the product itself: the check-in script, the theme taxonomy, the prompts and the privacy rules from the [Sapa dossier](03-research-dossier.md).
+Sapa runs as one Next.js app on Vercel, one Supabase project, and one chat bot built on Vercel's Chat SDK, with every AI call going to Gemini 3.5 Flash Lite (thinking off) through the OmniRoute gateway, and DeepSeek V4.1 Flash as the direct fallback. Almost everything is assembled from existing frameworks; the custom code is the product itself: the check-in script, the theme taxonomy, the prompts and the privacy rules from the [Sapa dossier](03-research-dossier.md).
 
 ## 1. What the prototype must prove
 
@@ -39,7 +39,7 @@ Everything except OmniRoute and its tunnel runs on managed cloud, and every read
 
 ```mermaid
 flowchart TB
-    gemini["Gemini 3.8 Flash<br/>Google API"]
+    gemini["Gemini 3.5 Flash Lite<br/>Google API"]
     deepseek["DeepSeek V4.1 Flash<br/>fallback, direct"]
     hire["New hire<br/>Telegram,<br/>language packs"]
     omni["OmniRoute<br/>on home server<br/>behind cloudflared tunnel"]
@@ -98,7 +98,7 @@ All thirteen layers are existing tools; the code you write sits on top of them a
 | Scheduler | [Supabase Cron](https://supabase.com/docs/guides/functions/schedule-functions) (pg_cron + pg_net) calling `/api/dispatch` every minute | Per-minute and free; [Vercel Hobby cron](https://vercel.com/docs/cron-jobs/usage-and-pricing) runs once a day at most | [Vercel Workflow](https://vercel.com/docs/workflows/concepts), Inngest (durable sleeps cannot be fast-forwarded for a demo) |
 | LLM SDK | Vercel AI SDK + [`@ai-sdk/openai-compatible`](https://ai-sdk.dev/providers/openai-compatible-providers) | Zod-validated structured output, one-line provider swap, built-in telemetry | LangChain, raw fetch |
 | LLM gateway | [OmniRoute](https://github.com/diegosouzapw/OmniRoute), self-hosted, reached over a Cloudflare named tunnel (`cloudflared`) | One OpenAI-compatible endpoint, usage dashboard, Gemini keys stay off Vercel | Calling Gemini directly |
-| Model | [Gemini 3.8 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-8-flash) (`gemini-3.8-flash`); fallback DeepSeek V4.1 Flash, direct | Structured output, low/medium/high thinking levels | Gemini 3.7 Flash as backup model |
+| Model | Gemini 3.5 Flash Lite (`agy/gemini-3.5-flash-lite`), thinking off ([15](15-groq-vs-gemini.md)); fallback DeepSeek V4.1 Flash, direct | Structured output, fastest Gemini tested | Gemini 3.8 Flash (low) as backup model |
 | Schemas | Zod | One schema shared by prompt output, API and UI | |
 | Manager notifications | Same bot, Telegram | No extra service to set up | Resend email |
 | Hosting | Vercel + Supabase cloud | Free tiers, preview URL per pull request for teammates | Home server (demo-day reliability) |
@@ -176,12 +176,12 @@ Six pieces are custom because they are the product, not plumbing:
 
 ## 5. AI layer
 
-Four narrow AI calls, each with a fixed schema, all going through OmniRoute to Gemini 3.8 Flash with DeepSeek V4.1 Flash as the direct fallback. 05 adds a fifth call: handbook Q&A.
+Four narrow AI calls, each with a fixed schema, all going through OmniRoute to Gemini 3.5 Flash Lite with DeepSeek V4.1 Flash as the direct fallback. 05 adds a fifth call: handbook Q&A.
 
 ### 5.1 Wiring
 
 - **Provider:** `createOpenAICompatible({ name: 'omniroute', baseURL: <OmniRoute URL>/v1, apiKey, supportsStructuredOutputs: true })` from the AI SDK.
-- **Pin the model.** Use the exact Gemini 3.8 Flash ID from the OmniRoute dashboard, never `auto` or a combo. If OmniRoute silently routes to a different model, the eval numbers stop describing what runs on stage. Store model and prompt version on every `ai_tags` row.
+- **Pin the model.** Use the exact model ID from the OmniRoute dashboard, never `auto` or a combo. If OmniRoute silently routes to a different model, the eval numbers stop describing what runs on stage. Store model and prompt version on every `ai_tags` row.
 - **Reachability:** OmniRoute listens on `localhost:20128`. Expose it with a Cloudflare named tunnel (`cloudflared`, run as a system service) at a fixed HTTPS hostname, and require an OmniRoute API key issued only to this app.
 - **Fallback chain:** OmniRoute with an 8-second timeout → DeepSeek V4.1 Flash direct, with its own key, 8-second timeout → save the reply as `pending_ai` so HR sees "awaiting AI". The keyword safety check runs in all three cases.
 - **Day-1 check:** confirm OmniRoute passes JSON-schema requests to Gemini intact. If it doesn't, set `supportsStructuredOutputs: false` and rely on JSON mode plus Zod validation.
@@ -285,7 +285,7 @@ The biggest risk is the one link that runs from a home server: OmniRoute. Everyt
 
 **Open questions**
 
-- [ ] Exact model ID string for Gemini 3.8 Flash in the OmniRoute dashboard
+- [x] Exact model ID in the OmniRoute dashboard: `agy/gemini-3.5-flash-lite`
 - [ ] Confirmed pitch date, so the build days in 7.2 become real dates
 - [ ] Whether the venue has a visualiser or screen-mirroring for the phone
 

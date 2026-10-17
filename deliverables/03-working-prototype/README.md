@@ -29,7 +29,7 @@ Phases follow section 7.2 of the architecture doc.
 - [ ] Row-Level Security policies for `hr` and `manager` roles
 - [ ] Create the Telegram bot (BotFather); Chat SDK webhook at `/api/webhooks/telegram`
 - [ ] Expose OmniRoute over a Cloudflare named tunnel (`cloudflared`, system service) with an app-only API key
-- [ ] Confirm the exact Gemini 3.8 Flash model ID in OmniRoute
+- [x] Model ID in OmniRoute: `agy/gemini-3.5-flash-lite`, thinking off
 - [ ] Day-1 check: OmniRoute passes JSON-schema requests intact (else JSON mode + Zod)
 - [ ] DeepSeek V4.1 Flash fallback, called direct with its own key; then "awaiting AI"
 - [ ] Deploy to Vercel; decide public repo vs Abraham-only pushes (Hobby plan limit)

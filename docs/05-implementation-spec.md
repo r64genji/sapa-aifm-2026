@@ -345,14 +345,15 @@ Each rule has an ID. Tests cite the ID. A rule changes only with team approval.
 ### Architecture
 
 - One Next.js 16 App Router app on Vercel (Fluid Compute, Node.js 24). One Supabase project (Postgres, Auth, Row-Level Security, Realtime, Cron). One chat bot built with Vercel Chat SDK and its Telegram adapter, living in the same app.
-- **Model route.** Primary: Gemini 3.8 Flash (`gemini-3.8-flash`), called through the AI SDK's OpenAI-compatible provider to OmniRoute on the team's home server. Fallback: DeepSeek V4.1 Flash, called directly with its own key. The app is model-agnostic: every call goes through one provider module that holds the model IDs, the per-provider settings and the order. Swapping a model is a config change.
+- **Model route.** Primary: Gemini 3.5 Flash Lite (`agy/gemini-3.5-flash-lite`) with thinking off, for every AI call, called through the AI SDK's OpenAI-compatible provider to OmniRoute on the team's home server. Fallback: DeepSeek V4.1 Flash, called directly with its own key. The app is model-agnostic: every call goes through one provider module that holds the model IDs, the per-provider settings and the order. Swapping a model is a config change.
+  - Flash Lite with thinking off was picked on 17 Oct over Gemini 3.8 Flash and three Groq models, for speed (about 1.5–2.5 s per call) with every escalation caught ([15](15-groq-vs-gemini.md)).
   - Classify stays on Gemini after a bake-off against Cloudflare's Clef decision models ([13](13-classifier-bakeoff.md)): Gemini was more accurate in BM, English and Manglish, and caught a self-harm signal Clef missed. Its p95 latency through OmniRoute was about 21 seconds, a risk for the 5-second bot reply in story 90; 13 proposes a fix.
   - OmniRoute is exposed through a **Cloudflare named tunnel** (`cloudflared`, run as a system service so it restarts on its own) at a fixed HTTPS hostname. Not a quick tunnel, because its URL changes.
   - Every request needs an OmniRoute API key issued only to this app. The Gemini keys stay on the home server.
   - The model is pinned by its exact ID, never `auto` or a combo. Model and prompt version are stored on every tag row.
   - OmniRoute request and response logging is turned off for this key, so the home server keeps no employee text.
   - Fallback chain: OmniRoute to Gemini with an 8-second timeout → DeepSeek V4.1 Flash direct, 8-second timeout, unless R37's cap is reached → save as "awaiting AI". The keyword safety check runs in every case. The bot accepts text only; a voice note, image or file gets a fixed text that asks the person to type.
-  - Per-provider settings live in the provider module. Gemini runs at the lowest thinking setting the model allows for classify and Q&A, and a medium setting for draft and grouping (check the model page on day 1). DeepSeek runs in non-thinking mode, because thinking tokens bill as output.
+  - Per-provider settings live in the provider module. Gemini runs with `reasoning_effort: none` for every call; its default thinking more than doubles latency ([15](15-groq-vs-gemini.md)). DeepSeek runs in non-thinking mode, because thinking tokens bill as output.
   - Gemini follows a JSON schema; DeepSeek only promises valid JSON. Every output, from either model, is parsed with the same Zod schema and retried once on failure.
   - Prompts put the fixed text first (instructions, examples, the handbook) and the variable text last, so both providers' automatic prompt caching applies.
   - The DeepSeek key has only $2 of credit. R37 and R38 protect it. Automated tests never hold a real model key.
@@ -597,7 +598,7 @@ One end-to-end rehearsal script runs journey 2 against the deployed app, with a 
 ## Further Notes
 
 - **Open questions for the team.**
-  1. Model route: decided 15 Oct. Gemini 3.8 Flash through OmniRoute behind a `cloudflared` named tunnel, with DeepSeek V4.1 Flash as the direct fallback.
+  1. Model route: decided 15 Oct, model changed 17 Oct. Gemini 3.5 Flash Lite, thinking off, through OmniRoute behind a `cloudflared` named tunnel, with DeepSeek V4.1 Flash as the direct fallback.
   2. Whether a chat disclosure counts as a complaint under Employment Act s.81B. Ask the HR judges or a lawyer; until then the bot text does not promise that HR will stay silent.
   3. Which chat app the target frontline workers use most. Decided: Telegram only.
   5. Fixed by the team on 15 Oct: the Q&A bot and the HR dashboard stay. The model route in item 1 stays for the competition. The team rejected review-2 fix 8 and review-3 G19, so the spec makes no pilot-data-path, region or provider-disclosure change.

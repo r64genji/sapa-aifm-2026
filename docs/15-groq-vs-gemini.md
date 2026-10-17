@@ -1,25 +1,40 @@
-# 15 — Groq models vs Gemini, per AI feature
+# 15 — AI model choice: Gemini and Groq models, per AI feature
 
-*17 Oct 2026. Can the fast models on Groq replace Gemini? Raw answers: [`eval/results/`](../eval/results/) (files dated 2026-10-17). Runner: `app/measure/run.ts` ([app/README](../app/README.md#eval-runners)).*
+*17 Oct 2026. Which model should run each AI feature? Five models, six features, same items. Raw answers: [`eval/results/`](../eval/results/) (files dated 2026-10-17). Runner: `app/measure/run.ts` ([app/README](../app/README.md#eval-runners)).*
 
-## Decision (proposed, owner to confirm)
+## Decision (owner, 17 Oct)
 
-**Do not swap everything. Split by feature.**
+**Every AI call uses Gemini 3.5 Flash Lite (`agy/gemini-3.5-flash-lite`) with `reasoning_effort: none`, through OmniRoute.** Set in `app/lib/ai.ts` and `GEMINI_MODEL_ID` / `GEMINI_MODEL_ID_MEDIUM`.
 
-- **Move draft, group, translate and Q&A to `openai/gpt-oss-120b` on Groq.** It is as good as Gemini or better on each of them, and 3 to 8 times faster. Gemini times out on half of the drafts today.
-- **Keep classify on Gemini.** gpt-oss-120b is almost 3 times faster there, but it tags drivers worse (κ 0.64 vs 0.77) and it did not escalate a debt-bondage reply. Classify feeds every number HR sees and the safety path, so accuracy wins.
+- **Why:** it is about 2 times faster than Gemini 3.8 Flash on every feature (1.5–2.5 s), it caught all 27 escalations and all 5 forced-labour replies, and it needs no new provider account.
+- **Accepted risk:** its driver tagging is a little worse than Flash (κ 0.73 vs 0.77), most in BM (0.52 vs 0.68). Watch the BM tags in rehearsal. To roll back, set both model IDs to `agy/gemini-3.8-flash-low`.
+- **Groq was not picked.** gpt-oss-120b is faster still (0.6–1.0 s) and as good on draft, group, translate and Q&A, but it is worse on classify and the free key cannot carry the app (8,000 tokens a minute, 200,000 a day). It needs a paid tier.
 - **Never use `openai/gpt-oss-20b`.** It missed 13 of 27 escalations and obeyed an injected instruction.
-- **`qwen/qwen3.8-27b` is the fastest (0.5 s) and close to Gemini on drivers, but it missed 2 of 5 forced-labour replies and rated both as no concern, and it is weak in Chinese (κ 0.36).** It is also a preview model at about 5 times gpt-oss-120b's price.
-- **If a paid Groq tier is not wanted, use Gemini 3.5 Flash Lite with thinking off for those four features instead.** Same quality, no new account, but about 2 times slower than gpt-oss-120b. See the Flash Lite section.
-- **The free Groq key cannot run the app.** It allows 8,000 tokens a minute and 200,000 a day per model. One classify call uses about 1,500. A paid Groq tier is needed before any switch.
+- **Never use `qwen/qwen3.8-27b` for classify.** It missed 2 of 5 forced-labour replies and rated both as no concern.
+- **Never run Flash Lite at its default thinking.** It writes about 1,650 hidden tokens per call and takes 5 s.
 
-Code change for the switch is in `app/lib/ai.ts` `providers()` and is not made here.
+## For the slides
+
+Say where the numbers come from: **synthetic replies written and labelled by AI agents, not people, one run per model.** They show how we chose a model. They are not the accuracy claim; that comes from the human-labelled set in [05 "Evaluation method"](05-implementation-spec.md).
+
+| | Gemini 3.8 Flash | **Gemini 3.5 Flash Lite, thinking off (chosen)** | gpt-oss-120b (Groq) |
+|---|---|---|---|
+| Classify, median time per reply | 2.8 s | **1.5 s** | 1.0 s |
+| Draft a fix, median time | 7.2 s (half timed out) | **2.0 s** | 0.9 s |
+| Escalations caught (27 cases) | 26 (1 timeout) | **27** | 26 |
+| Forced-labour signs caught (5) | 5 | **5** | 4 |
+| False alarms (63 calm replies) | 1 | **1** | 1 |
+| Driver agreement with gold (κ) | 0.77 | **0.73** | 0.64 |
+| Handbook answers grounded in the right page (15) | 13 | **13** | 14 |
+| "I don't know" when the handbook is silent (8) | 7 | **8** | 8 |
+
+One-line story: *"We tested five models on all six AI jobs. The fastest models on Groq missed forced-labour signs or obeyed injected text. We picked Gemini Flash Lite with thinking off: twice as fast as Flash, and it caught every escalation."*
 
 ## Method
 
 - Same prompts and schemas as the app, imported from `lib/`. Strict JSON schema output on every model.
 - Same items for every model. Classify: 90 evenly spaced items of the 183-item test split (`--sample 90`). Reliability: 20 runs plus the 16 adversarial items. Q&A: all 30. New sets written for this test: translate (15 Chinese replies), draft (10 named fixes, one injection), group (3 problem areas, 30 summaries with gold groups).
-- Gemini is `agy/gemini-3.8-flash-low` (classify, Q&A, translate) and `-medium` (draft, group) through OmniRoute, as in the app. Groq gpt-oss models run with `reasoning_effort: low`; Qwen with reasoning off.
+- Gemini 3.8 Flash is `agy/gemini-3.8-flash-low` (classify, Q&A, translate) and `-medium` (draft, group) through OmniRoute, as the app ran before 17 Oct. Groq gpt-oss models run with `reasoning_effort: low`; Qwen with reasoning off.
 - Every call has the app's 8 s time limit. A call past it counts as failed.
 - Latency is the time of the answered call only. Groq rate-limit waits are not counted.
 - Translations and drafts were also read by a person (Claude, not blind) for meaning.
@@ -90,8 +105,6 @@ Groq prices are from third-party trackers that cite the Groq docs; check the Gro
 - **With thinking off, Lite is the fastest Gemini: about 2 times faster than Flash on every feature.** It still caught all 27 escalations and all 5 forced-labour replies. Its driver tagging drops (κ 0.73 vs 0.77), most in BM (0.52 vs 0.68). On 90 items that gap is not certain.
 - Its 5 failed classify calls were 5 items in a row (b094–b120). Each made one call and got no reply, and OmniRoute logged every call as OK, so they were most likely calls past the 8 s limit during a slow patch.
 - Its one false alarm is a RM20 late-coming deduction the writer accepts ("memang salah saya").
-- **A second option for the four non-classify features: Lite with thinking off.** It has the same quality as gpt-oss-120b there, needs no new account and no paid Groq tier, but it is about 2 times slower (1.6–2.5 s vs 0.6–1.0 s).
-- **Classify stays on Flash (low).** Lite with thinking off is faster, but tags drivers worse in BM, the main language of the reference customer.
 - Cost is not known: OmniRoute does not say what Lite costs.
 
 ## Limits

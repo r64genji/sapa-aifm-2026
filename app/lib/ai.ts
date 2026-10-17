@@ -13,7 +13,7 @@ export const providers = (schema: object, medium: boolean) => [
     key: process.env.OMNIROUTE_API_KEY!,
     model: (medium ? process.env.GEMINI_MODEL_ID_MEDIUM : process.env.GEMINI_MODEL_ID)!,
     price: { input: 0.75, output: 3.75 },
-    extra: { response_format: { type: "json_schema", json_schema: { name: "output", strict: true, schema } } },
+    extra: { response_format: { type: "json_schema", json_schema: { name: "output", strict: true, schema } }, reasoning_effort: "none" },
   },
   {
     name: "deepseek" as const,
