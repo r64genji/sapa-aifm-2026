@@ -6,7 +6,7 @@ Pick the one doc for your task. Read only that doc.
 | --- | --- |
 | Goal, scope (the show-off list) and agent rules. **Wins over every doc below** | [00 intent](00-intent.md) |
 | Understand the product, or the deliverables and judging | [01 product rundown](01-product-rundown-and-deliverables.md) |
-| Build or change app behaviour, rules R1–R53, data, AI, tests, the demo script | [05 implementation spec](05-implementation-spec.md). It wins over 02. No demo script is final ([00](00-intent.md)) |
+| Build or change app behaviour, rules R1–R54, data, AI, tests, the demo script | [05 implementation spec](05-implementation-spec.md). It wins over 02. No demo script is final ([00](00-intent.md)) |
 | Stack, hosting, AI route and cost | [02 prototype architecture](02-prototype-architecture.md) |
 | Statistics, competitors, personas, question bank, judge Q&A | [03 research dossier](03-research-dossier.md) |
 | HR web app screens and flows | [06 dashboard PRD](06-dashboard-prd.md) |

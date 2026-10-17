@@ -53,6 +53,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - `/ask` in Telegram: answers from the handbook. Questions the handbook cannot answer go to HR. This is not finished yet. Finish it.
 - Serious concerns: Sapa tells the new hire, in one short message, to report it to HR through the company's speak-up channel (demo: Contoh Speak Up, with web form, email and 24-hour phone). It names only that channel: never 999, helplines, the tribunal or any outside authority. Official complaints are 100% anonymous and are a separate company system, not Sapa's problem to solve. HR sees the replies and a count, and nothing to act on in Sapa (agreed 16 Oct 2026).
 - Bahasa Malaysia, English and Chinese. All are always on. No toggle.
+- HR sees which teams need a fix, and sends one fix to many team leads at once (R51, R54).
 
 **Out**
 
