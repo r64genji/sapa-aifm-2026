@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { AiMark, Button, CountBar, Dialog, LaneSection, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate } from "@/components/sapa/ui";
+import { AiMark, Button, Card as Panel, CountBar, Dialog, LaneSection, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
@@ -15,7 +15,8 @@ type Themes = { cards: Card[]; context: Context[] };
 type Share = { enough: true; n: number; m: number } | { enough: false };
 type Detail = { by_intake: (Share & { intake: string })[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; byline: string };
-type Action = { status: string; owner: string | null; overdue: boolean };
+type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null; hiring_side: boolean };
+type Upcoming = { date: string; touchpoint: number; people: number }[];
 type Questions = { groups: { id: string; askers: number; unknown: number; handbook_path: string | null }[] };
 
 const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
@@ -86,13 +87,67 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
 
 function Tile({ label, value, base, href }: { label: string; value: number | undefined; base: ReactNode; href: string }) {
   return (
-    <Link href={href} className="sp-card flex flex-col gap-2 px-[18px] py-4 no-underline" style={{ color: "var(--ink)" }}>
-      <span className="text-[13px] font-semibold leading-[18px] sp-muted">{label}</span>
-      <span className="sp-num text-[30px] font-bold leading-[32px] tracking-[-0.01em]" style={value ? undefined : { color: "var(--ink-muted)" }}>
+    <Link href={href} className="sp-card flex items-center gap-3 px-4 py-3 no-underline" style={{ color: "var(--ink)" }}>
+      <span className="sp-num min-w-6 text-[22px] font-bold leading-7" style={value ? undefined : { color: "var(--ink-muted)" }}>
         {value ?? "–"}
       </span>
-      <span className="sp-caption">{base}</span>
+      <span className="flex min-w-0 flex-col">
+        <span className="text-[13px] font-semibold leading-[18px]">{label}</span>
+        <span className="sp-caption">{base}</span>
+      </span>
     </Link>
+  );
+}
+
+function Loop({ steps }: { steps: { step: string; lane: Lane; value: ReactNode; label: string; href: string }[] }) {
+  return (
+    <section aria-label="From replies to results" className="sp-card grid grid-cols-2 gap-px overflow-hidden md:grid-cols-4" style={{ background: "var(--line-soft)" }}>
+      {steps.map((s, i) => (
+        <Link key={s.step} href={s.href} className="flex flex-col gap-1 px-[18px] py-4 no-underline" style={{ color: "var(--ink)", background: "var(--surface-raised)" }}>
+          <span className="sp-caption font-semibold uppercase tracking-wide" style={{ color: `var(--${s.lane})` }}>
+            {i + 1} · {s.step}
+          </span>
+          <span className="sp-num text-[28px] font-bold leading-8">{s.value ?? "–"}</span>
+          <span className="sp-caption">{s.label}</span>
+        </Link>
+      ))}
+    </section>
+  );
+}
+
+function ComingUp({ today, checkins, actions }: { today: string | undefined; checkins: Upcoming | undefined; actions: Action[] | undefined }) {
+  if (!today || !checkins || !actions) return <Panel title="Coming up"><div className="sp-skel m-4 h-24" /></Panel>;
+  const key = (iso: string) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
+  const now = key(today);
+  const tomorrow = key(new Date(Date.parse(`${now}T12:00:00+08:00`) + 86400000).toISOString());
+  const when = (date: string) => (date < now ? "Overdue" : date === now ? "Today" : date === tomorrow ? "Tomorrow" : shortDate(date));
+  const dated = [
+    ...checkins.map((c) => ({ key: `c${c.date}${c.touchpoint}`, date: c.date, title: `${dayLabel(c.touchpoint)} check-in`, meta: `Sapa asks ${plural(c.people, "new hire", "new hires")}`, href: null as string | null })),
+    ...actions
+      .filter((a) => ["assigned", "accepted"].includes(a.status) && a.due_on)
+      .map((a) => ({ key: a.id, date: a.due_on!, title: `${a.title} due`, meta: a.owner === "HR" ? "Your fix" : `${a.owner}${a.status === "assigned" ? " has not accepted yet" : " is on it"}`, href: `/fixes/${a.id}` })),
+  ].sort((a, b) => a.date.localeCompare(b.date));
+  const pending = actions.filter((a) => a.status === "done" && !a.hiring_side && a.verdict === "too_early");
+  return (
+    <Panel title="Coming up" meta="Next 3 weeks">
+      <ul className="m-0 list-none p-0">
+        {[
+          ...dated.slice(0, 5).map((item) => ({ ...item, when: when(item.date), late: item.date < now })),
+          ...pending.map((a) => ({ key: a.id, title: `Result for ${a.title}`, meta: "Shows once enough people answer the recheck", href: `/fixes/${a.id}`, when: "Waiting", late: false })),
+        ].map((item, i) => (
+          <li key={item.key} className="flex gap-3 px-[18px] py-2.5" style={i ? { borderTop: "1px solid var(--line-soft)" } : undefined}>
+            <span className="sp-caption w-[76px] shrink-0 pt-0.5 font-semibold" style={item.late ? { color: "var(--waiting-ink)" } : undefined}>
+              {item.when}
+            </span>
+            <span className="flex min-w-0 flex-col">
+              <span className="text-[14px] font-semibold leading-5">{item.href ? <Link href={item.href}>{item.title}</Link> : item.title}</span>
+              <span className="sp-caption">{item.meta}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      {dated.length + pending.length === 0 ? <Row title="Nothing in the next 3 weeks" meta="Check-ins and fix due dates show here." /> : null}
+    </Panel>
   );
 }
 
@@ -171,6 +226,7 @@ export default function Page() {
   const queue = useApi<QueueRow[]>("/api/hr/queue");
   const actions = useApi<Action[]>("/api/hr/actions");
   const questions = useApi<Questions>("/api/hr/questions");
+  const upcoming = useApi<Upcoming>("/api/hr/upcoming");
 
   const doneIds = new Set(done.map((d) => d.row.id));
   const toCheck = (queue.data ?? []).filter((r) => !r.escalate && !doneIds.has(r.id));
@@ -186,6 +242,9 @@ export default function Page() {
   const unaccepted = waiting.filter((a) => a.status === "assigned").length;
   const gaps = (questions.data?.groups ?? []).filter((g) => !g.handbook_path || g.unknown > 0);
   const asked = gaps.reduce((t, g) => t + g.askers, 0);
+  const answered = cards.reduce((most, c) => Math.max(most, c.m ?? 0), 0);
+  const judged = (actions.data ?? []).filter((a) => a.status === "done" && !a.hiring_side && a.verdict && a.verdict !== "too_early");
+  const running = open.length - drafts;
 
   return (
     <>
@@ -199,7 +258,16 @@ export default function Page() {
         }
       />
 
-      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))" }}>
+      <Loop
+        steps={[
+          { step: "Heard", lane: "ai", value: themes.data ? answered : undefined, label: `new hires answered at ${dayLabel(14)}`, href: "/replies?view=all" },
+          { step: "Found", lane: "problems", value: themes.data ? enough.length : undefined, label: enough.length === 1 ? "shared problem" : "shared problems", href: "/problems" },
+          { step: "Fixing", lane: "fixes", value: actions.data ? running : undefined, label: running === 1 ? "fix in progress" : "fixes in progress", href: "/fixes" },
+          { step: "Worked", lane: "fixes", value: actions.data ? judged.filter((a) => a.verdict === "worked").length : undefined, label: `of ${judged.length} finished fixes worked`, href: "/fixes" },
+        ]}
+      />
+
+      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))" }}>
         <Tile href="/fixes" label="Drafts to finish" value={actions.data ? drafts : undefined} base={drafts ? "Fixes you started and did not send" : "No unsent fixes"} />
         <Tile
           href="/fixes"
@@ -232,35 +300,38 @@ export default function Page() {
           </section>
         )}
 
-        <LaneSection lane="ai" id="replies" title="Replies to check" meta={`${toCheck.length} need you`}>
-          {done.map(({ row, undo }) => (
-            <Row
-              key={row.id}
-              metric={<AiMark state="confirmed" label="Checked" />}
-              action={
-                <Button
-                  onClick={async () => {
-                    await undo();
-                    setDone((d) => d.filter((x) => x.row.id !== row.id));
-                  }}
-                >
-                  Undo
-                </Button>
-              }
-            >
-              {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
-            </Row>
-          ))}
-          {toCheck.slice(0, 3).map((row) => (
-            <ReplyItem key={row.id} row={row} onDone={(r, undo) => setDone((d) => [...d, { row: r, undo }])} />
-          ))}
-          {queue.data && toCheck.length === 0 && done.length === 0 ? <Row title="Nothing to check" meta="New replies show here as soon as a new hire finishes a check-in." /> : null}
-          <div className="border-t px-[18px] py-3" style={{ borderColor: "var(--line-soft)" }}>
-            <Link href="/replies" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
-              See all replies and chat logs
-            </Link>
-          </div>
-        </LaneSection>
+        <div className="flex min-w-0 flex-col gap-6">
+          <LaneSection lane="ai" id="replies" title="Replies to check" meta={`${toCheck.length} need you`}>
+            {done.map(({ row, undo }) => (
+              <Row
+                key={row.id}
+                metric={<AiMark state="confirmed" label="Checked" />}
+                action={
+                  <Button
+                    onClick={async () => {
+                      await undo();
+                      setDone((d) => d.filter((x) => x.row.id !== row.id));
+                    }}
+                  >
+                    Undo
+                  </Button>
+                }
+              >
+                {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
+              </Row>
+            ))}
+            {toCheck.slice(0, 3).map((row) => (
+              <ReplyItem key={row.id} row={row} onDone={(r, undo) => setDone((d) => [...d, { row: r, undo }])} />
+            ))}
+            {queue.data && toCheck.length === 0 && done.length === 0 ? <Row title="Nothing to check" meta="New replies show here as soon as a new hire finishes a check-in." /> : null}
+            <div className="border-t px-[18px] py-3" style={{ borderColor: "var(--line-soft)" }}>
+              <Link href="/replies" className="inline-flex min-h-11 items-center text-[13px] font-semibold md:min-h-0">
+                See all replies and chat logs
+              </Link>
+            </div>
+          </LaneSection>
+          <ComingUp today={me.data?.today} checkins={upcoming.data} actions={actions.data} />
+        </div>
       </div>
     </>
   );

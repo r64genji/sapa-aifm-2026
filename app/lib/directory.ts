@@ -231,3 +231,36 @@ export async function reachable(personId: string) {
   if (error) throw error;
   return data;
 }
+
+const TOUCHPOINTS = [3, 7, 14, 30, 60, 90, 182];
+
+export async function upcomingCheckins(organisationId: string, days = 21) {
+  const db = createAdminClient();
+  const { data: organisation, error: orgError } = await db.from("organisations").select("time_zone, holidays").eq("id", organisationId).single<{ time_zone: string; holidays: string[] }>();
+  if (orgError) throw orgError;
+  const { data: people, error } = await db
+    .from("people")
+    .select("start_date")
+    .eq("organisation_id", organisationId)
+    .neq("state", "left")
+    .is("stopped_at", null)
+    .is("deleted_at", null);
+  if (error) throw error;
+  const today = (await now()).toLocaleDateString("en-CA", { timeZone: organisation.time_zone });
+  const last = new Date(Date.parse(`${today}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 10);
+  const working = (start: string, add: number) => {
+    const d = new Date(Date.parse(`${start}T00:00:00Z`) + add * 86400000);
+    while ([0, 6].includes(d.getUTCDay()) || organisation.holidays.includes(d.toISOString().slice(0, 10))) d.setUTCDate(d.getUTCDate() + 1);
+    return d.toISOString().slice(0, 10);
+  };
+  const due = new Map<string, { date: string; touchpoint: number; people: number }>();
+  for (const { start_date } of people) {
+    for (const touchpoint of TOUCHPOINTS) {
+      const date = working(start_date, touchpoint);
+      if (date < today || date > last) continue;
+      const key = `${date}:${touchpoint}`;
+      due.set(key, { date, touchpoint, people: (due.get(key)?.people ?? 0) + 1 });
+    }
+  }
+  return [...due.values()].sort((a, b) => a.date.localeCompare(b.date) || a.touchpoint - b.touchpoint);
+}
