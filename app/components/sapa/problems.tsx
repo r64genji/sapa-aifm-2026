@@ -39,7 +39,7 @@ const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 const average = (points: Point[]) => rate({ n: points.reduce((t, p) => t + p.n, 0), m: points.reduce((t, p) => t + p.m, 0) });
 const intakePoints = (d: Detail | undefined): Point[] => (d?.by_intake ?? []).flatMap((s) => (s.enough ? [{ label: month(s.intake), n: s.n, m: s.m }] : []));
 
-function Spark({ points, label }: { points: Point[]; label: string }) {
+export function Spark({ points, label }: { points: Point[]; label: string }) {
   const top = Math.max(0.5, ...points.map(rate));
   const xy = points.map((p, i) => [4 + (i * 152) / Math.max(points.length - 1, 1), 44 - (rate(p) / top) * 38]);
   const line = xy.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
@@ -114,7 +114,7 @@ function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boo
   );
 }
 
-function Waffle({ c }: { c: Card }) {
+export function Waffle({ c }: { c: Card }) {
   const m = c.m ?? 0;
   const parts = [
     { n: c.reviewed ?? 0, color: "var(--problems)", label: "you checked" },
