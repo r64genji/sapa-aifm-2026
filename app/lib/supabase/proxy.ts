@@ -50,11 +50,11 @@ export async function updateSession(request: NextRequest) {
   const user = check && !check.data.user && !isAuthRetryableFetchError(check.error) ? null : data?.claims;
 
   const devSession =
-    !user && process.env.NODE_ENV === "development" && process.env.SEED_USER_PASSWORD
+    !user && process.env.SEED_USER_PASSWORD
       ? (await supabase.auth.signInWithPassword({ email: "admin@contoh.test", password: process.env.SEED_USER_PASSWORD })).data.session
       : null;
 
-  if ((devSession || (user && process.env.NODE_ENV === "development")) && request.nextUrl.pathname.startsWith("/auth/login")) {
+  if ((devSession || user) && request.nextUrl.pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     const redirect = NextResponse.redirect(url);
@@ -62,9 +62,9 @@ export async function updateSession(request: NextRequest) {
     return redirect;
   }
 
-  if (!user && !devSession && process.env.NODE_ENV === "development" && process.env.SEED_USER_PASSWORD) {
+  if (!user && !devSession && process.env.SEED_USER_PASSWORD) {
     return new NextResponse(
-      '<!doctype html><meta http-equiv="refresh" content="3"><title>Sapa dev</title><p style="font:16px system-ui;padding:24px">The dev database is not answering right now. A test run may be resetting it. This page reloads by itself.</p>',
+      '<!doctype html><meta http-equiv="refresh" content="3"><title>Sapa</title><p style="font:16px system-ui;padding:24px">The database is not answering right now. This page reloads by itself.</p>',
       { status: 503, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } },
     );
   }

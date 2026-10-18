@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, QrCode, Shield } from "lucide-react";
+import { Home, MessagesSquare, QrCode, Shield } from "lucide-react";
 import { Suspense, type ReactNode } from "react";
-import { ApiError, signOut, useApi, useLiveRefresh } from "./data";
+import { ApiError, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
-import { Button, LaneIcon, Loading } from "./ui";
+import { LaneIcon, Loading } from "./ui";
 
 export type Me = { name: string; role: string; organisation: string; demo_mode: boolean };
 
@@ -42,7 +42,6 @@ export function Shell({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen items-center justify-center p-6">
         <div className="sp-card flex max-w-sm flex-col items-start gap-3 p-6">
           <span className="text-[17px] font-bold">This account has no HR access</span>
-          <Button onClick={signOut}>Sign out</Button>
         </div>
       </div>
     );
@@ -68,9 +67,6 @@ export function Shell({ children }: { children: ReactNode }) {
         <span className="truncate font-semibold">{me.data.name}</span>
         <span className="sp-caption truncate">HR · {me.data.organisation.replace(/ \(.*$/, "").replace("Contoh Global Business Services", "Contoh GBS")}</span>
       </span>
-      <button type="button" onClick={signOut} className="sp-caption min-h-11 flex-none cursor-pointer border-0 bg-transparent px-1 underline">
-        Sign out
-      </button>
     </>
   );
 
@@ -87,8 +83,9 @@ export function Shell({ children }: { children: ReactNode }) {
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
         <div className="hidden pb-5 md:block">{logo}</div>
-        <div className="grid grid-cols-3 md:flex md:flex-col md:gap-0.5">
-          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Home" short="Home" count={toCheck} />
+        <div className="grid auto-cols-fr grid-flow-col md:flex md:flex-col md:gap-0.5">
+          <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Home" short="Home" />
+          <NavItem href="/replies" icon={<MessagesSquare size={17} aria-hidden="true" />} label="Replies" short="Replies" count={toCheck} />
           <NavItem href="/problems" icon={<LaneIcon lane="problems" />} label="Shared problems" short="Problems" />
           <NavItem href="/fixes" icon={<LaneIcon lane="fixes" />} label="Fixes and impact" short="Fixes" />
           {me.data.role === "hr_admin" ? <NavItem href="/join" icon={<QrCode size={17} aria-hidden="true" />} label="Join codes" short="Join" /> : null}

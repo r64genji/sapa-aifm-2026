@@ -18,8 +18,7 @@ export class ApiError extends Error {
 }
 
 function signedOut(): never {
-  if (process.env.NODE_ENV === "development") void supabase.auth.signOut({ scope: "local" }).finally(() => window.location.reload());
-  else window.location.href = "/auth/login";
+  void supabase.auth.signOut({ scope: "local" }).finally(() => window.location.reload());
   throw new ApiError(401, "Signed out");
 }
 
@@ -61,9 +60,4 @@ export function useLiveRefresh() {
       supabase.removeChannel(channel);
     };
   }, []);
-}
-
-export async function signOut() {
-  await supabase.auth.signOut();
-  window.location.href = "/auth/login";
 }

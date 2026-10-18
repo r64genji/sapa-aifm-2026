@@ -25,9 +25,6 @@ before(async () => {
   browser = await chromium.launch();
   page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${appUrl}/auth/login`);
-  await page.fill("#email", "admin@contoh.test");
-  await page.fill("#password", process.env.SEED_USER_PASSWORD!);
-  await page.click("button[type=submit]");
   await page.waitForURL(`${appUrl}/`);
 });
 

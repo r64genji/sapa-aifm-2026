@@ -108,7 +108,7 @@ The demo shows the core loop with R10, R26, R28, R39, R42–R44 and R49. The oth
 
 ### HR — setup
 
-33. As an HR user, I want to sign in with email, so that only staff with an account can see data.
+33. Retired 18 Oct 2026: the web app has no login, so judges can test the public site. Every visitor is the seed HR admin (owner decision).
 34. As an HR user, I want to create an intake with a start date and its teams, so that the bot knows the schedule and the teams without anyone typing a real name into the system.
 35. As an HR user, I want one QR code and link per team in each intake, so that I can hand them out on Day 1 and nobody can link a chat to a name.
 36. As an HR user, I want to see per intake how many joined, declined, stopped or skipped (shown only at 5 or more), so that I know coverage without singling out quiet people (R41).
