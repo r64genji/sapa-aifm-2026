@@ -36,7 +36,7 @@
 
 **Visual:** 200 dots. 54 fade out along a Day 0 → 90 → 180 line. A counter climbs to RM522,000. "60 jobs" slides along a line from Penang to Kraków.
 
-**We say:** "Contoh GBS is a back office in Penang with 650 staff. It is made up, but it is built from real Penang facts. It hires 200 people a year. 54 are gone before Month 6. That costs about RM522,000 a year. Now its parent company has set a test: keep 85% of new hires by September 2027, or 60 new jobs go to Kraków. Malaysia's attrition is 18.2%. Leaders at firms this size expect to lose about 1 in 4 new hires within six months. Contoh is normal."
+**We say:** "Contoh GBS is a back office in Penang with 650 staff. It is made up, but it is built from real Penang facts. It hires 200 people a year. 54 are gone before Month 6. That costs about RM522,000 a year. Now its parent company has set a test: keep 85% of new hires by September 2027, or 60 new jobs go to Kraków. Malaysia's attrition is 18.2%. In a 2023 Employment Hero survey, leaders at firms of 200 to 500 staff said over 2 in 10 new hires, 23%, leave within six months. Contoh is a little worse than normal, but not by much."
 
 **Sources:** Aon Salary Increase & Turnover Study (Dec 2025). Employment Hero survey via Malay Mail (2023; an expectation, not a measured rate). Contoh numbers: `docs/09-client-story.md`.
 
@@ -45,14 +45,14 @@
 
 **On the slide**
 - Users: [HR interview quotes, or "Desk research only"]
-- Research: **25%** engaged · **62%** say it is a good time to find a job · **57%** would quit over an unsupportive manager
+- Research: **25%** engaged · **62%** say it is a good time to find a job · **57%** would consider quitting without a manager's career support
 - Current process: Survey after Month 6 → Exit interview → Spreadsheet → Read months later
 
 **Visual:** 3 columns build in order. The numbers count up in lane colors. On the process line, Months 0–6 are shaded with the label "HR is blind". 54 spreadsheet rows sort themselves into the 5 exit reasons.
 
-**We say:** "Here is what HR does today. The yearly survey only reaches people with 6 months' service, so it never hears an early leaver. Aishah, the one HR person for new hires, did every exit interview. One weekend she read all 54. The same five reasons came up: unclear priorities, no time with the team lead, no training, the Europe shift alone, and a job that was not as advertised. Every one was too late. The research says the same: only 25% of Malaysian employees are engaged, and 62% think it is a good time to find a new job."
+**We say:** "Here is what HR does today. The yearly survey only reaches people with 6 months' service, so it never hears an early leaver. Aishah, the one HR person for new hires, did every exit interview. One weekend she read all 54. The same five reasons came up: unclear priorities, no time with the team lead, no training, the Europe shift alone, and a job that was not as advertised. Every one was too late. The research says the same: only 25% of Malaysian employees are engaged, and 62% think it is a good time to find a new job (Gallup). 57% would consider quitting if their manager does not support their growth (Randstad)."
 
-**Sources:** Gallup State of the Global Workplace 2026 (Malaysia). Randstad Workmonitor 2025 Malaysia. Interview slot: `deliverables/09-testing-evidence/README.md`.
+**Sources:** 25% and 62%: Gallup State of the Global Workplace 2026 (Malaysia). 57%: Randstad Workmonitor 2025 Malaysia (n=503, "would consider quitting if managers are not supportive of their professional development"). Interview slot: `deliverables/09-testing-evidence/README.md`.
 
 ---
 
@@ -68,9 +68,9 @@
 
 **Visual:** A phone (Mei Ling) and a laptop (Aishah) slide in. A second phone (Raj) joins. Lines connect the 3. Kavitha's card sits above them with the label "Buyer".
 
-**We say:** "What if Aishah heard Mei Ling on Day 14, not at her exit? Sapa checks in with new hires on Telegram, on their own phone, from Day 1. They do not need a company email. It shows HR the problems new hires share, and it sends the fix to the team lead. Our customer is any company that hires every month with a small HR team: shared services centres, factories, retail chains. We start with Penang's shared services centres. 15 new centres opened there in the last four years."
+**We say:** "What if Aishah heard Mei Ling on Day 14, not at her exit? Sapa checks in with new hires on Telegram, on their own phone, from Day 1. They do not need a company email. It shows HR the problems new hires share, and it sends the fix to the team lead. Our customer is any company that hires every month with a small HR team: shared services centres, factories, retail chains. We start with Penang's shared services centres. They have more than 90 firms and 20,000 staff, up from about 60 firms in 2019."
 
-**Sources:** Penang Institute, Penang Economic Outlook 2026 (new GBS centres 2022–25). SSON (Malaysia has 441 shared services centres, Feb 2024). Telegram reaches about 65% of Malaysian internet users aged 16–64, the highest in Asia-Pacific (Statista, Q3 2023).
+**Sources:** Penang state government via Malay Mail, 13 Nov 2025 (90+ GBS firms, 20,000+ staff); InvestPenang (about 60 firms, 2019). SSON (Malaysia has 441 shared services centres, Feb 2024). Telegram reaches about 65% of Malaysian internet users aged 16–64, the highest in Asia-Pacific (Statista, Q3 2023).
 
 ### 5 · How It Works
 **Labels:** Input → AI process → Output → Human action
@@ -92,13 +92,13 @@
 - AI does 5 jobs: labels · shows evidence · groups meaning · drafts fixes · answers handbook questions
 - Manual: 1 weekend, 54 rows, months late, English only
 - Sapa: every reply, the day it arrives, in BM, English and 中文
-- Survey tools: about US$39,000+ a year for 650 staff. Sapa: RM18,000.
+- Survey tools: Culture Amp, about US$23,000 a year (median paid). Sapa: RM18,000.
 
 **Visual:** Split screen. On the left, a pile of rows with a calendar flipping by months. On the right, the rows fold into 5 teal bars, live. The 5 AI jobs tick in one by one. At the bottom, a price bar: a long grey survey-tool bar shrinks to a short Sapa bar.
 
-**We say:** "200 new hires and 7 check-ins make 3,000 to 4,000 answers a year, in four languages. No HR person reads that. The AI reads every reply, shows its evidence, and drafts the fix. The database does the counting, not the AI. Survey tools like Culture Amp charge for every employee and send English emails. Sapa charges only for new hires, works in chat, and ends in a fix, not a report."
+**We say:** "200 new hires and 7 check-ins make 3,000 to 4,000 answers a year, in four languages. No HR person reads that. The AI reads every reply, shows its evidence, and drafts the fix. The database does the counting, not the AI. Survey tools like Culture Amp charge for every employee and live on work tools a new hire may not have yet. Sapa charges only for new hires, works on their own phone, and sends the fix to the team lead, then asks again."
 
-**Sources:** Culture Amp estimate US$5–9 per employee per month (PeopleOps Club); 650 × US$5 × 12 = US$39,000. Sapa price: `docs/03-research-dossier.md` H2.
+**Sources:** Culture Amp has no public price; median paid US$23,335 a year (Vendr, Feb 2026). Sapa price: `docs/03-research-dossier.md` H2.
 
 ### 7 · Demo
 **Labels:** Working prototype · One full user journey
