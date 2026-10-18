@@ -52,9 +52,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
   const logo = (
     <Link href="/" className="flex min-h-11 items-center gap-2.5 px-2.5 no-underline" style={{ color: "var(--ink)" }}>
-      <span className="flex h-7 w-7 items-center justify-center text-[15px] font-bold shadow-sm transition-transform duration-300 hover:rotate-[-6deg] hover:scale-110" style={{ borderRadius: "var(--radius-control)", background: "linear-gradient(135deg, var(--problems), #0e7a75)", color: "var(--on-problems)" }}>
-        S
-      </span>
+      <img src="/icon.svg" alt="" className="h-8 w-8 transition-transform duration-300 hover:rotate-[-6deg] hover:scale-110" />
       <span className="text-[17px] font-bold">Sapa</span>
     </Link>
   );
