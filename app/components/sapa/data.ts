@@ -36,6 +36,8 @@ async function request(path: string, init: RequestInit = {}) {
   return body;
 }
 
+export const apiGet = <T,>(path: string): Promise<T> => request(path);
+
 export function useApi<T>(path: string | null, refreshInterval = 5000) {
   return useSWR<T>(path, (p: string) => request(p), { refreshInterval, revalidateOnFocus: true });
 }

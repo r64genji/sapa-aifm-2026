@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Shield } from "lucide-react";
 import { useApi } from "./data";
-import { AiMark, Button, DRIVERS, Dialog, Quote, dayLabel, driverName, shortDate } from "./ui";
+import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
 export type ReplyItem = {
   id: string;
@@ -185,6 +185,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
 export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [whole, setWhole] = useState(!item.text);
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
     try {
@@ -217,7 +218,12 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat }: R
             {item.byline} · {shortDate(item.created_at)}
           </span>
         </div>
-        {chat && item.log ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <Quote text={item.text ?? ""} evidence={item.evidence_quote} />}
+        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <Quote text={item.text ?? ""} evidence={item.evidence_quote} />}
+        {chat && item.log ? (
+          <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={() => setWhole(!whole)}>
+            {whole ? "Show only their words" : "Show the whole check-in"}
+          </button>
+        ) : null}
         <Translation id={item.id} language={item.language} />
       </div>
       <div
@@ -247,7 +253,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat }: R
         <div className="flex flex-wrap gap-2">
           {pending ? (
             <Button variant="primary" disabled={busy} onClick={() => run(onConfirm)}>
-              Correct
+              Confirm label
             </Button>
           ) : null}
           {awaiting ? (

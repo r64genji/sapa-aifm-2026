@@ -178,7 +178,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
   const db = createAdminClient();
   let query = db
     .from("action_library")
-    .select("id, driver, title, text, created_by")
+    .select("id, driver, title, text, notes, created_by")
     .eq("organisation_id", organisationId)
     .is("deleted_at", null);
   if (driver) query = query.eq("driver", driver);

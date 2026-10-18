@@ -180,7 +180,7 @@ HR (and HR's boss) want to know if Sapa is worth it. An Impact view shows:
 
 Below 30 people the retention figure says "Too few to tell yet (n of 30)". The view always says "This shows a trend, not proof that Sapa caused it". The trend over several intakes is the point. This view also feeds pitch slides 8 and 10.
 
-The Impact view and the list of HR's own fixes are one page, "Fixes and impact" (`/fixes`). *Why:* the two pages answered the same question, "did our fixes help?". On that page each done fix shows its own result (worked, no clear change, too early) beside the outcome figures, so HR can judge each fix and not only the pooled library.
+The Impact view and the list of HR's own fixes are one page, "Fixes and impact" (`/fixes`). *Why:* the two pages answered the same question, "did our fixes help?". On that page each done fix shows its own result (worked, no clear change, too early) beside the outcome figures, so HR can judge each fix and not only the pooled library. The page has two tabs, Fixes and Impact (agreed 18 Oct 2026). Fixes opens first when a fix is still open, because open work needs HR; otherwise Impact opens first. Home lists only what needs HR, and "Which teams need a fix" lives on Shared problems, so no screen repeats another. The AI quality watch sits on Replies, where HR checks the AI's labels.
 
 ### Flow K — Is the AI still right?
 

@@ -3,12 +3,12 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Trash2 } from "lucide-react";
-import { ApiError, apiSend, useApi } from "@/components/sapa/data";
+import { ApiError, apiGet, apiSend, useApi } from "@/components/sapa/data";
 import type { Me } from "@/components/sapa/shell";
 import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Tabs, driverName, shortDate } from "@/components/sapa/ui";
 
 type Notes = { en: string; ms: string; zh: string };
-type Entry = { id: string; title: string; text: string; custom: boolean; result: string };
+type Entry = { id: string; title: string; text: string; notes: Partial<Notes> | null; custom: boolean; result: string };
 type Scope = {
   type: "team" | "intake";
   key: string;
@@ -143,12 +143,20 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       setMode("library");
       setTitle(e.title);
       setSteps(e.text);
-      setNotes(EMPTY);
+      setNotes({ ...EMPTY, ...e.notes });
       setEntryId(e.id);
       setOwnFix(false);
       setBanner(null);
       setMenu(false);
     });
+
+  const filled = useRef(false);
+  useEffect(() => {
+    if (filled.current || !entries || mode !== "library") return;
+    filled.current = true;
+    const e = entries.find((candidate) => candidate.id === entryId);
+    if (e?.notes) setNotes((n) => (n.en || n.ms ? n : { ...EMPTY, ...e.notes }));
+  }, [entries, mode, entryId]);
 
   const pickedFromUrl = useRef(false);
   const params = useSearchParams();
@@ -265,7 +273,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       ? `${owner.name} gets it ${shortDate(view.alert_on)}, with the weekly snapshot`
       : `${owner.name} gets it today`
     : "It stays with you";
-  const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", dueOn)];
+  const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", shortDate(dueOn))];
   const draftClass = pending ? "sp-input sp-input-ai" : "sp-input";
   const pendingMark = pending ? <AiMark label="Drafted for your new fix" /> : null;
 
@@ -436,7 +444,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 <AiMark state="confirmed" reviewer={hr} label={lang === "en" ? "Drafted with AI" : "AI translation, accepted"} />
               ) : pending ? (
                 <AiMark label={lang === "en" ? "English draft" : "AI translation, not accepted yet"} />
-              ) : lang !== "en" ? (
+              ) : lang !== "en" && !notes[lang] ? (
                 <span className="sp-caption">Write the {lang === "ms" ? "Bahasa Malaysia" : "中文"} version yourself. Only English and Bahasa Malaysia are needed.</span>
               ) : null}
               <textarea
@@ -648,7 +656,9 @@ function Page() {
   useEffect(() => {
     if (resume || !driver || started.current) return;
     started.current = true;
-    apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }).then(({ id }) => setId(id), (e) => setError(fail(e)));
+    apiGet<{ id: string; driver: string; status: string; hiring_side: boolean }[]>("/api/hr/actions")
+      .then((actions) => actions.find((a) => a.status === "draft" && a.driver === driver && !a.hiring_side) ?? apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }))
+      .then(({ id }) => setId(id), (e) => setError(fail(e)));
   }, [driver, resume]);
 
   const view = useApi<View>(id ? `/api/hr/actions/${id}/draft` : null, 0);

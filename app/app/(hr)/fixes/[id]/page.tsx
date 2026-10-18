@@ -72,6 +72,11 @@ function Result({ a }: { a: Detail }) {
   return (
     <Card title="Result" meta={`${driverName(a.driver)} score, 1 to 5`}>
       {enough ? (
+        <div className="text-[15px] font-bold">
+          {signed(a.result!.scope.after - a.result!.scope.before - (a.result!.other.after - a.result!.other.before))} against other teams
+        </div>
+      ) : null}
+      {enough ? (
         <div className="grid gap-5 sm:grid-cols-2">
           {([[a.result!.scope, "Team", ""], [a.result!.other, "Other teams", ", same weeks"]] as const).map(([side, who, tail]) => (
             <div key={who} className="flex flex-col gap-2">

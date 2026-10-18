@@ -655,6 +655,8 @@ async function context(action: Action, managerId: string) {
   return lines.length > 0 ? lines : [text.noSnapshot];
 }
 
+const dueDate = (day: string) => new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+
 async function sendAlert(id: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
@@ -666,7 +668,7 @@ async function sendAlert(id: string) {
   if (action.managers.telegram_chat_id === null) return;
   const lines = await context(action, action.owner_manager_id!);
   const reply: Reply = {
-    text: [text.alert.replace("{title}", action.title), action.steps, ...lines, text.due.replace("{date}", action.due_on!)].join("\n\n"),
+    text: [text.alert.replace("{title}", action.title), action.steps, ...lines, text.due.replace("{date}", dueDate(action.due_on!))].join("\n\n"),
     buttons: [
       { label: text.accept, id: "accept", value: id },
       { label: text.done, id: "done", value: id },

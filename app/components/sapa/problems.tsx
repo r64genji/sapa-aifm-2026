@@ -5,7 +5,7 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import { ArrowRight, BookCheck, BookX, Building2, Inbox, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { useApi } from "./data";
 import { Translation, type ReplyItem } from "./reply";
-import { AiMark, Button, CountBar, FixTrack, Loading, Quote, dayLabel, driverName, shortDate } from "./ui";
+import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Quote, Row, dayLabel, driverName, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; message?: string };
@@ -461,7 +461,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </div>
             ) : null}
             {waiting > 0 ? (
-              <Link href="/#replies" className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+              <Link href={`/replies?area=${driver}`} className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
                 <MessageSquare size={14} aria-hidden="true" />
                 {waiting} new {waiting === 1 ? "reply" : "replies"} to check
                 <ArrowRight size={14} aria-hidden="true" />
@@ -565,8 +565,8 @@ function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
         </h2>
         <span className="sp-muted">
           If one fits an area, relabel it in{" "}
-          <Link href="/#all-replies" className="font-semibold">
-            All replies
+          <Link href="/replies?view=all&area=none" className="font-semibold">
+            Replies
           </Link>{" "}
           and it counts there.
         </span>
@@ -578,6 +578,83 @@ function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
         ))}
       </div>
     </section>
+  );
+}
+
+function TeamGrid({ drivers }: { drivers: string[] }) {
+  const lists: Record<string, Teams | undefined> = {
+    ROLE_CLARITY: useApi<Teams>("/api/hr/themes/ROLE_CLARITY/teams", 60000).data,
+    ONBOARDING_TRAINING: useApi<Teams>("/api/hr/themes/ONBOARDING_TRAINING/teams", 60000).data,
+    MANAGER_SUPPORT: useApi<Teams>("/api/hr/themes/MANAGER_SUPPORT/teams", 60000).data,
+    BELONGING: useApi<Teams>("/api/hr/themes/BELONGING/teams", 60000).data,
+    WORKLOAD: useApi<Teams>("/api/hr/themes/WORKLOAD/teams", 60000).data,
+  };
+  const ready = drivers.every((d) => lists[d]);
+  const cell = new Map<string, TeamRow>();
+  for (const d of drivers) {
+    const list = lists[d];
+    if (list?.enough) for (const r of list.rows) cell.set(`${r.name}|${d}`, r);
+  }
+  const names = [...new Set([...cell.keys()].map((k) => k.split("|")[0]))].sort((a, b) => a.localeCompare(b));
+  const eligible = drivers.map((d) => lists[d]).find((l): l is Extract<Teams, { enough: true }> => !!l?.enough)?.eligible;
+  return (
+    <LaneSection
+      lane="problems"
+      title="Which teams need a fix"
+      meta={eligible !== undefined ? `${names.length} of ${eligible} teams with 5+ answers stand out · A to Z, never ranked` : undefined}
+    >
+      {!ready ? (
+        <div className="sp-skel mx-[18px] my-4 h-32" />
+      ) : names.length === 0 ? (
+        <Row title="No team stands out" meta="Each problem is about as common in every team, so a company-wide fix fits." />
+      ) : (
+        <div className="overflow-x-auto px-[18px] py-4">
+          <table className="w-full min-w-[560px] table-fixed border-separate text-[13px]" style={{ borderSpacing: 4 }}>
+            <thead>
+              <tr>
+                <th className="w-[26%]" />
+                {drivers.map((d) => (
+                  <th key={d} scope="col" className="px-1 pb-1 text-left text-xs font-semibold leading-4 sp-muted">
+                    {driverName(d)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {names.map((name) => (
+                <tr key={name}>
+                  <th scope="row" className="pr-2 text-left font-semibold">
+                    {name}
+                  </th>
+                  {drivers.map((d) => {
+                    const r = cell.get(`${name}|${d}`);
+                    return (
+                      <td key={d} className="p-0">
+                        {r ? (
+                          <Link
+                            href={`/fixes/new?driver=${d}${r.teams.map((t) => `&team=${encodeURIComponent(t)}`).join("")}`}
+                            title={`Draft a ${driverName(d).toLowerCase()} fix for ${name}`}
+                            className="sp-num flex h-10 items-center justify-center rounded-md font-bold no-underline"
+                            style={{ background: "var(--problems)", color: "var(--on-problems)" }}
+                          >
+                            {r.n} of {r.m}
+                          </Link>
+                        ) : (
+                          <span className="block h-10 rounded-md" style={{ background: "var(--surface-sunken)" }} aria-label="Not above the company rate" />
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="sp-caption m-0 mt-2">
+            A filled box means that team raised the problem at least 2 more times than the company rate predicts, in the latest weekly snapshot. Tap it to draft a fix for that team lead. Teams under 5 answers are pooled or hidden.
+          </p>
+        </div>
+      )}
+    </LaneSection>
   );
 }
 
@@ -616,6 +693,7 @@ export function Problems({ driver }: { driver?: string }) {
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <span className="sp-caption font-semibold">Asked the bot</span>
           {groups.map((g) => (
             <Link key={g.id} href={`/problems/q-${g.id}`} scroll={false} onClick={pick} className="sp-chip" aria-current={question?.id === g.id ? "true" : undefined}>
               <MessageCircleQuestion size={14} aria-hidden="true" />
@@ -624,12 +702,13 @@ export function Problems({ driver }: { driver?: string }) {
               {inHandbook(g) ? null : <BookX size={13} aria-label="Not in the handbook" style={{ color: "var(--waiting)" }} />}
             </Link>
           ))}
+          {questions.data && !questions.data.other.text.startsWith("0 ") ? <span className="sp-caption">{questions.data.other.text}</span> : null}
+          <span className="sp-caption ml-2 font-semibold">Fits no area</span>
           <Link href="/problems/no-area" scroll={false} onClick={pick} className="sp-chip" aria-current={driver === "no-area" ? "true" : undefined}>
             <Inbox size={14} aria-hidden="true" />
-            No area
+            Replies
             <span className="sp-num font-bold">{loose.length}</span>
           </Link>
-          {questions.data ? <span className="sp-caption">{questions.data.other.text}</span> : null}
         </div>
       </nav>
 
@@ -640,6 +719,8 @@ export function Problems({ driver }: { driver?: string }) {
       ) : current ? (
         <Problem driver={current.driver} card={current} actions={actions.data} waiting={waitingOf(current.driver)} />
       ) : null}
+
+      <TeamGrid drivers={cards.some((c) => c.enough) ? cards.filter((c) => c.enough).map((c) => c.driver) : Object.keys(DRIVERS)} />
     </>
   );
 }

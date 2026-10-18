@@ -68,18 +68,7 @@ type Impact = {
     | { enough: true; total: number; top_reasons: { driver: string; n: number }[]; top_themes: { driver: string; n: number; m: number }[] };
 };
 type Milestone = { intake: string; enough: boolean; share_done?: number };
-type Quality = {
-  driver: string | null;
-  language: string;
-  state: string | null;
-  evaluated: boolean;
-  reason: string | null;
-  spot_checks: number;
-  changed: number;
-  changed_share: number | null;
-};
 
-const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
 const monthYear = (intake: string) => new Date(`${intake}-01`).toLocaleString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
 const month = (intake: string) => new Date(`${intake}-01`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
 const pct = (part: number, whole: number) => Math.round((part / whole) * 100);
@@ -558,7 +547,7 @@ function Fixes({ impact }: { impact: Impact }) {
         </div>
         <h2 className="m-0 text-[15px] font-bold leading-5">Which fixes work here?</h2>
         <Tip label="How a fix is judged">
-          Each library fix, pooled over every time it was used here. Same 1–5 check-in question before the fix and after the manager&apos;s note. The team that got the fix is compared with other teams in the same weeks, because teams often improve anyway.
+          Each library fix, pooled over every time it was used here. Same 1–5 check-in question before the fix and after the manager&apos;s note. The team that got the fix is compared with other teams in the same weeks, because teams often improve anyway. Worked means the score rose at least 0.5 more than in other teams in the same weeks. Less than that is no clear change.
         </Tip>
         <div className="grow" />
         <Legend />
@@ -595,40 +584,23 @@ function noteText(a: Action) {
 }
 
 function DoneRow({ a }: { a: Action }) {
-  const [ref, seen] = useSeen<HTMLAnchorElement>();
   const r = a.result;
   const measured = !a.hiring_side && r && a.verdict && a.verdict !== "too_early";
-  const hasBefore = !a.hiring_side && r && r.scope.n > 0;
   const diff = measured ? gain(r) : null;
-  const chart = measured ? `Team ${r.scope.before.toFixed(1)} to ${r.scope.after.toFixed(1)}. Other teams ${r.other.before.toFixed(1)} to ${r.other.after.toFixed(1)}.` : hasBefore ? `Team ${r.scope.before.toFixed(1)} before. ${a.score?.headline ?? ""}` : a.hiring_side ? "Hiring fix. No recheck question." : (a.score?.headline ?? "No score yet.");
   return (
-    <Link
-      ref={ref}
-      href={`/fixes/${a.id}`}
-      className={`sp-fixrow sp-live flex flex-wrap items-center gap-4 px-[18px] py-3.5 hover:bg-[var(--surface-sunken)]${seen ? " is-in" : ""}`}
-      style={{ color: "inherit", textDecoration: "none" }}
-    >
-      <div className="flex min-w-0 flex-[1_1_220px] flex-col gap-0.5">
+    <Link href={`/fixes/${a.id}`} className="sp-fixrow flex flex-wrap items-center gap-4 px-[18px] py-3.5 hover:bg-[var(--surface-sunken)]" style={{ color: "inherit", textDecoration: "none" }}>
+      <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-0.5">
         <span className="font-semibold">{a.title}</span>
         <span className="sp-caption">
           {a.hiring_side ? "Hiring" : driverName(a.driver)} · {fixScope(a)} · {a.owner} · Done {shortDate(a.done_at)} · {noteText(a)}
         </span>
+        {!measured && !a.hiring_side && a.score?.headline ? <span className="sp-caption">{a.score.headline}</span> : null}
       </div>
-      <div
-        className="flex flex-[2_1_280px] flex-col gap-2.5"
-        role="img"
-        aria-label={chart}
-        data-tip={chart}
-      >
-        {hasBefore ? <Dumbbell before={r.scope.before} after={measured ? r.scope.after : null} tone="var(--fixes)" big /> : null}
-        {measured && r.other.n > 0 ? (
-          <Dumbbell before={r.other.before} after={r.other.after} tone="var(--line-strong)" />
-        ) : (
-          <span className="sp-caption">{a.hiring_side ? "Hiring fix: no recheck question" : a.score?.headline}</span>
-        )}
-      </div>
-      <span className="flex-[0_0_64px] text-right text-[18px] font-bold leading-[22px]" style={{ color: a.verdict === "worked" && !a.hiring_side ? "var(--fixes)" : "var(--ink-muted)" }}>
-        {diff === null ? "–" : <Num value={diff} decimals={1} sign />}
+      <span className="flex flex-[0_0_96px] flex-col items-end">
+        <span className="sp-num text-[18px] font-bold leading-[22px]" style={{ color: a.verdict === "worked" && !a.hiring_side ? "var(--fixes)" : "var(--ink-muted)" }}>
+          {diff === null ? "–" : `${diff >= 0 ? "+" : "−"}${Math.abs(diff).toFixed(1)}`}
+        </span>
+        {diff === null ? null : <span className="sp-caption">vs other teams</span>}
       </span>
       <span className="flex-[0_0_132px]">
         {a.hiring_side || !a.verdict ? (
@@ -647,7 +619,7 @@ function DoneRow({ a }: { a: Action }) {
 type Show = "done" | "open" | "cancelled";
 
 function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
-  const [show, setShow] = useState<Show>("done");
+  const [show, setShow] = useState<Show>(() => (actions.some((a) => ["draft", "assigned", "accepted"].includes(a.status)) ? "open" : "done"));
   const [filter, setFilter] = useState<"all" | Verdict>("all");
   const open = actions
     .filter((a) => ["draft", "assigned", "accepted"].includes(a.status))
@@ -673,7 +645,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
         </div>
         <h2 className="m-0 text-[15px] font-bold leading-5">Your fixes</h2>
         <Tip label="How your fixes are judged">
-          Every fix started here. A done fix is judged on the same 1–5 check-in question before the fix and after the manager&apos;s note, against other teams in the same weeks. Open a fix to see its full result.
+          Every fix started here. A done fix is judged on the same 1–5 check-in question before the fix and after the manager&apos;s note, against other teams in the same weeks. Worked means the score rose at least 0.5 more than in other teams in the same weeks. Less than that is no clear change.
         </Tip>
         <div className="grow" />
         <Tabs
@@ -703,10 +675,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
                   ["too_early", `Too early · ${count("too_early")}`],
                 ]}
               />
-              <div className="grow" />
-              <Legend />
             </div>
-            <ScaleHead first="Fix" />
             {listed.length ? <ShowMore key={filter} rows={listed.map((a) => <DoneRow key={a.id} a={a} />)} /> : quiet("No done fix has this result.")}
             <div className="sp-caption px-[18px] py-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
               {footer}
@@ -993,81 +962,13 @@ function Intakes({ impact, shareDone }: { impact: Impact; shareDone: Map<string,
   );
 }
 
-function Quality({ quality }: { quality: Quality[] }) {
-  const [ref, seen] = useSeen<HTMLDivElement>();
-  const byLanguage = new Map<string, { checks: number; changed: number; evaluated: boolean }>();
-  for (const q of quality) {
-    const entry = byLanguage.get(q.language) ?? { checks: 0, changed: 0, evaluated: true };
-    byLanguage.set(q.language, { checks: entry.checks + q.spot_checks, changed: entry.changed + q.changed, evaluated: entry.evaluated && q.evaluated });
-  }
-  const languages = [...byLanguage.entries()].sort(([a], [b]) => (a === "ms" ? -1 : b === "ms" ? 1 : a.localeCompare(b)));
-  const checks = quality.reduce((sum, q) => sum + q.spot_checks, 0);
-  const changed = quality.reduce((sum, q) => sum + q.changed, 0);
-  const waiting = quality.filter((q) => q.evaluated && q.driver && q.state === "held");
-  return (
-    <details className="sp-card sp-fold overflow-hidden" open>
-      <summary className="flex min-h-[52px] cursor-pointer flex-wrap items-center gap-3 px-[18px] py-1.5">
-        <div className="sp-icontile sp-lane-ai">
-          <LaneIcon lane="ai" />
-        </div>
-        <span className="grow text-[15px] font-bold leading-5">AI quality watch</span>
-        <span className="sp-num text-[13px] font-bold" style={{ color: "var(--ai)" }}>
-          {checks ? `${checks - changed} of ${checks} AI labels kept by HR · last 30 days` : "No spot checks in the last 30 days"}
-        </span>
-        <ChevronDown size={18} className="sp-chev sp-muted" aria-hidden="true" />
-      </summary>
-      <div ref={ref} className={`sp-open sp-live flex flex-col gap-3.5 border-t px-[18px] pb-[18px] pt-3.5${seen ? " is-in" : ""}`} style={{ borderColor: "var(--line)" }}>
-        <div aria-hidden="true" className="flex flex-wrap gap-4 text-xs font-semibold sp-muted">
-          <span className="flex-[1_1_180px]">Language</span>
-          <span className="flex-[2_1_240px]">Random spot checks where HR kept the AI&apos;s label</span>
-        </div>
-        {languages.map(([language, q], i) => (
-          <div key={language} className="flex flex-wrap items-center gap-4">
-            <span className="flex-[1_1_180px] font-semibold">{LANGUAGES[language] ?? language}</span>
-            <div className="flex flex-[2_1_240px] items-center gap-2.5">
-              {q.evaluated && q.checks ? (
-                <>
-                  <div role="img" aria-label={`${q.checks - q.changed} of ${q.checks} kept`} data-tip={`${q.checks - q.changed} of ${q.checks} kept (${pct(q.checks - q.changed, q.checks)}%), ${q.changed} changed`} className="h-2.5 grow overflow-hidden rounded-[5px]" style={{ background: "var(--track-empty)" }}>
-                    <div className="sp-grow-x h-full" style={{ width: `${pct(q.checks - q.changed, q.checks)}%`, background: "var(--ai)", ...delay(i * 120) }} />
-                  </div>
-                  <span className="sp-num flex-[0_0_64px] font-bold">
-                    {q.checks - q.changed} of {q.checks}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <div className="sp-bar-hatch h-2.5 grow rounded-[5px]" />
-                  <span className="flex-[0_0_auto] text-[13px] font-semibold sp-muted">{q.evaluated ? "No spot checks yet" : "Not evaluated: labels wait for HR"}</span>
-                </>
-              )}
-            </div>
-          </div>
-        ))}
-        {waiting.length ? (
-          <div className="flex flex-col gap-1.5 border-t pt-3 text-[13px]" style={{ borderColor: "var(--line-soft)" }}>
-            {waiting.map((q) => (
-              <span key={`${q.driver}|${q.language}`} className="flex flex-wrap items-center gap-x-2">
-                <Waiting>Held</Waiting>
-                <span className="font-semibold">
-                  {driverName(q.driver!)} · {LANGUAGES[q.language] ?? q.language}
-                </span>
-                <span className="sp-muted">{q.reason ?? "New labels wait for HR"}</span>
-              </span>
-            ))}
-          </div>
-        ) : null}
-      </div>
-    </details>
-  );
-}
-
 export default function Page() {
   const impact = useApi<Impact>("/api/hr/impact");
   const milestones = useApi<Milestone[]>("/api/hr/milestones");
-  const quality = useApi<Quality[]>("/api/hr/quality");
   const actions = useApi<Action[]>("/api/hr/actions");
-  if (!impact.data || !milestones.data || !quality.data || !actions.data)
-    return impact.error || milestones.error || quality.error || actions.error ? <Empty title="Could not load Fixes and impact" sub="Try again in a moment." /> : <Loading />;
+  const [tab, setTab] = useState<"fixes" | "impact" | null>(null);
+  if (!impact.data || !milestones.data || !actions.data)
+    return impact.error || milestones.error || actions.error ? <Empty title="Could not load Fixes and impact" sub="Try again in a moment." /> : <Loading />;
   const { retention, intakes, day14, speed, typical_days_reply_to_done: typical } = impact.data;
   const shareDone = new Map(milestones.data.map((m) => [m.intake, m.share_done]));
   const enough = intakes.filter((i): i is Extract<Intake, { enough: true }> => i.enough);
@@ -1079,6 +980,8 @@ export default function Page() {
   const steps = impact.data.milestone_steps;
   const period = intakes.length ? `${monthYear(intakes[0].intake)} – ${monthYear(intakes.at(-1)!.intake)} · ${intakes.length} intakes${retention.enough ? ` · ${retention.n} hired` : ""}` : null;
   const rates = enough.map((i) => i.response_rate);
+  const openCount = actions.data.filter((a) => ["draft", "assigned", "accepted"].includes(a.status)).length;
+  const view = tab ?? (openCount ? "fixes" : "impact");
 
   return (
     <div className="flex flex-col gap-5">
@@ -1094,13 +997,28 @@ export default function Page() {
             ) : null}
             <Tip label="What these numbers count">Groups of 5 or more only, so no one can be picked out. Serious concerns are never counted. No team or manager is ranked against another.</Tip>
           </div>
-          <Button variant="primary" lane="fixes" href="/problems">
-            New fix
-          </Button>
+          <span className="flex flex-wrap items-center gap-3">
+            <Tabs
+              label="Show"
+              value={view}
+              onChange={setTab}
+              items={[
+                ["fixes", `Fixes · ${openCount} open`],
+                ["impact", "Impact"],
+              ]}
+            />
+            <Button variant="primary" lane="fixes" href="/problems">
+              New fix
+            </Button>
+          </span>
         </header>
       </Reveal>
 
-      <Reveal wait={80}>
+      {view === "fixes" ? (
+        <YourFixes actions={actions.data} footer={`${impact.data.fixes_line} ${impact.data.fixes_note}.`} />
+      ) : (
+        <>
+          <Reveal wait={80}>
         <Hero impact={impact.data} />
       </Reveal>
 
@@ -1159,10 +1077,6 @@ export default function Page() {
       </div>
 
       <Reveal>
-        <YourFixes actions={actions.data} footer={`${impact.data.fixes_line} ${impact.data.fixes_note}.`} />
-      </Reveal>
-
-      <Reveal>
         <Fixes impact={impact.data} />
       </Reveal>
 
@@ -1179,9 +1093,8 @@ export default function Page() {
         <Intakes impact={impact.data} shareDone={shareDone} />
       </Reveal>
 
-      <Reveal>
-        <Quality quality={quality.data} />
-      </Reveal>
+        </>
+      )}
     </div>
   );
 }

@@ -197,7 +197,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
     String(message.text),
     /Several new hires in Accounts Payable Asia named role clarity in the last weekly snapshot \(8 of 11 who answered\)\./,
   );
-  assert.match(String(message.text), /Due 2026-10-26\./);
+  assert.match(String(message.text), /Due Mon 26 Oct\./);
   assert.equal((await (await nightly()).json()).alerts, 0);
 });
 

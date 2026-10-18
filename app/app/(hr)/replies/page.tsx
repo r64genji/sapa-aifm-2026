@@ -1,15 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
+import { QualityWatch } from "@/components/sapa/quality";
 import { ReplyRow, type ReplyItem } from "@/components/sapa/reply";
-import { Empty, Loading, PageHeader, Tabs } from "@/components/sapa/ui";
+import { DRIVERS, Empty, Loading, PageHeader, Tabs } from "@/components/sapa/ui";
 
 type QueueRow = { id: string; escalate: boolean | null; status: string | null; note: string | null };
 type Before = { status: string | null; drivers: string[]; context_tags: string[]; changed_by_hr: boolean | null };
 
-export default function Page() {
-  const [view, setView] = useState<"needs" | "all">("needs");
+const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
+const part = (item: ReplyItem, i: number) => item.byline.split(" · ")[i] ?? "";
+const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+
+function Filter({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: [string, string][] }) {
+  return (
+    <select aria-label={label} className="sp-input" style={{ width: "auto" }} value={value} onChange={(e) => onChange(e.target.value)}>
+      <option value="all">{label}: all</option>
+      {options.map(([key, text]) => (
+        <option key={key} value={key}>
+          {text}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+function Replies() {
+  const params = useSearchParams();
+  const [view, setView] = useState<"needs" | "all">(params.get("view") === "all" ? "all" : "needs");
+  const [area, setArea] = useState(params.get("area") ?? "all");
+  const [day, setDay] = useState("all");
+  const [team, setTeam] = useState("all");
+  const [language, setLanguage] = useState("all");
   const [checked, setChecked] = useState<Record<string, Before>>({});
   const [error, setError] = useState<string | null>(null);
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
@@ -19,7 +43,15 @@ export default function Page() {
   const notes = new Map(queue.data.map((row) => [row.id, row.note]));
   const needs = new Set(queue.data.filter((row) => !row.escalate && row.status !== "reviewed").map((row) => row.id));
   const all = [...replies.data].sort((a, b) => b.created_at.localeCompare(a.created_at)).map((item) => ({ ...item, note: notes.get(item.id) ?? null }));
-  const shown = view === "needs" ? all.filter((item) => needs.has(item.id) || item.id in checked) : all;
+  const listed = view === "needs" ? all.filter((item) => needs.has(item.id) || item.id in checked) : all;
+  const shown = listed.filter(
+    (item) =>
+      (area === "all" || (area === "none" ? !item.drivers.length : item.drivers.includes(area))) &&
+      (day === "all" || part(item, 2) === day) &&
+      (team === "all" || part(item, 1) === team) &&
+      (language === "all" || item.language === language),
+  );
+  const filtered = shown.length < listed.length;
 
   const guard = async (action: () => Promise<unknown>) => {
     setError(null);
@@ -41,12 +73,17 @@ export default function Page() {
       await apiSend(`/api/hr/replies/${id}/undo`, "POST", { ...checked[id], changed_by_hr: !!checked[id].changed_by_hr });
       setChecked((c) => Object.fromEntries(Object.entries(c).filter(([key]) => key !== id)));
     });
+  const clear = () => {
+    setArea("all");
+    setDay("all");
+    setTeam("all");
+    setLanguage("all");
+  };
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Replies"
-        sub="Each check-in as the new hire saw it: the taps, the questions and their words. Check the label the AI gave it."
         right={
           <Tabs
             label="Show"
@@ -59,13 +96,33 @@ export default function Page() {
           />
         }
       />
+      <QualityWatch />
+      <div role="group" aria-label="Filter replies" className="flex flex-wrap items-center gap-2">
+        <Filter label="Problem area" value={area} onChange={setArea} options={[...Object.entries(DRIVERS), ["none", "Nothing to act on"]]} />
+        <Filter label="Check-in" value={day} onChange={setDay} options={unique(all.map((item) => part(item, 2))).map((d) => [d, d])} />
+        <Filter label="Team" value={team} onChange={setTeam} options={unique(all.map((item) => part(item, 1))).map((t) => [t, t])} />
+        <Filter label="Language" value={language} onChange={setLanguage} options={unique(all.map((item) => item.language ?? "")).map((l) => [l, LANGUAGES[l] ?? l])} />
+        {filtered ? (
+          <>
+            <span className="sp-caption">
+              {shown.length} of {listed.length}
+            </span>
+            <button type="button" className="sp-link" onClick={clear}>
+              Clear filters
+            </button>
+          </>
+        ) : null}
+      </div>
       {error ? (
         <div role="alert" className="text-sm" style={{ color: "var(--serious)" }}>
           {error}
         </div>
       ) : null}
       {shown.length === 0 ? (
-        <Empty title={view === "needs" ? "Nothing to check" : "No replies yet"} sub={view === "needs" ? "The AI was sure of every label. You can still change any in All." : undefined} />
+        <Empty
+          title={filtered ? "No reply matches these filters" : view === "needs" ? "Nothing to check" : "No replies yet"}
+          sub={!filtered && view === "needs" ? "The AI was sure of every label. You can still change any in All." : undefined}
+        />
       ) : (
         <div className="flex flex-col gap-4">
           {shown.map((item) => (
@@ -82,5 +139,13 @@ export default function Page() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Replies />
+    </Suspense>
   );
 }
