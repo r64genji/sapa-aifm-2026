@@ -13,33 +13,78 @@ Our plan, not an organiser rule. The AIFM guide only asks for evidence (slide 3)
 
 ## Part 1. HR interviews
 
-**How many:** 3–4 people, 15 minutes each.
+**How many:** 3–4 people, 30 minutes each: 15 on the problem (A), 15 on the app (B). If they give only 15 minutes, do A only.
 
 **Who:** HR staff at companies that hire new people every month. Small HR teams (1–3 people) are the best match for Sapa. Sources:
 1. Our AIFM mentor group (WhatsApp).
 2. The organisers' industry contacts (josephine@penangdigitalisation.com).
-3. Friends and family in HR, and LinkedIn. Keep the message short and ask for 15 minutes.
+3. Friends and family in HR, and LinkedIn. Keep the message short and ask for 30 minutes.
 
 **If nobody replies:** use published research and say so on slide 3. A real quote is stronger.
 
 **Before you start:** say what we are building, say we will quote them only with permission, and never ask about named employees.
 
-### Questions
+### How to ask
 
-1. Tell me about the last new hire who left in the first 6 months. When did you find out they were unhappy?
-2. What do you do today to check on new hires? Who does it, and how often?
-3. What do they say in the exit interview? Do the same reasons come up again and again?
-4. How many new hires leave in the first 6 months? What does one early leaver cost you?
-5. Would new hires answer honestly on Telegram? What would worry you, or them?
-6. If a tool gave you a weekly summary of common problems, what would you do with it?
-7. What would make you not trust it?
-8. Would you let Sapa run for three monthly intakes, each until Month 6?
+- Do not show or describe Sapa until part B. Once they have seen it, they talk about the app, not their problem.
+- Ask what they did last time, not what they would do. "Would you…" answers are guesses.
+- After each answer, ask "Why?" or "Can you give me an example?", then stay quiet.
+- Do not defend the app. Write down the criticism and say thank you.
+
+### Part A. The problem (before you show anything)
+
+Must-ask questions are marked ★.
+
+How they do it today:
+
+1. ★ Walk me through a new hire's first 3 months. Who checks on them, when, and how?
+2. What tools do you use for that: HR system, forms, WhatsApp, spreadsheets?
+
+The pain:
+
+3. ★ Tell me about the last new hire who left in the first 6 months. When and how did you find out they were unhappy?
+4. Looking back, were there early signs? Why did nobody catch them?
+5. What do exit interviews say? Do the same reasons come up again and again?
+6. ★ How many new hires leave in the first 6 months? What does one early leaver cost you: rehiring, training, agency fees, lost work?
+7. What is the most annoying part of checking on new hires?
+
+What they have tried, and whether they plan to fix it:
+
+8. ★ What have you tried to fix this? What happened? Why did you stop?
+9. Have you paid for a tool, survey or consultant for this? How much?
+10. ★ Where does early turnover rank on your HR list this year? What is above it?
+11. Is anyone planning to fix it? Who decides, and whose budget pays?
+
+For HR consultancies, swap 8–11 for:
+
+- How often do clients ask you about early turnover? What do you sell them?
+- Where does your current method break or cost the most time?
+- What do clients do after your report? How do you know if it worked?
+
+Close: "Who else should I talk to about this?"
+
+### Part B. The app (after part A)
+
+Show the dashboard with fake data. Do not explain it first.
+
+12. ★ After 10 seconds: "In your own words, what does this do?"
+13. Give the three tasks from Test 4 below. Ask them to think out loud. Note where they pause.
+14. ★ Which problem from earlier would this solve? Which would it not?
+15. What here looks like a tool you already use? What felt unfamiliar or confusing?
+16. Who do you think can see a new hire's answers? (Checks trust and whether the privacy screen works.)
+17. Would new hires answer honestly on Telegram? What would worry you, or them?
+18. What would make you not trust the weekly summary?
+19. How would this fit your week and your HR system? Who else must say yes?
+20. Rate 1–5: clarity, ease of use, usefulness, trust.
+21. What one thing would you change first?
+22. ★ Would you let Sapa run for three monthly intakes, each until Month 6? Who would need to approve it?
 
 ### Write down
 
 - Exact quotes. Ask: "Can we use this on a slide, with or without your name?"
 - Numbers: early-leaver rate, cost per leaver, check-in frequency.
 - The sentence "we find out when ___".
+- How they handle it today, and whether fixing it is on this year's plan.
 
 Save quotes in `quotes.md` with the person's role, company type and the permission they gave.
 
