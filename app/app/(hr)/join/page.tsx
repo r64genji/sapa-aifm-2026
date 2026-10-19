@@ -24,6 +24,16 @@ function CopyButton({ link }: { link: string }) {
   return <Button onClick={copy}>{copied ? "Copied" : "Copy link"}</Button>;
 }
 
+function SaveButton({ link, name }: { link: string; name: string }) {
+  const save = async () => {
+    const a = document.createElement("a");
+    a.href = await QRCode.toDataURL(link, { margin: 2, width: 1024 });
+    a.download = `${name}.png`;
+    a.click();
+  };
+  return <Button onClick={save}>Save image</Button>;
+}
+
 function TeamCard({ row, leads }: { row: TeamLink; leads: boolean }) {
   const link = leads ? row.lead_link : row.link;
   return (
@@ -35,7 +45,10 @@ function TeamCard({ row, leads }: { row: TeamLink; leads: boolean }) {
       {link ? (
         <>
           <Qr link={link} label={leads ? `${row.team} as team lead ${row.lead}` : row.team} />
-          <CopyButton link={link} />
+          <div className="flex flex-wrap gap-2">
+            <CopyButton link={link} />
+            <SaveButton link={link} name={`sapa-join-${leads ? "lead-" : ""}${row.team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} />
+          </div>
         </>
       ) : (
         <span className="sp-muted">Phone linked. Gets fixes in Telegram.</span>
