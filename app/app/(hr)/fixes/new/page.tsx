@@ -499,9 +499,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
             </div>
             <div className="flex flex-col gap-3 p-4">
               <Tabs label="Language" value={lang} onChange={setLang} items={LANGS} />
-              {mode === "ai" && decision === "accepted" ? (
-                <AiMark state="confirmed" reviewer={hr} label={lang === "en" ? "Drafted with AI" : "AI translation, accepted"} />
-              ) : pending ? (
+              {pending ? (
                 <AiMark label={lang === "en" ? "English draft" : "AI translation, not accepted yet"} />
               ) : lang !== "en" && !notes[lang] ? (
                 <span className="sp-caption">Write the {lang === "ms" ? "Bahasa Malaysia" : "中文"} version yourself. Only English and Bahasa Malaysia are needed.</span>
