@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./live.css";
 import { Shield } from "lucide-react";
-import { useApi } from "./data";
+import { apiGet } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
 export type ReplyItem = {
@@ -41,10 +41,28 @@ export type ReplyRowProps = {
   whole?: boolean;
 };
 
+type Translated = { label: string; text: string };
+
+const translations = new Map<string, Promise<Translated | null>>();
+
+function translationOf(id: string) {
+  let found = translations.get(id);
+  if (!found) {
+    found = apiGet<{ translation?: Translated | null }>(`/api/hr/replies/${id}/translation`)
+      .then((data) => data.translation ?? null)
+      .catch(() => null);
+    translations.set(id, found);
+    found.then((value) => value ?? translations.delete(id));
+  }
+  return found;
+}
+
 export function TranslatedQuote({ id, language, text, evidence, size }: { id: string; language?: string; text: string; evidence?: string | null; size?: "md" | "lg" }) {
   const [original, setOriginal] = useState(false);
-  const { data } = useApi<{ translation?: { label: string; text: string } | null }>(language && language !== "en" ? `/api/hr/replies/${id}/translation` : null, 0);
-  const translated = data?.translation;
+  const [translated, setTranslated] = useState<Translated | null>(null);
+  useEffect(() => {
+    if (language && language !== "en") translationOf(id).then(setTranslated);
+  }, [id, language]);
   if (!translated) return <Quote text={text} evidence={evidence} size={size} />;
   return (
     <div className="flex flex-col gap-1.5">
