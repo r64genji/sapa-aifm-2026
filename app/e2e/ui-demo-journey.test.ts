@@ -86,9 +86,9 @@ test("Demo beats 4 and 5: Raj marks it done, the hire gets the update, and the D
   assert.equal(sent[1], question("ROLE_CLARITY"));
 });
 
-test("Demo beat 6: the Fixes and impact page shows 80 of 99 still employed at Month 6", async () => {
+test("Demo beat 6: the Fixes and impact page shows 80 of 99 still here after 6 months", async () => {
   await page.goto(`${appUrl}/fixes`);
-  await page.getByText(/80 of 99 still employed at Month 6/).first().waitFor();
+  await page.getByText(/80 of 99 still here after 6 months/).first().waitFor();
 });
 
 test("Every demo page loads at 390 px with no sideways scroll", async () => {

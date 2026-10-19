@@ -137,7 +137,7 @@ test("R48: retention pools every intake of the agency from 30 people and never a
     enough: true,
     k,
     n,
-    text: `${k} of ${n} still employed at Month 6`,
+    text: `${k} of ${n} still here after 6 months`,
     note: trend,
   });
   assert.deepEqual((await overview(await hrToken("agency@bintang.test"))).retention, {

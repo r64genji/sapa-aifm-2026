@@ -48,7 +48,7 @@ before(async () => {
 });
 
 test("R42: the seed shows 80 of 99 against the usual 73 in 100", { todo: "R42: lib/impact.ts says \"a usual 73 of 100\", docs/05 says \"73 in 100\"" }, async () => {
-  assert.equal((await impact()).text, "80 of 99 still employed at Month 6, against a usual 73 in 100");
+  assert.equal((await impact()).text, "80 of 99 still here after 6 months, compared with a usual 73 in 100");
 });
 
 test("R42: the seed shows the entered intakes against the usual baseline, with the trend line, and only an HR admin sets the baseline", async () => {
@@ -58,7 +58,7 @@ test("R42: the seed shows the entered intakes against the usual baseline, with t
     enough: true,
     k,
     n,
-    text: `${k} of ${n} still employed at Month 6, against a usual ${organisation.retention_baseline_kept} of ${organisation.retention_baseline_of}`,
+    text: `${k} of ${n} still here after 6 months, compared with a usual ${organisation.retention_baseline_kept} of ${organisation.retention_baseline_of}`,
     note: trend,
   });
   assert.equal((await hrRequest("/api/hr/settings/retention-baseline", "PUT", { kept: 3, of: 5 })).status, 403);
@@ -68,7 +68,7 @@ test("R42: the seed shows the entered intakes against the usual baseline, with t
     body: JSON.stringify({ kept: 3, of: 5 }),
   });
   assert.equal(admin.status, 200);
-  assert.equal((await impact()).text, `${k} of ${n} still employed at Month 6, against a usual 3 of 5`);
+  assert.equal((await impact()).text, `${k} of ${n} still here after 6 months, compared with a usual 3 of 5`);
 });
 
 test("R42: a confirmed DELETE leaves the retention figure unchanged", async () => {

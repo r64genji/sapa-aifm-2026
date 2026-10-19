@@ -81,10 +81,10 @@ export function DemoBar() {
         </span>
         {s ? (
           <span className={`${open ? "flex" : "hidden"} flex-wrap gap-3 md:ml-auto md:flex`}>
-            <Light ok={s.main_ai.reachable} label="Main AI" title={s.main_ai.reachable ? `Reachable · ${(s.main_ai.ms / 1000).toFixed(1)} s` : "Not reachable"} />
-            <Light ok={s.fallback_ai.reachable} label="Fallback AI" title={`$${s.fallback_ai.spend.toFixed(2)} of $${s.fallback_ai.cap.toFixed(2)} cap used`} />
-            <Light ok={s.telegram.reachable && s.telegram.webhook_set} label="Telegram" title={s.telegram.last_error ?? (s.telegram.webhook_set ? "Webhook OK" : "Webhook not set")} />
-            <Light ok={s.phones.live_hire_bound && s.phones.demo_manager_bound} label="Phones" title={`Live hire ${s.phones.live_hire_bound ? "bound" : "not bound"} · Manager ${s.phones.demo_manager_bound ? "bound" : "not bound"}`} />
+            <Light ok={s.main_ai.reachable} label="AI (main)" title={s.main_ai.reachable ? `Reachable · ${(s.main_ai.ms / 1000).toFixed(1)} s` : "Not reachable"} />
+            <Light ok={s.fallback_ai.reachable} label="AI (backup)" title={`$${s.fallback_ai.spend.toFixed(2)} of $${s.fallback_ai.cap.toFixed(2)} spending limit used`} />
+            <Light ok={s.telegram.reachable && s.telegram.webhook_set} label="Telegram" title={s.telegram.last_error ?? (s.telegram.webhook_set ? "Telegram link OK" : "Telegram link not set up")} />
+            <Light ok={s.phones.live_hire_bound && s.phones.demo_manager_bound} label="Linked phones" title={`Live hire ${s.phones.live_hire_bound ? "bound" : "not bound"} · Manager ${s.phones.demo_manager_bound ? "bound" : "not bound"}`} />
           </span>
         ) : status.error ? <span className="sp-caption md:ml-auto">Status not available</span> : null}
       </div>

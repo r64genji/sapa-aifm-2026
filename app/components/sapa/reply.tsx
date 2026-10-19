@@ -224,7 +224,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
           )}
           {confidence ? (
             <span className={`sp-confidence sp-confidence-${confidence}`}>
-              {confidence[0].toUpperCase() + confidence.slice(1)} confidence
+              {{ low: "AI not sure", medium: "AI fairly sure", high: "AI sure" }[confidence]}
             </span>
           ) : null}
           {chat && item.evidence_quote ? (

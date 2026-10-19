@@ -63,9 +63,9 @@ export async function retention(organisationId: string, agency: string | null = 
   const against =
     agency || org.retention_baseline_of === null
       ? ""
-      : `, against a usual ${org.retention_baseline_kept} of ${org.retention_baseline_of}`;
+      : `, compared with a usual ${org.retention_baseline_kept} of ${org.retention_baseline_of}`;
   return n >= POOL
-    ? { enough: true, k, n, text: `${k} of ${n} still employed at Month 6${against}`, note: TREND }
+    ? { enough: true, k, n, text: `${k} of ${n} still here after 6 months${against}`, note: TREND }
     : { enough: false, message: `Too few to tell yet (${n} of ${POOL})`, note: TREND };
 }
 
