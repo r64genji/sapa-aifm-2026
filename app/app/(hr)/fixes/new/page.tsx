@@ -39,6 +39,7 @@ type View = {
   telegram: { alert: string; due: string; accept: string; done: string };
 };
 type Suggestion = { title: string; steps: string; notes: Notes | null; entryId: string | null; reason: string };
+type Draft = { id: string; title: string; steps: string; notes: Notes; suggestion: Suggestion | null; decision: Decision };
 type Mode = "ai" | "library" | "none";
 type Decision = "pending" | "accepted" | "rejected";
 type Sent = { held: boolean; alert_sent: boolean; alert_label: string | null; alert_on: string; manager: string | null };
@@ -74,6 +75,8 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   const [lang, setLang] = useState<"en" | "ms" | "zh">("en");
   const [entryId, setEntryId] = useState<string | null>(null);
   const [ownFix, setOwnFix] = useState(false);
+  const [drafts, setDrafts] = useState<Draft[]>([]);
+  const [draftId, setDraftId] = useState<string | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
   const [scopeId, setScopeId] = useState("");
   const [weeks, setWeeks] = useState(1);
@@ -143,19 +146,40 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     }
   };
 
-  const pick = (e: Entry) =>
-    run(async () => {
-      await apiSend(`/api/hr/actions/${id}`, "PATCH", { library_entry_id: e.id, title: e.title, steps: e.text });
-      setSuggestion(null);
-      setMode("library");
-      setTitle(e.title);
-      setSteps(e.text);
-      setNotes({ ...EMPTY, ...e.notes });
-      setEntryId(e.id);
-      setOwnFix(false);
-      setBanner(null);
-      setMenu(false);
-    });
+  const stash = () => {
+    if (!draftId) return;
+    setDrafts((all) => all.map((d) => (d.id === draftId ? { ...d, title, steps, notes, suggestion, decision } : d)));
+  };
+
+  const pick = (e: Entry) => {
+    stash();
+    setDraftId(null);
+    setSuggestion(null);
+    setMode("library");
+    setDecision("pending");
+    setTitle(e.title);
+    setSteps(e.text);
+    setNotes({ ...EMPTY, ...e.notes });
+    setEntryId(e.id);
+    setOwnFix(false);
+    setBanner(null);
+    setMenu(false);
+  };
+
+  const openDraft = (d: Draft) => {
+    stash();
+    setDraftId(d.id);
+    setSuggestion(d.suggestion);
+    setMode(d.suggestion ? "ai" : "library");
+    setDecision(d.decision);
+    setTitle(d.title);
+    setSteps(d.steps);
+    setNotes(d.notes);
+    setEntryId(null);
+    setOwnFix(true);
+    setBanner(null);
+    setMenu(false);
+  };
 
   const filled = useRef(false);
   useEffect(() => {
@@ -183,12 +207,18 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wanted, entries, id]);
 
-  const addOwn = (fixName = name) =>
+  const addOwn = (fixName = name, reuse: string | null = null) =>
     run(async () => {
+      stash();
       setMenu(false);
       setAdding(false);
       setDrafting(fixName.trim().slice(0, 60));
       const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName.trim().slice(0, 60) }).finally(() => setDrafting(null));
+      const next = reuse ?? crypto.randomUUID();
+      const written = result.notes ? { suggestion: { title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." }, notes: result.notes } : { suggestion: null, notes: EMPTY };
+      const draft: Draft = { id: next, title: result.title, steps: result.notes ? result.steps : "", notes: written.notes, suggestion: written.suggestion, decision: "pending" };
+      setDrafts((all) => (reuse ? all.map((d) => (d.id === reuse ? draft : d)) : [...all, draft]));
+      setDraftId(next);
       setOwnFix(true);
       setEntryId(null);
       setNotes(EMPTY);
@@ -235,7 +265,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     setDecision("pending");
   };
 
-  const tryAgain = () => addOwn(suggestion!.title);
+  const tryAgain = () => addOwn(suggestion!.title, draftId);
 
   const pending = mode === "ai" && decision === "pending" && !drafting;
   const noteOk = !!notes.en.trim() && !!notes.ms.trim();
@@ -261,6 +291,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       await apiSend(`/api/hr/actions/${id}`, "PATCH", {
         title: title.trim(),
         steps: steps.trim(),
+        ...(!ownFix && entry ? { library_entry_id: entry.id } : {}),
         scope: target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
@@ -333,7 +364,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 >
                   <span className="flex min-w-0 flex-col">
                     <span className="truncate font-semibold">{ownFix ? (title || "Your own fix") : (entry?.title ?? "Pick a fix")}</span>
-                    <span className="sp-caption truncate">{ownFix ? "Your own fix · saved to the library when you send" : (entry?.result ?? "")}</span>
+                    <span className="sp-caption truncate">{ownFix ? "Draft · saved to the library when you send" : (entry?.result ?? "")}</span>
                   </span>
                   <ChevronDown size={16} aria-hidden="true" />
                 </button>
@@ -346,8 +377,16 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                   </div>
                 ) : null}
                 {menu ? (
-                  <div role="dialog" aria-label="Fix library" className="sp-card absolute left-0 right-0 top-full z-10 mt-1 flex flex-col" style={{ boxShadow: "var(--shadow-pop)" }}>
+                  <div role="dialog" aria-label="Fix library" className="sp-card mt-1 flex flex-col" style={{ boxShadow: "var(--shadow-pop)" }}>
                     <div className="sp-section-meta px-4 py-2">Fix library · {driverName(view.driver)} · {library.length}</div>
+                    {drafts.map((d) => (
+                      <div key={d.id} className="flex items-center gap-1 border-t" style={{ borderColor: "var(--line-soft)" }}>
+                        <button type="button" className="flex min-w-0 flex-1 flex-col px-4 py-2 text-left" style={{ background: "none", border: 0, font: "inherit", cursor: "pointer" }} aria-pressed={d.id === draftId} onClick={() => openDraft(d)}>
+                          <span className="font-semibold">{d.id === draftId ? title || d.title : d.title}</span>
+                          <span className="sp-caption">Draft · saved to the library when you send</span>
+                        </button>
+                      </div>
+                    ))}
                     {library.map((e) => (
                       <div key={e.id} className="flex items-center gap-1 border-t" style={{ borderColor: "var(--line-soft)" }}>
                         <button type="button" className="flex min-w-0 flex-1 flex-col px-4 py-2 text-left" style={{ background: "none", border: 0, font: "inherit", cursor: "pointer" }} aria-pressed={e.id === entryId && !ownFix} onClick={() => pick(e)}>
@@ -366,7 +405,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                             Name your fix
                           </label>
                           <input id="new-fix" className="sp-input" maxLength={60} placeholder="e.g. Weekly 1:1 with a mentor" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
-                          <div className="flex gap-2">
+                          <div className="flex items-start gap-2">
                             <Button onClick={() => setAdding(false)}>Cancel</Button>
                             <Button variant="primary" lane="fixes" disabled={!name.trim() || busy} why={!name.trim() ? "Name the fix first" : null} onClick={() => addOwn()}>
                               Add and use
