@@ -421,6 +421,7 @@ export async function assignAction(
   id: string,
   managerId: string | null,
   dueInDays: number,
+  release = true,
 ) {
   const db = createAdminClient();
   const action = await loadAction(organisationId, id);
@@ -480,7 +481,7 @@ export async function assignAction(
   }
   await audit(actor, "assign_action", id);
   await signal(organisationId, "action");
-  await releaseAlerts();
+  if (release) await releaseAlerts();
   const { data: after, error: afterError } = await db.from("actions").select("alert_sent_at").eq("id", id).single();
   if (afterError) throw afterError;
   return {
@@ -515,7 +516,7 @@ export async function sendBatch(
       .select("id")
       .single();
     if (copyError) throw copyError;
-    const result = await assignAction(organisationId, actor, copy.id, manager_id, dueInDays);
+    const result = await assignAction(organisationId, actor, copy.id, manager_id, dueInDays, false);
     if ("error" in result) {
       const { error: dropError } = await db.from("actions").delete().eq("id", copy.id);
       if (dropError) throw dropError;
@@ -532,6 +533,7 @@ export async function sendBatch(
   if (results.some((r) => r.id)) {
     const { error: dropError } = await db.from("actions").delete().eq("id", id);
     if (dropError) throw dropError;
+    await releaseAlerts();
   }
   return { batch_id: batchId, sent: results };
 }
@@ -646,7 +648,7 @@ export async function releaseAlerts() {
   const { data, error } = await createAdminClient().rpc("alerts_claim", { at: (await now()).toISOString() });
   if (error) throw error;
   const ids = data as { id: string }[];
-  for (const { id } of ids) await sendAlert(id).catch((error) => console.error(error));
+  await Promise.all(ids.map(({ id }) => sendAlert(id).catch((error) => console.error(error))));
   return ids.length;
 }
 

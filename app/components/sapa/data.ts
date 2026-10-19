@@ -44,7 +44,7 @@ export function useApi<T>(path: string | null, refreshInterval = 60000) {
 
 export async function apiSend<T = unknown>(path: string, method: "POST" | "PUT" | "PATCH" | "DELETE" = "POST", body?: unknown): Promise<T> {
   const result = await request(path, { method, body: body === undefined ? undefined : JSON.stringify(body) });
-  await refreshAll();
+  void refreshAll();
   return result as T;
 }
 
