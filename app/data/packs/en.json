@@ -65,9 +65,7 @@
   "say": {"prompt": "Type the message you want to send to your lead, in any language.", "label": "AI suggestion. Check it before you send:", "send": "Copy it and send it to your lead yourself. Sapa does not send or keep it.", "down": "Sorry, I cannot help with that right now. Please try again later."},
   "qa": {
     "askPrompt": "Type your question after /ask, or just type it here.",
-    "label": "AI answer",
-    "from": "From the handbook:",
-    "hr": "To check with HR:",
+    "disclaimer": "Disclaimer: This is an AI answer, double check with HR for important information.",
     "unknown": "I don't know yet. I have logged your question for HR, without your name.",
     "greeting": "Hi, I am Sapa. Ask me anything about the company handbook, like leave, pay day or overtime. You can also type /help.",
     "important": "This is an important matter, so I will not answer it. Please speak to HR directly:",
@@ -222,6 +220,152 @@
       "stillNot": "What is still not working?",
       "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
       "done": "Done"
+    },
+    "probe": {
+      "skip": "Skip",
+      "example": "Can you give one example from this week?",
+      "effect": "How does that affect your work?",
+      "help": "What would make it easier?",
+      "topics": {
+        "ROLE_CLARITY": {
+          "open": "What is not clear about what is expected of you?",
+          "words": [
+            "expect",
+            "goal",
+            "task",
+            "role",
+            "duty",
+            "duties",
+            "responsib",
+            "priorit",
+            "instruct",
+            "kpi",
+            "target",
+            "scope",
+            "assign",
+            "confus",
+            "unsure"
+          ]
+        },
+        "MANAGER_SUPPORT": {
+          "open": "What did you need from your manager this week?",
+          "words": [
+            "manager",
+            "boss",
+            "supervisor",
+            "lead",
+            "feedback",
+            "support",
+            "guidance",
+            "available",
+            "meeting",
+            "reply",
+            "respond",
+            "answer",
+            "ignore",
+            "coach",
+            "mentor"
+          ]
+        },
+        "BELONGING": {
+          "open": "What made it hard to work with your team this week?",
+          "words": [
+            "team",
+            "colleague",
+            "coworker",
+            "group",
+            "lunch",
+            "remote",
+            "shift",
+            "includ",
+            "exclud",
+            "introduc",
+            "buddy",
+            "alone",
+            "friend",
+            "social"
+          ]
+        },
+        "ONBOARDING_TRAINING": {
+          "open": "Which part of your work did the training not cover?",
+          "words": [
+            "train",
+            "course",
+            "orientation",
+            "onboard",
+            "learn",
+            "teach",
+            "shadow",
+            "manual",
+            "tutorial",
+            "session",
+            "handbook",
+            "sop",
+            "practice",
+            "hands"
+          ]
+        },
+        "WORKLOAD": {
+          "open": "What takes up most of your time this week?",
+          "words": [
+            "workload",
+            "deadline",
+            "overtime",
+            "hour",
+            "busy",
+            "urgent",
+            "pile",
+            "heavy",
+            "rush",
+            "backlog",
+            "task",
+            "report",
+            "time",
+            "understaffed",
+            "short",
+            "ot"
+          ]
+        }
+      },
+      "flip": [
+        "fine",
+        "good",
+        "great",
+        "ok",
+        "okay",
+        "nothing",
+        "nvm",
+        "nevermind",
+        "nope",
+        "no problem",
+        "no issue",
+        "all good",
+        "its fine",
+        "thanks",
+        "thank you"
+      ],
+      "hr": [
+        "pay",
+        "paid",
+        "salary",
+        "wage",
+        "bonus",
+        "claim",
+        "leave",
+        "probation",
+        "sick",
+        "medical",
+        "doctor",
+        "health",
+        "legal",
+        "lawyer",
+        "law",
+        "contract",
+        "resign",
+        "advice",
+        "advise",
+        "should i"
+      ]
     }
   },
   "offer": {

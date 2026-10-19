@@ -13,18 +13,6 @@ const texts = async (chat: number, from: number) => ((await sentTo(chat)) as Mes
 const action = (id: string, path: string, body?: Record<string, unknown>) => hrRequest(`/api/hr/actions/${id}${path}`, "POST", body);
 const detail = async (id: string) => (await (await hrRequest(`/api/hr/actions/${id}`, "GET")).json()) as Record<string, any>;
 
-const turn = (fields: Record<string, unknown>) => ({
-  action: "ask",
-  question: "",
-  goals_met: [],
-  work_detail: true,
-  serious_concern: false,
-  concern_category: "none",
-  ask_hr: false,
-  stop_reason: "none",
-  ...fields,
-});
-
 async function fix(driver: string, scopeTeam: string, notice: Record<string, unknown>) {
   const res = await hrRequest("/api/hr/actions", "POST", { driver });
   const id = (await res.json()).id as string;
@@ -79,9 +67,11 @@ test("R26, R56: the recheck comes first with no hint of the fix, and the fix que
   const from = (await sentTo(a)).length;
   await tap(a, "A bit better");
   assert.deepEqual(await texts(a, from), ['You tapped "A bit better". What changed?']);
-  await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ action: "done", stop_reason: "goals_met" }) }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: [], positive: true, evidence_quote: quote }) }]);
+  const asked = (await sentTo(a)).length;
   await say(a, `Now ${quote}, so I start on Malaysia`);
+  assert.deepEqual(await texts(a, asked), ["How does that affect your work?"]);
+  await tap(a, "Done");
 
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", a).single();
   const { data: linked } = await db.from("responses").select("question_id, scale_value").eq("person_id", who!.id).eq("action_id", main).order("question_id");

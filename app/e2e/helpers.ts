@@ -199,6 +199,9 @@ export async function tapScore(chatId: number, score: number) {
   const buttons = (message?.reply_markup as { inline_keyboard: { text: string; callback_data: string }[][] } | undefined)?.inline_keyboard.flat() ?? [];
   if (buttons.length !== 5) throw new Error("no 5-word scale was shown");
   await tap(chatId, buttons[score - 1].text);
+  const probe = (await sentTo(chatId)).at(-1);
+  const skip = (probe?.reply_markup as { inline_keyboard?: { text: string }[][] } | undefined)?.inline_keyboard?.flat().some((b) => b.text === "Skip");
+  if (score <= 2 && skip) await tap(chatId, "Skip");
 }
 
 export async function tapData(chatId: number, data: string) {

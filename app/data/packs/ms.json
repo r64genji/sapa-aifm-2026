@@ -31,9 +31,7 @@
   "say": {"prompt": "Taip mesej yang anda mahu hantar kepada ketua anda, dalam apa-apa bahasa.", "label": "Cadangan AI. Semak sebelum anda hantar:", "send": "Salin dan hantar sendiri kepada ketua anda. Sapa tidak menghantar atau menyimpannya.", "down": "Maaf, saya tidak dapat membantu sekarang. Sila cuba lagi nanti."},
   "qa": {
     "askPrompt": "Taip soalan anda selepas /tanya, atau taip sahaja di sini.",
-    "label": "Jawapan AI",
-    "from": "Daripada buku panduan:",
-    "hr": "Untuk menyemak dengan HR:",
+    "disclaimer": "Penafian: Ini jawapan AI, sila semak dengan HR untuk maklumat penting.",
     "unknown": "Saya belum tahu. Soalan anda telah dicatat untuk HR, tanpa nama anda.",
     "greeting": "Hai, saya Sapa. Tanya saya apa-apa tentang buku panduan syarikat, seperti cuti, hari gaji atau kerja lebih masa. Anda juga boleh taip /bantuan.",
     "important": "Ini perkara penting, jadi saya tidak akan menjawabnya. Sila bercakap terus dengan HR:",
@@ -188,6 +186,145 @@
       "stillNot": "Apa yang masih tidak berjalan baik?",
       "askHr": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
       "done": "Selesai"
+    },
+    "probe": {
+      "skip": "Langkau",
+      "example": "Boleh beri satu contoh daripada minggu ini?",
+      "effect": "Bagaimana perkara itu menjejaskan kerja anda?",
+      "help": "Apakah yang boleh menjadikannya lebih mudah?",
+      "topics": {
+        "ROLE_CLARITY": {
+          "open": "Apakah yang tidak jelas tentang apa yang diharapkan daripada anda?",
+          "words": [
+            "harap",
+            "matlamat",
+            "tugas",
+            "tugasan",
+            "peranan",
+            "tanggungjawab",
+            "keutamaan",
+            "arahan",
+            "sasaran",
+            "kpi",
+            "skop",
+            "keliru",
+            "jelas",
+            "task"
+          ]
+        },
+        "MANAGER_SUPPORT": {
+          "open": "Apakah yang anda perlukan daripada pengurus anda minggu ini?",
+          "words": [
+            "pengurus",
+            "bos",
+            "penyelia",
+            "ketua",
+            "maklum",
+            "sokong",
+            "panduan",
+            "bimbing",
+            "mesyuarat",
+            "balas",
+            "jawab",
+            "abai",
+            "mentor",
+            "manager",
+            "boss"
+          ]
+        },
+        "BELONGING": {
+          "open": "Apakah yang menyukarkan anda bekerja dengan pasukan anda minggu ini?",
+          "words": [
+            "pasukan",
+            "team",
+            "rakan",
+            "kawan",
+            "kumpulan",
+            "syif",
+            "shift",
+            "kenal",
+            "buddy",
+            "bersendirian",
+            "sosial",
+            "lunch"
+          ]
+        },
+        "ONBOARDING_TRAINING": {
+          "open": "Bahagian kerja yang mana tidak diliputi oleh latihan anda?",
+          "words": [
+            "latih",
+            "kursus",
+            "orientasi",
+            "belajar",
+            "ajar",
+            "manual",
+            "tutorial",
+            "sesi",
+            "sop",
+            "amali",
+            "praktikal",
+            "train",
+            "onboarding"
+          ]
+        },
+        "WORKLOAD": {
+          "open": "Apakah yang memakan paling banyak masa anda minggu ini?",
+          "words": [
+            "beban",
+            "tarikh",
+            "deadline",
+            "overtime",
+            "jam",
+            "sibuk",
+            "segera",
+            "timbun",
+            "berat",
+            "tugas",
+            "laporan",
+            "masa",
+            "ot",
+            "kekurangan",
+            "task"
+          ]
+        }
+      },
+      "flip": [
+        "ok",
+        "okay",
+        "okey",
+        "oklah",
+        "baik",
+        "bagus",
+        "takpe",
+        "tak apa",
+        "tak ada apa",
+        "takde apa",
+        "tiada apa",
+        "xde apa",
+        "tiada masalah",
+        "tak ada masalah",
+        "terima kasih",
+        "thanks"
+      ],
+      "hr": [
+        "gaji",
+        "bayar",
+        "upah",
+        "bonus",
+        "tuntutan",
+        "cuti",
+        "percubaan",
+        "probation",
+        "kesihatan",
+        "sakit",
+        "doktor",
+        "undang",
+        "peguam",
+        "kontrak",
+        "berhenti",
+        "nasihat",
+        "patut"
+      ]
     }
   },
   "offer": {

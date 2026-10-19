@@ -6,11 +6,14 @@ import type { Reply } from "@/lib/engine";
 import { escalate } from "@/lib/escalations";
 import { packs, type Language } from "@/lib/packs";
 import { detect } from "@/lib/safety";
-import { MAX_QUESTIONS, hasLetters, interview, wordCount, type Input, type Turn } from "@/lib/chat";
+import { MAX_QUESTIONS, fixedFits, fixedQuestion, hasLetters, interview, wordCount, type Input, type Turn } from "@/lib/chat";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Chat = {
   open: boolean;
+  live?: boolean;
+  probed?: string[];
+  kept?: string[];
   at: string;
   topic: Input["topic"];
   taps: Input["taps"];
@@ -35,6 +38,7 @@ export type Schedule = {
 export const SCHEDULE = "id, progress, touchpoint, questions, recheck_action_id, recheck_driver, chat, actions!recheck_action_id(notes)";
 
 const CHAT_WINDOW_MS = 48 * 3600 * 1000;
+const MAX_PROBES = 2;
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
 
 const followUp = (schedule: Schedule) => !!schedule.recheck_action_id && !!schedule.actions?.notes;
@@ -53,6 +57,8 @@ export const fillTopic = (language: Language, text: string, driver: string | nul
   text.replace("{topic}", (packs[language].checkin.topics as Record<string, string>)[driver ?? ""] ?? "");
 
 const doneButton = (language: Language) => ({ label: packs[language].checkin.chat.done, id: "ans", value: "done" });
+const skipButton = (language: Language) => ({ label: packs[language].checkin.probe.skip, id: "ans", value: "done" });
+const liveReply = (language: Language, chat: Chat): Reply => ({ text: chat.turns.at(-1)!.text, buttons: [skipButton(language)] });
 
 export function questionReply(person: Pick<Person, "language">, schedule: Schedule, progress: number): Reply {
   const id = sequenceOf(person.language, schedule)[progress];
@@ -152,6 +158,34 @@ async function saveChat(scheduleId: string, chat: Chat) {
   if (error) throw error;
 }
 
+async function startProbe(person: Person, open: Schedule, id: string, scale: number): Promise<Reply | null> {
+  const probed = open.chat?.probed ?? [];
+  if (open.recheck_driver || scale > 2 || !DRIVERS.includes(id) || probed.length >= MAX_PROBES) return null;
+  if (open.progress + 1 >= sequenceOf(person.language, open).length) return null;
+  const question = questionOf(person.language, id);
+  const text = (packs[person.language].checkin.probe.topics as Record<string, { open: string }>)[id].open;
+  const chat: Chat = {
+    open: false,
+    live: true,
+    at: "",
+    topic: "low_tap",
+    taps: [{ driver: id, question: question.text, answer: question.labels![scale - 1], score: scale }],
+    focus: id,
+    turns: [{ from: "bot", text, route: "fixed" }],
+    asked: 1,
+    no_detail: 0,
+    response_id: null,
+    probed: [...probed, id],
+    kept: open.chat?.kept ?? [],
+  };
+  await saveChat(open.id, chat);
+  return liveReply(person.language, chat);
+}
+
+async function proceed(person: Person, open: Schedule, progress: number) {
+  return sequenceOf(person.language, open)[progress] === "OPEN" ? startChat(person, open) : questionReply(person, open, progress);
+}
+
 async function startChat(person: Person, open: Schedule) {
   const { checkin } = packs[person.language];
   const { data, error } = await createAdminClient()
@@ -171,13 +205,17 @@ async function startChat(person: Person, open: Schedule) {
       score: row.scale_value as number,
     }));
   const change = data.find((row) => row.question_id === "FIX_CHANGE");
-  const low = taps.reduce<(typeof taps)[number] | null>((min, tap) => (tap.score <= 2 && (!min || tap.score < min.score) ? tap : min), null);
+  const probed = open.chat?.probed ?? [];
+  const low = taps.reduce<(typeof taps)[number] | null>(
+    (min, tap) => (tap.score <= 2 && !probed.includes(tap.driver) && (!min || tap.score < min.score) ? tap : min),
+    null,
+  );
   const [topic, focus, text]: [Input["topic"], string | null, string] = change
     ? ["fix_follow_up", open.recheck_driver, change.scale_value >= 4 ? checkin.chat.changed : checkin.chat.stillNot]
     : low
       ? ["low_tap", low.driver, checkin.chat.opener]
       : ["light", null, checkin.chat.light];
-  const chat: Chat = { open: true, at: "", topic, taps, focus, turns: [{ from: "bot", text }], asked: 1, no_detail: 0, response_id: null };
+  const chat: Chat = { open: true, at: "", topic, taps, focus, turns: [{ from: "bot", text }], asked: 1, no_detail: 0, response_id: null, probed, kept: open.chat?.kept ?? [] };
   await saveChat(open.id, chat);
   return { text, buttons: [doneButton(person.language)] };
 }
@@ -197,7 +235,20 @@ async function openChat(person: Person) {
   return data;
 }
 
-const wordsOf = (chat: Chat) => chat.turns.filter((turn) => turn.from === "new_hire").map((turn) => turn.text).join("\n");
+const saidIn = (turns: Turn[]) => turns.filter((turn) => turn.from === "new_hire").map((turn) => turn.text);
+const wordsOf = (chat: Chat) => [...(chat.kept ?? []), ...saidIn(chat.turns)].join("\n");
+
+async function endProbe(person: Person, scheduleId: string, chat: Chat, alert: Reply[] = []): Promise<Reply[]> {
+  const said = saidIn(alert.length ? chat.turns.slice(0, -1) : chat.turns).join("\n");
+  await saveChat(scheduleId, { ...chat, live: false, turns: [], kept: said ? [...(chat.kept ?? []), said] : (chat.kept ?? []) });
+  const open = await openCheckin(person);
+  return [...alert, ...(open ? [await proceed(person, open, open.progress)] : [])];
+}
+
+async function probeAlert(person: Person, scheduleId: string, chat: Chat, text: string, keyword: string | null, model: string | null) {
+  const id = await insertResponse(person, null, "QA", null, text, "unprompted");
+  return endProbe(person, scheduleId, chat, [await escalate(person, id, keyword, model)]);
+}
 
 async function endChat(person: Person, scheduleId: string, chat: Chat, model: string | null = null): Promise<Reply[]> {
   await saveChat(scheduleId, { ...chat, open: false });
@@ -210,28 +261,36 @@ async function endChat(person: Person, scheduleId: string, chat: Chat, model: st
 
 async function chatTurn(person: Person, scheduleId: string, before: Chat, text: string): Promise<Reply[]> {
   const chat: Chat = { ...before, turns: [...before.turns, { from: "new_hire", text }] };
-  if (detect(text)) return endChat(person, scheduleId, chat);
-  const said = await interview(person.organisation_id, {
-    language_setting: person.language,
-    topic: chat.topic,
-    taps: chat.taps,
-    focus_driver: chat.focus,
-    conversation: chat.turns,
-    questions_asked: chat.asked,
-  });
-  if (!said) return endChat(person, scheduleId, chat);
-  if (said.serious_concern) return endChat(person, scheduleId, chat, said.concern_category === "none" ? "harassment" : said.concern_category);
-  const askHr = said.ask_hr ? [{ text: packs[person.language].checkin.chat.askHr }] : [];
-  const detail = said.work_detail && hasLetters(text) && wordCount(text) > 1;
-  const noDetail = detail ? 0 : chat.no_detail + 1;
-  const question = said.question.trim();
-  if (noDetail >= 2 || said.action === "done" || chat.asked >= MAX_QUESTIONS || !question) {
-    return [...askHr, ...(await endChat(person, scheduleId, chat))];
+  const stop = () => (chat.live ? endProbe(person, scheduleId, chat) : endChat(person, scheduleId, chat));
+  const keyword = detect(text);
+  if (keyword) return chat.live ? probeAlert(person, scheduleId, chat, text, keyword, null) : endChat(person, scheduleId, chat);
+  const fixed = fixedFits(person.language, chat.focus, text);
+  const said = fixed
+    ? null
+    : await interview(person.organisation_id, {
+        language_setting: person.language,
+        topic: chat.topic,
+        taps: chat.taps,
+        focus_driver: chat.focus,
+        conversation: chat.turns,
+        questions_asked: chat.asked,
+      });
+  if (said?.serious_concern) {
+    const category = said.concern_category === "none" ? "harassment" : said.concern_category;
+    return chat.live ? probeAlert(person, scheduleId, chat, text, null, category) : endChat(person, scheduleId, chat, category);
   }
-  await saveChat(scheduleId, { ...chat, turns: [...chat.turns, { from: "bot", text: question }], asked: chat.asked + 1, no_detail: noDetail });
-  const { error } = await createAdminClient().from("responses").update({ text_encrypted: encrypt(wordsOf(chat)) }).eq("id", chat.response_id!);
-  if (error) throw error;
-  return [...askHr, { text: question, buttons: [doneButton(person.language)] }];
+  const askHr = said?.ask_hr ? [{ text: packs[person.language].checkin.chat.askHr }] : [];
+  const detail = (said ? said.work_detail : true) && hasLetters(text) && wordCount(text) > 1;
+  const noDetail = detail ? 0 : chat.no_detail + 1;
+  const question = said ? said.question.trim() : fixed || chat.live ? fixedQuestion(person.language, chat.turns, chat.asked, text) : "";
+  if (noDetail >= 2 || said?.action === "done" || chat.asked >= MAX_QUESTIONS || !question) return [...askHr, ...(await stop())];
+  const route = said ? "ai" : "fixed";
+  await saveChat(scheduleId, { ...chat, turns: [...chat.turns, { from: "bot", text: question, route }], asked: chat.asked + 1, no_detail: noDetail });
+  if (chat.response_id) {
+    const { error } = await createAdminClient().from("responses").update({ text_encrypted: encrypt(wordsOf(chat)) }).eq("id", chat.response_id);
+    if (error) throw error;
+  }
+  return [...askHr, chat.live ? liveReply(person.language, { ...chat, turns: [{ from: "bot", text: question }] }) : { text: question, buttons: [doneButton(person.language)] }];
 }
 
 async function conclude(person: Person, responseId: string, text: string, chatModel: string | null): Promise<Reply[]> {
@@ -249,6 +308,7 @@ async function conclude(person: Person, responseId: string, text: string, chatMo
 
 async function chatDone(person: Person): Promise<Reply[] | null> {
   const open = await openCheckin(person);
+  if (open?.chat?.live) return endProbe(person, open.id, open.chat);
   if (open && sequenceOf(person.language, open)[open.progress] === "OPEN") {
     const { data, error } = await createAdminClient()
       .from("checkin_schedule")
@@ -257,7 +317,11 @@ async function chatDone(person: Person): Promise<Reply[] | null> {
       .eq("progress", open.progress)
       .select("id");
     if (error) throw error;
-    return data.length === 1 ? [{ text: packs[person.language].checkin.thanks }] : null;
+    if (data.length !== 1) return null;
+    const kept = open.chat?.kept ?? [];
+    if (!kept.length) return [{ text: packs[person.language].checkin.thanks }];
+    const text = kept.join("\n");
+    return conclude(person, await insertResponse(person, open.id, "OPEN", null, text), text, null);
   }
   const chat = await openChat(person);
   return chat ? endChat(person, chat.id, chat.chat) : null;
@@ -267,6 +331,7 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
   if (value === "done") return chatDone(person);
   const open = await openCheckin(person);
   if (!open) return null;
+  if (open.chat?.live) return [liveReply(person.language, open.chat)];
   const sequence = sequenceOf(person.language, open);
   const [index, scale] = value.split(".").map(Number);
   const question = questionOf(person.language, sequence[open.progress]);
@@ -274,8 +339,8 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
     return [questionReply(person, open, open.progress)];
   }
   if (!(await store(person, open, scale, null))) return null;
-  if (sequence[open.progress + 1] === "OPEN") return [await startChat(person, open)];
-  return [questionReply(person, open, open.progress + 1)];
+  const probe = await startProbe(person, open, sequence[open.progress], scale);
+  return [probe ?? (await proceed(person, open, open.progress + 1))];
 }
 
 const typedScale = (language: Language, id: string, text: string) => {
@@ -289,6 +354,7 @@ const typedScale = (language: Language, id: string, text: string) => {
 export async function checkinText(person: Person, text: string): Promise<Reply[] | null> {
   const open = await openCheckin(person);
   if (!open) return answerChat(person, text);
+  if (open.chat?.live) return chatTurn(person, open.id, open.chat, text);
   const id = sequenceOf(person.language, open)[open.progress];
   const question = questionOf(person.language, id);
   if (question.type !== "open") {

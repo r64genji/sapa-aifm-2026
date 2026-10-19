@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { complete } from "@/lib/ai";
 import { mask } from "@/lib/mask";
+import { packs, type Language } from "@/lib/packs";
 
 export const MAX_QUESTIONS = 3;
 
@@ -81,7 +82,7 @@ export const wordCount = (text: string) =>
 
 export const hasLetters = (text: string) => /\p{L}{2,}|\p{Script=Han}/u.test(text);
 
-export type Turn = { from: "bot" | "new_hire"; text: string };
+export type Turn = { from: "bot" | "new_hire"; text: string; route?: "fixed" | "ai" };
 export type Input = {
   language_setting: string;
   topic: "low_tap" | "light" | "fix_follow_up";
@@ -106,7 +107,7 @@ async function ask(organisationId: string, user: string) {
 export async function interview(organisationId: string, input: Input) {
   const user = JSON.stringify({
     ...input,
-    conversation: input.conversation.map((turn) => ({ ...turn, text: mask(turn.text) })),
+    conversation: input.conversation.map(({ from, text }) => ({ from, text: mask(text) })),
     max_questions: MAX_QUESTIONS,
   });
   const first = await ask(organisationId, user);
@@ -119,4 +120,29 @@ export async function interview(organisationId: string, input: Input) {
   );
   if (!second || second.action !== "ask" || !blockedWord(second.question)) return second;
   return { ...second, action: "done" as const, question: "" };
+}
+
+const FIXED_MAX_WORDS = 25;
+
+const plain = (text: string) =>
+  ` ${text.normalize("NFKC").toLowerCase().replace(/['’]/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim()} `;
+const isHan = (word: string) => /\p{Script=Han}/u.test(word);
+const hasPhrase = (said: string, list: string[]) => list.some((word) => (isHan(word) ? said.includes(word) : said.includes(` ${word} `)));
+const hasStem = (said: string, list: string[]) =>
+  list.some((word) => (isHan(word) ? said.includes(word) : said.split(" ").some((w) => (word.length < 4 ? w === word : w.startsWith(word)))));
+
+export function fixedFits(language: Language, driver: string | null, text: string) {
+  const { probe } = packs[language].checkin;
+  const topic = (probe.topics as Record<string, { words: string[] }>)[driver ?? ""];
+  if (!topic || text.includes("?") || text.includes("？") || wordCount(text) > FIXED_MAX_WORDS) return false;
+  const said = plain(text);
+  const others = Object.values(packs).flatMap((pack) => pack.checkin.probe.flip);
+  const own = [...topic.words, ...(packs.en.checkin.probe.topics as Record<string, { words: string[] }>)[driver!].words];
+  return hasStem(said, own) && !hasPhrase(said, others) && !hasStem(said, probe.hr);
+}
+
+export function fixedQuestion(language: Language, turns: Turn[], asked: number, text: string) {
+  const { probe } = packs[language].checkin;
+  if (asked === 1) return wordCount(text) <= 3 ? probe.example : probe.effect;
+  return turns.at(-2)?.text === probe.example ? probe.effect : probe.help;
 }
