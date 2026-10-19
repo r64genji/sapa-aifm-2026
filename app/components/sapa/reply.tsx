@@ -141,16 +141,6 @@ export const labelOf = (item: Pick<ReplyItem, "drivers" | "context_tags">) => {
   return names.length ? names.join(", ") : "Nothing to act on";
 };
 
-const whyHere = (item: ReplyItem) =>
-  item.note ??
-  (item.status === "awaiting_ai"
-    ? "AI could not read it"
-    : item.status === "needs_review"
-      ? "AI not sure"
-      : item.escalate
-        ? "Flagged as a serious concern"
-        : null);
-
 function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (change: ReplyChange) => void; onClose: () => void }) {
   const only = item.drivers.length === 1 ? item.drivers[0] : null;
   return (
@@ -195,7 +185,6 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
       setBusy(false);
     }
   };
-  const why = whyHere(item);
   const tagged = item.status !== null;
   const reviewed = item.status === "reviewed";
   const awaiting = item.status === "awaiting_ai";
@@ -207,19 +196,9 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
   return (
     <article className="sp-card flex flex-wrap overflow-hidden">
       <div className="flex min-w-0 flex-[999_1_360px] flex-col gap-3 px-5 py-5 sm:px-6">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          {why && !reviewed ? (
-            <span
-              className="inline-flex min-h-6 items-center px-2 text-xs font-semibold"
-              style={{ borderRadius: "var(--radius-tag)", background: awaiting || item.note ? "var(--waiting-soft)" : "var(--surface-sunken)", color: awaiting || item.note ? "var(--waiting-ink)" : "var(--ink)" }}
-            >
-              {why}
-            </span>
-          ) : null}
-          <span className="sp-caption">
-            {item.byline} · {shortDate(item.created_at)}
-          </span>
-        </div>
+        <span className="sp-caption">
+          {item.byline} · {shortDate(item.created_at)}
+        </span>
         {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <Quote text={item.text ?? ""} evidence={item.evidence_quote} />}
         {chat && item.log ? (
           <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={() => setWhole(!whole)}>
