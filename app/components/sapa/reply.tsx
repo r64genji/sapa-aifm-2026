@@ -45,35 +45,54 @@ type Translated = { label: string; text: string };
 
 const translations = new Map<string, Promise<Translated | null>>();
 
-function translationOf(id: string) {
-  let found = translations.get(id);
+function translationOf(path: string) {
+  let found = translations.get(path);
   if (!found) {
-    found = apiGet<{ translation?: Translated | null }>(`/api/hr/replies/${id}/translation`)
+    found = apiGet<{ translation?: Translated | null }>(path)
       .then((data) => data.translation ?? null)
       .catch(() => null);
-    translations.set(id, found);
-    found.then((value) => value ?? translations.delete(id));
+    translations.set(path, found);
+    found.then((value) => value ?? translations.delete(path));
   }
   return found;
 }
 
-export function TranslatedQuote({ id, language, text, evidence, size }: { id: string; language?: string; text: string; evidence?: string | null; size?: "md" | "lg" }) {
-  const [original, setOriginal] = useState(false);
+function useTranslated(path: string | null) {
   const [translated, setTranslated] = useState<Translated | null>(null);
   useEffect(() => {
-    if (language && language !== "en") translationOf(id).then(setTranslated);
-  }, [id, language]);
+    if (path) translationOf(path).then(setTranslated);
+  }, [path]);
+  return translated;
+}
+
+const textPath = (language: string | undefined, text: string) =>
+  language && language !== "en" && text ? `/api/hr/translate?language=${language}&text=${encodeURIComponent(text)}` : null;
+
+export function TranslatedQuote({ language, text, evidence, size }: { language?: string; text: string; evidence?: string | null; size?: "md" | "lg" }) {
+  const [original, setOriginal] = useState(false);
+  const translated = useTranslated(textPath(language, text));
   if (!translated) return <Quote text={text} evidence={evidence} size={size} />;
   return (
     <div className="flex flex-col gap-1.5">
       {original ? <Quote text={text} evidence={evidence} size={size} /> : <Quote text={translated.text} size={size} />}
-      <span className="flex flex-wrap items-center gap-2">
-        {original ? null : <AiMark label={translated.label} />}
-        <button type="button" className="sp-link text-[13px]" aria-pressed={original} onClick={() => setOriginal(!original)}>
-          {original ? "Show translation" : "Show original"}
-        </button>
-      </span>
+      <button type="button" className="sp-link self-start text-[13px]" aria-pressed={original} onClick={() => setOriginal(!original)}>
+        {original ? "Show translation" : "Show original"}
+      </button>
     </div>
+  );
+}
+
+function TranslatedText({ language, text, evidence }: { language?: string; text: string; evidence?: string | null }) {
+  const [original, setOriginal] = useState(false);
+  const translated = useTranslated(textPath(language, text));
+  if (!translated) return <Marked text={text} evidence={evidence} />;
+  return (
+    <>
+      {original ? <Marked text={text} evidence={evidence} /> : translated.text}
+      <button type="button" className="sp-link sp-caption block pt-1" aria-pressed={original} onClick={() => setOriginal(!original)}>
+        {original ? "Show translation" : "Show original"}
+      </button>
+    </>
   );
 }
 
@@ -112,7 +131,7 @@ function TapChip({ entry }: { entry: ChatEntry }) {
   );
 }
 
-export function ChatLog({ log, evidence }: { log: ChatEntry[]; evidence?: string | null }) {
+export function ChatLog({ log, evidence, language }: { log: ChatEntry[]; evidence?: string | null; language?: string }) {
   const taps = log.flatMap((entry, i) => (entry.kind === "tap" && log[i - 1]?.from === "bot" ? [{ asked: log[i - 1], tap: entry }] : []));
   const chat = log.filter((entry, i) => entry.kind !== "tap" && log[i + 1]?.kind !== "tap");
   return (
@@ -153,7 +172,7 @@ export function ChatLog({ log, evidence }: { log: ChatEntry[]; evidence?: string
                 }}
               >
                 {entry.echo ? <span className="sp-caption block pb-1">{entry.echo}</span> : null}
-                {bot ? entry.text : <Marked text={entry.text} evidence={evidence} />}
+                {bot && entry.kind !== "ai" ? entry.text : <TranslatedText language={language} text={entry.text} evidence={bot ? null : evidence} />}
                 {entry.en ? <span className="sp-caption block pt-1">English: {entry.en}</span> : null}
               </span>
             </li>
@@ -174,7 +193,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   return (
     <Dialog title="Pick the right label" onClose={onClose}>
       <div className="rounded-lg p-3" style={{ background: "var(--surface-sunken)" }}>
-        <TranslatedQuote id={item.id} language={item.language} text={item.text ?? ""} />
+        <TranslatedQuote language={item.language} text={item.text ?? ""} />
       </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {Object.entries(DRIVERS)
@@ -227,7 +246,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         <span className="sp-caption">
           {item.byline} · {shortDate(item.created_at)}
         </span>
-        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <TranslatedQuote id={item.id} language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
+        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} language={item.language} /> : <TranslatedQuote language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
         {chat && item.log ? (
           <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={() => setWhole(!whole)}>
             {whole ? "Show only their words" : "Show the whole check-in"}
@@ -257,7 +276,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           {chat && item.evidence_quote ? (
             <div className="flex flex-col gap-1 pt-2">
               <span className="sp-caption" style={{ fontWeight: 600 }}>Original quote</span>
-              <Quote text={item.evidence_quote} evidence={item.evidence_quote} />
+              <TranslatedQuote language={item.language} text={item.evidence_quote} evidence={item.evidence_quote} />
             </div>
           ) : null}
         </div>

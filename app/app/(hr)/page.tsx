@@ -47,7 +47,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
       action={
         waiting ? null : (
           <>
-            {row.status === "ok" ? (
+            {row.status === "ok" || row.status === "needs_review" ? (
               <Button variant="primary" lane="ai" onClick={() => send({})}>
                 Confirm label
               </Button>
@@ -63,7 +63,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
         {row.byline} · {shortDate(row.created_at)}
         {row.language === "zh" ? " · Chinese" : ""}
       </div>
-      {row.text ? <TranslatedQuote id={row.id} language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
+      {row.text ? <TranslatedQuote language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
       {row.note ? <div className="sp-row-meta">{row.note}</div> : null}
       {error ? <div className="sp-row-meta" style={{ color: "var(--serious)" }}>{error}</div> : null}
       {picking ? (
@@ -312,7 +312,7 @@ export default function Page() {
                   </Button>
                 }
               >
-                {row.text ? <TranslatedQuote id={row.id} language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
+                {row.text ? <TranslatedQuote language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
               </Row>
             ))}
             {toCheck.slice(0, 3).map((row) => (

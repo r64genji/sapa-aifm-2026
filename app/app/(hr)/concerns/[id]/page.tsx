@@ -9,7 +9,6 @@ import { TranslatedQuote } from "@/components/sapa/reply";
 import { Card, Loading, dayLabel } from "@/components/sapa/ui";
 
 type Case = Concern & {
-  response_id: string;
   team: string;
   text: string | null;
   language: string;
@@ -49,7 +48,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
         <div className="flex min-w-0 flex-col gap-6 lg:flex-[2_1_0]">
           <Card title="What they wrote">
-            {c.text ? <TranslatedQuote id={c.response_id} language={c.language} text={c.text} size="lg" /> : <p className="m-0 sp-muted">No text stored.</p>}
+            {c.text ? <TranslatedQuote language={c.language} text={c.text} size="lg" /> : <p className="m-0 sp-muted">No text stored.</p>}
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-[13px] sp-muted">
               <span>
                 {c.team}
