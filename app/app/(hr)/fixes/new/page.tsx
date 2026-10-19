@@ -555,7 +555,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
               </div>
             </section>
           ) : (
-            <section className="sp-section" aria-label="Send">
+            <section className="sp-section" style={{ overflow: "visible" }} aria-label="Send">
               <div className="sp-section-head">
                 <h2 className="sp-section-title">Send</h2>
               </div>
