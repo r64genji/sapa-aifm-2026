@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { ReplyRow, Translation, type ReplyItem } from "./reply";
 import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Quote, Row, dayLabel, driverName, shortDate } from "./ui";
@@ -162,7 +162,7 @@ function Columns({ points }: { points: Point[] }) {
       <div className="relative flex h-[132px] items-end gap-2">
         <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 border-t border-dashed" style={{ bottom: `${20 + (avg / top) * 84}px`, borderColor: "var(--line-strong)" }} />
         {points.map((p, i) => (
-          <div key={p.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title={`${p.label}: ${p.n} of ${p.m}`}>
+          <div key={p.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title={`${p.label}: ${p.n} of ${p.m} hires named it`}>
             <span className="sp-num relative px-0.5 text-[11px] font-semibold sp-muted" style={{ background: "var(--surface-raised)" }}>{pct(p)}</span>
             <span className="sp-grow-y w-full max-w-9 rounded-t" style={{ height: `${Math.max((rate(p) / top) * 84, 3)}px`, background: i === points.length - 1 ? "var(--problems)" : "var(--problems-soft)", ...delay(i * 70) }} />
             <span className="sp-caption">{p.label}</span>
@@ -501,7 +501,17 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             )}
             {intakes.length ? (
               <div className="flex flex-col gap-2 pt-1">
-                <h3 className="m-0 text-[13px] font-bold">Each start month</h3>
+                <div className="flex items-center gap-0.5">
+                  <h3 className="m-0 text-[13px] font-bold">Share of hires, by start month</h3>
+                  <span className="sp-tip sp-tip-below">
+                    <button type="button" className="sp-tip-btn" aria-label="What this chart shows">
+                      <Info size={16} strokeWidth={2} aria-hidden="true" />
+                    </button>
+                    <span role="tooltip" className="sp-tip-bubble">
+                      Each bar is the share of that month's new hires who named this problem at Day 14. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
+                    </span>
+                  </span>
+                </div>
                 <Columns points={intakes} />
               </div>
             ) : null}

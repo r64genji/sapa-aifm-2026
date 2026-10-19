@@ -177,7 +177,7 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
           <Waffle c={top} />
           {points.length > 1 ? (
             <div className="flex max-w-[220px] flex-col gap-0.5">
-              <span className="sp-caption font-semibold">Each start month</span>
+              <span className="sp-caption font-semibold">Share of hires, by start month</span>
               <Spark points={points} label={`${driverName(top.driver)} in each start month: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}`} />
               <span className="flex justify-between sp-caption">
                 <span>{points[0].label}</span>
