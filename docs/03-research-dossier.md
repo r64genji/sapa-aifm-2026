@@ -188,7 +188,7 @@ The product has three parts: a chat check-in bot for new hires, an AI pipeline w
 | **Aishah, HR Executive** | Onboards 15–18 people a month; does every exit interview | Fewer early resignations; evidence to show management | Cannot reach every new hire; the Europe shift works while she is off; exit interviews arrive too late | Weekly theme summary, flag queue, action tracker |
 | **Raj, team lead, Accounts Payable Asia** | 29; promoted from senior analyst in 2025 with no people-lead training; his team doubled to 22 with new Vietnam and Thailand work; 12 new hires in six months | New hires productive fast | Does not know what new hires struggle with; on calls with country controllers much of the day | 2–3 concrete suggested actions a month, ready to use, in Telegram |
 | **Hafiz, new IT service desk analyst** | 22, diploma, from Sungai Petani; Europe shift; prefers BM; laptop arrived on Day 5 | Know what is expected; someone to ask | Has not seen HR since Day 1; afraid complaining will affect his probation | 1–2 minute check-ins in BM, private to HR by default |
-| **Mei Ling, new Mandarin-speaking AP analyst** | 23, first job, joined through an agency, writes in Manglish | Learn and be noticed | Three country controllers each say their invoices are urgent; little feedback | Same check-ins; option to share with her manager |
+| **Sofia, new Mandarin-speaking AP analyst** | 23, first job, joined through an agency, writes in Manglish | Learn and be noticed | Three country controllers each say their invoices are urgent; little feedback | Same check-ins; option to share with her manager |
 
 ### F2. User journeys
 

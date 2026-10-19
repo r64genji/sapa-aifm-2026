@@ -8,9 +8,9 @@ What to say on each slide. The story and slide content live in [storyboard.md](s
 
 ## 1. Day 61, the exit interview (30 s)
 
-On screen: "Mei Ling. Day 61." Aishah across the table. Her box of things.
+On screen: "Sofia. Day 61." Aishah across the table. Her box of things.
 
-- **"This is Mei Ling. 23, her first job. Today is Day 61. It is her exit interview."**
+- **"This is Sofia. 23, her first job. Today is Day 61. It is her exit interview."**
 - Aishah asks why she is leaving.
 - **"Since Day 14, she did not know which task came first. She was too afraid to ask. Nobody checked in."**
 - Aishah writes it down.
@@ -29,10 +29,10 @@ On screen: class photo of 17. Five fade out.
 
 ## 3. Too late (40 s)
 
-On screen: Aishah's spreadsheet, 5 rows. Mei Ling's row slides in.
+On screen: Aishah's spreadsheet, 5 rows. Sofia's row slides in.
 
 - **"HR heard why 47 days too late."**
-- Five leavers, five reasons. Mei Ling's row repeats what she felt on Day 14.
+- Five leavers, five reasons. Sofia's row repeats what she felt on Day 14.
 - The yearly survey only reaches staff with 6 months' service.
 - Research: 25% of Malaysian employees are engaged, and 62% say it is a good time to find a job (Gallup 2026). 57% would consider quitting without a manager's career support (Randstad 2025).
 - Real quote, small text, from one HR practitioner on 19 Oct 2026: "I didn't want to find out at the end of probation that there were issues, and by that time the new hire had probably submitted their resignations because nobody listened to them."
@@ -74,11 +74,11 @@ On screen: live app. Keep one path. No jumping.
 
 - Open: **"Today at Bayan GBS. Sapa has run here for a year. The company is made up. The product is real."**
 - Six beats, in order, from [05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo):
-  1. Mei Ling replies.
+  1. Sofia replies.
   2. The AI labels it.
   3. Aishah confirms.
   4. The fix goes to Raj.
-  5. "Update from HR" reaches Mei Ling.
+  5. "Update from HR" reaches Sofia.
   6. She is asked again.
 - Say each beat as it happens.
 - Say the join QR is for judges to try (`illustrations/sapa-join-accounts-payable-asia.png`).
@@ -97,9 +97,9 @@ On screen: real results only.
 
 ## 9. Trust (35 s)
 
-On screen: Mei Ling. Her name blurs to "New hire · Day 14".
+On screen: Sofia. Her name blurs to "New hire · Day 14".
 
-- **"Why does Mei Ling dare to speak?"**
+- **"Why does Sofia dare to speak?"**
 - She is on probation, and Raj confirms it.
 - Team leads never see who wrote what.
 - Groups under 5 are hidden.
