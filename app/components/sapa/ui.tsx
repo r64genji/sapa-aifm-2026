@@ -163,7 +163,7 @@ export type AiState = "suggested" | "unsure" | "confirmed" | "corrected";
 export function AiMark({ state = "suggested", label, reviewer }: { state?: AiState; label: string; reviewer?: string | null }) {
   const reviewed = state === "confirmed" || state === "corrected";
   const tag = reviewed ? `✓ ${reviewer || "HR"}` : "AI";
-  const text = state === "unsure" ? `${label}? Not sure` : state === "corrected" ? `${label} (changed by ${reviewer || "HR"})` : label;
+  const text = state === "corrected" ? `${label} (changed by ${reviewer || "HR"})` : label;
   return (
     <span className={cx("sp-ai", reviewed && "sp-ai-reviewed")}>
       <span className="sp-ai-tag">{tag}</span>

@@ -167,6 +167,11 @@ textarea.sp-input { min-height: 84px; resize: vertical; }
 .sp-ai { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 13px; line-height: 18px; flex-wrap: wrap; }
 .sp-ai-tag { font-family: var(--font-mono); font-size: 11px; line-height: 16px; font-weight: 500; padding: 0 5px; border: 1px solid var(--ai); border-radius: var(--radius-tag); color: var(--ai); white-space: nowrap; }
 .sp-ai-text { color: var(--ai); border-bottom: 1.5px dotted var(--ai); }
+.sp-confidence { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-round); }
+.sp-confidence::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.sp-confidence-low { background: var(--serious-soft); color: var(--serious); }
+.sp-confidence-medium { background: var(--waiting-soft); color: var(--waiting); }
+.sp-confidence-high { background: #e3f1e5; color: #2b6a34; }
 .sp-ai-reviewed .sp-ai-tag { border-color: var(--ink); color: var(--ink); }
 .sp-ai-reviewed .sp-ai-text { color: var(--ink); border-bottom: none; }
 .sp-input-ai { background: var(--ai-soft); border-color: var(--ai); }

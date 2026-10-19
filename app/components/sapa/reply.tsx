@@ -200,7 +200,8 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
   const reviewed = item.status === "reviewed";
   const awaiting = item.status === "awaiting_ai";
   const pending = item.status === "needs_review" || (item.status === "ok" && (!!item.note || item.counted === false));
-  const caption = item.serious ? "Your label" : reviewed ? "Your label" : awaiting ? "AI label" : pending ? "AI label" : "Counted automatically";
+  const caption = item.serious || reviewed ? "Your label" : awaiting || pending ? null : "Counted automatically";
+  const confidence = reviewed || awaiting || item.serious || !tagged ? null : item.confidence ?? (item.status === "needs_review" ? "low" : null);
   const state = reviewed ? (item.changed_by_hr ? "corrected" : "confirmed") : item.status === "needs_review" ? "unsure" : "suggested";
 
   return (
@@ -232,7 +233,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
         style={{ background: "var(--surface-sunken)", borderColor: "var(--line-soft)" }}
       >
         <div className="flex flex-col gap-1.5">
-          {tagged ? <span className="sp-caption" style={{ fontWeight: 600 }}>{caption}</span> : null}
+          {tagged && caption ? <span className="sp-caption" style={{ fontWeight: 600 }}>{caption}</span> : null}
           {!tagged ? (
             <span className="sp-muted">No label</span>
           ) : item.serious ? (
@@ -242,16 +243,19 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
           ) : (
             <AiMark state={state} label={labelOf(item)} reviewer="HR" />
           )}
-          {item.status === "needs_review" ? <span className="sp-caption">AI is not sure</span> : null}
-          {chat && item.confidence && !reviewed ? <span className="sp-caption">AI confidence: {item.confidence}</span> : null}
+          {confidence ? (
+            <span className={`sp-confidence sp-confidence-${confidence}`}>
+              {confidence[0].toUpperCase() + confidence.slice(1)} confidence
+            </span>
+          ) : null}
           {chat && item.evidence_quote ? (
             <div className="flex flex-col gap-1 pt-2">
-              <span className="sp-caption" style={{ fontWeight: 600 }}>Words the AI used</span>
+              <span className="sp-caption" style={{ fontWeight: 600 }}>Original quote</span>
               <Quote text={item.evidence_quote} evidence={item.evidence_quote} />
             </div>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2">
           {pending ? (
             <Button variant="primary" disabled={busy} onClick={() => run(onConfirm)}>
               Confirm label
