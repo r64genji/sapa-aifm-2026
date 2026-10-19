@@ -88,7 +88,7 @@ before(async () => {
   await joined(sharer, "2026-10-02");
   await tap(sharer, en.visibilityHrManager);
   await joined(hrOnly, "2026-10-02");
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await reply(sharer, sharerText);
   await reply(hrOnly, hrOnlyText);
 

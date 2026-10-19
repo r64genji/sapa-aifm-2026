@@ -77,24 +77,29 @@ export async function demoIntake(organisationId: string) {
   return data;
 }
 
-export async function demoStatus(organisationId: string) {
-  const db = createAdminClient();
-  const { data: org, error } = await db
-    .from("organisations")
-    .select("demo_mode, demo_offset_days, time_zone")
-    .eq("id", organisationId)
-    .single();
-  if (error) throw error;
-  if (!org.demo_mode) return { error: "Demo mode is off" };
+export async function liveHire(organisationId: string) {
   const intake = await demoIntake(organisationId);
-  const { data: live, error: liveError } = await db
+  const { data, error } = await createAdminClient()
     .from("people")
-    .select("id, telegram_chat_id, managers(telegram_chat_id, revoked_at)")
+    .select("id, language, start_date, joined_on, telegram_chat_id, managers(telegram_chat_id, revoked_at)")
     .eq("intake_id", intake.id)
     .order("invite_used_at")
     .limit(1)
     .maybeSingle();
-  if (liveError) throw liveError;
+  if (error) throw error;
+  return data;
+}
+
+export async function demoStatus(organisationId: string) {
+  const db = createAdminClient();
+  const { data: org, error } = await db
+    .from("organisations")
+    .select("demo_mode, time_zone")
+    .eq("id", organisationId)
+    .single();
+  if (error) throw error;
+  if (!org.demo_mode) return { error: "Demo mode is off" };
+  const live = await liveHire(organisationId);
   const { data: next, error: nextError } = live
     ? await db
         .from("checkin_schedule")
@@ -102,7 +107,6 @@ export async function demoStatus(organisationId: string) {
         .eq("person_id", live.id)
         .eq("status", "scheduled")
         .order("due_at")
-        .limit(1)
     : { data: [], error: null };
   if (nextError) throw nextError;
   const { data: spend, error: spendError } = await db.from("ai_usage").select("cost").eq("provider", "deepseek");
@@ -112,10 +116,11 @@ export async function demoStatus(organisationId: string) {
   const [ai, tg] = await Promise.all([models(), telegram()]);
   return {
     live_hire: {
-      day: Math.round((today - Date.parse(intake.start_date)) / 86400000) + org.demo_offset_days,
+      day: live ? Math.round((today - Date.parse(live.joined_on ?? live.start_date)) / 86400000) : 0,
       next_check_in: next[0]
         ? { touchpoint: next[0].touchpoint, due_at: next[0].due_at }
         : null,
+      scheduled: next.map((row) => row.touchpoint),
     },
     main_ai: ai.main,
     fallback_ai: {

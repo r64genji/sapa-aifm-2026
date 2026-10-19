@@ -34,7 +34,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   await joined(first, "2026-10-02");
   await joined(second, "2026-10-02");
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
 });
 
 test("R46: a pack that has not passed its test sends every tag to needs review, even an AI-confident one", async () => {

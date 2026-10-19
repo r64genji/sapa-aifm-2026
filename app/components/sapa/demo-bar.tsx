@@ -7,7 +7,7 @@ import { Button, Dialog } from "./ui";
 
 type Reach = { reachable: boolean; ms: number };
 type Status = {
-  live_hire: { day: number; next_check_in: { touchpoint: number; due_at: string } | null };
+  live_hire: { day: number; next_check_in: { touchpoint: number; due_at: string } | null; scheduled: number[] };
   main_ai: Reach;
   fallback_ai: Reach & { spend: number; cap: number };
   ai_checked_at: string;
@@ -32,6 +32,7 @@ export function DemoBar() {
   const [invite, setInvite] = useState<{ team: string; link: string }[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [choice, setChoice] = useState<number | null>(null);
 
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
@@ -43,10 +44,10 @@ export function DemoBar() {
     }
     setBusy(false);
   };
-  const advance = (day: number) =>
+  const outreach = () =>
     run(async () => {
-      const result = await apiSend<{ sent: number }>("/api/hr/demo/advance", "POST", { day });
-      setMessage(`Advanced to Day ${day}. ${result.sent} message${result.sent === 1 ? "" : "s"} sent.`);
+      const result = await apiSend<{ sent: number }>("/api/hr/demo/outreach", "POST", { touchpoint: pick });
+      setMessage(`${result.sent} message${result.sent === 1 ? "" : "s"} sent.`);
     });
   const reset = () =>
     run(async () => {
@@ -57,7 +58,8 @@ export function DemoBar() {
     });
 
   const s = status.data;
-  const nextDay = [14, 30].find((day) => !s || s.live_hire.day < day);
+  const next = s?.live_hire.next_check_in;
+  const pick = choice !== null && s?.live_hire.scheduled.includes(choice) ? choice : next?.touchpoint;
   return (
     <section aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -70,11 +72,12 @@ export function DemoBar() {
           <ChevronDown size={16} aria-hidden="true" className="sp-chev" style={{ transform: open ? "rotate(180deg)" : undefined }} />
         </button>
         <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
-          {[14, 30].map((day) => (
-            <Button key={day} variant={day === nextDay ? "primary" : "secondary"} disabled={busy || (s ? s.live_hire.day >= day : false)} onClick={() => advance(day)}>
-              Advance to Day {day}
-            </Button>
-          ))}
+          <select className="sp-input" style={{ width: "auto" }} aria-label="Check-in to send" value={pick ?? ""} onChange={(e) => setChoice(Number(e.target.value))}>
+            {s?.live_hire.scheduled.map((day) => (
+              <option key={day} value={day}>Day {day}</option>
+            ))}
+          </select>
+          <Button variant="primary" disabled={busy || pick === undefined} onClick={outreach}>Outreach now</Button>
           <Button disabled={busy} onClick={() => setConfirming(true)}>Reset to seed</Button>
         </span>
         {s ? (

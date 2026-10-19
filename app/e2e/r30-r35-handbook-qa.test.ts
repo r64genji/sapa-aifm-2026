@@ -284,7 +284,7 @@ test("R30: a greeting gets the fixed Sapa text, and nothing is stored or logged 
 
 test("R33: the model sees at most the last 6 Q&A messages from the last 10 minutes, and never check-in replies", async () => {
   const checkinReply = "Zebra stripes everywhere, tak tahu mana nak buat dulu";
-  const advance = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  const advance = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal(advance.status, 200);
   await tapScore(memo, 4);
   await tapScore(memo, 3);
@@ -316,7 +316,7 @@ test("R33: the model sees at most the last 6 Q&A messages from the last 10 minut
 });
 
 test("R32, R13, R14: forced labour or sexual harassment that only the model sees is escalated with the HR complaint message", async () => {
-  const [labour, harassed] = [1311, 1312].map((n) => 5550000000 + n);
+  const [labour, harassed] = [1321, 1322].map((n) => 5550000000 + n);
   await Promise.all([labour, harassed].map((chat) => joined(chat, "2026-10-14")));
 
   const labourText = "The agency deducts half my pay every month and the warden says I need permission to go out on Sunday";

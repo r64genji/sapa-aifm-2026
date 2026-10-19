@@ -85,7 +85,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await tapScore(live, 4);
   await tapScore(live, 3);
   await tapScore(live, 5);

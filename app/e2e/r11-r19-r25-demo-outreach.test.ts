@@ -14,21 +14,19 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R19, R23: Advance to Day 14 sends the Day 14 check-in to the live hire only, at night", async () => {
+test("R19, R23: Outreach now sends the chosen check-in to the live hire only, at night", async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
   const before = (await sentTo(live)).length;
 
-  const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), { offset: 1, sent: 1 });
+  assert.deepEqual(await res.json(), { sent: 1 });
 
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
   assert.deepEqual(await sentTo(synthetic), []);
-  const { data } = await db.from("organisations").select("demo_offset_days");
-  assert.deepEqual(data, [{ demo_offset_days: 1 }]);
 });
 
 test("R11, R25: the check-in uses only bank text, the reply is stored encrypted, and each read is audited", async () => {
@@ -76,11 +74,11 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   assert.deepEqual(audit!.filter((row) => row.target === mine[0].id), [{ action: "read_reply_text", target: mine[0].id }]);
 });
 
-test("R19: Advance to Day 30 sends the Day 30 check-in although Day 30 falls on a Sunday", async () => {
+test("R19: Outreach now sends the Day 30 check-in at once, whatever its due date", async () => {
   const before = (await sentTo(live)).length;
-  const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 30 });
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 30 });
   assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), { offset: 18, sent: 1 });
+  assert.deepEqual(await res.json(), { sent: 1 });
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
 });

@@ -49,7 +49,7 @@ before(async () => {
   await joined(other, "2026-10-02");
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", other).single();
   await db.from("people").update({ team: "IT Service Desk" }).eq("id", who!.id);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const chat of [...team, other]) {
     for (const score of [2, 3, 3, 3, 3, 3]) await tapScore(chat, score);
     await tap(chat, "Done");
@@ -57,7 +57,7 @@ before(async () => {
   main = await fix("ROLE_CLARITY", "Accounts Payable Asia", { notes });
   await fix("WORKLOAD", "IT Service Desk", { no_notice_reason: "The team already knows" });
   await dispatch();
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 30 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 30 })).status, 200);
 });
 
 test("R26, R56: the recheck comes first with no hint of the fix, and the fix question comes after the other taps", async () => {

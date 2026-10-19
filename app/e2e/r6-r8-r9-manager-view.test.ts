@@ -77,7 +77,7 @@ before(async () => {
   await tap(escalated, en.visibilityHrManager);
   await joined(waiting, "2026-10-02");
   await tap(waiting, en.visibilityHrManager);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
 });
 
 test("R9: the supervisor sees only the last weekly snapshot, with counts under 3 shown as fewer than 3", async () => {

@@ -32,9 +32,10 @@ after(async () => {
   await browser?.close();
 });
 
-test("Demo beat 1: Advance to Day 14 sends the live hire one check-in", async () => {
-  await page.getByRole("button", { name: "Advance to Day 14" }).click();
-  await page.getByText("Advanced to Day 14. 1 message sent.").waitFor();
+test("Demo beat 1: Outreach now sends the live hire the Day 14 check-in", async () => {
+  await page.getByLabel("Check-in to send").selectOption("14");
+  await page.getByRole("button", { name: "Outreach now" }).click();
+  await page.getByText("1 message sent.").waitFor();
   assert.ok((await texts()).includes(question("ROLE_CLARITY")));
 });
 
@@ -78,8 +79,9 @@ test("Demo beats 4 and 5: Raj marks it done, the hire gets the update, and the D
   await page.getByText("Raj marked it done").waitFor();
 
   const before = (await texts()).length;
-  await page.getByRole("button", { name: "Advance to Day 30" }).click();
-  await page.getByText(/Advanced to Day 30/).waitFor();
+  await page.getByLabel("Check-in to send").selectOption("30");
+  await page.getByRole("button", { name: "Outreach now" }).click();
+  await page.getByText("1 message sent.").waitFor();
   const sent = (await texts()).slice(before);
   assert.equal(sent[1], question("ROLE_CLARITY"));
 });

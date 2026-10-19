@@ -38,7 +38,7 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   for (const chat of chats) await onboard(chat);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
 });
 
 test("R44: a new driver and language counts without review, and HR reviews keep it trusted", async () => {

@@ -54,7 +54,7 @@ async function run() {
 
   const before = await roleClarity();
   assert.deepEqual([before.n, before.m], [7, 18], "role clarity card before the live reply");
-  await json(await hrRequest("/api/hr/demo/advance", "POST", { day: 14 }), 200, "advance to Day 14");
+  await json(await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 }), 200, "advance to Day 14");
   await until("the Day 14 check-in to be sent", async () => {
     const { data } = await db.from("checkin_schedule").select("status").eq("person_id", livePerson).eq("touchpoint", 14).single();
     return data?.status === "sent";
@@ -93,7 +93,7 @@ async function run() {
   assert.equal(sent.status, "done");
   assert.equal(sent.notice.sent_count, 1);
 
-  await json(await hrRequest("/api/hr/demo/advance", "POST", { day: 30 }), 200, "advance to Day 30");
+  await json(await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 30 }), 200, "advance to Day 30");
   const recheck = await until("the Day 30 check-in to be sent", async () => {
     const { data } = await db
       .from("checkin_schedule")

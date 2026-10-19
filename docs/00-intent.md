@@ -23,7 +23,7 @@ We must not miss anything the organisers require. A missed requirement can lose 
 
 ## What Sapa is
 
-A chat bot that checks in with new employees during their first six months, plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
+A chat bot that checks in with new employees during their first six months, and after that with longer-serving employees on a lighter schedule (agreed 19 Oct 2026, to help with retention and workload; HR sets the days and questions of each track in the dashboard), plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
 
 ## Privacy: anonymous to the company
 
@@ -57,6 +57,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - Fix library, only as the `DraftFix` board in the Fixes design shows it.
 - `/ask` in Telegram: answers from the handbook. Plain text outside a check-in goes to `/ask`. Questions the handbook cannot answer go to HR.
 - Serious concerns: Sapa tells the new hire, in one short message, to report it to HR through the company's speak-up channel (demo: Contoh Speak Up, with web form, email and 24-hour phone). It names only that channel: never 999, helplines, the tribunal or any outside authority. Official complaints are 100% anonymous and are a separate company system, not Sapa's problem to solve. HR sees the replies and a count, and nothing to act on in Sapa (agreed 16 Oct 2026).
+- Check-in schedule screen: HR sets the days and questions of two tracks, New hire and Employee (R60). The join code stays the same. This is not the Settings page.
 - Bahasa Malaysia, English and Chinese. All are always on. No toggle.
 - HR sees which teams need a fix, and sends one fix to many team leads at once (R51, R54).
 - `/say` in Telegram: a new hire writes a message for their lead in any language, and the AI gives it back as clear, polite English to send themselves. Sapa stores nothing.

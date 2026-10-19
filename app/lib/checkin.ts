@@ -25,13 +25,14 @@ export type Schedule = {
   id: string;
   progress: number;
   touchpoint: number;
+  questions: string[] | null;
   recheck_action_id: string | null;
   recheck_driver: string | null;
   chat: Chat | null;
   actions: { notes: Record<string, string> | null } | null;
 };
 
-export const SCHEDULE = "id, progress, touchpoint, recheck_action_id, recheck_driver, chat, actions!recheck_action_id(notes)";
+export const SCHEDULE = "id, progress, touchpoint, questions, recheck_action_id, recheck_driver, chat, actions!recheck_action_id(notes)";
 
 const CHAT_WINDOW_MS = 48 * 3600 * 1000;
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
@@ -40,7 +41,8 @@ const followUp = (schedule: Schedule) => !!schedule.recheck_action_id && !!sched
 
 const sequenceOf = (language: Language, schedule: Schedule) => {
   const tail = [...(schedule.touchpoint === 14 ? ["JOB_MATCH"] : []), ...(followUp(schedule) ? ["FIX_CHANGE"] : [])];
-  const asked = packs[language].checkin.sequence.flatMap((id) => (id === "OPEN" ? [...tail, id] : [id]));
+  const base: string[] = schedule.questions ?? packs[language].checkin.sequence;
+  const asked = base.includes("OPEN") ? base.flatMap((id) => (id === "OPEN" ? [...tail, id] : [id])) : [...base, ...tail];
   return schedule.recheck_driver ? [schedule.recheck_driver, ...asked.filter((id) => id !== schedule.recheck_driver)] : asked;
 };
 

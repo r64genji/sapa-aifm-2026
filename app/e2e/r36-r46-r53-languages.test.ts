@@ -67,7 +67,7 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
 });
 
 test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and nothing of the translation is stored", async () => {
-  const advance = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  const advance = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal(advance.status, 200);
   await tapScore(chat, 4);
   await tapScore(chat, 3);
@@ -126,7 +126,7 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await link(other, token);
   await tapData(other, 'chat:{"a":"lang","v":"zh"}');
   await tap(other, zh.agree);
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 17 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await tapScore(other, 4);
   await tapScore(other, 3);
   await tapScore(other, 5);

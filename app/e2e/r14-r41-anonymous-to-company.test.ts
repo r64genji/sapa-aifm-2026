@@ -52,7 +52,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
-  await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(live, score);
   await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote }) }]);

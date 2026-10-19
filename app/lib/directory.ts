@@ -3,6 +3,7 @@ import { now } from "@/lib/clock";
 import { type Language } from "@/lib/packs";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { allDays, tracksOf } from "@/lib/tracks";
 
 const INVITE_DAYS = 14;
 
@@ -101,6 +102,12 @@ export async function joinIntake(token: string, chatId: number) {
   if (error) throw error;
   const team = intake?.teams.find((row) => row.join_token === token);
   if (!intake || !team) return null;
+  const { data: organisation, error: organisationError } = await db
+    .from("organisations")
+    .select("time_zone")
+    .eq("id", intake.organisation_id)
+    .single<{ time_zone: string }>();
+  if (organisationError) throw organisationError;
   const { data, error: insertError } = await db
     .from("people")
     .insert({
@@ -110,6 +117,7 @@ export async function joinIntake(token: string, chatId: number) {
       team: team.team,
       manager_id: team.manager_id,
       start_date: intake.start_date,
+      joined_on: at.toLocaleDateString("en-CA", { timeZone: organisation.time_zone }),
       language: "en",
       telegram_chat_id: chatId,
       invite_used_at: at.toISOString(),
@@ -241,15 +249,13 @@ export async function reachable(personId: string) {
   return data;
 }
 
-const TOUCHPOINTS = [3, 7, 14, 30, 60, 90, 182];
-
 export async function upcomingCheckins(organisationId: string, days = 21) {
   const db = createAdminClient();
   const { data: organisation, error: orgError } = await db.from("organisations").select("time_zone, holidays").eq("id", organisationId).single<{ time_zone: string; holidays: string[] }>();
   if (orgError) throw orgError;
   const { data: people, error } = await db
     .from("people")
-    .select("start_date")
+    .select("start_date, joined_on")
     .eq("organisation_id", organisationId)
     .neq("state", "left")
     .is("stopped_at", null)
@@ -263,9 +269,10 @@ export async function upcomingCheckins(organisationId: string, days = 21) {
     return d.toISOString().slice(0, 10);
   };
   const due = new Map<string, { date: string; touchpoint: number; people: number }>();
-  for (const { start_date } of people) {
-    for (const touchpoint of TOUCHPOINTS) {
-      const date = working(start_date, touchpoint);
+  const touchpoints = allDays(await tracksOf(organisationId));
+  for (const { start_date, joined_on } of people) {
+    for (const touchpoint of touchpoints) {
+      const date = working(joined_on ?? start_date, touchpoint);
       if (date < today || date > last) continue;
       const key = `${date}:${touchpoint}`;
       due.set(key, { date, touchpoint, people: (due.get(key)?.people ?? 0) + 1 });

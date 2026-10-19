@@ -69,7 +69,7 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   await Promise.all([crisis, passport, epf, modelOnly, plain, onScale, scale, mixed, retried, held].map((chat) => joined(chat, "2026-10-02")));
-  const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal((await res.json()).sent, 10);
   for (const chat of [crisis, passport, epf, modelOnly, plain, mixed, retried, held]) await reachOpenQuestion(chat);
 });

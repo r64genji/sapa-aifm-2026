@@ -51,7 +51,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   const chats = [yes, noThanks, silent, plain, passport, stopper];
   await Promise.all(chats.map((chat) => joined(chat, "2026-10-02")));
-  const res = await hrRequest("/api/hr/demo/advance", "POST", { day: 14 });
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal((await res.json()).sent, chats.length);
   for (const chat of chats) {
     await tapScore(chat, 4);

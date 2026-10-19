@@ -127,7 +127,7 @@ Check-ins are rows, not sleeping processes, so the demo can jump to Day 14 on co
 3. The dispatcher picks rows where `due_at ≤ now() + demo_offset`, sends them, and marks them sent (`for update skip locked`, so a double call never double-sends).
 4. One reminder after 24 hours, then the check-in is marked skipped. No nagging.
 
-The demo clock is one setting, `organisations.demo_offset_days`. An "Advance to Day 14" button raises it and calls the dispatcher immediately. Durable-sleep engines (Vercel Workflow, Inngest) are elegant but cannot be fast-forwarded like this.
+The demo clock is one setting, `organisations.demo_offset_days`. The demo bar no longer moves it: its "Outreach now" button sends the live hire's next check-in directly (see R60 and R19 in docs/05). Durable-sleep engines (Vercel Workflow, Inngest) are elegant but cannot be fast-forwarded like this.
 
 ### 4.3 HR web app
 

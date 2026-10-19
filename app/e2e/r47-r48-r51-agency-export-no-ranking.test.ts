@@ -205,7 +205,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
   await acknowledge(first[0]);
   await acknowledge(first[1]);
 
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const chat of answerers) {
     for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);

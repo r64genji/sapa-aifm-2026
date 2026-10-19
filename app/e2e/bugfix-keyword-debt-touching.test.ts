@@ -19,7 +19,7 @@ before(async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
   for (const { chat } of cases) await joined(chat, "2026-10-02");
-  assert.equal((await hrRequest("/api/hr/demo/advance", "POST", { day: 14 })).status, 200);
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const { chat } of cases) for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
 });
 
