@@ -246,6 +246,9 @@ a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); 
 .sp-nav-count.sp-lane-serious { animation: sp-pulse 2.4s ease-out infinite; }
 .sp-dialog-backdrop { animation: sp-fade 0.2s ease both; backdrop-filter: blur(2px); }
 .sp-dialog { animation: sp-pop 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-sheet-backdrop { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: flex-end; background: rgba(28, 34, 38, 0.32); animation: sp-fade 0.2s ease both; }
+.sp-sheet { width: min(760px, 100vw); height: 100%; overflow-y: auto; overscroll-behavior: contain; background: var(--surface); box-shadow: var(--shadow-pop); animation: sp-sheet-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+@keyframes sp-sheet-in { from { transform: translateX(32px); opacity: 0; } }
 .sp-skel { border-radius: var(--radius-card); background: linear-gradient(90deg, var(--track-empty) 0%, var(--surface-sunken) 50%, var(--track-empty) 100%); background-size: 200% 100%; animation: sp-shimmer 1.4s linear infinite; }
 
 .sp-area { min-width: 0; padding: 14px 14px 12px; border-radius: var(--radius-card); border: 1px solid var(--line); background: var(--surface-raised); color: var(--ink); display: flex; flex-direction: column; gap: 6px; text-decoration: none; transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease; }

@@ -36,6 +36,7 @@ export type ReplyRowProps = {
   onRetry: () => Promise<unknown>;
   onUndo?: () => Promise<unknown>;
   chat?: boolean;
+  whole?: boolean;
 };
 
 export function Translation({ id, language }: { id: string; language?: string }) {
@@ -182,10 +183,10 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   );
 }
 
-export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat }: ReplyRowProps) {
+export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, whole: full }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [whole, setWhole] = useState(!item.text);
+  const [whole, setWhole] = useState(!!full || !item.text);
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
     try {

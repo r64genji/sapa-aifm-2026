@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties, type ReactNode } from "react";
-import { ArrowRight, BookCheck, BookX, Building2, Inbox, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
-import { useApi } from "./data";
-import { Translation, type ReplyItem } from "./reply";
+import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ApiError, apiSend, useApi } from "./data";
+import { ReplyRow, Translation, type ReplyItem } from "./reply";
 import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Quote, Row, dayLabel, driverName, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
@@ -356,37 +357,83 @@ function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
   );
 }
 
-function Replies({ replies, groups, filter, setFilter }: { replies: ReplyItem[]; groups: { title: string; reply_ids: string[] }[]; filter: string | null; setFilter: (f: string | null) => void }) {
-  const [all, setAll] = useState(false);
+function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { driver: string; replies: ReplyItem[]; groups: { title: string; reply_ids: string[] }[]; filter: string | null; setFilter: (f: string | null) => void; onClose: () => void }) {
+  const [error, setError] = useState<string | null>(null);
   const group = groups.find((g) => g.title === filter);
   const shown = group ? replies.filter((r) => group.reply_ids.includes(r.id)) : replies;
-  const visible = all ? shown : shown.slice(0, 6);
-  return (
-    <div className="flex flex-col gap-3">
-      {groups.length ? (
-        <div role="group" aria-label="Show replies" className="sp-tabs self-start">
-          <button type="button" className="sp-tab" aria-pressed={!filter} onClick={() => setFilter(null)}>
-            All · {replies.length}
-          </button>
-          {groups.map((g) => (
-            <button key={g.title} type="button" className="sp-tab" aria-pressed={filter === g.title} onClick={() => setFilter(g.title)}>
-              {g.title}
+  const name = driverName(driver);
+  useEffect(() => {
+    const back = document.activeElement as HTMLElement | null;
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", esc);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", esc);
+      document.body.style.overflow = "";
+      back?.focus();
+    };
+  }, [onClose]);
+  const send = async (path: string, body?: object) => {
+    setError(null);
+    try {
+      await apiSend(path, "POST", body);
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Could not save. Try again.");
+    }
+  };
+  return createPortal(
+    <div className="sp-sheet-backdrop" onClick={onClose}>
+      <aside className="sp-sheet" role="dialog" aria-modal="true" aria-label={`${name} replies`} onClick={(e) => e.stopPropagation()}>
+        <div className="sticky top-0 z-10 flex flex-col gap-3 border-b px-5 py-4 sm:px-6" style={{ background: "var(--surface)", borderColor: "var(--line)" }}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <button type="button" autoFocus className="sp-link inline-flex items-center gap-1.5 text-[14px]" onClick={onClose}>
+              <ArrowLeft size={16} aria-hidden="true" />
+              Back to {name}
             </button>
+            <Link href={`/replies?view=all&area=${driver}`} className="sp-link inline-flex items-center gap-1 text-[13px]">
+              Open in Replies
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="flex flex-col">
+            <h2 className="m-0 text-[22px] font-bold leading-[28px]">{name}</h2>
+            <span className="sp-meta">Day 14 replies counted here, with the whole check-in</span>
+          </div>
+          {groups.length ? (
+            <div role="group" aria-label="Show replies" className="sp-tabs self-start">
+              <button type="button" className="sp-tab" aria-pressed={!filter} onClick={() => setFilter(null)}>
+                All · {replies.length}
+              </button>
+              {groups.map((g) => (
+                <button key={g.title} type="button" className="sp-tab" aria-pressed={filter === g.title} onClick={() => setFilter(g.title)}>
+                  {g.title}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+        <div key={filter ?? "all"} className="sp-stagger flex flex-col gap-4 px-5 py-5 sm:px-6">
+          {error ? (
+            <div role="alert" className="text-sm" style={{ color: "var(--serious)" }}>
+              {error}
+            </div>
+          ) : null}
+          {shown.length === 0 ? <span className="sp-muted">No replies counted here yet.</span> : null}
+          {shown.map((r) => (
+            <ReplyRow
+              key={r.id}
+              chat
+              whole
+              item={r}
+              onConfirm={() => send(`/api/hr/replies/${r.id}/review`, {})}
+              onChange={(change) => send(`/api/hr/replies/${r.id}/review`, change)}
+              onRetry={() => send(`/api/hr/replies/${r.id}/retry`)}
+            />
           ))}
         </div>
-      ) : null}
-      {shown.length === 0 ? <span className="sp-muted">No replies counted here yet.</span> : null}
-      <div key={filter ?? "all"} className="sp-stagger grid gap-3 lg:grid-cols-2">
-        {visible.map((r) => (
-          <ReplyCard key={r.id} r={r} label={r.status === "reviewed" ? "Checked" : "AI was sure"} />
-        ))}
-      </div>
-      {shown.length > visible.length ? (
-        <Button className="self-start" onClick={() => setAll(true)}>
-          Show all {shown.length}
-        </Button>
-      ) : null}
-    </div>
+      </aside>
+    </div>,
+    document.body,
   );
 }
 
@@ -422,8 +469,8 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const read = (title: string | null) => {
     setFilter(title);
     setOpen(true);
-    setTimeout(() => document.getElementById("replies")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
+  const close = useCallback(() => setOpen(false), []);
 
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-hidden">
@@ -498,12 +545,11 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           ) : (
             <div className="sp-skel h-40" />
           )}
-          <div id="replies" className="flex scroll-mt-6 flex-col gap-3">
-            <button type="button" className="sp-link self-start text-[14px]" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-              {open ? "Hide replies" : `Read the ${mine.length} replies`}
-            </button>
-            {open ? replies.data ? <Replies replies={mine} groups={grouped} filter={filter} setFilter={setFilter} /> : <div className="sp-skel h-24" /> : null}
-          </div>
+          <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[14px]" aria-haspopup="dialog" disabled={!replies.data} onClick={() => read(null)}>
+            <MessageSquare size={15} aria-hidden="true" />
+            Review the {mine.length} replies in full
+          </button>
+          {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
         </div>
       </div>
     </section>
