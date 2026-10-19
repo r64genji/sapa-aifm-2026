@@ -132,6 +132,12 @@ export async function hrToken(email = "hr@contoh.test") {
   return data.session.access_token;
 }
 
+export async function hrActor() {
+  const { data, error } = await db.auth.getUser(await hrToken());
+  if (error) throw error;
+  return data.user.id;
+}
+
 export async function sessionClient(email: string) {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
     auth: { persistSession: false },

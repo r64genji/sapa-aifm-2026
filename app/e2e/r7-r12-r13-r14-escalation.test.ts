@@ -6,6 +6,7 @@ import {
   classifierTag,
   db,
   freezeClock,
+  hrActor,
   hrRequest,
   hrToken,
   joined,
@@ -227,7 +228,7 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   assert.equal(body.text, "The agent holds my passport");
   assert.equal(body.category, "forced_labour_indicator");
   assert.ok(body.sent_by_bot.join("\n").includes(en.safety.message));
-  const { data: rows } = await db.from("audit_log").select("action, at").eq("target", alert.response_id).eq("action", "read_reply_text");
+  const { data: rows } = await db.from("audit_log").select("action, at").eq("target", alert.response_id).eq("action", "read_reply_text").eq("actor", await hrActor());
   assert.deepEqual(rows, [{ action: "read_reply_text", at: "2026-10-15T15:00:00+00:00" }]);
 
   const manager = await hrToken("raj@contoh.test");

@@ -6,6 +6,7 @@ import {
   classifierTag,
   db,
   freezeClock,
+  hrActor,
   hrRequest,
   hrToken,
   link,
@@ -30,7 +31,7 @@ const roleClarity = async (query = "") => {
 };
 
 const auditActions = async () => {
-  const { data } = await db.from("audit_log").select("action, target").neq("action", "grant_consent").order("at");
+  const { data } = await db.from("audit_log").select("action, target").eq("actor", await hrActor()).order("at");
   return data!;
 };
 
