@@ -231,8 +231,6 @@ table.sp-table td { padding: 12px; border-bottom: 1px solid var(--line-soft); ve
 
 .sp-card, .sp-section, .sp-tile { transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease; }
 a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px rgba(28, 34, 38, 0.35); }
-.sp-tile { position: relative; overflow: hidden; }
-.sp-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 55%); pointer-events: none; }
 .sp-btn { transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease; }
 .sp-btn:not(:disabled):hover { box-shadow: 0 2px 8px -2px rgba(28, 34, 38, 0.25); }
 .sp-btn-secondary:not(:disabled):hover { background: var(--surface-sunken); }
