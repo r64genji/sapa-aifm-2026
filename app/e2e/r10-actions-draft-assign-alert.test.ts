@@ -188,23 +188,14 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
   assert.equal((await (await nightly()).json()).alerts, 0);
 });
 
-test("Telegram: the manager accepts and marks done from the buttons, and done is taken only with a one-line outcome", async () => {
+test("Telegram: Mark done finishes the action at once, even before Accept, and asks for no outcome line", async () => {
   const [message] = await alertTo(aishaChat, "Weekly priorities talk");
-  const [other] = await alertTo(aishaChat, "Workload check");
+  await alertTo(aishaChat, "Workload check");
 
-  await tapData(aishaChat, buttonOf(other, "Mark done"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Mark done". ${en.action.acceptFirst}`);
-
-  await tapData(aishaChat, buttonOf(message, "Accept"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Accept". ${en.action.accepted}`);
   await tapData(aishaChat, buttonOf(message, "Mark done"));
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Mark done". ${en.action.askOutcome}`);
-  await say(aishaChat, "Ran the Monday priorities talk\nwith all three.");
-  assert.equal((await sentTo(aishaChat)).at(-1)!.text, en.action.finished);
-
-  const done = (await board()).find((row) => row.title === "Weekly priorities talk")!;
-  assert.equal(done.status, "done");
-  assert.equal(done.outcome_note, "Ran the Monday priorities talk with all three.");
+  assert.equal((await sentTo(aishaChat)).at(-1)!.text, `You tapped "Mark done". ${en.action.finished}`);
+  assert.equal((await board()).find((row) => row.title === "Weekly priorities talk")!.status, "done");
+  assert.equal((await board()).find((row) => row.title === "Workload check")!.status, "assigned");
 });
 
 test("R10: the supervisor's web card shows the released action with the snapshot context; done without an outcome note is refused", async () => {

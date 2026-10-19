@@ -194,7 +194,7 @@ The product has three parts: a chat check-in bot for new hires, an AI pipeline w
 
 - **New hire:** On Day 1, HR shares a QR code to the bot. The bot shows a plain-language consent message: what is collected, who sees it, that it is voluntary, that stopping has no effect on employment, how long data is kept, and how to delete it. The hire picks a language and taps "Setuju / I agree". Each check-in takes about 60–90 seconds plus at most one or two follow-ups from a fixed probe bank. The hire chooses "HR only" (default) or "OK to share with my manager", and can type LANGKAU/SKIP, BERHENTI/STOP or PADAM/DELETE at any time.
 - **HR:** On Monday the dashboard shows everyone hired in the last six months and the theme "Role clarity: 24 of 65 who answered". The flag queue shows routine items, and any escalation in red with its fixed protocol. HR reads the AI summary next to the original text, corrects a tag if needed, clicks "Draft action" and assigns it to the supervisor.
-- **Manager:** Sees the assigned action with theme-level context (an individual's words only if that person consented), accepts it, carries it out, and marks it done with a one-line outcome.
+- **Manager:** Sees the assigned action with theme-level context (an individual's words only if that person consented), accepts it, carries it out, and marks it done.
 - **Closing the loop:** The bot sends the HR-approved "Update from HR" note to the new hires the fix affects. The next check-in asks the same neutral question as before ("How clear are you on what is expected of you this week? (1–5)"), so HR sees the score change after the action.
 
 ### F3. Check-in schedule

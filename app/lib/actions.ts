@@ -567,7 +567,7 @@ export async function stepAction(
   outcome?: string,
 ) {
   const note = outcome?.replace(/\s+/g, " ").trim();
-  if (to === "done" && !note) return { error: "An outcome note is needed to mark an action done", code: 422 };
+  if (to === "done" && outcome !== undefined && !note) return { error: "An outcome note is needed to mark an action done", code: 422 };
   const at = (await now()).toISOString();
   let query = createAdminClient()
     .from("actions")
@@ -778,7 +778,7 @@ export async function managerChat(chatId: number, input: Input): Promise<Outcome
   const db = createAdminClient();
   const { data: manager, error } = await db
     .from("managers")
-    .select("id, organisation_id, outcome_for")
+    .select("id, organisation_id")
     .eq("telegram_chat_id", chatId)
     .is("revoked_at", null)
     .maybeSingle();
@@ -799,21 +799,13 @@ export async function managerChat(chatId: number, input: Input): Promise<Outcome
         .eq("owner_manager_id", manager.id)
         .maybeSingle();
       if (actionError) throw actionError;
-      if (action?.status === "assigned") return reply(text.acceptFirst);
-      if (action?.status !== "accepted") return reply(text.unavailable);
-      const { error: pendingError } = await db.from("managers").update({ outcome_for: id.data }).eq("id", manager.id);
-      if (pendingError) throw pendingError;
-      return reply(text.askOutcome);
+      if (action?.status === "assigned") await stepAction(manager.organisation_id, manager.id, manager.id, id.data, "accepted");
+      else if (action?.status !== "accepted") return reply(text.unavailable);
+      const result = await stepAction(manager.organisation_id, manager.id, manager.id, id.data, "done");
+      return reply("error" in result ? text.unavailable : text.finished);
     }
     return reply(text.idle);
   }
   if (input.text.trim().split(/\s+/)[0].toLowerCase().split("@")[0] === "/whatican") return reply(packs.en.whatICanSee);
-  if (manager.outcome_for && !input.text.startsWith("/")) {
-    const result = await stepAction(manager.organisation_id, manager.id, manager.id, manager.outcome_for, "done", input.text);
-    if ("error" in result && result.code === 422) return reply(text.askOutcome);
-    const { error: clearError } = await db.from("managers").update({ outcome_for: null }).eq("id", manager.id);
-    if (clearError) throw clearError;
-    return reply("error" in result ? text.unavailable : text.finished);
-  }
   return reply(text.idle);
 }
