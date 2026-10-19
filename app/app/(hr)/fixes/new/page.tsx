@@ -696,7 +696,7 @@ function Page() {
 
   if (!driver && !resume) return <Empty title="Pick a problem area first" sub="A fix starts from a shared problem." />;
   if (error) return <Empty title="Could not start a fix" sub={error} />;
-  if (view.error) return <Empty title="This fix is not available" sub={fail(view.error)} />;
+  if (view.error && !first) return <Empty title="This fix is not available" sub={fail(view.error)} />;
   if (!id || !first) return <Loading />;
   if (first.status !== "draft") return <Empty title="This fix has been sent" sub="Open it from the Fixes list." />;
   return <Editor key={id} id={id} view={first} entries={entries.data} teams={params.getAll("team")} />;
