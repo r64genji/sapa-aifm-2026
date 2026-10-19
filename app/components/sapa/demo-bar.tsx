@@ -28,7 +28,7 @@ function Light({ ok, label, title }: { ok: boolean; label: string; title: string
 export function DemoBar() {
   const status = useApi<Status>("/api/hr/demo/status", 10000);
   const [busy, setBusy] = useState(false);
-  const [confirming, setConfirming] = useState(false);
+  const [confirming, setConfirming] = useState<"seed" | "full" | null>(null);
   const [invite, setInvite] = useState<{ team: string; link: string }[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -49,12 +49,12 @@ export function DemoBar() {
       const result = await apiSend<{ sent: number }>("/api/hr/demo/outreach", "POST", { touchpoint: pick });
       setMessage(`${result.sent} message${result.sent === 1 ? "" : "s"} sent.`);
     });
-  const reset = () =>
+  const reset = (full: boolean) =>
     run(async () => {
-      setConfirming(false);
-      const result = await apiSend<{ team_links: { team: string; link: string }[] }>("/api/hr/demo/reset");
+      setConfirming(null);
+      const result = await apiSend<{ team_links: { team: string; link: string }[] }>("/api/hr/demo/reset", "POST", { full });
       setInvite(result.team_links);
-      setMessage("Reset to seed.");
+      setMessage(full ? "Full reset done. All phones are unlinked." : "Reset to seed.");
     });
 
   const s = status.data;
@@ -77,7 +77,8 @@ export function DemoBar() {
             ))}
           </select>
           <Button variant="primary" disabled={busy || pick === undefined} onClick={outreach}>Outreach now</Button>
-          <Button disabled={busy} onClick={() => setConfirming(true)}>Reset to seed</Button>
+          <Button disabled={busy} onClick={() => setConfirming("seed")}>Reset to seed</Button>
+          <Button disabled={busy} onClick={() => setConfirming("full")}>Full reset</Button>
         </span>
         {s ? (
           <span className={`${open ? "flex" : "hidden"} flex-wrap gap-3 md:ml-auto md:flex`}>
@@ -99,11 +100,15 @@ export function DemoBar() {
         </div>
       ) : null}
       {confirming ? (
-        <Dialog title="Reset to seed?" onClose={() => setConfirming(false)}>
-          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. Linked phones stay linked: the live hire is back at the start, and team leads keep their link.</p>
+        <Dialog title={confirming === "full" ? "Full reset?" : "Reset to seed?"} onClose={() => setConfirming(null)}>
+          <p className="m-0 text-[14px] leading-[21px]">
+            {confirming === "full"
+              ? "This erases everything done in the demo so far and loads the seed again. It also unlinks every phone: the live hire and the team leads must join again with the new links."
+              : "This erases everything done in the demo so far and loads the seed again. Linked phones stay linked: the live hire is back at the start, and team leads keep their link."}
+          </p>
           <div className="flex flex-wrap gap-2">
-            <Button variant="primary" onClick={reset}>Reset to seed</Button>
-            <Button onClick={() => setConfirming(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => reset(confirming === "full")}>{confirming === "full" ? "Full reset" : "Reset to seed"}</Button>
+            <Button onClick={() => setConfirming(null)}>Cancel</Button>
           </div>
         </Dialog>
       ) : null}

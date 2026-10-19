@@ -174,7 +174,7 @@ async function relinkPhones({ hires, leads }: Awaited<ReturnType<typeof linkedPh
   }
 }
 
-export async function resetDemo() {
+export async function resetDemo(full = false) {
   const db = createAdminClient();
   const { data: live, error: modeError } = await db.from("organisations").select("id").eq("demo_mode", false).limit(1);
   if (modeError) throw modeError;
@@ -185,7 +185,7 @@ export async function resetDemo() {
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const leads = process.env.SAPA_TEST === "1" ? managers : managers.map((row) => ({ ...row, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") }));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
-  const phones = await linkedPhones();
+  const phones = full ? null : await linkedPhones();
   const { error } = await db.rpc("reset_demo", {
     seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
@@ -194,7 +194,7 @@ export async function resetDemo() {
   await seedFixFollowUp();
   await seedNotices();
   await seedUsers();
-  await relinkPhones(phones, teams);
+  if (phones) await relinkPhones(phones, teams);
   const { data: lead } = await db.from("managers").select("id, display_name");
   const names = new Map(lead!.map((row) => [row.id, row.display_name]));
   return { team_links: teams.map((row) => ({ team: row.team, lead: names.get(row.manager_id) ?? "", link: joinLink(row.join_token) })) };
