@@ -1,181 +1,105 @@
-# Sapa pitch storyboard (draft)
+# Sapa pitch storyboard
 
-*Draft, 16 Oct 2026. Follows the guide's 10-slide structure (guide p.10). Each slide shows the guide's own question words as small labels, and the Contoh GBS story gives the answers. The pitch also sells Sapa as a product: who buys it, why, the market and the business model.*
+*Agreed 19 Oct 2026. Replaces the 16 Oct draft. The slides will be redesigned from scratch, so this file fixes what each slide says and how it should feel, not its layout. Work slide by slide; slide 1 has a first illustration sketch.*
 
 **Rules**
-- Contoh GBS is an example company. Its numbers carry the label "Example company" on screen. Real research carries its source in small text.
-- No invented quotes or results. Slots stay empty until real interviews and tests fill them.
-- Timing: slides about 5 min, demo 2 min, Q&A 2 min. Total 9 min, inside the 8–10 min limit.
+- The company and its people are fictional. Say so once on slide 2 and once at the demo, then do not apologise. Real research carries its source in small text.
+- No invented quotes or results. Slide 8 uses real test numbers only. Interview slots stay empty until real interviews fill them.
+- 10 slides, no more. The guide recommends 10 or fewer and the pitching trainer said "maximum 10" ([docs/07](../../docs/07-official-rules-and-requirements.md)). Extra material goes in the appendix for Q&A.
+- No pilot, no ask, no fundraising. The ending is impact for HR and the roadmap.
+- Timing: slides about 5 min, demo 2 min, Q&A 2 min.
 
-**Cast:** Mei Ling (new hire, the thread) · Aishah (HR executive, main user, the hero) · Raj (team lead, does the fix) · Kavitha (site HR manager, the buyer).
+## The story
 
----
+**Company:** Bayan Global Services ("Bayan GBS"), a shared services centre in Bayan Lepas, Penang, owned by a European group ("the Group"). It replaces the name "Contoh GBS". Contoh means "example", so judges heard "fake" every time. [docs/09](../../docs/09-client-story.md) and the app seed still say Contoh until the rename pass. All other company facts stay as docs/09 sets them.
 
-## Act 1 — The problem
+**On stage, three people only:** Mei Ling (new hire), Aishah (HR executive, the only HR person for new hires), Raj (Mei Ling's team lead). Kavitha (HR manager, the buyer) appears only on slide 10, as "Aishah's boss".
 
-### 1 · Team & Challenge
-**Labels:** Team · Challenge · Idea
+**The spine: what happened, rewind, the new ending.**
 
-**On the slide**
-- [Team name]
-- Challenge 4 · RETAIN: Early Employee Disengagement
-- "We are building Sapa for HR teams so they can hear new-hire problems before they resign."
+1. **What happened.** The October 2025 intake: 17 new hires, same Monday, same classroom. By Month 6, 5 had left (29%). Mei Ling left on Day 61. On Day 14 she was lost and afraid to ask, and nobody checked in.
+2. **Rewind.** Same 17 people, same Monday, but Bayan GBS has Sapa. The demo is the rewind.
+3. **New ending.** 2 of 17 leave instead of 5. 15 of 17 kept is 88%, past the Group's 85% goal. The 2 we could not save point to the roadmap.
 
-**Visual:** The 3 lines appear one by one. A Telegram bubble types out Mei Ling's message: *"Boss said billing first, then said disputes first, now I’m confused"* (a real seed reply; the phone shows the real bot questions)
+**The five leavers are the five exit reasons.** Each reason in Aishah's spreadsheet becomes one face from the class photo.
 
-**We say:** "This is Mei Ling. Day 14 at her first job. She does not know which task to do first. Today, nobody at her company will read this message. We are [team], and this is Sapa."
+| Leaver | Left on | Reason in Aishah's exit spreadsheet | With Sapa |
+| --- | --- | --- | --- |
+| Mei Ling | Day 61 | Never sure which task came first | Stays: role clarity fix to Raj's team |
+| Hafiz | Day 48 | Europe shift alone, never met his team | Stays |
+| Priya | Day 83 | Team lead always on calls | Stays |
+| Arif | Day 97 | Nobody showed him SAP | Leaves: never joined Sapa, he does not use Telegram → roadmap: WhatsApp |
+| Nurul | Day 140 | Agency said "Finance Analyst", the job was invoice matching | Leaves: the job itself was wrong → roadmap: job-match check, agency view |
 
-### 2 · The Real HR Problem
-**Labels:** Today · Who · Why it matters
+Not saving everyone keeps the story believable.
 
-**On the slide**
-- Today: HR hears why only at the exit interview.
-- Who: new hires, HR, team leads.
-- Why: **54 of 200** leave before Month 6. **RM522,000** a year. **60 jobs** at stake.
-- Small: Example company: Contoh GBS. Malaysia attrition **18.2%** (Aon, 2025).
+**Last line of the pitch:** "Same 17 people. Same Day 14. This time, someone was listening."
 
-**Visual:** 200 dots. 54 fade out along a Day 0 → 90 → 180 line. A counter climbs to RM522,000. "60 jobs" slides along a line from Penang to Kraków.
+## Visual direction
 
-**We say:** "Contoh GBS is a back office in Penang with 650 staff. It is made up, but it is built from real Penang facts. It hires 200 people a year. 54 are gone before Month 6. That costs about RM522,000 a year. Now its parent company has set a test: keep 85% of new hires by September 2027, or 60 new jobs go to Kraków. Malaysia's attrition is 18.2%. In a 2023 Employment Hero survey, leaders at firms of 200 to 500 staff said over 2 in 10 new hires, 23%, leave within six months. Contoh is a little worse than normal, but not by much."
+- **Illustrations, not photos.** Soft pastel watercolour, cartoon style: round shapes, simple faces (dot eyes, one-line mouth), no photo detail.
+- **No boxes.** Each illustration fades into the slide background at its edges. It must not look like an image placed on the slide.
+- **Design-system colours only:** warm grey background `#EEEDE9`, ink `#1C2226`, teal `#0B5D5A`, highlight yellow `#FCE9A8`, in pale washes.
+- **Colour means being heard.** Before the rewind the office is grey and only Mei Ling has colour. After the rewind, colour spreads to Raj, then the team.
+- **Show, do not tell.** Every detail hints at the problem; the speaker says the rest.
+- **Day counter** in a corner of each story slide (Day 14 → Day 61 → rewind to Day 14 → Day 180), so judges always know where they are in time.
+- Big moments use builds inside a slide (faces fading out, a spreadsheet row sliding in), not extra slides.
+- Illustration files live in [illustrations/](illustrations/).
 
-**Sources:** Aon Salary Increase & Turnover Study (Dec 2025). Employment Hero survey via Malay Mail (2023; an expectation, not a measured rate). Contoh numbers: `docs/09-client-story.md`.
+## Slides
 
-### 3 · Evidence / Current Process
-**Labels:** Users · Research · Current process
+| # | Beat | One message | Content and numbers | Visual |
+| --- | --- | --- | --- | --- |
+| 1 | **Day 14** | Mei Ling is lost, and too afraid to ask. | "Mei Ling. Day 14." Team name, Challenge 4 · RETAIN. | Full illustration, below |
+| 2 | **The intake** | 17 started. 5 were gone by Month 6. | Bayan GBS (fictional): 54 of 200 a year leave before Month 6, about RM522,000 a year. Real: over 2 in 10 new hires (23%) leave firms of 200–500 staff within 6 months (Employment Hero, 2023). Malaysia attrition 18.2% (Aon, Dec 2025). | Class photo of 17; Mei Ling in colour; 5 fade out |
+| 3 | **Day 61** | HR heard why, 47 days too late. | Aishah's exit spreadsheet: 5 rows, 5 reasons; Mei Ling's row repeats what she felt on Day 14. The yearly survey only reaches staff with 6 months' service. Research: 25% of Malaysian employees engaged and 62% say it is a good time to find a job (Gallup 2026); 57% would consider quitting without a manager's career support (Randstad 2025). Interview quotes slot. | Her empty desk, a box of her things; the spreadsheet row slides in |
+| 4 | **Rewind** | Same 17 people. Same Monday. Now with Sapa. | New hire: check-ins on Telegram, own phone, from Day 1. HR: one screen of shared problems. Team lead: the fix in Telegram. | Slide 1's scene again, but her phone lights up |
+| 5 | **How it works** | One message in, one fix out. | Her reply → AI label with her words highlighted → "23 of 64 said the same" → Aishah confirms, Raj gets the fix. The database counts; the AI suggests. | Four steps in a row |
+| 6 | **Why AI** | No person reads 3,000 replies. | 54 exit notes in one weekend, months late → 3,000+ replies a year (200 hires × 7 check-ins × 2–3 answers), read the same day, in BM, English and 中文. | Paper pile vs live bars |
+| 7 | **Demo** | Watch Day 14 again, live. | The six beats in [05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo): reply → label → confirm → fix to Raj → "Update from HR" → asked again. Say: "Today at Bayan GBS. Sapa has run here for a year. The company is made up; the product is real." | Live app |
+| 8 | **Testing** | Real people stood in for the October intake. | Real test numbers and quotes only: AI accuracy per language, HR time, HR tester score, one honest limit. | Results |
+| 9 | **Trust** | Why Mei Ling dares to speak. | She is on probation and Raj confirms it. Team leads never see who wrote what. Groups under 5 are hidden. AI suggests, a person decides. Serious concerns go only to HR. | Her figure; her name blurs to "New hire · Day 14" |
+| 10 | **Day 180 and what's next** | 2 left, not 5. The roadmap saves the last 2. | See below | Two class photos: before (12 of 17) and after (15 of 17), colour all around |
 
-**On the slide**
-- Users: [HR interview quotes, or "Desk research only"]
-- Research: **25%** engaged · **62%** say it is a good time to find a job · **57%** would consider quitting without a manager's career support
-- Current process: Survey after Month 6 → Exit interview → Spreadsheet → Read months later
+### Slide 1 in detail
 
-**Visual:** 3 columns build in order. The numbers count up in lane colors. On the process line, Months 0–6 are shaded with the label "HR is blind". 54 spreadsheet rows sort themselves into the 5 exit reasons.
+- **On the slide:** "Mei Ling. Day 14." No chat, no thought bubble. The picture carries it.
+- **Illustration** ([slide1-mei-ling.svg](illustrations/slide1-mei-ling.svg), first sketch): three sticky notes on her screen, "URGENT" for CN, TW and VN; her hand half raised, then stopping; Raj behind glass on a headset, his chair empty with an "On a call" card; a "New hire" badge; the clock just after 6 pm; her phone face down; a coworker in the back, head down.
+- **Sketch fixes still open:** a more slumped pose, Raj's hand on his headset instead of a wave, a slightly bigger head so her worry reads from the back of the room.
+- **We say:** "This is Mei Ling. 23, her first job, Day 14. Three country teams each say their invoices are urgent. She doesn't know which comes first. Her team lead is on calls all day, and he is the one who decides if she passes probation. So she says nothing. Nobody checks in. Nobody asks."
+- **Hand-off to slide 2:** "She was one of 17 who started that Monday."
 
-**We say:** "Here is what HR does today. The yearly survey only reaches people with 6 months' service, so it never hears an early leaver. Aishah, the one HR person for new hires, did every exit interview. One weekend she read all 54. The same five reasons came up: unclear priorities, no time with the team lead, no training, the Europe shift alone, and a job that was not as advertised. Every one was too late. The research says the same: only 25% of Malaysian employees are engaged, and 62% think it is a good time to find a new job (Gallup). 57% would consider quitting if their manager does not support their growth (Randstad)."
+### Slide 10 in detail
 
-**Sources:** 25% and 62%: Gallup State of the Global Workplace 2026 (Malaysia). 57%: Randstad Workmonitor 2025 Malaysia (n=503, "would consider quitting if managers are not supportive of their professional development"). Interview slot: `deliverables/09-testing-evidence/README.md`.
-
----
-
-## Act 2 — The turn
-
-### 4 · Your Solution
-**Labels:** What we built · Who uses it · Who buys it
-
-**On the slide**
-- Sapa: check-ins on Telegram. Problems on one screen.
-- Uses it: HR · Acts on it: team leads · Speaks: new hires · Buys it: HR manager
-- For: companies with 100–1,000 staff, monthly intakes and lean HR
-
-**Visual:** A phone (Mei Ling) and a laptop (Aishah) slide in. A second phone (Raj) joins. Lines connect the 3. Kavitha's card sits above them with the label "Buyer".
-
-**We say:** "What if Aishah heard Mei Ling on Day 14, not at her exit? Sapa checks in with new hires on Telegram, on their own phone, from Day 1. They do not need a company email. It shows HR the problems new hires share, and it sends the fix to the team lead. Our customer is any company that hires every month with a small HR team: shared services centres, factories, retail chains. We start with Penang's shared services centres. They have more than 90 firms and 20,000 staff, up from about 60 firms in 2019."
-
-**Sources:** Penang state government via Malay Mail, 13 Nov 2025 (90+ GBS firms, 20,000+ staff); InvestPenang (about 60 firms, 2019). SSON (Malaysia has 441 shared services centres, Feb 2024). Telegram reaches about 65% of Malaysian internet users aged 16–64, the highest in Asia-Pacific (Statista, Q3 2023).
-
-### 5 · How It Works
-**Labels:** Input → AI process → Output → Human action
-
-**On the slide**
-- Input: a new hire's reply
-- AI: labels it and shows the words it used
-- Output: "23 of 64 raised role clarity"
-- Human: HR confirms and sends a fix to the team lead
-
-**Visual:** Mei Ling's message travels through 4 boxes. In the AI box, the evidence words get a yellow highlight and a purple `AI · Unclear task priorities` tag appears. In the human box, the tag turns into "✓ Aishah".
-
-**We say:** "Follow one message. Mei Ling writes in Manglish. The AI labels it 'unclear task priorities' and highlights the exact words. Sapa counts it with the others: 23 of 64 new hires raised role clarity at Day 14. Aishah checks the label, accepts it, and sends a fix to Raj. A person decides every step."
-
-### 6 · How AI Adds Value
-**Labels:** What AI does · Why it beats manual · Why it beats survey tools
-
-**On the slide**
-- AI does 5 jobs: labels · shows evidence · groups meaning · drafts fixes · answers handbook questions
-- Manual: 1 weekend, 54 rows, months late, English only
-- Sapa: every reply, the day it arrives, in BM, English and 中文
-- Survey tools: Culture Amp, about US$23,000 a year (median paid). Sapa: RM18,000.
-
-**Visual:** Split screen. On the left, a pile of rows with a calendar flipping by months. On the right, the rows fold into 5 teal bars, live. The 5 AI jobs tick in one by one. At the bottom, a price bar: a long grey survey-tool bar shrinks to a short Sapa bar.
-
-**We say:** "200 new hires and 7 check-ins make 3,000 to 4,000 answers a year, in four languages. No HR person reads that. The AI reads every reply, shows its evidence, and drafts the fix. The database does the counting, not the AI. Survey tools like Culture Amp charge for every employee and live on work tools a new hire may not have yet. Sapa charges only for new hires, works on their own phone, and sends the fix to the team lead, then asks again."
-
-**Sources:** Culture Amp has no public price; median paid US$23,335 a year (Vendr, Feb 2026). Sapa price: `docs/03-research-dossier.md` H2.
-
-### 7 · Demo
-**Labels:** Working prototype · One full user journey
-
-**On the slide**
-- Live demo
-- Path: Mei Ling replies → AI labels → Aishah confirms → Raj marks done → "Update from HR" → same question again
-- Small: "A future year at Contoh. Numbers are fictional."
-
-**Visual:** The journey path stays on screen. Each stop lights up as we reach it in the demo.
-
-**We say:** "This is one year into Sapa at Contoh. The numbers are made up. The product is real. Let us follow Mei Ling's message all the way round."
-
----
-
-## Act 3 — Proof and the ending
-
-### 8 · Testing / Result
-**Labels:** What we tested · What improved · What users said
-
-**On the slide** (targets until results arrive)
-- AI accuracy by language: [κ BM] · [κ English] · [κ 中文] (target ≥ 0.6)
-- HR time, spreadsheet vs Sapa: [x min vs y min] (target ≥ 70% faster)
-- HR testers: [score] / 5 (target ≥ 4)
-- [2 real quotes]
-- Limit: [one honest line]
-
-**Visual:** Bars grow to their values. A time bar shrinks. Quotes fade in, in serif.
-
-**We say:** Filled from real tests. Never invented.
-
-**Sources:** `deliverables/09-testing-evidence/README.md`.
-
-### 9 · Responsible AI
-**Labels:** Human review · Bias · Errors · Privacy · Misuse
-
-**On the slide**
-- Review: a person confirms every AI label and every draft.
-- Bias: accuracy is checked for each language. No person gets a score.
-- Errors: the AI shows its evidence. Every label can be undone. The AI quality watch runs on every label.
-- Privacy: no names. Groups under 5 people are hidden.
-- Misuse: team leads never see who wrote what. Serious concerns go only to HR.
-
-**Visual:** 5 icons in a row, and each opens one line. Mei Ling's name blurs into "New hire · Day 14". A shield icon routes one message straight to HR.
-
-**We say:** "Mei Ling is on probation. Her team lead confirms it. She will only speak if she trusts us. So Raj never sees who wrote what. Small groups are hidden. And the AI never decides. It suggests, and Aishah decides. This also helps with ESG: the company can report its turnover and what it did about it."
-
-**Sources:** Bursa sustainability indicator C6(c), employee turnover.
-
-### 10 · Impact & Next Step
-**Labels:** Value · Business model · Market · Next
-
-**On the slide**
-- Value: keep **2 more of 54** and Sapa pays for itself. Base case: **8 kept = RM77,600 (4.3×)**.
-- Model: **RM90 per new hire**. A free pilot first.
-- Market: about **640,000** new hires a year in Malaysia's large firms → about **RM57M a year**.
-- Next: a 3-intake pilot (Nov–Jan) → recruitment agencies → WhatsApp → Southeast Asia
-- Ask: [our ask]
-
-**Visual:** A balance bar fills: RM18,000 against 2 × RM9,700. The retention line draws 73 → 85. A market bubble grows: Contoh → Penang GBS → Malaysia. The 4-step "Next" path lights up.
-
-**We say:** "For Contoh, Sapa costs RM18,000 a year. One early leaver costs about RM9,700. Keep two more people and it pays for itself. We charge per new hire, so cost follows hiring, not headcount. Malaysia's large companies alone hire about 640,000 people a year to replace leavers. That is a RM57 million market at our price. Next, we run a free pilot with three monthly intakes. It ends in July 2027, before the Group decides. Then recruitment agencies, who lose money on every early leaver, and WhatsApp. Mei Ling's message on Day 14 does not have to wait for her exit."
-
-**Sources:** Market estimate (ours): 3.5 million staff in large firms (DOSM, 2022) × 18.2% attrition (Aon 2025) ≈ 637,000 hires × RM90 ≈ RM57M. It leaves out medium firms, so it is conservative. Next markets: Philippines 20.0%, Singapore 19.3% attrition (Aon, Oct 2025). ROI: `docs/09-client-story.md`.
-
----
+- **The rewind result (fictional, labelled):** 15 of 17 still there at Month 6, not 12. That is 88%, past the Group's 85% goal.
+- **What changes for HR:**
+  - They hear the problem on Day 14, not at the exit on Day 61.
+  - They read every reply the same day, not one weekend of notes months later.
+  - Sapa costs RM18,000 a year. One early leaver costs about RM9,700 in hard costs only. Two kept a year pays for it. The Group's 85% goal needs about 24 more kept a year.
+- **Roadmap:** WhatsApp (Arif) → job-match check and agency view (Nurul) → private chat with HR → worker-voice export for ESG reports.
+- **Last line:** "Same 17 people. Same Day 14. This time, someone was listening."
+- **Sources:** cost per leaver and break-even in [docs/09](../../docs/09-client-story.md).
 
 ## Appendix (Q&A only)
-1. Market sizing math and its limits
-2. Competitor table (Culture Amp, Qualtrics, Viva Glint, Officevibe, Google Forms + WhatsApp)
-3. ROI scenarios (break-even, conservative, base, optimistic)
-4. Features we left out on purpose: private chat, job-match card, agency view, worker-voice export
-5. How the AI checks work (accuracy by language, AI quality watch)
+
+1. Why not a survey tool: the rivals table (Culture Amp, Peakon, Officevibe; median Culture Amp contract about US$23,000 a year, Vendr, Feb 2026)
+2. Price and market: RM90 per new hire; about RM57M a year in Malaysia (3.5M large-firm staff, DOSM × 18.2%, Aon × RM90, our estimate)
+3. Cost per leaver and break-even math
+4. Features we left out on purpose (now the roadmap on slide 10)
+5. How the AI checks work: accuracy by language, the AI quality watch
+
+## Facts checked on 18 Oct 2026
+
+- Employment Hero (Malay Mail, 25 Oct 2023): over 2 in 10, 23%, at firms of 200–500 staff. Never "1 in 4".
+- The 62% "good time to find a job" is Gallup 2026, not Randstad.
+- Randstad's 57% is "would consider quitting" if managers do not support their professional development.
+- Penang has 90+ GBS firms and 20,000+ staff (state government via Malay Mail, 13 Nov 2025). No source found for "15 new centres 2022–25"; do not use it.
+- Culture Amp publishes no price; use the Vendr median, labelled.
+- Rivals: Peakon and Officevibe reach staff in Slack and Teams, and Culture Amp and Qualtrics suggest actions. Our claim is narrower: no rival found checks in on Telegram or WhatsApp, in BM and Chinese, then asks the same question again after the fix.
 
 ## Open slots
-- Team name
+
+- Team name (slide 1)
 - HR interview quotes (slide 3)
 - Test results (slide 8)
-- Our ask (slide 10)
-- AI cost per hire: not measured yet. Do not claim a margin until it is.
+- The rename from Contoh to Bayan GBS in docs/09, the app seed and the demo script

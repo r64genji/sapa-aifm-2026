@@ -12,6 +12,8 @@
 
 ## Suggested structure (guide p.10) → our content source
 
+The story and slide direction live in [storyboard.md](storyboard.md); it wins over this table.
+
 | # | Guide's slide | Our content | Feeds from |
 | --- | --- | --- | --- |
 | 1 | Team & Challenge | Team name, Challenge 4 · RETAIN, one-sentence idea | [02](../02-one-sentence-idea/) |
@@ -23,7 +25,7 @@
 | 7 | Demo | Live demo | [11](../11-live-demo/) |
 | 8 | Testing / Result | κ by language, time bar, quotes, limitation | [09](../09-testing-evidence/) |
 | 9 | Responsible AI | What Sapa never does, consent, "5 for themes, 3 for questions", `/myanswers`, escalation | [05](../05-responsible-ai-rule/), Dossier I |
-| 10 | Impact & Next Step | Break-even first: about two prevented early exits a year, of 54, pay for Sapa at Contoh GBS (about RM9,700 per leaver vs RM18,000 a year; [client story](../../docs/09-client-story.md)); ROI table; a prevented exit cannot be proven per person, so the pilot measures retention by intake (Impact view, a trend and not proof); pilot ask: every new hire in three monthly intakes, each through its own Month 6, with pass marks set first, a Day-90 report and a final report where retention honestly reads "Too few to tell yet"; retention is one line on the demo's last beat and is shown here | Dossier H |
+| 10 | Impact & Next Step | Impact for HR and the roadmap, no pilot or ask: see [storyboard.md](storyboard.md) | Client story, Dossier H |
 
 ## What goes in this folder
 
