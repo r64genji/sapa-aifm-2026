@@ -135,10 +135,10 @@ function Num({ value, decimals = 0, sign, after = "" }: { value: number; decimal
   );
 }
 
-function Tip({ label, children, end }: { label: string; children: ReactNode; end?: boolean }) {
+function Tip({ label, children, end, below }: { label: string; children: ReactNode; end?: boolean; below?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
-    <span className={`sp-tip${end ? " sp-tip-end" : ""}${open ? " is-open" : ""}`} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
+    <span className={`sp-tip${end ? " sp-tip-end" : ""}${below ? " sp-tip-below" : ""}${open ? " is-open" : ""}`} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
       <button type="button" className="sp-tip-btn" aria-label={label} aria-expanded={open} onClick={() => setOpen(!open)}>
         <Info size={16} strokeWidth={2} aria-hidden="true" />
       </button>
@@ -232,7 +232,7 @@ function RetentionChart({ points, base, target }: { points: { label: string; val
       <figcaption className="flex flex-wrap gap-3.5 text-xs font-semibold sp-muted">
         <span className="inline-flex items-center gap-1.5">
           <span className="h-[3px] w-3.5" style={{ background: "var(--fixes)" }} />
-          Each intake
+          Each start month
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="w-3.5 border-t-2 border-dashed" style={{ borderColor: "var(--ink)" }} />
@@ -245,7 +245,7 @@ function RetentionChart({ points, base, target }: { points: { label: string; val
           </span>
         ) : null}
       </figcaption>
-      <svg viewBox="0 0 580 220" width="100%" role="img" aria-label={`Month-6 retention by intake: ${points.map((p) => `${p.label} ${p.value}%`).join(", ")}.${base !== null ? ` Before Sapa ${base}%.` : ""} Target ${target}%.`}>
+      <svg viewBox="0 0 580 220" width="100%" role="img" aria-label={`Share still here after 6 months, by start month: ${points.map((p) => `${p.label} ${p.value}%`).join(", ")}.${base !== null ? ` Before Sapa ${base}%.` : ""} Target ${target}%.`}>
         <defs>
           <linearGradient id="sp-ret-fill" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="var(--fixes)" stopOpacity="0.28" />
@@ -289,8 +289,8 @@ function Hero({ impact }: { impact: Impact }) {
   const [ref, seen] = useSeen<HTMLDivElement>();
   if (!retention.enough) {
     return (
-      <section className="sp-card flex flex-col gap-2 px-[22px] py-5" aria-label="Still employed at Month 6">
-        <h2 className="m-0 text-[15px] font-bold">Still employed at Month 6</h2>
+      <section className="sp-card flex flex-col gap-2 px-[22px] py-5" aria-label="Still here after 6 months">
+        <h2 className="m-0 text-[15px] font-bold">Still here after 6 months</h2>
         <span className="text-[22px] font-bold">{retention.message}</span>
         <span className="sp-meta">{retention.note}.</span>
       </section>
@@ -301,13 +301,13 @@ function Hero({ impact }: { impact: Impact }) {
   const gain = base === null ? null : kept - base;
   const points = impact.retention_by_intake.map((r) => ({ label: month(r.intake), value: pct(r.employed, r.hired), tip: `${monthYear(r.intake)}: ${r.employed} of ${r.hired} still employed (${pct(r.employed, r.hired)}%)` }));
   return (
-    <section className="sp-card sp-hero flex flex-wrap gap-7 px-[22px] py-5" aria-label="Still employed at Month 6">
+    <section className="sp-card sp-hero flex flex-wrap gap-7 px-[22px] py-5" aria-label="Still here after 6 months">
       <div ref={ref} className={`sp-live flex min-w-0 flex-[1_1_300px] flex-col gap-3.5${seen ? " is-in" : ""}`}>
         <div className="flex items-center gap-1">
-          <h2 className="m-0 text-[15px] font-bold leading-5">Still employed at Month 6</h2>
+          <h2 className="m-0 text-[15px] font-bold leading-5">Still here after 6 months</h2>
           <Tip label="How retention is counted">
             From HR&apos;s own hire and exit records. Everyone hired counts, whether or not they joined Sapa.
-            {baseline ? ` Before Sapa: ${baseline.kept} of ${baseline.of}.` : ""} Target: {target}%.
+            {baseline ? ` Before Sapa, ${baseline.kept} of ${baseline.of} stayed.` : ""} Target: {target}%.
           </Tip>
         </div>
         <div className="flex flex-wrap items-baseline gap-3">
@@ -317,8 +317,7 @@ function Hero({ impact }: { impact: Impact }) {
           {gain !== null ? (
             <span className="sp-num sp-pop-in inline-flex items-center gap-1 rounded px-2 py-0.5 text-[13px] font-bold" style={{ background: gain >= 0 ? "var(--fixes)" : "var(--ink-muted)", color: "var(--on-fixes)", ...delay(900) }}>
               {gain >= 0 ? <TrendingUp size={14} aria-hidden="true" /> : <TrendingDown size={14} aria-hidden="true" />}
-              {gain >= 0 ? "+" : "-"}
-              {Math.abs(gain)} pts vs before Sapa
+              {Math.abs(gain)} {gain >= 0 ? "more" : "fewer"} in every 100 stayed than before Sapa
             </span>
           ) : null}
         </div>
@@ -332,7 +331,7 @@ function Hero({ impact }: { impact: Impact }) {
           <div className="sp-num relative h-4 text-xs font-semibold">
             {base !== null ? (
               <span className="absolute whitespace-nowrap sp-muted" style={{ left: `${base}%`, transform: "translateX(-90%)" }}>
-                Before {base}%
+                Before Sapa {base}%
               </span>
             ) : null}
             <span className="absolute whitespace-nowrap" style={{ left: `${target}%`, transform: "translateX(-10%)" }}>
@@ -600,7 +599,7 @@ function DoneRow({ a }: { a: Action }) {
         <span className="sp-num text-[18px] font-bold leading-[22px]" style={{ color: a.verdict === "worked" && !a.hiring_side ? "var(--fixes)" : "var(--ink-muted)" }}>
           {diff === null ? "–" : `${diff >= 0 ? "+" : "−"}${Math.abs(diff).toFixed(1)}`}
         </span>
-        {diff === null ? null : <span className="sp-caption">vs other teams</span>}
+        {diff === null ? null : <span className="sp-caption">{diff >= 0 ? "higher" : "lower"} than other teams</span>}
       </span>
       <span className="flex-[0_0_132px]">
         {a.hiring_side || !a.verdict ? (
@@ -800,7 +799,7 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
   return (
     <Panel
       title="Did Sapa spot the real reasons early?"
-      tip={`Left: share of the ${day14Base} new hires who answered at Day 14 and raised each area. Right: reasons from the ${leavers.total} leavers who answered the exit question. Leavers' answers never count in check-in themes.`}
+      tip={`Left: share of the ${day14Base} new hires who answered at Day 14 and raised each area. Right: reasons from the ${leavers.total} leavers who answered the exit question. Leavers' answers never count in the check-in problem areas.`}
       badge={
         match ? (
           <Badge lane="problems" icon={<Check size={14} strokeWidth={3} aria-hidden="true" />}>
@@ -817,11 +816,11 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
         style={{ gridTemplateColumns: "minmax(0,1fr) auto minmax(0,1fr)" }}
       >
         <span className="text-right text-xs font-semibold" style={{ color: "var(--problems)" }}>
-          Raised at Day 14 <span className="sp-num font-normal sp-muted">of {day14Base}</span>
+          Raised in the Day 14 check-in <span className="sp-num font-normal sp-muted">of {day14Base}</span>
         </span>
         <span />
         <span className="text-xs font-semibold">
-          Leavers&apos; reason <span className="sp-num font-normal sp-muted">of {leavers.total}</span>
+          Why people left <span className="sp-num font-normal sp-muted">of {leavers.total}</span>
         </span>
         {rows.map((row, i) => (
           <Fragment key={row.driver}>
@@ -845,7 +844,7 @@ function Speed({ timed }: { timed: { intake: string; days: number }[] }) {
   const [ref, seen] = useSeen<HTMLDivElement>();
   if (!timed.length)
     return (
-      <Panel title="Is the loop getting faster?">
+      <Panel title="Are fixes getting done faster?">
         <span className="sp-muted">Not enough fixes done yet.</span>
         <div className="sp-bar sp-bar-hatch" />
       </Panel>
@@ -856,8 +855,8 @@ function Speed({ timed }: { timed: { intake: string; days: number }[] }) {
   const fmt = (d: number) => (Number.isInteger(d) ? `${d}` : d.toFixed(1));
   return (
     <Panel
-      title="Is the loop getting faster?"
-      tip="Typical (median) days from a new hire's reply to the manager marking the fix done, per intake."
+      title="Are fixes getting done faster?"
+      tip="Typical days from a new hire's reply to the manager marking the fix done, for each start month."
       badge={
         <Badge lane="fixes" icon={last < first ? <TrendingDown size={14} aria-hidden="true" /> : undefined}>
           {last === first ? `Steady at ${fmt(last)} days` : `${fmt(first)} → ${fmt(last)} days`}
@@ -899,7 +898,7 @@ function Intakes({ impact, shareDone }: { impact: Impact; shareDone: Map<string,
         <div className="sp-icontile sp-lane-problems">
           <LaneIcon lane="problems" />
         </div>
-        <span className="grow text-[15px] font-bold leading-5">Every intake, side by side</span>
+        <span className="grow text-[15px] font-bold leading-5">Each start month, side by side</span>
         <span className="sp-caption font-semibold">{impact.intakes.length} rows</span>
         <ChevronDown size={18} className="sp-chev sp-muted" aria-hidden="true" />
       </summary>
@@ -907,8 +906,8 @@ function Intakes({ impact, shareDone }: { impact: Impact; shareDone: Map<string,
         <table className="w-full min-w-[680px] border-collapse text-sm">
           <thead>
             <tr className="text-left text-xs font-semibold sp-muted" style={{ background: "var(--surface-sunken)" }}>
-              <th scope="col" className="px-[18px] py-2.5 font-semibold">Intake</th>
-              <th scope="col" className="px-3 py-2.5 font-semibold">Still employed Month 6</th>
+              <th scope="col" className="px-[18px] py-2.5 font-semibold">Start month</th>
+              <th scope="col" className="px-3 py-2.5 font-semibold">Still here after 6 months</th>
               <th scope="col" className="px-3 py-2.5 font-semibold">Replied to check-ins</th>
               <th scope="col" className="px-3 py-2.5 font-semibold">Days to fix done</th>
               <th scope="col" className="py-2.5 pl-3 pr-[18px] font-semibold">Manager steps done</th>
@@ -926,7 +925,7 @@ function Intakes({ impact, shareDone }: { impact: Impact; shareDone: Map<string,
                   </th>
                   {i.enough ? (
                     <>
-                      <td className="px-3 py-[11px]">{row ? `${row.employed} of ${row.hired}` : "Not at Month 6 yet"}</td>
+                      <td className="px-3 py-[11px]">{row ? `${row.employed} of ${row.hired}` : "Not 6 months yet"}</td>
                       <td className="px-3 py-[11px]">{pct(i.response_rate, 1)}%</td>
                       <td className="px-3 py-[11px]">{i.median_days_reply_to_done ?? "–"}</td>
                       <td className="py-[11px] pl-3 pr-[18px]">{share === undefined ? "–" : `${pct(share, 1)}%`}</td>
@@ -995,7 +994,7 @@ export default function Page() {
                 {period}
               </span>
             ) : null}
-            <Tip label="What these numbers count">Groups of 5 or more only, so no one can be picked out. Serious concerns are never counted. No team or manager is ranked against another.</Tip>
+            <Tip below label="What these numbers count">Groups of 5 or more only, so no one can be picked out. Serious concerns are never counted. No team or manager is ranked against another.</Tip>
           </div>
           <span className="flex flex-wrap items-center gap-3">
             <Tabs
@@ -1025,21 +1024,21 @@ export default function Page() {
       <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
         <Tile
           i={0}
-          label="Answered Day 14"
+          label="New hires who answered Day 14"
           value={day14 ? <Num value={pct(day14.answered, day14.of)} after="%" /> : "–"}
-          viz={rates.length > 1 ? <Spark values={rates} tips={enough.map((i) => `${monthYear(i.intake)}: ${pct(i.response_rate, 1)}% replied`)} label={`Reply rate by intake: ${rates.map((r) => `${pct(r, 1)}%`).join(", ")}`} /> : null}
+          viz={rates.length > 1 ? <Spark values={rates} tips={enough.map((i) => `${monthYear(i.intake)}: ${pct(i.response_rate, 1)}% replied`)} label={`Reply rate by start month: ${rates.map((r) => `${pct(r, 1)}%`).join(", ")}`} /> : null}
           base={day14 ? `${day14.answered} of ${day14.of} new hires` : "Not enough people yet"}
         />
         <Tile
           i={1}
-          label={timed.length ? `Reply to fix done · ${month(timed.at(-1)!.intake)} intake` : "Reply to fix done"}
+          label={timed.length ? `Days from reply to fix done · ${month(timed.at(-1)!.intake)} starters` : "Days from reply to fix done"}
           value={timed.length ? <Num value={timed.at(-1)!.days} after=" days" /> : typical !== null ? <Num value={typical} after=" days" /> : "–"}
-          viz={timed.length > 1 ? <MiniBars values={timed.map((t) => t.days)} tips={timed.map((t) => `${monthYear(t.intake)}: ${t.days} days`)} label={`Typical days by intake: ${timed.map((t) => t.days).join(", ")}`} /> : null}
+          viz={timed.length > 1 ? <MiniBars values={timed.map((t) => t.days)} tips={timed.map((t) => `${monthYear(t.intake)}: ${t.days} days`)} label={`Typical days by start month: ${timed.map((t) => t.days).join(", ")}`} /> : null}
           base={
             !speed || typical === null ? (
               "Not enough fixes yet"
             ) : speed.change === 0 ? (
-              "Same as the first intake"
+              "Same as the first start month"
             ) : (
               <>
                 <b style={{ color: speed.change > 0 ? "var(--fixes)" : undefined }}>

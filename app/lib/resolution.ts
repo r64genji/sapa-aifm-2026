@@ -219,7 +219,7 @@ export async function libraryWithEvidence(organisationId: string, driver?: strin
             : "Not used here yet"
           : difference === null
             ? `Used ${times} here · no result yet`
-            : `Used ${times} here. ${signed(difference)} vs other teams, ${scope.n} people`;
+            : `Used ${times} here. ${signed(difference)} compared with other teams, ${scope.n} people`;
       const { created_by, ...shown } = entry;
       return { ...shown, custom: created_by !== null, used: used.length, difference, evidence, result, scope, other };
     }),

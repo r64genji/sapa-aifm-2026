@@ -22,7 +22,7 @@ type Questions = { groups: { id: string; askers: number; unknown: number; handbo
 const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
-const typedLine = (c: Card) => `${c.reviewed} reviewed${c.ai_confident ? `, ${c.ai_confident} AI-confident` : ""}${c.score_only ? `, ${c.score_only} from a 1–5 score only` : ""}`;
+const typedLine = (c: Card) => `${c.reviewed} checked by HR${c.ai_confident ? `, ${c.ai_confident} labelled by the AI` : ""}${c.score_only ? `, ${c.score_only} from the 1–5 score only` : ""}`;
 
 function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, undo: () => Promise<unknown>) => void }) {
   const [picking, setPicking] = useState(false);
@@ -177,8 +177,8 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
           <Waffle c={top} />
           {points.length > 1 ? (
             <div className="flex max-w-[220px] flex-col gap-0.5">
-              <span className="sp-caption font-semibold">Each intake</span>
-              <Spark points={points} label={`${driverName(top.driver)} in each intake: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}`} />
+              <span className="sp-caption font-semibold">Each start month</span>
+              <Spark points={points} label={`${driverName(top.driver)} in each start month: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}`} />
               <span className="flex justify-between sp-caption">
                 <span>{points[0].label}</span>
                 <span>{points[points.length - 1].label}</span>

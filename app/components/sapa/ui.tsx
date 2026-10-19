@@ -299,6 +299,6 @@ export function shortDate(iso: string | null | undefined) {
 export function fixScope(a: { hiring_side: boolean; scope_type: string | null; scope_team: string | null; scope_intake: string | null }) {
   if (a.hiring_side) return "Hiring";
   if (a.scope_type === "team") return `${a.scope_team} team`;
-  if (a.scope_type === "intake") return `${new Date(a.scope_intake!).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })} intake`;
+  if (a.scope_type === "intake") return `${new Date(a.scope_intake!).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })} starters`;
   return "No scope yet";
 }

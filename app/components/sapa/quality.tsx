@@ -36,7 +36,7 @@ export function QualityWatch() {
         <div className="sp-icontile sp-lane-ai">
           <LaneIcon lane="ai" />
         </div>
-        <span className="grow text-[15px] font-bold leading-5">AI quality watch</span>
+        <span className="grow text-[15px] font-bold leading-5">How well is the AI labelling?</span>
         <span className="sp-num text-[13px] font-bold" style={{ color: "var(--ai)" }}>
           {checks ? `${checks - changed} of ${checks} AI labels kept by HR · last 30 days` : "No spot checks in the last 30 days"}
         </span>
@@ -45,7 +45,7 @@ export function QualityWatch() {
       <div className="sp-open flex flex-col gap-3.5 border-t px-[18px] pb-[18px] pt-3.5" style={{ borderColor: "var(--line)" }}>
         <div aria-hidden="true" className="flex flex-wrap gap-4 text-xs font-semibold sp-muted">
           <span className="flex-[1_1_180px]">Language</span>
-          <span className="flex-[2_1_240px]">Random spot checks where HR kept the AI&apos;s label</span>
+          <span className="flex-[2_1_240px]">Random checks where HR agreed with the AI&apos;s label</span>
         </div>
         {languages.map(([language, q], i) => (
           <div key={language} className="flex flex-wrap items-center gap-4">

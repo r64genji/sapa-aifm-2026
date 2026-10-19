@@ -47,7 +47,7 @@ test("Demo beat 2: the reply moves the card to 24 of 65, and Confirm label marks
   await page.getByText("24 of 65 who answered at Day 14").first().waitFor();
   assert.equal(await topCard().textContent(), "24 of 65 who answered at Day 14");
   await page.locator(".sp-row", { hasText: reply }).getByRole("button", { name: "Confirm label" }).click();
-  await page.getByText("17 reviewed, 7 AI-confident").waitFor();
+  await page.getByText("17 checked by HR, 7 labelled by the AI").waitFor();
 });
 
 test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and send it", async () => {

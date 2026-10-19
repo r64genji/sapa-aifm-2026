@@ -92,7 +92,7 @@ function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boo
       )}
       {points.length > 1 ? (
         <div className="flex flex-col gap-0.5">
-          <Spark points={points} label={`${name} in each intake: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}. Dashed line: average ${Math.round(average(points) * 100)}%`} />
+          <Spark points={points} label={`${name} in each start month: ${points.map((p) => `${p.label} ${p.n} of ${p.m}`).join(", ")}. Dashed line: average ${Math.round(average(points) * 100)}%`} />
           <span className="flex justify-between sp-caption">
             <span>{points[0].label}</span>
             <span>{points[points.length - 1].label}</span>
@@ -119,7 +119,7 @@ export function Waffle({ c }: { c: Card }) {
   const m = c.m ?? 0;
   const parts = [
     { n: c.reviewed ?? 0, color: "var(--problems)", label: "you checked" },
-    { n: c.ai_confident ?? 0, color: "var(--ai)", label: "AI sure" },
+    { n: c.ai_confident ?? 0, color: "var(--ai)", label: "AI labelled" },
     { n: c.score_only ?? 0, color: "var(--line-strong)", label: "1–5 score only" },
   ];
   const fills = parts.flatMap((p) => Array<string>(p.n).fill(p.color));
@@ -276,7 +276,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
                     <span className="font-semibold">{r.kind === "tower" ? `${r.name} tower` : r.name}</span>
                     <span className="sp-num text-[13px] font-bold">
                       {r.n} of {r.m}
-                      <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} pts vs company</span>
+                      <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} more in every 100 than the company overall</span>
                     </span>
                   </span>
                   <span className="sp-caption">
@@ -310,7 +310,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
                       <span className="font-semibold">{f ? f.title : "Write my own"}</span>
                       {f ? (
                         <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
-                          {good ? `Worked here · +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
+                          {good ? `Worked here · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
                         </span>
                       ) : null}
                     </span>
@@ -501,7 +501,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             )}
             {intakes.length ? (
               <div className="flex flex-col gap-2 pt-1">
-                <h3 className="m-0 text-[13px] font-bold">Each intake</h3>
+                <h3 className="m-0 text-[13px] font-bold">Each start month</h3>
                 <Columns points={intakes} />
               </div>
             ) : null}
@@ -582,7 +582,7 @@ function QuestionPanel({ g }: { g: Questions["groups"][number] }) {
           </span>
         </div>
       </div>
-      <span className="sp-muted">{known ? "Many still asked. Say it earlier in onboarding." : "Add it to onboarding so the next intake knows."}</span>
+      <span className="sp-muted">{known ? "Many still asked. Say it earlier in onboarding." : "Add it to onboarding so the next group of new hires knows."}</span>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <Button variant="primary" lane="problems" className="min-h-12 px-6 text-[15px]" href={`/fixes/new?driver=ONBOARDING_TRAINING&own=${encodeURIComponent(g.text)}`}>
           Draft an onboarding fix
@@ -704,7 +704,7 @@ export function Problems({ driver }: { driver?: string }) {
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
   if (!themes.data || !actions.data) return <Loading />;
 
-  const cards = [...themes.data.cards].sort((a, b) => (b.n ?? -1) - (a.n ?? -1));
+  const cards = [...themes.data.cards].sort((a, b) => Number(a.driver === "WORKLOAD") - Number(b.driver === "WORKLOAD") || (b.n ?? -1) - (a.n ?? -1));
   const waitingOf = (d: string) => (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed" && r.drivers?.includes(d)).length;
   const groups = questions.data?.groups.toReversed() ?? [];
   const loose = (replies.data ?? []).filter(noArea).sort((a, b) => b.created_at.localeCompare(a.created_at));
