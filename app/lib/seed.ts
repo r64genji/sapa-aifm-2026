@@ -24,6 +24,7 @@ import escalations from "@/data/seed/escalations.json";
 import milestone_nudges from "@/data/seed/milestone_nudges.json";
 import demo_history from "@/data/seed/demo_history.json";
 import fix_follow_up from "@/data/seed/fix_follow_up.json";
+import demo_open_fixes from "@/data/seed/demo_open_fixes.json";
 import { encrypt } from "@/lib/crypto";
 import { joinLink } from "@/lib/directory";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -68,7 +69,32 @@ function demoActions() {
   const owned = actions.map((a) =>
     a.id === JOB_SCOPE ? { ...a, owner_type: "manager", owner_manager_id: RAJ, outcome_note: "Gave each new hire the written job scope and went through it at the Monday huddle." } : a,
   );
-  return [...owned, ...demo_history];
+  const shift = Math.round((Date.now() - Date.parse("2026-10-19T00:00:00Z")) / DAY_MS) * DAY_MS;
+  const open = demo_open_fixes.map((a) =>
+    Object.fromEntries(
+      Object.entries(a).map(([key, value]) =>
+        key.endsWith("_at") ? [key, new Date(Date.parse(value as string) + shift).toISOString()] : key.endsWith("_on") ? [key, new Date(Date.parse(value as string) + shift).toISOString().slice(0, 10)] : [key, value],
+      ),
+    ),
+  );
+  return [...owned, ...demo_history, ...open];
+}
+
+const UNSURE = ["6f1c2a3e-0000-4000-8000-000000040021", "6f1c2a3e-0000-4000-8000-000000040056", "6f1c2a3e-0000-4000-8000-000000040287"];
+const HELD_TAG = "6f1c2a3e-0000-4000-8000-000000040070";
+
+function demoTags() {
+  if (process.env.SAPA_TEST === "1") return ai_tags;
+  return ai_tags.map((t) =>
+    UNSURE.includes(t.id) ? { ...t, status: "needs_review", confidence: "low", uncertain: true } : t.id === HELD_TAG ? { ...t, counted: false } : t,
+  );
+}
+
+function demoHolds() {
+  if (process.env.SAPA_TEST === "1") return quality_holds;
+  return quality_holds.map((h) =>
+    h.driver === "MANAGER_SUPPORT" && h.language === "ms" ? { ...h, state: "held", reason: "HR changed 3 of 12 spot checks, more than 20%" } : h,
+  );
 }
 
 async function seedNotices() {
@@ -127,7 +153,7 @@ export async function resetDemo() {
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();

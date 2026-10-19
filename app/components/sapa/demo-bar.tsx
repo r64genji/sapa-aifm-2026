@@ -57,17 +57,24 @@ export function DemoBar() {
     });
 
   const s = status.data;
+  const nextDay = [14, 30].find((day) => !s || s.live_hire.day < day);
   return (
     <section aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="sp-num flex-auto text-[15px] font-bold md:flex-none">{s ? `Live hire: Day ${s.live_hire.day}` : "Live hire: …"}</span>
+        <span className="flex flex-auto flex-col md:flex-none">
+          <span className="sp-num text-[15px] font-bold">{s ? `Live hire: Day ${s.live_hire.day}` : "Live hire: …"}</span>
+          {s?.live_hire.next_check_in ? <span className="sp-caption">Next: Day {s.live_hire.next_check_in.touchpoint} check-in</span> : null}
+        </span>
         <button type="button" className="sp-btn sp-btn-secondary sp-lane-ink md:hidden" aria-expanded={open} aria-controls="demo-controls" onClick={() => setOpen(!open)}>
           Demo controls
           <ChevronDown size={16} aria-hidden="true" className="sp-chev" style={{ transform: open ? "rotate(180deg)" : undefined }} />
         </button>
         <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
-          <Button variant="primary" disabled={busy} onClick={() => advance(14)}>Advance to Day 14</Button>
-          <Button disabled={busy} onClick={() => advance(30)}>Advance to Day 30</Button>
+          {[14, 30].map((day) => (
+            <Button key={day} variant={day === nextDay ? "primary" : "secondary"} disabled={busy || (s ? s.live_hire.day >= day : false)} onClick={() => advance(day)}>
+              Advance to Day {day}
+            </Button>
+          ))}
           <Button disabled={busy} onClick={() => setConfirming(true)}>Reset to seed</Button>
         </span>
         {s ? (
