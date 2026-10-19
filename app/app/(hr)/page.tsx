@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { AiMark, Button, Card as Panel, CountBar, Dialog, LaneSection, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
+import { AiMark, Button, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
@@ -101,15 +101,9 @@ function Tile({ label, value, base, href }: { label: string; value: number | und
 
 function Loop({ steps }: { steps: { step: string; lane: Lane; value: ReactNode; label: string; href: string }[] }) {
   return (
-    <section aria-label="From replies to results" className="sp-card grid grid-cols-2 gap-px overflow-hidden sm:grid-cols-4" style={{ background: "var(--line-soft)" }}>
+    <section aria-label="From replies to results" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {steps.map((s, i) => (
-        <Link key={s.step} href={s.href} className="flex flex-col gap-1 px-[18px] py-4 no-underline" style={{ color: "var(--ink)", background: `var(--${s.lane}-soft)`, borderTop: `4px solid var(--${s.lane})` }}>
-          <span className="sp-caption font-bold uppercase tracking-wide" style={{ color: `var(--${s.lane})` }}>
-            {i + 1} · {s.step}
-          </span>
-          <span className="sp-num text-[28px] font-bold leading-8" style={{ color: `var(--${s.lane})` }}>{s.value ?? "–"}</span>
-          <span className="sp-caption">{s.label}</span>
-        </Link>
+        <LaneTile key={s.step} lane={s.lane} href={s.href} label={`${i + 1} · ${s.step}`} count={s.value ?? "–"} hint={s.label} />
       ))}
     </section>
   );
