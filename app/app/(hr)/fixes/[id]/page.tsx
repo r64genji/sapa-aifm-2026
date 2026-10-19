@@ -99,7 +99,7 @@ function Result({ a }: { a: Detail }) {
       )}
       {a.question ? (
         <div className="sp-caption">
-          Question: “{a.question}”
+          Question: <span className="sp-words" style={{ fontSize: 16 }}>“{a.question}”</span>
         </div>
       ) : null}
       {a.score ? <div className="sp-caption">{a.score.note}</div> : null}
@@ -311,32 +311,34 @@ export default function Page() {
       <div className={`grid items-start gap-6 ${done ? "lg:grid-cols-[minmax(0,1fr)_340px]" : ""}`}>
         <div className="flex min-w-0 flex-col gap-6">
           <Card title="The fix" meta={a.note_approved_at ? `Approved by HR · ${shortDate(a.note_approved_at)}` : undefined}>
-            <dl className="m-0 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <dl className="m-0 grid grid-cols-2 gap-x-6 gap-y-4 lg:grid-cols-4">
               {a.library ? (
                 <div>
-                  <dt className="sp-caption font-bold">From fix library</dt>
-                  <dd className="m-0 text-[17px] font-semibold">{a.library.title}</dd>
+                  <dt className="sp-caption">From fix library</dt>
+                  <dd className="m-0 text-[15px] font-semibold">{a.library.title}</dd>
                 </div>
               ) : null}
               <div>
-                <dt className="sp-caption font-bold">For</dt>
-                <dd className="m-0 text-[17px] font-semibold">
+                <dt className="sp-caption">For</dt>
+                <dd className="m-0 text-[15px] font-semibold">
                   {fixScope(a)}
                   {a.hires !== null ? ` · ${plural(a.hires, "new hire")}` : ""}
                 </dd>
               </div>
               <div>
-                <dt className="sp-caption font-bold">Owner</dt>
-                <dd className="m-0 text-[17px] font-semibold">{a.owner ?? "Not assigned"}</dd>
+                <dt className="sp-caption">Owner</dt>
+                <dd className="m-0 text-[15px] font-semibold">{a.owner ?? "Not assigned"}</dd>
               </div>
               <div>
-                <dt className="sp-caption font-bold">{done ? "Done" : "Due"}</dt>
-                <dd className="m-0 text-[17px] font-semibold">{done ? shortDate(a.done_at) : a.due_on ? shortDate(a.due_on) : "Not set"}</dd>
+                <dt className="sp-caption">{done ? "Done" : "Due"}</dt>
+                <dd className="m-0 text-[15px] font-semibold">{done ? shortDate(a.done_at) : a.due_on ? shortDate(a.due_on) : "Not set"}</dd>
               </div>
             </dl>
-            <div>
-              <h3 className="m-0 text-[17px] font-bold">{`Message to ${owner}`}</h3>
-              <p className="m-0 mt-2 text-[17px] leading-7">{a.steps}</p>
+            <div className="sp-panel">
+              <div className="sp-panel-head">
+                <h3 className="m-0 text-[15px] font-bold">{`Message to ${owner}`}</h3>
+              </div>
+              <p className="sp-words">{a.steps}</p>
             </div>
             {done && a.outcome_note ? (
               <div>
@@ -347,13 +349,13 @@ export default function Page() {
             {a.hiring_side ? (
               <div className="sp-caption">No note, no recheck. A hiring fix stays with HR.</div>
             ) : a.notes ? (
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-wrap items-baseline gap-x-3">
-                  <h3 className="m-0 text-[17px] font-bold">{done ? "Note new hires got" : "Note to new hires"}</h3>
+              <div className="sp-panel">
+                <div className="sp-panel-head">
+                  <h3 className="m-0 text-[15px] font-bold">{done ? "Note new hires got" : "Note to new hires"}</h3>
                   {!done ? <span className="sp-caption">Sent when {owner} marks it done</span> : null}
                 </div>
                 <Tabs label="Language" value={shown} onChange={setLang} items={langs} />
-                <p className="m-0 text-[17px] leading-7">{a.notes[shown]}</p>
+                <p className="sp-words">{a.notes[shown]}</p>
                 {done ? (
                   <span className="sp-caption">
                     {a.notice.status === "sent" ? `Sent to ${plural(a.notice.sent_count, "new hire")}` : "Not sent yet"}

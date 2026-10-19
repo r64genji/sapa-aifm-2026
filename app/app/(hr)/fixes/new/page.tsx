@@ -281,7 +281,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       : `${owner.name} gets it today`
     : "It stays with you";
   const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", shortDate(dueOn))];
-  const draftClass = pending ? "sp-input sp-input-ai" : "sp-input";
+  const draftClass = pending ? "sp-input sp-input-ai sp-words" : "sp-input sp-words";
   const pendingMark = pending ? <AiMark label="Drafted for your new fix" /> : null;
 
   return (
