@@ -25,7 +25,7 @@ The story and slide direction live in [storyboard.md](storyboard.md); it wins ov
 | 7 | Demo | Live demo | [11](../11-live-demo/) |
 | 8 | Testing / Result | κ by language, time bar, quotes, limitation | [09](../09-testing-evidence/) |
 | 9 | Responsible AI | What Sapa never does, consent, "5 for themes, 3 for questions", `/myanswers`, escalation | [05](../05-responsible-ai-rule/), Dossier I |
-| 10 | Impact & Next Step | Impact for HR and the roadmap, no pilot or ask: see [storyboard.md](storyboard.md) | Client story, Dossier H |
+| 10 | Impact & Next Step | Impact for HR, the roadmap, then one pilot ask: see [storyboard.md](storyboard.md) | Client story, Dossier H |
 
 ## What goes in this folder
 
