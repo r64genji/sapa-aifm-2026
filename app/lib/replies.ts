@@ -164,8 +164,13 @@ export async function readQueue(organisationId: string, actor: string) {
     .eq("organisation_id", organisationId)
     .eq("state", "held");
   if (heldError) throw heldError;
-  for (const row of rows) {
-    if (row.responses.text_encrypted) await audit(actor, "read_reply_text", row.response_id);
+  const read = rows.filter((row) => row.responses.text_encrypted);
+  if (read.length) {
+    const at = (await now()).toISOString();
+    const { error: auditError } = await db
+      .from("audit_log")
+      .insert(read.map((row) => ({ actor, action: "read_reply_text", target: row.response_id, at })));
+    if (auditError) throw auditError;
   }
   return Promise.all(
     rows.map(async ({ responses, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
