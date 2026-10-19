@@ -59,8 +59,8 @@ test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and s
     await page.getByRole("button", { name: tab, exact: true }).click();
     await page.fill("#fix-note", note[lang]);
   }
-  const team = await page.locator("#f-for option", { hasText: "Raj" }).first().getAttribute("value");
-  await page.selectOption("#f-for", team!);
+  await page.locator("#f-for").click();
+  await page.getByRole("option", { name: /Accounts Payable Asia/ }).click();
   await page.getByRole("button", { name: /^Send/ }).click();
   await page.getByText("Sent. Raj has it on Telegram.").waitFor();
   await page.getByText("In real use this alert waits until Monday").waitFor();

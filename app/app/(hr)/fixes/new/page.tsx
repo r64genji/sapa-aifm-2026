@@ -5,7 +5,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Trash2 } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "@/components/sapa/data";
 import type { Me } from "@/components/sapa/shell";
-import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Tabs, driverName, shortDate } from "@/components/sapa/ui";
+import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Select, Tabs, driverName, shortDate } from "@/components/sapa/ui";
 
 type Notes = { en: string; ms: string; zh: string };
 type Entry = { id: string; title: string; text: string; notes: Partial<Notes> | null; custom: boolean; result: string };
@@ -76,7 +76,6 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   const [ownFix, setOwnFix] = useState(false);
   const [banner, setBanner] = useState<string | null>(null);
   const [scopeId, setScopeId] = useState("");
-  const [ownerId, setOwnerId] = useState("");
   const [weeks, setWeeks] = useState(1);
   const [menu, setMenu] = useState(false);
   const [adding, setAdding] = useState(false);
@@ -115,11 +114,19 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   const chosen = many.filter((t) => t.on && t.lead);
   const scope = multi ? (chosen[0]?.scope ?? null) : (view.scopes.find((s) => scopeKey(s) === scopeId) ?? null);
   const managers = scope?.managers ?? [];
-  const owner = ownerId === "hr" ? null : (managers.find((m) => m.id === ownerId) ?? managers[0] ?? null);
+  const owner = managers[0] ?? null;
   const ownerName = owner?.name ?? "the manager";
   const base = owner ? view.alert_on : view.today;
   const dueOn = addDays(base, weeks * 7);
   const total = view.scopes.length;
+  const worst = Math.max(0, ...view.scopes.filter((s) => s.type === "team" && !s.why).map((s) => s.counts?.n ?? 0));
+  const scopeOptions = view.scopes.map((s) => ({
+    value: scopeKey(s),
+    label: s.type === "team" ? s.key : s.label,
+    hint: s.why ?? (s.counts ? `${s.counts.n} of ${s.counts.m} raised ${driverName(view.driver).toLowerCase()}` : undefined),
+    flag: s.type === "team" && !s.why && worst > 0 && s.counts?.n === worst ? "Needs it most" : undefined,
+    disabled: !!s.why,
+  }));
 
   const library = entries ?? [];
   const entry = library.find((e) => e.id === entryId) ?? null;
@@ -513,17 +520,11 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                         <label className="flex min-w-0 flex-1 basis-[200px] items-center gap-2">
                           <input type="checkbox" checked={t.on} onChange={() => setDropped((d) => (t.on ? [...d, t.scope.key] : d.filter((k) => k !== t.scope.key)))} />
                           <span>
-                            {t.scope.key} · {t.scope.n} new hires
+                            {t.scope.key}
                           </span>
                         </label>
                         {t.scope.managers.length > 1 ? (
-                          <select aria-label={`Team lead for ${t.scope.key}`} className="sp-input w-auto" value={t.lead?.id ?? ""} onChange={(e) => setLeads((l) => ({ ...l, [t.scope.key]: e.target.value }))}>
-                            {t.scope.managers.map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.name}
-                              </option>
-                            ))}
-                          </select>
+                          <Select auto label={`Team lead for ${t.scope.key}`} value={t.lead?.id ?? ""} onChange={(v) => setLeads((l) => ({ ...l, [t.scope.key]: v }))} options={t.scope.managers.map((m) => ({ value: m.id, label: m.name }))} />
                         ) : (
                           <span className="sp-caption">{t.lead ? t.lead.name : "No team lead"}</span>
                         )}
@@ -534,36 +535,11 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 <div className="flex flex-wrap gap-3">
                   {multi ? null : (
                   <Field label="For" htmlFor="f-for">
-                    <select id="f-for" className="sp-input" value={scopeId} onChange={(e) => { setScopeId(e.target.value); setOwnerId(""); }}>
-                      {view.scopes.map((s) => (
-                        <option key={scopeKey(s)} value={scopeKey(s)} disabled={!!s.why}>
-                          {`${s.label} · ${s.n} new hires`}
-                          {s.why ? ` · ${s.why}` : ""}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  )}
-                  {multi ? null : (
-                  <Field label="Owner" htmlFor="f-owner">
-                    <select id="f-owner" className="sp-input" value={owner ? owner.id : "hr"} onChange={(e) => setOwnerId(e.target.value)}>
-                      {managers.map((m) => (
-                        <option key={m.id} value={m.id}>
-                          {m.name} · Manager
-                        </option>
-                      ))}
-                      <option value="hr">Me · {hr}</option>
-                    </select>
+                    <Select id="f-for" label="For" value={scopeId} onChange={setScopeId} options={scopeOptions} />
                   </Field>
                   )}
                   <Field label="Due" htmlFor="f-due">
-                    <select id="f-due" className="sp-input" value={weeks} onChange={(e) => setWeeks(Number(e.target.value))}>
-                      {[1, 2, 3].map((w) => (
-                        <option key={w} value={w}>
-                          {shortDate(addDays(base, w * 7))} · {w} {w === 1 ? "week" : "weeks"}
-                        </option>
-                      ))}
-                    </select>
+                    <Select id="f-due" label="Due" value={String(weeks)} onChange={(v) => setWeeks(Number(v))} options={[1, 2, 3].map((w) => ({ value: String(w), label: `${shortDate(addDays(base, w * 7))} · ${w} ${w === 1 ? "week" : "weeks"}` }))} />
                   </Field>
                 </div>
                 {total === 0 ? <span className="sp-caption">No new hires to send this to yet.</span> : null}

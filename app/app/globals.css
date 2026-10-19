@@ -109,6 +109,20 @@
 .sp-page-title { margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em; }
 .sp-input { font: inherit; font-size: 14px; min-height: 40px; padding: 8px 12px; border-radius: var(--radius-control); border: 1px solid var(--line-strong); background: var(--surface-raised); color: var(--ink); width: 100%; box-sizing: border-box; }
 textarea.sp-input { min-height: 84px; resize: vertical; }
+.sp-select { position: relative; min-width: 0; width: 100%; }
+.sp-select-auto { width: auto; }
+.sp-select-btn { display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer; }
+.sp-select-btn[aria-expanded="true"] { border-color: var(--ink); }
+.sp-select-value { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-select-chev { flex: 0 0 auto; color: var(--ink-muted); transition: transform 0.15s ease; }
+.sp-select-btn[aria-expanded="true"] .sp-select-chev { transform: rotate(180deg); }
+.sp-select-list { position: absolute; z-index: 40; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: min(420px, calc(100vw - 32px)); max-height: 320px; overflow-y: auto; margin: 0; padding: 4px; list-style: none; box-sizing: border-box; background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-control); box-shadow: var(--shadow-pop); animation: sp-pop 0.15s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-select-opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 14px; line-height: 20px; }
+.sp-select-opt.is-active { background: var(--surface-sunken); }
+.sp-select-opt[aria-selected="true"] { font-weight: 600; }
+.sp-select-opt.is-disabled { cursor: not-allowed; opacity: 0.55; }
+.sp-select-main { display: flex; flex: 1 1 auto; min-width: 0; flex-direction: column; }
+.sp-select-flag { flex: 0 0 auto; font-size: 11px; line-height: 16px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--problems-soft); color: var(--problems); white-space: nowrap; }
 
 .sp-btn { font: inherit; font-size: 13px; font-weight: 600; min-height: 40px; padding: 0 18px; border-radius: var(--radius-control); border: 1px solid var(--line-strong); background: var(--surface-raised); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: var(--space-2); text-decoration: none; white-space: nowrap; }
 .sp-btn:disabled { cursor: not-allowed; color: var(--ink-muted); border-color: var(--line); background: var(--surface-sunken); }
@@ -292,6 +306,7 @@ a.sp-tile:hover, a.sp-card:hover, .sp-lift:hover { transform: translateY(-2px); 
 .sp-tip-btn:hover { color: var(--ink); background: var(--surface-sunken); }
 .sp-tip-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .sp-tip-bubble { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translate(-50%, 4px); width: 260px; max-width: calc(100vw - 32px); box-sizing: border-box; padding: 10px 12px; background: var(--ink); color: #ffffff; font-size: 12px; line-height: 17px; font-weight: 500; border-radius: var(--radius-control); box-shadow: var(--shadow-pop); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s; z-index: 30; text-align: left; white-space: normal; }
+.sp-tip-below .sp-tip-bubble { bottom: auto; top: calc(100% + 6px); transform: translate(-50%, -4px); }
 .sp-tip-end .sp-tip-bubble { left: auto; right: 0; transform: translateY(4px); }
 .sp-tip:hover .sp-tip-bubble, .sp-tip:focus-within .sp-tip-bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .sp-tip-end:hover .sp-tip-bubble, .sp-tip-end:focus-within .sp-tip-bubble { transform: none; }
