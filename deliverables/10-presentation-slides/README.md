@@ -32,7 +32,7 @@ The story and slide direction live in [storyboard.md](storyboard.md); it wins ov
 - `deck.pdf` — exported final deck (keep the editable source link in `links.md`)
 - `links.md` — link to the editable deck (Canva / Slides / Claude)
 - `speaker-notes.md` — who says what on each slide
-- `illustrations/sapa-join-order-to-cash-asia.png` — QR for judges to join the live bot as Order-to-Cash Asia new hires. It stays valid across demo resets; it changes only if production's `DEMO_RESET_SECRET` changes. Re-save it from Join codes on the production site if needed.
+- `illustrations/sapa-join-accounts-payable-asia.png` — QR for judges to join the live bot as Accounts Payable Asia new hires (Raj's team). It stays valid across demo resets; it changes only if production's `DEMO_RESET_SECRET` changes. Re-save it from Join codes on the production site if needed.
 
 ## Tasks (our plan, not an organiser rule)
 
