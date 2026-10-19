@@ -103,11 +103,11 @@ function Loop({ steps }: { steps: { step: string; lane: Lane; value: ReactNode; 
   return (
     <section aria-label="From replies to results" className="sp-card grid grid-cols-2 gap-px overflow-hidden sm:grid-cols-4" style={{ background: "var(--line-soft)" }}>
       {steps.map((s, i) => (
-        <Link key={s.step} href={s.href} className="flex flex-col gap-1 px-[18px] py-4 no-underline" style={{ color: "var(--ink)", background: "var(--surface-raised)" }}>
-          <span className="sp-caption font-semibold uppercase tracking-wide" style={{ color: `var(--${s.lane})` }}>
+        <Link key={s.step} href={s.href} className="flex flex-col gap-1 px-[18px] py-4 no-underline" style={{ color: "var(--ink)", background: `var(--${s.lane}-soft)`, borderTop: `4px solid var(--${s.lane})` }}>
+          <span className="sp-caption font-bold uppercase tracking-wide" style={{ color: `var(--${s.lane})` }}>
             {i + 1} · {s.step}
           </span>
-          <span className="sp-num text-[28px] font-bold leading-8">{s.value ?? "–"}</span>
+          <span className="sp-num text-[28px] font-bold leading-8" style={{ color: `var(--${s.lane})` }}>{s.value ?? "–"}</span>
           <span className="sp-caption">{s.label}</span>
         </Link>
       ))}
