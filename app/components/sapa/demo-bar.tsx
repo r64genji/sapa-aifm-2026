@@ -91,7 +91,10 @@ export function DemoBar() {
       </div>
       {message || invite.length ? (
         <div className="flex flex-col gap-0.5" aria-live="polite">
-          {message ? <span className="font-semibold">{message}</span> : null}
+          <span className="flex items-center gap-2">
+            {message ? <span className="font-semibold">{message}</span> : null}
+            <button type="button" className="sp-btn sp-btn-secondary" onClick={() => { setMessage(null); setInvite([]); }}>Dismiss</button>
+          </span>
           {invite.map((row) => (
             <span key={row.team}>
               {row.team}: <a href={row.link} className="break-all">{row.link}</a>
