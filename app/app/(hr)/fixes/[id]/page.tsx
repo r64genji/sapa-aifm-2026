@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
+import { TranslatedQuote } from "@/components/sapa/reply";
 import { Button, Card, Dialog, Empty, Loading, Quote, Tabs, Waiting, driverName, fixScope, shortDate } from "@/components/sapa/ui";
 
 type Side = { n: number; before: number; after: number };
@@ -41,7 +42,7 @@ type Detail = {
   library: { title: string; rank: number; used: number; difference: number | null } | null;
   hires: number | null;
   recheck: { asked: number; answered: number };
-  follow_up: { answers: number; counts: { label: string; n: number }[] | null; quotes: string[] };
+  follow_up: { answers: number; counts: { label: string; n: number }[] | null; quotes: { text: string; language: string }[] };
   question: string | null;
 };
 
@@ -134,7 +135,7 @@ function FollowUp({ a }: { a: Detail }) {
         <div className="flex flex-col gap-2">
           <h3 className="m-0 text-[17px] font-bold">In their words</h3>
           {quotes.map((quote) => (
-            <Quote key={quote} text={quote} />
+            <TranslatedQuote key={quote.text} language={quote.language} text={quote.text} />
           ))}
         </div>
       ) : null}

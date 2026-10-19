@@ -113,7 +113,7 @@ test("R26, R56: HR sees the answer words only from 5 answers, quotes from the ch
     await tap(chat, "Done");
   }
   const early = await detail(main);
-  assert.deepEqual(early.follow_up, { answers: 4, counts: null, quotes: [quote] });
+  assert.deepEqual(early.follow_up, { answers: 4, counts: null, quotes: [{ text: quote, language: "en" }] });
 
   await tapScore(e, 3);
   await otherTaps(e);
@@ -130,6 +130,6 @@ test("R26, R56: HR sees the answer words only from 5 answers, quotes from the ch
       { label: "A bit better", n: 2 },
       { label: "Much better", n: 1 },
     ],
-    quotes: [quote],
+    quotes: [{ text: quote, language: "en" }],
   });
 });

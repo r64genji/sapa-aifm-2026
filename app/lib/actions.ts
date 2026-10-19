@@ -721,7 +721,7 @@ export async function actionDetail(organisationId: string, id: string) {
   if (askedError) throw askedError;
   const { data: linked, error: linkedError } = await db
     .from("responses")
-    .select("question_id, scale_value, ai_tags(status, evidence_quote, escalate)")
+    .select("question_id, scale_value, language, ai_tags(status, evidence_quote, escalate)")
     .eq("action_id", id)
     .order("created_at");
   if (linkedError) throw linkedError;
@@ -729,9 +729,9 @@ export async function actionDetail(organisationId: string, id: string) {
   const labels = (packs.en.checkin.questions.find((candidate) => candidate.id === "FIX_CHANGE") as { labels: string[] }).labels;
   const quotes = linked
     .filter((response) => response.question_id === "OPEN")
-    .map((response) => response.ai_tags as unknown as { status: string; evidence_quote: string | null; escalate: boolean | null } | null)
-    .filter((tag) => tag && ["ok", "reviewed"].includes(tag.status) && !tag.escalate && tag.evidence_quote)
-    .map((tag) => mask(tag!.evidence_quote!))
+    .map((response) => ({ language: response.language, tag: response.ai_tags as unknown as { status: string; evidence_quote: string | null; escalate: boolean | null } | null }))
+    .filter(({ tag }) => tag && ["ok", "reviewed"].includes(tag.status) && !tag.escalate && tag.evidence_quote)
+    .map(({ language, tag }) => ({ text: mask(tag!.evidence_quote!), language }))
     .slice(0, 3);
   const question = packs.en.checkin.questions.find((candidate) => candidate.id === row.driver)?.text ?? null;
   return {
