@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } 
 import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
-import { ReplyRow, Translation, type ReplyItem } from "./reply";
-import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Quote, Row, dayLabel, driverName, shortDate } from "./ui";
+import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
+import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, driverName, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; message?: string };
@@ -351,8 +351,7 @@ function ReplyCard({ r, label, onOpen }: { r: ReplyItem; label: string; onOpen?:
         </span>
         <AiMark state={r.status === "reviewed" ? (r.changed_by_hr ? "corrected" : "confirmed") : "suggested"} label={label} reviewer="HR" />
       </div>
-      <Quote text={r.text ?? ""} evidence={r.evidence_quote} />
-      <Translation id={r.id} language={r.language} />
+      <TranslatedQuote id={r.id} language={r.language} text={r.text ?? ""} evidence={r.evidence_quote} />
       {onOpen ? (
         <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[13px]" aria-haspopup="dialog" onClick={onOpen}>
           <MessageSquare size={14} aria-hidden="true" />
@@ -543,7 +542,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                     return (
                       <div key={group.title} className="flex flex-col gap-2">
                         <HBar label={group.title} n={group.n} of={card.n ?? group.n} onClick={() => read(group.title)} />
-                        {sample ? <Quote text={sample.text!} evidence={sample.evidence_quote} /> : null}
+                        {sample ? <TranslatedQuote id={sample.id} language={sample.language} text={sample.text!} evidence={sample.evidence_quote} /> : null}
                       </div>
                     );
                   })

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
+import { TranslatedQuote } from "@/components/sapa/reply";
+import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
@@ -62,7 +63,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
         {row.byline} · {shortDate(row.created_at)}
         {row.language === "zh" ? " · Chinese" : ""}
       </div>
-      {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
+      {row.text ? <TranslatedQuote id={row.id} language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
       {row.note ? <div className="sp-row-meta">{row.note}</div> : null}
       {error ? <div className="sp-row-meta" style={{ color: "var(--serious)" }}>{error}</div> : null}
       {picking ? (
@@ -311,7 +312,7 @@ export default function Page() {
                   </Button>
                 }
               >
-                {row.text ? <Quote text={row.text} evidence={row.evidence_quote} /> : null}
+                {row.text ? <TranslatedQuote id={row.id} language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
               </Row>
             ))}
             {toCheck.slice(0, 3).map((row) => (

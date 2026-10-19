@@ -41,13 +41,21 @@ export type ReplyRowProps = {
   whole?: boolean;
 };
 
-export function Translation({ id, language }: { id: string; language?: string }) {
-  const { data } = useApi<{ translation?: { label: string; text: string } | null }>(language === "zh" ? `/api/hr/replies/${id}/translation` : null, 0);
-  if (!data?.translation) return null;
+export function TranslatedQuote({ id, language, text, evidence }: { id: string; language?: string; text: string; evidence?: string | null }) {
+  const [original, setOriginal] = useState(false);
+  const { data } = useApi<{ translation?: { label: string; text: string } | null }>(language && language !== "en" ? `/api/hr/replies/${id}/translation` : null, 0);
+  const translated = data?.translation;
+  if (!translated) return <Quote text={text} evidence={evidence} />;
   return (
-    <p className="m-0 sp-ai-voice sp-muted">
-      <AiMark label={data.translation.label} /> {data.translation.text}
-    </p>
+    <div className="flex flex-col gap-1.5">
+      {original ? <Quote text={text} evidence={evidence} /> : <Quote text={translated.text} />}
+      <span className="flex flex-wrap items-center gap-2">
+        {original ? null : <AiMark label={translated.label} />}
+        <button type="button" className="sp-link text-[13px]" aria-pressed={original} onClick={() => setOriginal(!original)}>
+          {original ? "Show translation" : "Show original"}
+        </button>
+      </span>
+    </div>
   );
 }
 
@@ -201,13 +209,12 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         <span className="sp-caption">
           {item.byline} · {shortDate(item.created_at)}
         </span>
-        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <Quote text={item.text ?? ""} evidence={item.evidence_quote} />}
+        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} /> : <TranslatedQuote id={item.id} language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
         {chat && item.log ? (
           <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={() => setWhole(!whole)}>
             {whole ? "Show only their words" : "Show the whole check-in"}
           </button>
         ) : null}
-        <Translation id={item.id} language={item.language} />
       </div>
       <div
         className="box-border flex min-w-0 flex-[1_1_260px] flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6"
