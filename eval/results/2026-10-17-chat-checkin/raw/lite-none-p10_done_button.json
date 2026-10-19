@@ -1,0 +1,129 @@
+{
+ "persona": "p10_done_button",
+ "label": "Presses Done after one reply",
+ "expect": "done_button",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "MANAGER_SUPPORT",
+ "stop": "done_button",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned little support from your manager. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "My manager cancels our 1:1 almost every week."
+  },
+  {
+   "from": "bot",
+   "text": "How does that affect your weekly tasks?",
+   "kind": "question"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports that the supervisor regularly cancels scheduled one-on-one meetings. [MANAGER_SUPPORT] \"My manager cancels our 1:1 almost every week.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned little support from your manager. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 8000,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 3237,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\": \"ask\", \"question\": \"You mentioned little support from your manager. What is happening?\", \"goals_met\": [], \"serious_concern\": false, \"ask_hr\": false, \"stop_reason\": \"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How does that affect your weekly tasks?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1653,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"How does that affect your weekly tasks?\",\"goals_met\":[\"what_happened\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "MANAGER_SUPPORT"
+   ],
+   "evidence_quote": "My manager cancels our 1:1 almost every week.",
+   "summary": "The employee reports that the supervisor regularly cancels scheduled one-on-one meetings.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 969,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"MANAGER_SUPPORT\"\n  ],\n  \"evidence_quote\": \"My manager cancels our 1:1 almost every week.\",\n  \"summary\": \"The employee reports that the supervisor regularly cancels scheduled one-on-one meetings.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

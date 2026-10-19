@@ -1,0 +1,159 @@
+{
+ "persona": "p04_sap_youtube",
+ "label": "SAP learned from YouTube",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 2,
+   "answer": "Poorly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ONBOARDING_TRAINING",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Can you describe a task where the training felt insufficient?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Invoice posting was tough since the training was just one slide deck and my buddy was tied up with month-end, forcing me to learn from YouTube and accidentally post three invoices to the wrong cost centre. A two-hour hands-on SAP session with real cases would have really helped."
+  },
+  {
+   "from": "bot",
+   "text": "How did the invoice posting errors affect your work or the team's results?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "I had to take extra time to reverse the three misallocated invoices and re-post them to the correct cost centre. It caused a minor setback, but I got it sorted out without disrupting anyone."
+  },
+  {
+   "from": "bot",
+   "text": "What would make the training more effective for tasks like invoice posting?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "A two-hour hands-on SAP session with real cases would make the training much more effective. It would give us practical experience before we have to tackle tasks like invoice posting on our own."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The training was only a slide deck, causing difficulty and errors in invoice posting. [ONBOARDING_TRAINING] \"Invoice posting was tough since the training was just one slide deck and my buddy was tied up with month-end, forcing me to learn from YouTube and accidentally post three invoices to the wrong cost centre.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Can you describe a task where the training felt insufficient?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 857,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [],\n  \"question\": \"Can you describe a task where the training felt insufficient?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How did the invoice posting errors affect your work or the team's results?",
+    "goals_met": [
+     "what_happened",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 848,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [\"what_happened\", \"what_would_help\"],\n  \"question\": \"How did the invoice posting errors affect your work or the team's results?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What would make the training more effective for tasks like invoice posting?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 667,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [\"what_happened\", \"effect_on_work\"],\n  \"question\": \"What would make the training more effective for tasks like invoice posting?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ONBOARDING_TRAINING"
+   ],
+   "evidence_quote": "Invoice posting was tough since the training was just one slide deck and my buddy was tied up with month-end, forcing me to learn from YouTube and accidentally post three invoices to the wrong cost centre.",
+   "summary": "The training was only a slide deck, causing difficulty and errors in invoice posting.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 862,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\"ONBOARDING_TRAINING\"],\n  \"evidence_quote\": \"Invoice posting was tough since the training was just one slide deck and my buddy was tied up with month-end, forcing me to learn from YouTube and accidentally post three invoices to the wrong cost centre.\",\n  \"summary\": \"The training was only a slide deck, causing difficulty and errors in invoice posting.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

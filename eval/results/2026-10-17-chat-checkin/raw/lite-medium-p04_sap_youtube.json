@@ -1,0 +1,120 @@
+{
+ "persona": "p04_sap_youtube",
+ "label": "SAP learned from YouTube",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 2,
+   "answer": "Poorly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ONBOARDING_TRAINING",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said your training left you poorly prepared. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "My training was just a single slide deck and my buddy has been too busy with month-end, so I had to learn invoice posting from YouTube. A two-hour hands-on SAP session with real cases would really help, especially since I had to reverse three invoices last week after posting them to the wrong cost centre."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The onboarding training consisted of a single slide deck, and self-directed learning was required for invoice posting tasks. [ONBOARDING_TRAINING] \"My training was just a single slide deck and my buddy has been too busy with month-end, so I had to learn invoice posting from YouTube.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said your training left you poorly prepared. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2290,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said your training left you poorly prepared. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2226,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ONBOARDING_TRAINING"
+   ],
+   "evidence_quote": "My training was just a single slide deck and my buddy has been too busy with month-end, so I had to learn invoice posting from YouTube.",
+   "summary": "The onboarding training consisted of a single slide deck, and self-directed learning was required for invoice posting tasks.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 4741,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"My training was just a single slide deck and my buddy has been too busy with month-end, so I had to learn invoice posting from YouTube.\",\"summary\":\"The onboarding training consisted of a single slide deck, and self-directed learning was required for invoice posting tasks.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

@@ -1,0 +1,109 @@
+{
+ "persona": "p14_chinese",
+ "label": "Chinese, unclear SOP",
+ "expect": "normal",
+ "language": "zh",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_failed",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "你提到本周的工作期望不明确，具体发生了什么情况？",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "我是应付账款亚洲组第三周的新员工，负责中国和台湾供应商。全英文的SOP有些步骤写得不太清楚，比如什么时候可以先付款再补单据。上周有一张发票我不确定，等了两天才有人回答。如果有中文的例子或者一个可以问的人会很有帮助。"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "你提到本周的工作期望不明确，具体发生了什么情况？",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5256,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"你提到本周的工作期望不明确，具体发生了什么情况？\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": null,
+   "attempts": [
+    {
+     "ms": 8001,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 8000,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": null,
+  "attempts": [
+   {
+    "ms": 8001,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   },
+   {
+    "ms": 8000,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   }
+  ]
+ },
+ "quoteHolds": null
+}

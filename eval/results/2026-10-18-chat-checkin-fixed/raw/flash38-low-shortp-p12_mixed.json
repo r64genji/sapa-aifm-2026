@@ -1,0 +1,139 @@
+{
+ "persona": "p12_mixed",
+ "label": "Mixed good and bad",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Great support",
+   "score": 5
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "On the edge",
+   "score": 2
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"On the edge\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "The team chats in Hokkien in the group chat and during lunch, so I'm missing out on dispute-handling tips and customer rules since I only speak English. Last week I missed a customer rule that everyone else knew from the chat."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you get those customer rules and tips in English?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "It would really help if work tips were posted in English too."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee misses out on work tips and customer rules because the team communicates in Hokkien, which they do not speak. [BELONGING, ONBOARDING_TRAINING] \"The team chats in Hokkien in the group chat and during lunch, so I'm missing out on dispute-handling tips and customer rules since I only speak English.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you get those customer rules and tips in English?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2807,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"What would help you get those customer rules and tips in English?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2026,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING",
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "The team chats in Hokkien in the group chat and during lunch, so I'm missing out on dispute-handling tips and customer rules since I only speak English.",
+  "summary": "The employee misses out on work tips and customer rules because the team communicates in Hokkien, which they do not speak.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2650,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\"BELONGING\", \"ONBOARDING_TRAINING\"],\n  \"evidence_quote\": \"The team chats in Hokkien in the group chat and during lunch, so I'm missing out on dispute-handling tips and customer rules since I only speak English.\",\n  \"summary\": \"The employee misses out on work tips and customer rules because the team communicates in Hokkien, which they do not speak.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2372,
+  3997
+ ]
+}

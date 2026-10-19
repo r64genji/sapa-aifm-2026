@@ -1,0 +1,91 @@
+{
+ "persona": "p07_vague",
+ "label": "Vague replies",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "code_feel_block",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just some stuff is a bit confusing. Sometimes not really sure about things."
+  },
+  {
+   "from": "bot",
+   "text": "Thank you. There is nothing from this chat to tell HR.",
+   "kind": "fixed_nothing"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Which specific task or responsibility felt confusing this week?",
+    "goals_met": [],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2807,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Which specific task or responsibility felt confusing this week?\",\n  \"goals_met\": [],\n  \"work_detail\": false,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ],
+   "blocked": {
+    "question": "Which specific task or responsibility felt confusing this week?",
+    "word": "felt"
+   }
+  }
+ ],
+ "summary": null,
+ "summaryAttempts": [],
+ "quoteHolds": null,
+ "summaryFeel": null,
+ "personaCalls": [
+  8111
+ ]
+}

@@ -1,0 +1,153 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 2,
+   "answer": "Poorly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said expectations are unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Alamak, morning so rush you know, because my bus from Butterworth was super late again today, standard lah, so I rushed into office and immediately kena freeze because this level 12 aircon is like Genting Highlands, seriously freezing to death, but lucky the canteen got very nice nasi lemak to warm up my stomach a bit. Anyway, week three already and things are quite messy because my SAP access came super late last week, and trying to hit this crazy high quota is so stress when my team lead is always stuck in endless calls and cannot guide me properly. But the main real headache actually is that nobody gave me the vendor master rules, so blur blur like sotong, my invoices always get rejected and I have to keep wasting time redoing everything from scratch, which is quite sien, but never mind lah, still trying my best to survive here!"
+  },
+  {
+   "from": "bot",
+   "text": "What would help with the invoice process?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyoyo, to fix this invoice problem really simple one lah, I just desperately need someone to share the actual vendor master rules document with me because right now I blur like sotong guessing every single field, which causes all my submissions to kena reject and I have to redo everything while rushing my high monthly quota! Honestly, if my team lead wasn't always trapped in back-to-back calls since morning, maybe can ask for five minutes to guide me, but what to do, everyone so busy, and my fingers are already freezing from this crazy cold aircon that feels like Genting Highlands, making me regret taking the super late Butterworth bus this morning. But never mind lah, at least just now the canteen got very nice nasi lemak to warm up. Really hope someone can just send those vendor rules today lah, otherwise confirm every invoice will reject again and I have to keep redoing everything while dealing with my late SAP access stress!"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee experiences stress due to delayed system access, an inability to get guidance from the supervisor who is occupied with calls, and a lack of vendor master rules affecting invoices. [MANAGER_SUPPORT, ONBOARDING_TRAINING, WORKLOAD] \"Anyway, week three already and things are quite messy because my SAP access came super late last week, and trying to hit this crazy high quota is so stress when my team lead is always stuck in endless calls and cannot guide me properly.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said expectations are unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2588,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said expectations are unclear. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help with the invoice process?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3889,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help with the invoice process?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2595,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "MANAGER_SUPPORT",
+    "ONBOARDING_TRAINING",
+    "WORKLOAD"
+   ],
+   "evidence_quote": "Anyway, week three already and things are quite messy because my SAP access came super late last week, and trying to hit this crazy high quota is so stress when my team lead is always stuck in endless calls and cannot guide me properly.",
+   "summary": "The employee experiences stress due to delayed system access, an inability to get guidance from the supervisor who is occupied with calls, and a lack of vendor master rules affecting invoices.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 1656,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"MANAGER_SUPPORT\",\n    \"ONBOARDING_TRAINING\",\n    \"WORKLOAD\"\n  ],\n  \"evidence_quote\": \"Anyway, week three already and things are quite messy because my SAP access came super late last week, and trying to hit this crazy high quota is so stress when my team lead is always stuck in endless calls and cannot guide me properly.\",\n  \"summary\": \"The employee experiences stress due to delayed system access, an inability to get guidance from the supervisor who is occupied with calls, and a lack of vendor master rules affecting invoices.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

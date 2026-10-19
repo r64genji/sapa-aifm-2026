@@ -1,0 +1,138 @@
+{
+ "persona": "p27_positive_tip",
+ "label": "Positive with one small tip",
+ "expect": "positive",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Good support",
+   "score": 4
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Manageable",
+   "score": 4
+  }
+ ],
+ "focus": null,
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anything that would make next week easier?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "A one-page list of who to ask for what (like IT, payroll, or SAP access) would be really helpful. Last week I spent an hour just trying to find who could reset my SAP password."
+  },
+  {
+   "from": "bot",
+   "text": "How did spending an hour on the SAP password reset affect your tasks that day?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "It just pushed back my other work a bit, but I was still able to catch up and get everything done."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee requested a reference guide for internal contacts after spending an hour finding assistance for a password reset. [ONBOARDING_TRAINING] \"A one-page list of who to ask for what (like IT, payroll, or SAP access) would be really helpful. Last week I spent an hour just trying to find who could reset my SAP password.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How did spending an hour on the SAP password reset affect your tasks that day?",
+    "goals_met": [
+     "what_happened",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2901,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"How did spending an hour on the SAP password reset affect your tasks that day?\",\n  \"goals_met\": [\"what_happened\", \"what_would_help\"],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 1905,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "A one-page list of who to ask for what (like IT, payroll, or SAP access) would be really helpful. Last week I spent an hour just trying to find who could reset my SAP password.",
+  "summary": "The employee requested a reference guide for internal contacts after spending an hour finding assistance for a password reset.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2326,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"A one-page list of who to ask for what (like IT, payroll, or SAP access) would be really helpful. Last week I spent an hour just trying to find who could reset my SAP password.\",\"summary\":\"The employee requested a reference guide for internal contacts after spending an hour finding assistance for a password reset.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2221,
+  2064
+ ]
+}

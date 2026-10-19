@@ -1,0 +1,114 @@
+{
+ "persona": "p26_emoji",
+ "label": "Emoji then gibberish",
+ "expect": "short",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "On the edge",
+   "score": 2
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "code_short_replies",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"On the edge\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "😭"
+  },
+  {
+   "from": "bot",
+   "text": "What happened with your team this week?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "asdkjh qwpoe"
+  },
+  {
+   "from": "bot",
+   "text": "Thank you. There is nothing from this chat to tell HR.",
+   "kind": "fixed_nothing"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What happened with your team this week?",
+    "goals_met": [],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2635,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What happened with your team this week?\",\n  \"goals_met\": [],\n  \"work_detail\": false,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "off_topic"
+   },
+   "attempts": [
+    {
+     "ms": 2213,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[],\"work_detail\":false,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"off_topic\"}"
+    }
+   ]
+  }
+ ],
+ "summary": null,
+ "summaryAttempts": [],
+ "quoteHolds": null,
+ "summaryFeel": null,
+ "personaCalls": []
+}

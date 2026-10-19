@@ -1,0 +1,140 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Little support",
+   "score": 2
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Poorly prepared",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo bot, today so stress because my bus from Butterworth was super late then the office aircon here is freezing cold until shivering, and now in Week 3 of AP the quota is so high but nobody gave me the vendor master rules properly, so end up SAP keeps rejecting all the invoices and I have to keep redoing them after waiting so long for my SAP access last week while my team lead is always non-stop on calls. Even though the canteen nasi lemak was really very nice today, I am still so confused because all my work keeps bouncing back due to these missing vendor master rules lah."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you get the vendor master rules you need?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "It would really help if someone or my team lead can just sit down and brief me properly on the vendor master rules, because right now my team lead is always so busy on calls and I am struggling with this high AP quota in my Week 3 while freezing in this cold office aircon after that tiring late bus from Butterworth. Just a quick briefing on the vendor master rules would save me so much trouble so SAP will stop rejecting all the invoices and I won't have to keep redoing everything after waiting so long for my SAP access, then at least I can finish my AP work peacefully and go enjoy my canteen nasi lemak lah."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire is struggling with a high quota and rejected invoices due to a lack of guidance on vendor master rules while their team lead is unavailable. [ONBOARDING_TRAINING, MANAGER_SUPPORT, WORKLOAD] \"nobody gave me the vendor master rules properly, so end up SAP keeps rejecting all the invoices and I have to keep redoing them after waiting so long for my SAP access last week while my team lead is always non-stop on calls.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you get the vendor master rules you need?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2537,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"What would help you get the vendor master rules you need?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2525,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING",
+   "MANAGER_SUPPORT",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "nobody gave me the vendor master rules properly, so end up SAP keeps rejecting all the invoices and I have to keep redoing them after waiting so long for my SAP access last week while my team lead is always non-stop on calls.",
+  "summary": "The new hire is struggling with a high quota and rejected invoices due to a lack of guidance on vendor master rules while their team lead is unavailable.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2958,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\n    \"ONBOARDING_TRAINING\",\n    \"MANAGER_SUPPORT\",\n    \"WORKLOAD\"\n  ],\n  \"evidence_quote\": \"nobody gave me the vendor master rules properly, so end up SAP keeps rejecting all the invoices and I have to keep redoing them after waiting so long for my SAP access last week while my team lead is always non-stop on calls.\",\n  \"summary\": \"The new hire is struggling with a high quota and rejected invoices due to a lack of guidance on vendor master rules while their team lead is unavailable.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  10391,
+  28599
+ ]
+}

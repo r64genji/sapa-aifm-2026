@@ -1,0 +1,109 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 2,
+   "answer": "Poorly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_failed",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned what is expected of you this week is unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo, where to start lah, being in my third week in AP here and everything also so rojak already! First of all, today my bus from Butterworth came super late, then walking into the office is like entering Genting Highland because the aircon damn freezing cold, sibeh shivering until my fingers blur when typing. Then you know my SAP access only came late yesterday afternoon right? So blur like sotong trying to catch up with the high quota given to us this week, and my team lead also busy non-stop on calls. But not everything so jialak lah, at least this morning I tried the canteen nasi lemak and confirm nice, sambal sedap! But the main real issue actually is nobody gave me the vendor master rules yet, so invoices keep getting rejected by the system and I have to redo all of them from scratch again, totally wasting so much time, so if someone can guide me on these rules properly really can save me."
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned what is expected of you this week is unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 6902,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You mentioned what is expected of you this week is unclear. What is happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": null,
+   "attempts": [
+    {
+     "ms": 8001,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 8000,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": null,
+  "attempts": [
+   {
+    "ms": 8002,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   },
+   {
+    "ms": 8001,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   }
+  ]
+ },
+ "quoteHolds": null
+}

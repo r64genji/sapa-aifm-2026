@@ -1,0 +1,170 @@
+{
+ "persona": "p19_pay",
+ "label": "Pay question",
+ "expect": "ask_hr",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:person_done",
+ "ai_questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Heavy\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "I did 20 hours OT last month. How is the OT rate calculated? Is it 1.5 times?"
+  },
+  {
+   "from": "bot",
+   "text": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "How did those 20 hours of OT affect your daily tasks?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "The claim form is confusing, I don't know which code to use."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you know which code to use?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "that's all"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee worked extra hours and experienced confusion regarding overtime claim forms and codes. [WORKLOAD, ONBOARDING_TRAINING] \"The claim form is confusing, I don't know which code to use.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How did those 20 hours of OT affect your daily tasks?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4013,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"How did those 20 hours of OT affect your daily tasks?\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": true,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What would help you know which code to use?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4415,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you know which code to use?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 3,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "person_done"
+   },
+   "attempts": [
+    {
+     "ms": 3694,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"work_detail\": false,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"person_done\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD",
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "The claim form is confusing, I don't know which code to use.",
+  "summary": "The employee worked extra hours and experienced confusion regarding overtime claim forms and codes.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 5442,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\n    \"WORKLOAD\",\n    \"ONBOARDING_TRAINING\"\n  ],\n  \"evidence_quote\": \"The claim form is confusing, I don't know which code to use.\",\n  \"summary\": \"The employee worked extra hours and experienced confusion regarding overtime claim forms and codes.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": []
+}

@@ -1,0 +1,107 @@
+{
+ "persona": "p10_done_button",
+ "label": "Presses Done after one reply",
+ "expect": "done_button",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Little support",
+   "score": 2
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "MANAGER_SUPPORT",
+ "stop": "done_button",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Little support\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "My manager cancels our 1:1 almost every week."
+  },
+  {
+   "from": "bot",
+   "text": "How does missing these 1:1s affect your tasks?",
+   "kind": "question"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire reports that the manager cancels check-ins almost weekly and is unsure of expectations. [ROLE_CLARITY, MANAGER_SUPPORT] \"My manager cancels our 1:1 almost every week.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How does missing these 1:1s affect your tasks?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3602,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"How does missing these 1:1s affect your tasks?\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "MANAGER_SUPPORT"
+  ],
+  "evidence_quote": "My manager cancels our 1:1 almost every week.",
+  "summary": "The new hire reports that the manager cancels check-ins almost weekly and is unsure of expectations.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6957,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"MANAGER_SUPPORT\"],\"evidence_quote\":\"My manager cancels our 1:1 almost every week.\",\"summary\":\"The new hire reports that the manager cancels check-ins almost weekly and is unsure of expectations.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": []
+}

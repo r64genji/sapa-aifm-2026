@@ -1,0 +1,120 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said your workload is heavy. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Haih, week 4 already but 80 invoices a day too heavy lah. Trainer said 50 for first month mah. Last week stayed till 9pm three times to hit it. Rush liao make more mistakes. Maybe can enforce proper ramp-up quota for the first 2 months?"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports processing eighty invoices daily is excessive, resulting in working late multiple times last week and increased errors. [WORKLOAD] \"80 invoices a day too heavy lah\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said your workload is heavy. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3848,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You said your workload is heavy. What is happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3443,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD"
+   ],
+   "evidence_quote": "80 invoices a day too heavy lah",
+   "summary": "The employee reports processing eighty invoices daily is excessive, resulting in working late multiple times last week and increased errors.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 3782,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\": [\"WORKLOAD\"], \"evidence_quote\": \"80 invoices a day too heavy lah\", \"summary\": \"The employee reports processing eighty invoices daily is excessive, resulting in working late multiple times last week and increased errors.\", \"serious_concern\": false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

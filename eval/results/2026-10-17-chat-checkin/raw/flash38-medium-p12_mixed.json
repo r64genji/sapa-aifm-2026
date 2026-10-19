@@ -1,0 +1,114 @@
+{
+ "persona": "p12_mixed",
+ "label": "Mixed good and bad",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 4,
+   "answer": "Mostly clear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 5,
+   "answer": "Great support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 2,
+   "answer": "On the edge",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 4,
+   "answer": "Mostly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said you are on the edge of the team. What has been happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Manager is great and gives clear tasks, but the team chats in Hokkien at lunch and in the group chat. Since I don't speak it, I miss tips on handling disputes—like last week when everyone knew a customer rule that I missed. It would be helpful if work tips were posted in English too."
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said you are on the edge of the team. What has been happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 6064,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You said you are on the edge of the team. What has been happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 5778,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": null,
+  "attempts": [
+   {
+    "ms": 8001,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   },
+   {
+    "ms": 8001,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   }
+  ]
+ },
+ "quoteHolds": null
+}

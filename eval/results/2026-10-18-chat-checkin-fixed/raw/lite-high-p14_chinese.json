@@ -1,0 +1,106 @@
+{
+ "persona": "p14_chinese",
+ "label": "Chinese, unclear SOP",
+ "expect": "normal",
+ "language": "zh",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "不清楚",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "你选了\"不清楚\"。发生了什么事？",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "其实没什么大事，就是英文SOP有些地方看不太明白，比如什么时候可以先付款后补凭证。上周遇到一张发票拿不准，等确认等了两天。要是能有一些中文的例子，或者平时能有一个固定的同事随时请教一下就好了。"
+  },
+  {
+   "from": "bot",
+   "text": "我会告诉 HR： 部分英文SOP内容不够清晰，发票处理存在不确定性。 [ROLE_CLARITY, ONBOARDING_TRAINING] \"英文SOP有些地方看不太明白，比如什么时候可以先付款后补凭证。\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 5267,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "英文SOP有些地方看不太明白，比如什么时候可以先付款后补凭证。",
+  "summary": "部分英文SOP内容不够清晰，发票处理存在不确定性。",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6781,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\n    \"ROLE_CLARITY\",\n    \"ONBOARDING_TRAINING\"\n  ],\n  \"evidence_quote\": \"英文SOP有些地方看不太明白，比如什么时候可以先付款后补凭证。\",\n  \"summary\": \"部分英文SOP内容不够清晰，发票处理存在不确定性。\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3412
+ ]
+}

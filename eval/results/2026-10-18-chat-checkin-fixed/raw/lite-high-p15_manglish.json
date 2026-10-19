@@ -1,0 +1,106 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Heavy\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo the workload quite crazy la. Now is week 4, the quota already 80 invoices a day, but last time trainer said first month is 50. Last week 3 times I OT until 9pm just to hit the target. If rush rush do then sure make more mistakes one. Really hope can have proper ramp-up quota for first 2 months, at least won't so stressful."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee experienced a heavy workload with an increased daily quota, requiring overtime to meet targets. [ROLE_CLARITY, WORKLOAD] \"Last week 3 times I OT until 9pm just to hit the target.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4275,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Last week 3 times I OT until 9pm just to hit the target.",
+  "summary": "The employee experienced a heavy workload with an increased daily quota, requiring overtime to meet targets.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6900,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\": [\"ROLE_CLARITY\", \"WORKLOAD\"], \"evidence_quote\": \"Last week 3 times I OT until 9pm just to hit the target.\", \"summary\": \"The employee experienced a heavy workload with an increased daily quota, requiring overtime to meet targets.\", \"serious_concern\": false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2641
+ ]
+}

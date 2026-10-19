@@ -1,0 +1,158 @@
+{
+ "persona": "p02_lead_calls",
+ "label": "Team lead always on calls",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 4,
+   "answer": "Mostly part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "MANAGER_SUPPORT",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned getting little support from your manager. What happened?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "My team lead is on calls with Europe all day, so when I get stuck on a billing dispute my Teams message waits until the next morning and the case sits. Yesterday a customer credit note even waited two days because of it."
+  },
+  {
+   "from": "bot",
+   "text": "How does the delayed credit note affect your daily tasks?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "It backs up my queue and leaves customers waiting two days for resolution since I can't move forward without approval."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you move forward when approvals are delayed?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "A 15-minute fixed slot each day with my lead, or a backup person to ask, would really help me move forward."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: Manager unavailability causes delays in obtaining approvals for billing disputes and customer credit notes. [MANAGER_SUPPORT] \"My team lead is on calls with Europe all day, so when I get stuck on a billing dispute my Teams message waits until the next morning and the case sits.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned getting little support from your manager. What happened?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2786,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You mentioned getting little support from your manager. What happened?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How does the delayed credit note affect your daily tasks?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1159,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"How does the delayed credit note affect your daily tasks?\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What would help you move forward when approvals are delayed?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1175,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you move forward when approvals are delayed?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "MANAGER_SUPPORT"
+   ],
+   "evidence_quote": "My team lead is on calls with Europe all day, so when I get stuck on a billing dispute my Teams message waits until the next morning and the case sits.",
+   "summary": "Manager unavailability causes delays in obtaining approvals for billing disputes and customer credit notes.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 4372,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"MANAGER_SUPPORT\"\n  ],\n  \"evidence_quote\": \"My team lead is on calls with Europe all day, so when I get stuck on a billing dispute my Teams message waits until the next morning and the case sits.\",\n  \"summary\": \"Manager unavailability causes delays in obtaining approvals for billing disputes and customer credit notes.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

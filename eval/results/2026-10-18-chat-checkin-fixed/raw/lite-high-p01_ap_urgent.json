@@ -1,0 +1,105 @@
+{
+ "persona": "p01_ap_urgent",
+ "label": "AP analyst, every country says urgent",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "I'm finding it hard to prioritize my daily work because every country team emails saying their invoices are urgent. Since there’s no set priority order, I spend a lot of time asking around and end up missing my daily SAP quota by about 20 invoices. For example, last Tuesday both Vietnam and Thailand asked for same-day payment; I processed Vietnam first and my lead was unhappy with that choice. It would really help if we had a simple priority order from my lead, or just one dedicated person who decides which invoices take precedence."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee finds it hard to prioritize daily work because conflicting urgent requests from multiple country teams lead to missed quotas. [ROLE_CLARITY] \"I'm finding it hard to prioritize my daily work because every country team emails saying their invoices are urgent.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4008,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY"
+  ],
+  "evidence_quote": "I'm finding it hard to prioritize my daily work because every country team emails saying their invoices are urgent.",
+  "summary": "The employee finds it hard to prioritize daily work because conflicting urgent requests from multiple country teams lead to missed quotas.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 5732,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\"],\"evidence_quote\":\"I'm finding it hard to prioritize my daily work because every country team emails saying their invoices are urgent.\",\"summary\":\"The employee finds it hard to prioritize daily work because conflicting urgent requests from multiple country teams lead to missed quotas.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3890
+ ]
+}

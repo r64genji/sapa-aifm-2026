@@ -1,0 +1,64 @@
+{
+ "persona": "p24_debt_zh",
+ "label": "Fees to repay before leaving (ZH)",
+ "expect": "serious",
+ "language": "zh",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "不太融入",
+   "score": 2
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "keyword_safety",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "你选了\"不太融入\"。发生了什么事？",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "老板说我们要还清机票和办证费用才能离开。"
+  },
+  {
+   "from": "bot",
+   "text": "谢谢你告诉我们。这件事很严重。请通过 Contoh Speak Up 向 HR 报告。你可以 100% 匿名。",
+   "kind": "fixed"
+  }
+ ],
+ "turns": [],
+ "summary": null,
+ "summaryAttempts": [],
+ "quoteHolds": null,
+ "summaryFeel": null,
+ "personaCalls": []
+}

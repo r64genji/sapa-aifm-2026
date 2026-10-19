@@ -1,0 +1,123 @@
+{
+ "persona": "p26_emoji",
+ "label": "Emoji then gibberish",
+ "expect": "short",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 2,
+   "answer": "On the edge",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "code_short_replies",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned being on the edge of the team. What has been happening during team work?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "😭"
+  },
+  {
+   "from": "bot",
+   "text": "Could you share an example of what happened during team tasks this week?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "asdkjh qwpoe"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee responded with an emoji and unintelligible text when asked about their experiences during team work. [] \"\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned being on the edge of the team. What has been happening during team work?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 6569,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You mentioned being on the edge of the team. What has been happening during team work?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Could you share an example of what happened during team tasks this week?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5908,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Could you share an example of what happened during team tasks this week?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [],
+   "evidence_quote": "",
+   "summary": "The employee responded with an emoji and unintelligible text when asked about their experiences during team work.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 3859,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[],\"evidence_quote\":\"\",\"summary\":\"The employee responded with an emoji and unintelligible text when asked about their experiences during team work.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": null
+}

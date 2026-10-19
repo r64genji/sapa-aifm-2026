@@ -1,0 +1,138 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Terlalu banyak",
+   "score": 1
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Terlalu banyak\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Ada dua orang resign, so kuota jurnal naik dari 40 jadi 60 sehari. Masa month-end lepas pun lima hari berturut-turut saya balik pukul 11 malam."
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang boleh bantu untuk siapkan kuota 60 sehari tu?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kalau dapat pengganti untuk dua orang yang resign tu, atau boleh share lagi kerja dengan team lain macam masa month-end lepas."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Peningkatan beban kerja akibat peletakan jawatan rakan sekerja menyebabkan kuota harian bertambah dan waktu bekerja melebihi masa. [WORKLOAD] \"Ada dua orang resign, so kuota jurnal naik dari 40 jadi 60 sehari. Masa month-end lepas pun lima hari berturut-turut saya balik pukul 11 malam.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang boleh bantu untuk siapkan kuota 60 sehari tu?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5849,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\": \"ask\", \"question\": \"Apa yang boleh bantu untuk siapkan kuota 60 sehari tu?\", \"goals_met\": [\"what_happened\", \"effect_on_work\"], \"work_detail\": true, \"serious_concern\": false, \"ask_hr\": false, \"stop_reason\": \"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3228,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Ada dua orang resign, so kuota jurnal naik dari 40 jadi 60 sehari. Masa month-end lepas pun lima hari berturut-turut saya balik pukul 11 malam.",
+  "summary": "Peningkatan beban kerja akibat peletakan jawatan rakan sekerja menyebabkan kuota harian bertambah dan waktu bekerja melebihi masa.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4808,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"WORKLOAD\"],\"evidence_quote\":\"Ada dua orang resign, so kuota jurnal naik dari 40 jadi 60 sehari. Masa month-end lepas pun lima hari berturut-turut saya balik pukul 11 malam.\",\"summary\":\"Peningkatan beban kerja akibat peletakan jawatan rakan sekerja menyebabkan kuota harian bertambah dan waktu bekerja melebihi masa.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  7767,
+  2179
+ ]
+}

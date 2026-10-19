@@ -1,0 +1,105 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Terlalu banyak",
+   "score": 1
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Terlalu banyak\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Beban kerja rasa pack sangat sekarang ni, sebab 2 orang dah resign. Quota journal harian naik dari 40 ke 60 satu hari. Masa month-end close lepas pun, 5 hari berturut-turut balik pukul 11 malam sampai bank reconciliation jadi lambat. Nasib baik ada team lain tolong share sikit kerja month-end tu. Kalau dapat ganti 2 orang yang resign tu atau teruskan work sharing dengan team sebelah, rasanya akan banyak membantu."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja menghadapi beban kerja yang tinggi berikutan peletakan jawatan dua rakan sekerja serta peningkatan kuota harian dan waktu kerja yang panjang. [WORKLOAD] \"Beban kerja rasa pack sangat sekarang ni, sebab 2 orang dah resign.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 1970,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Beban kerja rasa pack sangat sekarang ni, sebab 2 orang dah resign.",
+  "summary": "Pekerja menghadapi beban kerja yang tinggi berikutan peletakan jawatan dua rakan sekerja serta peningkatan kuota harian dan waktu kerja yang panjang.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4897,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\"WORKLOAD\"],\n  \"evidence_quote\": \"Beban kerja rasa pack sangat sekarang ni, sebab 2 orang dah resign.\",\n  \"summary\": \"Pekerja menghadapi beban kerja yang tinggi berikutan peletakan jawatan dua rakan sekerja serta peningkatan kuota harian dan waktu kerja yang panjang.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3919
+ ]
+}

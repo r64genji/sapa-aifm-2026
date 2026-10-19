@@ -1,0 +1,169 @@
+{
+ "persona": "p19_pay",
+ "label": "Pay question",
+ "expect": "ask_hr",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said your workload is heavy. What tasks are taking up most of your time?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "I did 20 hours OT last month. How is the OT rate calculated? Is it 1.5 times?"
+  },
+  {
+   "from": "bot",
+   "text": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "What tasks usually lead to those extra hours?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "The claim form is confusing, I don't know which code to use."
+  },
+  {
+   "from": "bot",
+   "text": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "What would help you know which code to use on the claim form?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "that's all"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reported working twenty hours of overtime last month and experienced confusion regarding the claim form codes. [WORKLOAD, ONBOARDING_TRAINING] \"I did 20 hours OT last month. How is the OT rate calculated? Is it 1.5 times?\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said your workload is heavy. What tasks are taking up most of your time?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2381,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said your workload is heavy. What tasks are taking up most of your time?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What tasks usually lead to those extra hours?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3135,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What tasks usually lead to those extra hours?\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": true,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What would help you know which code to use on the claim form?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3275,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you know which code to use on the claim form?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": true,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD",
+    "ONBOARDING_TRAINING"
+   ],
+   "evidence_quote": "I did 20 hours OT last month. How is the OT rate calculated? Is it 1.5 times?",
+   "summary": "The employee reported working twenty hours of overtime last month and experienced confusion regarding the claim form codes.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 4066,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"WORKLOAD\",\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"I did 20 hours OT last month. How is the OT rate calculated? Is it 1.5 times?\",\"summary\":\"The employee reported working twenty hours of overtime last month and experienced confusion regarding the claim form codes.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

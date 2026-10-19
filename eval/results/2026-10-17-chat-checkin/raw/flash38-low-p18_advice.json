@@ -1,0 +1,167 @@
+{
+ "persona": "p18_advice",
+ "label": "Asks the bot for advice",
+ "expect": "ask_hr",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "MANAGER_SUPPORT",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You noted little support from your manager. What happened?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "My manager never replies to my messages. What should I do? Should I complain to his boss?"
+  },
+  {
+   "from": "bot",
+   "text": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "How does that affect your daily tasks?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just tell me what you would do lah."
+  },
+  {
+   "from": "bot",
+   "text": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "How do delayed messages change your workflow?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "ok, he replies after 2 days usually, so my cases wait"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire states that the manager does not reply to messages, causing work cases to wait. [MANAGER_SUPPORT] \"My manager never replies to my messages. What should I do? Should I complain to his boss?\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You noted little support from your manager. What happened?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4659,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You noted little support from your manager. What happened?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How does that affect your daily tasks?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3860,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"How does that affect your daily tasks?\",\"goals_met\":[\"what_happened\"],\"serious_concern\":false,\"ask_hr\":true,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "How do delayed messages change your workflow?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 6836,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"How do delayed messages change your workflow?\",\"goals_met\":[\"what_happened\"],\"serious_concern\":false,\"ask_hr\":true,\"stop_reason\":\"none\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "MANAGER_SUPPORT"
+   ],
+   "evidence_quote": "My manager never replies to my messages. What should I do? Should I complain to his boss?",
+   "summary": "The new hire states that the manager does not reply to messages, causing work cases to wait.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 3948,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"MANAGER_SUPPORT\"],\"evidence_quote\":\"My manager never replies to my messages. What should I do? Should I complain to his boss?\",\"summary\":\"The new hire states that the manager does not reply to messages, causing work cases to wait.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

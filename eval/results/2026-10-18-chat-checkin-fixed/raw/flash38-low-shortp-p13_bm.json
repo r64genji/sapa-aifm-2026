@@ -1,0 +1,170 @@
+{
+ "persona": "p13_bm",
+ "label": "Bahasa Malaysia, buddy on leave",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Kurang bersedia",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ONBOARDING_TRAINING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Kurang bersedia\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "SOP latihan saya rupanya versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois. Buddy saya pula sedang bercuti dua minggu dan rakan sebelah sibuk."
+  },
+  {
+   "from": "bot",
+   "text": "Bagaimanakah situasi ini memberi kesan kepada kerja harian anda?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kerja saya jadi perlahan dan tergendala kerana saya ragu-ragu dengan langkah SAP yang betul. Saya juga risau akan buat kesilapan lagi semasa memproses invois seterusnya."
+  },
+  {
+   "from": "bot",
+   "text": "Apakah yang boleh membantu anda memproses invois dengan lebih lancar sekarang?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Saya perlukan SOP versi terkini dan seorang pengganti buddy yang boleh tunjukkan langkah SAP yang betul."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja baharu menghadapi kesukaran memproses invois kerana SOP latihan menggunakan versi lama serta ketiadaan bantuan rakan pembimbing. [ONBOARDING_TRAINING] \"SOP latihan saya rupanya versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Bagaimanakah situasi ini memberi kesan kepada kerja harian anda?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2427,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Bagaimanakah situasi ini memberi kesan kepada kerja harian anda?\",\"goals_met\":[\"what_happened\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "Apakah yang boleh membantu anda memproses invois dengan lebih lancar sekarang?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2477,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Apakah yang boleh membantu anda memproses invois dengan lebih lancar sekarang?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 3,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2402,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "SOP latihan saya rupanya versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.",
+  "summary": "Pekerja baharu menghadapi kesukaran memproses invois kerana SOP latihan menggunakan versi lama serta ketiadaan bantuan rakan pembimbing.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2295,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\"ONBOARDING_TRAINING\"],\n  \"evidence_quote\": \"SOP latihan saya rupanya versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.\",\n  \"summary\": \"Pekerja baharu menghadapi kesukaran memproses invois kerana SOP latihan menggunakan versi lama serta ketiadaan bantuan rakan pembimbing.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  5628,
+  2247,
+  2516
+ ]
+}

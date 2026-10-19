@@ -1,0 +1,105 @@
+{
+ "persona": "p12_mixed",
+ "label": "Mixed good and bad",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Great support",
+   "score": 5
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "On the edge",
+   "score": 2
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"On the edge\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Hey! Overall things are going well—my manager is great and my tasks are clear. I'm just feeling a bit on the edge because the team chats in Hokkien at lunch and in the group chat, and since I don't speak it, I miss out on dispute-handling tips. Last week I actually missed a customer rule that everyone else picked up from the chat. It would really help if work-related tips could be posted in English too."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: Team communication in another language isolates the new hire and results in missing important work-related information. [BELONGING] \"I'm just feeling a bit on the edge because the team chats in Hokkien at lunch and in the group chat, and since I don't speak it, I miss out on dispute-handling tips.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4844,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING"
+  ],
+  "evidence_quote": "I'm just feeling a bit on the edge because the team chats in Hokkien at lunch and in the group chat, and since I don't speak it, I miss out on dispute-handling tips.",
+  "summary": "Team communication in another language isolates the new hire and results in missing important work-related information.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4198,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\": [\"BELONGING\"], \"evidence_quote\": \"I'm just feeling a bit on the edge because the team chats in Hokkien at lunch and in the group chat, and since I don't speak it, I miss out on dispute-handling tips.\", \"summary\": \"Team communication in another language isolates the new hire and results in missing important work-related information.\", \"serious_concern\": false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  5665
+ ]
+}

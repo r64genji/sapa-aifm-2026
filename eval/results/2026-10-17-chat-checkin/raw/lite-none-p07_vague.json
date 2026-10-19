@@ -1,0 +1,157 @@
+{
+ "persona": "p07_vague",
+ "label": "Vague replies",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said expectations are unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just some stuff, sometimes not sure really."
+  },
+  {
+   "from": "bot",
+   "text": "What tasks are you not sure about?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just everyday things, it's ok I guess."
+  },
+  {
+   "from": "bot",
+   "text": "Can you give me an example of an everyday task where it was unclear?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just general stuff, it's ok I guess."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire reports that everyday tasks are generally acceptable. [] \"\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said expectations are unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1377,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said expectations are unclear. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What tasks are you not sure about?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1192,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What tasks are you not sure about?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "Can you give me an example of an everyday task where it was unclear?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 8001,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 2701,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Can you give me an example of an everyday task where it was unclear?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [],
+   "evidence_quote": "",
+   "summary": "The new hire reports that everyday tasks are generally acceptable.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 1006,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\": [], \"evidence_quote\": \"\", \"summary\": \"The new hire reports that everyday tasks are generally acceptable.\", \"serious_concern\": false}"
+   }
+  ]
+ },
+ "quoteHolds": null
+}

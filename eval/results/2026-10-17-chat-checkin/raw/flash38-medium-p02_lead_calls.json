@@ -1,0 +1,126 @@
+{
+ "persona": "p02_lead_calls",
+ "label": "Team lead always on calls",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 4,
+   "answer": "Mostly part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "MANAGER_SUPPORT",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned having little support from your manager this week. What has been happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "My team lead is on calls with Europe all day, so when I get stuck on billing disputes my message waits until the next morning and the case sits a day. A 15-minute daily slot or a backup person to ask would really help."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire experiences delayed support on billing disputes because the team lead is in meetings throughout the day. [MANAGER_SUPPORT] \"My team lead is on calls with Europe all day, so when I get stuck on billing disputes my message waits until the next morning and the case sits a day.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned having little support from your manager this week. What has been happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 7160,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You mentioned having little support from your manager this week. What has been happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 5217,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "MANAGER_SUPPORT"
+   ],
+   "evidence_quote": "My team lead is on calls with Europe all day, so when I get stuck on billing disputes my message waits until the next morning and the case sits a day.",
+   "summary": "The new hire experiences delayed support on billing disputes because the team lead is in meetings throughout the day.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 8002,
+    "ok": false,
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "raw": null
+   },
+   {
+    "ms": 4729,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"MANAGER_SUPPORT\"],\"evidence_quote\":\"My team lead is on calls with Europe all day, so when I get stuck on billing disputes my message waits until the next morning and the case sits a day.\",\"summary\":\"The new hire experiences delayed support on billing disputes because the team lead is in meetings throughout the day.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

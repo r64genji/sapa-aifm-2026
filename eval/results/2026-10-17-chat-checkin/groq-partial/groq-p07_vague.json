@@ -1,0 +1,153 @@
+{
+ "persona": "p07_vague",
+ "label": "Vague replies",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "What tasks or expectations this week are unclear for you?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just some stuff is a bit unclear"
+  },
+  {
+   "from": "bot",
+   "text": "Can you describe a specific task or instruction that was unclear?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just not sure how to explain it"
+  },
+  {
+   "from": "bot",
+   "text": "What step or detail in that task is missing for you?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just not sure about the details"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire says some tasks and details are unclear. [ROLE_CLARITY] \"Just some stuff is a bit unclear\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "What tasks or expectations this week are unclear for you?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 788,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [],\n  \"question\": \"What tasks or expectations this week are unclear for you?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Can you describe a specific task or instruction that was unclear?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 847,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [],\n  \"question\": \"Can you describe a specific task or instruction that was unclear?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What step or detail in that task is missing for you?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1005,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [],\n  \"question\": \"What step or detail in that task is missing for you?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY"
+   ],
+   "evidence_quote": "Just some stuff is a bit unclear",
+   "summary": "The new hire says some tasks and details are unclear.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 688,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\"ROLE_CLARITY\"],\n  \"evidence_quote\": \"Just some stuff is a bit unclear\",\n  \"summary\": \"The new hire says some tasks and details are unclear.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

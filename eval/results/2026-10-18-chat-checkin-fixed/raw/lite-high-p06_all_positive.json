@@ -1,0 +1,87 @@
+{
+ "persona": "p06_all_positive",
+ "label": "All positive",
+ "expect": "positive",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Very clear",
+   "score": 5
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Good support",
+   "score": 4
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Fully part",
+   "score": 5
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Manageable",
+   "score": 4
+  }
+ ],
+ "focus": null,
+ "stop": "ai_done:nothing_to_dig",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anything that would make next week easier?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "All good on my end! Tasks are clear and the team's been great, so nothing to add. Thanks!"
+  },
+  {
+   "from": "bot",
+   "text": "Thank you. There is nothing from this chat to tell HR.",
+   "kind": "fixed_nothing"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "nothing_to_dig"
+   },
+   "attempts": [
+    {
+     "ms": 3119,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[],\"work_detail\":false,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"nothing_to_dig\"}"
+    }
+   ]
+  }
+ ],
+ "summary": null,
+ "summaryAttempts": [],
+ "quoteHolds": null,
+ "summaryFeel": null,
+ "personaCalls": [
+  4687
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Heavy\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiya, the 80 invoices per day target is quite tough la. Actually trainer told me 50 for the first month, but now need to hit 80 already. Last week OT until 9pm three times just to clear the queue, then when rush doing the AP vouchers, end up make more mistakes also. Would be very helpful if can have a proper ramp-up quota for the first 2 months instead, at least can balance accuracy and speed."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee is struggling with an increased target of 80 invoices daily, resulting in overtime and mistakes, and requests a ramp-up quota for the first two months. [WORKLOAD] \"Last week OT until 9pm three times just to clear the queue, then when rush doing the AP vouchers, end up make more mistakes also.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2508,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Last week OT until 9pm three times just to clear the queue, then when rush doing the AP vouchers, end up make more mistakes also.",
+  "summary": "The employee is struggling with an increased target of 80 invoices daily, resulting in overtime and mistakes, and requests a ramp-up quota for the first two months.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2246,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\"WORKLOAD\"],\n  \"evidence_quote\": \"Last week OT until 9pm three times just to clear the queue, then when rush doing the AP vouchers, end up make more mistakes also.\",\n  \"summary\": \"The employee is struggling with an increased target of 80 invoices daily, resulting in overtime and mistakes, and requests a ramp-up quota for the first two months.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2011
+ ]
+}

@@ -1,0 +1,106 @@
+{
+ "persona": "p01_ap_urgent",
+ "label": "AP analyst, every country says urgent",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Every country team keeps emailing that their invoices are urgent, but there is no set priority order. I end up wasting time asking around and missing my daily SAP quota by about 20 invoices. For example, last Tuesday both Vietnam and Thailand asked for same-day payment; I picked Vietnam first and my lead was unhappy. It would really help if we had a simple priority order from our lead, or just one designated person who decides."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports that multiple teams request urgent invoice processing without a defined priority order, leading to missed daily quotas and unclear expectations from leadership. [ROLE_CLARITY, MANAGER_SUPPORT] \"Every country team keeps emailing that their invoices are urgent, but there is no set priority order.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2958,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "MANAGER_SUPPORT"
+  ],
+  "evidence_quote": "Every country team keeps emailing that their invoices are urgent, but there is no set priority order.",
+  "summary": "The employee reports that multiple teams request urgent invoice processing without a defined priority order, leading to missed daily quotas and unclear expectations from leadership.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 3886,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"MANAGER_SUPPORT\"],\"evidence_quote\":\"Every country team keeps emailing that their invoices are urgent, but there is no set priority order.\",\"summary\":\"The employee reports that multiple teams request urgent invoice processing without a defined priority order, leading to missed daily quotas and unclear expectations from leadership.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  7626
+ ]
+}

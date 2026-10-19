@@ -1,0 +1,153 @@
+{
+ "persona": "p07_vague",
+ "label": "Vague replies",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said expectations are unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Sometimes not sure about the stuff."
+  },
+  {
+   "from": "bot",
+   "text": "What is a specific task where you were not sure what to do?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just some general stuff, nothing specific."
+  },
+  {
+   "from": "bot",
+   "text": "What tasks are involved when you feel unsure?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just regular stuff happening around here."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee expressed uncertainty regarding general tasks and expectations. [ROLE_CLARITY] \"Sometimes not sure about the stuff.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said expectations are unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2607,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You said expectations are unclear. What is happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What is a specific task where you were not sure what to do?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3803,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What is a specific task where you were not sure what to do?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What tasks are involved when you feel unsure?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3230,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"What tasks are involved when you feel unsure?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY"
+   ],
+   "evidence_quote": "Sometimes not sure about the stuff.",
+   "summary": "The employee expressed uncertainty regarding general tasks and expectations.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 2308,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"ROLE_CLARITY\"\n  ],\n  \"evidence_quote\": \"Sometimes not sure about the stuff.\",\n  \"summary\": \"The employee expressed uncertainty regarding general tasks and expectations.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

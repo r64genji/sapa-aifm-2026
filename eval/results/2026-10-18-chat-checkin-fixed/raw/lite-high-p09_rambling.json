@@ -1,0 +1,108 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Little support",
+   "score": 2
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Poorly prepared",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo bot, where to start ah... today really very headache one! Morning already so suay, wait for my rapid bus from Butterworth so long, late until I reach office also shivering, the aircon on level 3 seriously cold like fridge, must wear jacket everyday. Then you know lah, I only Week 3 here in AP team, last week only finally get my SAP access after waiting so long, then straight away got high quota to hit! Luckily the canteen nasi lemak today got extra sambal, quite sedap, cheered me up a bit haha. But the real problem why I tap Unclear ah, is nobody actually brief or give me the vendor master rules properly leh. So now when I key in, so many invoices keep getting rejected and kick back, then I have to redo and redo everything, waste so much time! Want to ask my team lead also cannot, whole day see her always on calls only, paiseh to disturb. Really ah, if can just get someone to properly brief me on the vendor master rules, will be super helpful one, then my work won't be stuck like this."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire reports delayed system access, heavy workload, unclear vendor rules, and limited manager support for guidance. [ROLE_CLARITY, MANAGER_SUPPORT, ONBOARDING_TRAINING, WORKLOAD] \"nobody actually brief or give me the vendor master rules properly leh.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3922,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "MANAGER_SUPPORT",
+   "ONBOARDING_TRAINING",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "nobody actually brief or give me the vendor master rules properly leh.",
+  "summary": "The new hire reports delayed system access, heavy workload, unclear vendor rules, and limited manager support for guidance.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 5507,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"MANAGER_SUPPORT\",\"ONBOARDING_TRAINING\",\"WORKLOAD\"],\"evidence_quote\":\"nobody actually brief or give me the vendor master rules properly leh.\",\"summary\":\"The new hire reports delayed system access, heavy workload, unclear vendor rules, and limited manager support for guidance.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  4274
+ ]
+}

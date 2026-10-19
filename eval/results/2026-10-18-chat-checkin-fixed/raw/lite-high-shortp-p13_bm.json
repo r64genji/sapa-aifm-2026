@@ -1,0 +1,138 @@
+{
+ "persona": "p13_bm",
+ "label": "Bahasa Malaysia, buddy on leave",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Kurang bersedia",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ONBOARDING_TRAINING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Kurang bersedia\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "SOP latihan saya rupanya masih versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois. Buddy saya pula sedang bercuti dua minggu dan rakan sebelah terlalu sibuk untuk bantu."
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang dapat membantu anda untuk tugas invois seterusnya?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Saya perlukan SOP terkini dan pengganti buddy sementara untuk tunjukkan langkah SAP yang betul."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja menggunakan SOP latihan versi lama yang menyebabkan kesilapan pemprosesan invois semasa ketiadaan sokongan rakan sekerja. [ONBOARDING_TRAINING] \"SOP latihan saya rupanya masih versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang dapat membantu anda untuk tugas invois seterusnya?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4455,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apa yang dapat membantu anda untuk tugas invois seterusnya?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2968,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "SOP latihan saya rupanya masih versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.",
+  "summary": "Pekerja menggunakan SOP latihan versi lama yang menyebabkan kesilapan pemprosesan invois semasa ketiadaan sokongan rakan sekerja.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6418,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"SOP latihan saya rupanya masih versi lama 2023 dan langkah SAP sudah berubah, jadi semalam saya tersalah proses satu invois.\",\"summary\":\"Pekerja menggunakan SOP latihan versi lama yang menyebabkan kesilapan pemprosesan invois semasa ketiadaan sokongan rakan sekerja.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  6124,
+  1586
+ ]
+}

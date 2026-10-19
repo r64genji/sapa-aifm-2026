@@ -1,0 +1,106 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Left out",
+   "score": 1
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Left out\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo, actually because my Europe shift starts at 3pm lah, but the team lunch and welcome event were both at 12:30pm, so I couldn't join and haven't met anyone in person yet. Now Week 4 already, I only know everyone from their Teams names and keep having to guess who handles which supplier. If can have a short team meeting at 3pm or just share a list of who does what, would be super helpful lah."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire missed team events due to working an afternoon Europe shift and still has not met teammates in person or received clarity on team supplier assignments. [BELONGING, ROLE_CLARITY] \"the team lunch and welcome event were both at 12:30pm, so I couldn't join and haven't met anyone in person yet.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2621,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING",
+   "ROLE_CLARITY"
+  ],
+  "evidence_quote": "the team lunch and welcome event were both at 12:30pm, so I couldn't join and haven't met anyone in person yet.",
+  "summary": "The new hire missed team events due to working an afternoon Europe shift and still has not met teammates in person or received clarity on team supplier assignments.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2658,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"BELONGING\",\"ROLE_CLARITY\"],\"evidence_quote\":\"the team lunch and welcome event were both at 12:30pm, so I couldn't join and haven't met anyone in person yet.\",\"summary\":\"The new hire missed team events due to working an afternoon Europe shift and still has not met teammates in person or received clarity on team supplier assignments.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  7475
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 4,
+   "answer": "Mostly clear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 1,
+   "answer": "Left out",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned feeling left out. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Working the 3pm shift kan, so missed the 12:30 welcome lunch earlier. Haven't met anyone in person yet, just see their Teams names and have to anyhow guess who handles which supplier. Kalau can have a quick 3pm team meeting or a list of who does what, confirm much easier for me."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire missed the welcome lunch due to shift timing, has not met teammates in person, and lacks clarity on supplier responsibilities. [BELONGING, ONBOARDING_TRAINING] \"Haven't met anyone in person yet, just see their Teams names and have to anyhow guess who handles which supplier.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned feeling left out. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2990,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You mentioned feeling left out. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 6906,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "BELONGING",
+    "ONBOARDING_TRAINING"
+   ],
+   "evidence_quote": "Haven't met anyone in person yet, just see their Teams names and have to anyhow guess who handles which supplier.",
+   "summary": "The new hire missed the welcome lunch due to shift timing, has not met teammates in person, and lacks clarity on supplier responsibilities.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 1111,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"BELONGING\",\n    \"ONBOARDING_TRAINING\"\n  ],\n  \"evidence_quote\": \"Haven't met anyone in person yet, just see their Teams names and have to anyhow guess who handles which supplier.\",\n  \"summary\": \"The new hire missed the welcome lunch due to shift timing, has not met teammates in person, and lacks clarity on supplier responsibilities.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

@@ -1,0 +1,153 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned your workload is heavy. What tasks are taking up most of your time?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Keying invoices lah. Trying to hit 80 a day even though trainer said 50 for the first month mah. Last week stayed till 9pm three times just to chase. When rush, confirm make more mistakes. Maybe can ramp-up quota for first 2 months?"
+  },
+  {
+   "from": "bot",
+   "text": "What tools or steps would help you with keying invoices?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Just need to officially follow the 50 quota for first 2 months lah. When don't need to rush, confirm make less mistakes mah."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire reports excessive daily invoice quotas and late hours exceeding the initial training expectations, leading to increased errors. [WORKLOAD, ONBOARDING_TRAINING] \"Trying to hit 80 a day even though trainer said 50 for the first month mah. Last week stayed till 9pm three times just to chase.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned your workload is heavy. What tasks are taking up most of your time?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1135,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You mentioned your workload is heavy. What tasks are taking up most of your time?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What tools or steps would help you with keying invoices?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1190,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What tools or steps would help you with keying invoices?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 1121,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD",
+    "ONBOARDING_TRAINING"
+   ],
+   "evidence_quote": "Trying to hit 80 a day even though trainer said 50 for the first month mah. Last week stayed till 9pm three times just to chase.",
+   "summary": "The new hire reports excessive daily invoice quotas and late hours exceeding the initial training expectations, leading to increased errors.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 1100,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\": [\"WORKLOAD\", \"ONBOARDING_TRAINING\"], \"evidence_quote\": \"Trying to hit 80 a day even though trainer said 50 for the first month mah. Last week stayed till 9pm three times just to chase.\", \"summary\": \"The new hire reports excessive daily invoice quotas and late hours exceeding the initial training expectations, leading to increased errors.\", \"serious_concern\": false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

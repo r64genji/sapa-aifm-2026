@@ -1,0 +1,164 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 1,
+   "answer": "Too much",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Boleh bagi satu contoh bila workload jadi terlalu banyak?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Masa tutup akaun lepas, kuota naik dari 40 ke 60 jurnal sehari sebab dua orang berhenti, jadi saya terpaksa balik pukul 11 malam 5 hari berturut-turut sampai rekonsiliasi bank lambat siap sebelum team lain tolong kongsi kerja."
+  },
+  {
+   "from": "bot",
+   "text": "Bagaimana keadaan itu menjejaskan tugasan harian anda?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Saya jadi terkejar-kejar siapkan 60 jurnal sehari sampai rekonsiliasi bank lambat siap, mujurlah team lain ada tolong kongsi kerja."
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang boleh membantu mudahkan urusan jurnal dan rekonsiliasi anda minggu depan?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kalau team lain boleh tolong kongsi kerja macam masa tutup akaun lepas, kurang sikit beban nak siapkan 60 jurnal dengan rekonsiliasi bank."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Peningkatan kuota tugasan harian akibat kekurangan pekerja menyebabkan beban kerja bertambah dan masa bekerja menjadi panjang. [WORKLOAD] \"Masa tutup akaun lepas, kuota naik dari 40 ke 60 jurnal sehari sebab dua orang berhenti, jadi saya terpaksa balik pukul 11 malam 5 hari berturut-turut sampai rekonsiliasi bank lambat siap sebelum team lain tolong kongsi kerja.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Boleh bagi satu contoh bila workload jadi terlalu banyak?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 1409,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Boleh bagi satu contoh bila workload jadi terlalu banyak?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Bagaimana keadaan itu menjejaskan tugasan harian anda?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 8000,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 1534,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Bagaimana keadaan itu menjejaskan tugasan harian anda?\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang boleh membantu mudahkan urusan jurnal dan rekonsiliasi anda minggu depan?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 6076,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apa yang boleh membantu mudahkan urusan jurnal dan rekonsiliasi anda minggu depan?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD"
+   ],
+   "evidence_quote": "Masa tutup akaun lepas, kuota naik dari 40 ke 60 jurnal sehari sebab dua orang berhenti, jadi saya terpaksa balik pukul 11 malam 5 hari berturut-turut sampai rekonsiliasi bank lambat siap sebelum team lain tolong kongsi kerja.",
+   "summary": "Peningkatan kuota tugasan harian akibat kekurangan pekerja menyebabkan beban kerja bertambah dan masa bekerja menjadi panjang.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 6457,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\n    \"WORKLOAD\"\n  ],\n  \"evidence_quote\": \"Masa tutup akaun lepas, kuota naik dari 40 ke 60 jurnal sehari sebab dua orang berhenti, jadi saya terpaksa balik pukul 11 malam 5 hari berturut-turut sampai rekonsiliasi bank lambat siap sebelum team lain tolong kongsi kerja.\",\n  \"summary\": \"Peningkatan kuota tugasan harian akibat kekurangan pekerja menyebabkan beban kerja bertambah dan masa bekerja menjadi panjang.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

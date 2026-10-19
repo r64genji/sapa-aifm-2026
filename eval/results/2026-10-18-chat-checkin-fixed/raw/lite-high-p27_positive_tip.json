@@ -1,0 +1,105 @@
+{
+ "persona": "p27_positive_tip",
+ "label": "Positive with one small tip",
+ "expect": "positive",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Good support",
+   "score": 4
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Manageable",
+   "score": 4
+  }
+ ],
+ "focus": null,
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anything that would make next week easier?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Things are going well overall! One small thing that would help is a one-page list of who to ask for what (like IT, payroll, SAP access). Last week I spent an hour just trying to find who resets SAP passwords, so having a quick guide like that would save some time."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: A reference guide identifying internal contacts for services like IT, payroll, and system access would reduce time spent searching. [ONBOARDING_TRAINING] \"Last week I spent an hour just trying to find who resets SAP passwords, so having a quick guide like that would save some time.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4209,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "Last week I spent an hour just trying to find who resets SAP passwords, so having a quick guide like that would save some time.",
+  "summary": "A reference guide identifying internal contacts for services like IT, payroll, and system access would reduce time spent searching.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4184,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\": [\"ONBOARDING_TRAINING\"], \"evidence_quote\": \"Last week I spent an hour just trying to find who resets SAP passwords, so having a quick guide like that would save some time.\", \"summary\": \"A reference guide identifying internal contacts for services like IT, payroll, and system access would reduce time spent searching.\", \"serious_concern\": false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  6033
+ ]
+}

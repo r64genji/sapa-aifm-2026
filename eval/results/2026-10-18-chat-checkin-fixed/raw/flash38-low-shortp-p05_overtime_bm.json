@@ -1,0 +1,138 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Terlalu banyak",
+   "score": 1
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Terlalu banyak\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Dua orang resign, jadi kuota jurnal naik dari 40 ke 60 sehari. Masa month-end close lepas pun 5 hari berturut-turut balik pukul 11 malam dan bank recon lambat siap."
+  },
+  {
+   "from": "bot",
+   "text": "Apakah yang boleh membantu meringankan beban kerja anda sekarang?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Mungkin boleh cari replacement untuk dua orang yang resign tu, atau lebihkan work sharing dengan team lain."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja baharu melaporkan peningkatan beban kerja dan waktu bekerja lewat malam selepas dua rakan sekerja meletakkan jawatan. [WORKLOAD] \"Dua orang resign, jadi kuota jurnal naik dari 40 ke 60 sehari.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apakah yang boleh membantu meringankan beban kerja anda sekarang?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3819,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apakah yang boleh membantu meringankan beban kerja anda sekarang?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2520,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Dua orang resign, jadi kuota jurnal naik dari 40 ke 60 sehari.",
+  "summary": "Pekerja baharu melaporkan peningkatan beban kerja dan waktu bekerja lewat malam selepas dua rakan sekerja meletakkan jawatan.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2811,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\"WORKLOAD\"],\n  \"evidence_quote\": \"Dua orang resign, jadi kuota jurnal naik dari 40 ke 60 sehari.\",\n  \"summary\": \"Pekerja baharu melaporkan peningkatan beban kerja dan waktu bekerja lewat malam selepas dua rakan sekerja meletakkan jawatan.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2702,
+  5780
+ ]
+}

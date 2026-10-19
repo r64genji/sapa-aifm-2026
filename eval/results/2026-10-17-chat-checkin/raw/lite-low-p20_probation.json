@@ -1,0 +1,169 @@
+{
+ "persona": "p20_probation",
+ "label": "Probation fear",
+ "expect": "ask_hr",
+ "language": "ms",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda kata apa yang diharapkan tidak jelas. Apa yang sedang berlaku?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Saya takut tak lepas probation sebab KPI tak jelas. Boleh ke diorang buang saya tanpa amaran?"
+  },
+  {
+   "from": "bot",
+   "text": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang boleh membantu anda mendapatkan butiran KPI tersebut?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "KPI cuma cakap 'meet quota' tapi quota berubah tiap minggu."
+  },
+  {
+   "from": "bot",
+   "text": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
+   "kind": "fixed"
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang dapat membantu anda menyelaraskan perubahan quota tersebut?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "takde dah"
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja melaporkan bahawa petunjuk prestasi utama adalah tidak jelas dan sasaran sentiasa berubah. [ROLE_CLARITY] \"KPI cuma cakap 'meet quota' tapi quota berubah tiap minggu.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Anda kata apa yang diharapkan tidak jelas. Apa yang sedang berlaku?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2915,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Anda kata apa yang diharapkan tidak jelas. Apa yang sedang berlaku?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang boleh membantu anda mendapatkan butiran KPI tersebut?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3374,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apa yang boleh membantu anda mendapatkan butiran KPI tersebut?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": true,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang dapat membantu anda menyelaraskan perubahan quota tersebut?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": true,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4815,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apa yang dapat membantu anda menyelaraskan perubahan quota tersebut?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": true,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY"
+   ],
+   "evidence_quote": "KPI cuma cakap 'meet quota' tapi quota berubah tiap minggu.",
+   "summary": "Pekerja melaporkan bahawa petunjuk prestasi utama adalah tidak jelas dan sasaran sentiasa berubah.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 2988,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"ROLE_CLARITY\"],\"evidence_quote\":\"KPI cuma cakap 'meet quota' tapi quota berubah tiap minggu.\",\"summary\":\"Pekerja melaporkan bahawa petunjuk prestasi utama adalah tidak jelas dan sasaran sentiasa berubah.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

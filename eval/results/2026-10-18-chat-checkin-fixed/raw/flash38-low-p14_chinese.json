@@ -1,0 +1,106 @@
+{
+ "persona": "p14_chinese",
+ "label": "Chinese, unclear SOP",
+ "expect": "normal",
+ "language": "zh",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "不清楚",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "你选了\"不清楚\"。发生了什么事？",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "主要是英文的SOP有些地方看不太明白，比如什么时候可以先付款后补单据。上周处理一张发票时不太确定，等答复等了两天。如果能有中文的示例，或者能指定一个随时可以请教的人，就太有帮助了。"
+  },
+  {
+   "from": "bot",
+   "text": "我会告诉 HR： 该员工表示英文流程文件部分内容理解困难且询问答复耗时较长，希望有中文示例或指派专人指导。 [ROLE_CLARITY, ONBOARDING_TRAINING] \"主要是英文的SOP有些地方看不太明白，比如什么时候可以先付款后补单据。\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2922,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "主要是英文的SOP有些地方看不太明白，比如什么时候可以先付款后补单据。",
+  "summary": "该员工表示英文流程文件部分内容理解困难且询问答复耗时较长，希望有中文示例或指派专人指导。",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2878,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"主要是英文的SOP有些地方看不太明白，比如什么时候可以先付款后补单据。\",\"summary\":\"该员工表示英文流程文件部分内容理解困难且询问答复耗时较长，希望有中文示例或指派专人指导。\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3766
+ ]
+}

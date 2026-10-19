@@ -1,0 +1,140 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Heavy\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo, the quota is 80 invoices a day but trainer earlier said 50 for first month. Last week had to OT until 9pm three times to hit, then rush-rush make more mistakes la."
+  },
+  {
+   "from": "bot",
+   "text": "What support or adjustment would help with the invoice quota?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "If can give proper ramp-up quota for first 2 months would really help la. That way don't need to rush so much and can reduce mistakes."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reported a discrepancy between the daily invoice quota and initial training guidance, requiring multiple overtime shifts to meet targets. [ROLE_CLARITY, ONBOARDING_TRAINING, WORKLOAD] \"Aiyo, the quota is 80 invoices a day but trainer earlier said 50 for first month. Last week had to OT until 9pm three times to hit, then rush-rush make more mistakes la.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What support or adjustment would help with the invoice quota?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3841,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What support or adjustment would help with the invoice quota?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3170,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "ONBOARDING_TRAINING",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Aiyo, the quota is 80 invoices a day but trainer earlier said 50 for first month. Last week had to OT until 9pm three times to hit, then rush-rush make more mistakes la.",
+  "summary": "The employee reported a discrepancy between the daily invoice quota and initial training guidance, requiring multiple overtime shifts to meet targets.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6002,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"ONBOARDING_TRAINING\",\"WORKLOAD\"],\"evidence_quote\":\"Aiyo, the quota is 80 invoices a day but trainer earlier said 50 for first month. Last week had to OT until 9pm three times to hit, then rush-rush make more mistakes la.\",\"summary\":\"The employee reported a discrepancy between the daily invoice quota and initial training guidance, requiring multiple overtime shifts to meet targets.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3195,
+  2308
+ ]
+}

@@ -1,0 +1,141 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Little support",
+   "score": 2
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Poorly prepared",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyoh bot, actually I am just so blur because this morning already the bus from Butterworth was so late and then the office aircon here is freezing cold even though the canteen nasi lemak was quite nice, plus my SAP access already came late and the quota is so high while my team lead is always stuck on calls. The main thing happening is nobody actually gave me the vendor master rules since I started AP, so now so many of my invoices keep getting rejected and I am just sitting here redoing all of them again and again without knowing what is going on lah."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you with those invoice rejections, lah?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyoh bot, what would really help me the most is if someone could just sit down and properly brief me on the actual vendor master rules lah, especially since my team lead is always so busy on calls and cannot guide me while my daily AP quota is already piling up so high after my SAP access came late. If got senior can just explain those vendor rules to me clearly, then even though the office aircon is freezing cold and my bus from Butterworth was super delayed after eating that nice canteen nasi lemak, at least I will know how to process everything properly without getting all these invoice rejections and redoing them until so stressed out."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: Invoices are repeatedly rejected due to missing vendor master rules, high quotas, delayed system access, and unavailable management guidance. [ROLE_CLARITY, MANAGER_SUPPORT, ONBOARDING_TRAINING, WORKLOAD] \"The main thing happening is nobody actually gave me the vendor master rules since I started AP, so now so many of my invoices keep getting rejected and I am just sitting here redoing all of them again and again without knowing what is going on lah.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you with those invoice rejections, lah?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5905,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"What would help you with those invoice rejections, lah?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4980,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "MANAGER_SUPPORT",
+   "ONBOARDING_TRAINING",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "The main thing happening is nobody actually gave me the vendor master rules since I started AP, so now so many of my invoices keep getting rejected and I am just sitting here redoing all of them again and again without knowing what is going on lah.",
+  "summary": "Invoices are repeatedly rejected due to missing vendor master rules, high quotas, delayed system access, and unavailable management guidance.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4967,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"MANAGER_SUPPORT\",\"ONBOARDING_TRAINING\",\"WORKLOAD\"],\"evidence_quote\":\"The main thing happening is nobody actually gave me the vendor master rules since I started AP, so now so many of my invoices keep getting rejected and I am just sitting here redoing all of them again and again without knowing what is going on lah.\",\"summary\":\"Invoices are repeatedly rejected due to missing vendor master rules, high quotas, delayed system access, and unavailable management guidance.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  11311,
+  22744
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 4,
+   "answer": "Mostly clear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 1,
+   "answer": "Left out",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said left out. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "A bit blur lah since week 4 already. My shift starts 3pm so missed the 12:30 lunch and welcome event earlier. Never met anyone, only know Teams names, dunno who handles what supplier so just anyhow guess only. Maybe can have a quick 3pm meeting or a list of who does what?"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports role confusion and a lack of team connection due to missing welcome events and shift timing. [ROLE_CLARITY, BELONGING] \"Never met anyone, only know Teams names, dunno who handles what supplier so just anyhow guess only.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said left out. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4413,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said left out. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3501,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY",
+    "BELONGING"
+   ],
+   "evidence_quote": "Never met anyone, only know Teams names, dunno who handles what supplier so just anyhow guess only.",
+   "summary": "The employee reports role confusion and a lack of team connection due to missing welcome events and shift timing.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 4805,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"BELONGING\"],\"evidence_quote\":\"Never met anyone, only know Teams names, dunno who handles what supplier so just anyhow guess only.\",\"summary\":\"The employee reports role confusion and a lack of team connection due to missing welcome events and shift timing.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

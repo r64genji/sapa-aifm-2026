@@ -1,0 +1,138 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Left out",
+   "score": 1
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Left out\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiya, team lunch and welcome event all happen at 12.30pm before my shift starts at 3pm, so until now haven't met anyone face to face yet. Only know people through Teams names, so everyday just anyhow guess who handles which supplier."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you connect with the team during your shift?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Maybe can have a short team catch-up around 3pm, or share a list of who handles what supplier. That one would help a lot lah."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee has not met colleagues face to face because team lunches and events occur before their shift begins. [BELONGING] \"until now haven't met anyone face to face yet\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you connect with the team during your shift?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2596,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you connect with the team during your shift?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2341,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\"what_happened\", \"effect_on_work\", \"what_would_help\"],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING"
+  ],
+  "evidence_quote": "until now haven't met anyone face to face yet",
+  "summary": "The employee has not met colleagues face to face because team lunches and events occur before their shift begins.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2562,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"BELONGING\"],\"evidence_quote\":\"until now haven't met anyone face to face yet\",\"summary\":\"The employee has not met colleagues face to face because team lunches and events occur before their shift begins.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2586,
+  4090
+ ]
+}

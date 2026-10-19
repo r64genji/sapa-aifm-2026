@@ -1,0 +1,151 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 1,
+   "answer": "Too much",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said workload is too much. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Betul la, penat sikit. Masuk minggu ke-6 R2R ni, masa tutup akaun hujung bulan lepas saya balik pukul 11 malam 5 hari berturut-turut. Kuota naik dari 40 ke 60 jurnal sehari sebab 2 orang berhenti, tu yang rekonsiliasi bank lambat sikit siap. Mujur pasukan lain ada tolong kongsi kerja masa hujung bulan tu."
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang boleh bantu mudahkan kerja rekonsiliasi tu?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kalau dapat terus kongsi kerja dengan pasukan lain macam masa hujung bulan lepas, dah cukup membantu."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Beban kerja meningkat akibat kekurangan staf, menyebabkan pekerja bekerja lewat semasa penutupan akaun hujung bulan. [WORKLOAD] \"masa tutup akaun hujung bulan lepas saya balik pukul 11 malam 5 hari berturut-turut.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said workload is too much. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2918,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said workload is too much. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang boleh bantu mudahkan kerja rekonsiliasi tu?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3488,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Apa yang boleh bantu mudahkan kerja rekonsiliasi tu?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3135,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD"
+   ],
+   "evidence_quote": "masa tutup akaun hujung bulan lepas saya balik pukul 11 malam 5 hari berturut-turut.",
+   "summary": "Beban kerja meningkat akibat kekurangan staf, menyebabkan pekerja bekerja lewat semasa penutupan akaun hujung bulan.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 2705,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\": [\"WORKLOAD\"], \"evidence_quote\": \"masa tutup akaun hujung bulan lepas saya balik pukul 11 malam 5 hari berturut-turut.\", \"summary\": \"Beban kerja meningkat akibat kekurangan staf, menyebabkan pekerja bekerja lewat semasa penutupan akaun hujung bulan.\", \"serious_concern\": false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

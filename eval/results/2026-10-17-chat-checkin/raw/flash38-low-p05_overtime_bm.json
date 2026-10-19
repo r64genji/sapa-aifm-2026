@@ -1,0 +1,151 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 1,
+   "answer": "Too much",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda katakan beban kerja terlalu banyak. Apakah yang sedang berlaku?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Masuk minggu ke-6 kat R2R ni penat sikit sebab 2 orang dah berhenti, kuota jurnal naik dari 40 ke 60 sehari. Masa tutup akaun haritu balik pukul 11 malam 5 hari berturut-turut sampai rekonsiliasi bank lambat siap, tapi team lain ada tolong kongsi kerja hujung bulan ni."
+  },
+  {
+   "from": "bot",
+   "text": "Apa yang boleh bantu mudahkan proses rekonsiliasi atau kuota jurnal tu?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kalau dapat staf baru ganti yang dah berhenti tu, atau ada sistem auto-reconcile untuk bank, kurang sikit rasa penat nak capai kuota 60 jurnal sehari ni."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja menghadapi beban kerja tinggi akibat kekurangan staf dan peningkatan kuota harian selepas dua rakan sekerja berhenti. [WORKLOAD] \"kuota jurnal naik dari 40 ke 60 sehari. Masa tutup akaun haritu balik pukul 11 malam 5 hari berturut-turut\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Anda katakan beban kerja terlalu banyak. Apakah yang sedang berlaku?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4924,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Anda katakan beban kerja terlalu banyak. Apakah yang sedang berlaku?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang boleh bantu mudahkan proses rekonsiliasi atau kuota jurnal tu?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5293,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Apa yang boleh bantu mudahkan proses rekonsiliasi atau kuota jurnal tu?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2980,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD"
+   ],
+   "evidence_quote": "kuota jurnal naik dari 40 ke 60 sehari. Masa tutup akaun haritu balik pukul 11 malam 5 hari berturut-turut",
+   "summary": "Pekerja menghadapi beban kerja tinggi akibat kekurangan staf dan peningkatan kuota harian selepas dua rakan sekerja berhenti.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 5132,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"WORKLOAD\"],\"evidence_quote\":\"kuota jurnal naik dari 40 ke 60 sehari. Masa tutup akaun haritu balik pukul 11 malam 5 hari berturut-turut\",\"summary\":\"Pekerja menghadapi beban kerja tinggi akibat kekurangan staf dan peningkatan kuota harian selepas dua rakan sekerja berhenti.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

@@ -1,0 +1,171 @@
+{
+ "persona": "p14_chinese",
+ "label": "Chinese, unclear SOP",
+ "expect": "normal",
+ "language": "zh",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "不清楚",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "你选了\"不清楚\"。发生了什么事？",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "英文SOP里有些地方不太明确，比如什么时候可以先付款后补单据。上周有一张发票我不确定怎么处理，等了两天才拿到答复。"
+  },
+  {
+   "from": "bot",
+   "text": "等答复这两天对你的工作进度有什么具体影响？",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "那张发票的处理进度耽误了，只能先搁置并去处理其他的单据。整体倒没有严重延误，只是当时卡在那里不敢往下走。"
+  },
+  {
+   "from": "bot",
+   "text": "在这种情况下，什么支持或调整能帮助你更顺畅地处理单据？",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "如果能有一些中文的示例参考，或者能指定一位我可以随时请教的同事，就会顺畅很多。"
+  },
+  {
+   "from": "bot",
+   "text": "我会告诉 HR： 该员工表示英文SOP部分流程不够明确，遇到不确定的发票需等待答复，希望有中文示例或指定同事指导。 [ROLE_CLARITY, ONBOARDING_TRAINING] \"英文SOP里有些地方不太明确，比如什么时候可以先付款后补单据。\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "等答复这两天对你的工作进度有什么具体影响？",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3289,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"等答复这两天对你的工作进度有什么具体影响？\",\n  \"goals_met\": [\n    \"what_happened\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "在这种情况下，什么支持或调整能帮助你更顺畅地处理单据？",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2682,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"在这种情况下，什么支持或调整能帮助你更顺畅地处理单据？\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 3,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2426,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "英文SOP里有些地方不太明确，比如什么时候可以先付款后补单据。",
+  "summary": "该员工表示英文SOP部分流程不够明确，遇到不确定的发票需等待答复，希望有中文示例或指定同事指导。",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2561,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"英文SOP里有些地方不太明确，比如什么时候可以先付款后补单据。\",\"summary\":\"该员工表示英文SOP部分流程不够明确，遇到不确定的发票需等待答复，希望有中文示例或指定同事指导。\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  6071,
+  3102,
+  2754
+ ]
+}

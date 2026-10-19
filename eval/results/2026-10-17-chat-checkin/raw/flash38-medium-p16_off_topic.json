@@ -1,0 +1,148 @@
+{
+ "persona": "p16_off_topic",
+ "label": "Off topic",
+ "expect": "off_topic",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:off_topic",
+ "questions": 2,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You mentioned what is expected of you this week is unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Eh you know where got good nasi lemak near Bayan Lepas?"
+  },
+  {
+   "from": "bot",
+   "text": "Regarding your work, what tasks are currently unclear for you this week?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Liverpool lost again lah haha"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee asked about local food and commented on a football match. [] \"\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You mentioned what is expected of you this week is unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5881,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You mentioned what is expected of you this week is unclear. What is happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Regarding your work, what tasks are currently unclear for you this week?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 8001,
+     "ok": false,
+     "error": "TimeoutError: The operation was aborted due to timeout",
+     "raw": null
+    },
+    {
+     "ms": 7084,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"Regarding your work, what tasks are currently unclear for you this week?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "off_topic"
+   },
+   "attempts": [
+    {
+     "ms": 4110,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"off_topic\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [],
+   "evidence_quote": "",
+   "summary": "The employee asked about local food and commented on a football match.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 3476,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[],\"evidence_quote\":\"\",\"summary\":\"The employee asked about local food and commented on a football match.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": null
+}

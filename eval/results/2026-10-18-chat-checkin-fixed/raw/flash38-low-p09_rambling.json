@@ -1,0 +1,107 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Little support",
+   "score": 2
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Poorly prepared",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo bot, sorry ah, just now morning very stressful already, bus from Butterworth side damn jam, delay until I reach office late, then inside office the aircon level like North Pole shivering until cannot type properly! Actually now entering Week 3 in AP team, the canteen nasi lemak today so far the only shiok thing haha, very nice the sambal. But work side really a bit unclear lah. You know my SAP access also got delayed before, now already got access and the daily quota so high, but the main headache is nobody pass or explain to me the vendor master rules at all. So I just key in blindly, then end up many invoices kena rejected, have to redo everything from scratch waste a lot of time. My team lead poor thing also always stuck in non-stop calls, whole day meetings, so I feel bad want to disturb. If got someone can just spend a bit of time to brief me properly on the vendor master rules, that one would really help me clear all this backlog smoothly lah."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee lacks guidance on vendor master rules, causing rejected invoices, rework, and backlog while dealing with high quotas and busy team leadership. [ROLE_CLARITY, ONBOARDING_TRAINING, WORKLOAD] \"nobody pass or explain to me the vendor master rules at all. So I just key in blindly, then end up many invoices kena rejected, have to redo everything from scratch waste a lot of time.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2799,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY",
+   "ONBOARDING_TRAINING",
+   "WORKLOAD"
+  ],
+  "evidence_quote": "nobody pass or explain to me the vendor master rules at all. So I just key in blindly, then end up many invoices kena rejected, have to redo everything from scratch waste a lot of time.",
+  "summary": "The employee lacks guidance on vendor master rules, causing rejected invoices, rework, and backlog while dealing with high quotas and busy team leadership.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2476,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"ONBOARDING_TRAINING\",\"WORKLOAD\"],\"evidence_quote\":\"nobody pass or explain to me the vendor master rules at all. So I just key in blindly, then end up many invoices kena rejected, have to redo everything from scratch waste a lot of time.\",\"summary\":\"The employee lacks guidance on vendor master rules, causing rejected invoices, rework, and backlog while dealing with high quotas and busy team leadership.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  4340
+ ]
+}

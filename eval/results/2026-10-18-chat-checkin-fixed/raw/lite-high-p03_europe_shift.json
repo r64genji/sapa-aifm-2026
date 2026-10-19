@@ -1,0 +1,106 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Left out",
+   "score": 1
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Left out\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiyo actually because I'm on the Europe shift start at 3pm lah. Last time the team lunch and welcome event both were at 12:30pm before my shift, so cannot make it and until now haven't met anyone face-to-face yet. I only know people from Teams names, then now have to guess-guess who handles which supplier. If can have a short team meeting at 3pm or maybe just share a list of who does what, would really help a lot leh."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee works the Europe shift, missed team events held before their shift, has not met colleagues in person, and is unsure about supplier responsibilities. [BELONGING, ROLE_CLARITY] \"until now haven't met anyone face-to-face yet. I only know people from Teams names, then now have to guess-guess who handles which supplier.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 5349,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING",
+   "ROLE_CLARITY"
+  ],
+  "evidence_quote": "until now haven't met anyone face-to-face yet. I only know people from Teams names, then now have to guess-guess who handles which supplier.",
+  "summary": "The employee works the Europe shift, missed team events held before their shift, has not met colleagues in person, and is unsure about supplier responsibilities.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 6101,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"BELONGING\",\"ROLE_CLARITY\"],\"evidence_quote\":\"until now haven't met anyone face-to-face yet. I only know people from Teams names, then now have to guess-guess who handles which supplier.\",\"summary\":\"The employee works the Europe shift, missed team events held before their shift, has not met colleagues in person, and is unsure about supplier responsibilities.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  7140
+ ]
+}

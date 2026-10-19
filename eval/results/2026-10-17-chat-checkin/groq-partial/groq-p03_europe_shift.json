@@ -1,0 +1,160 @@
+{
+ "persona": "p03_europe_shift",
+ "label": "Europe shift, never met team",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 4,
+   "answer": "Mostly clear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 1,
+   "answer": "Left out",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 3,
+   "answer": "Just OK",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Can you describe a recent moment when you felt left out by the team?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Probably during the welcome lunch at 12:30 lah since my shift only start at 3pm, so never get to meet anyone in person yet. Just see them on Teams, blur blur don't even know who handle what supplier, just anyhow guess. Kalau got a list of who does what or a quick 3pm team meeting would be super helpful so can kenal-kenal with everyone abit."
+  },
+  {
+   "from": "bot",
+   "text": "How does feeling left out affect the way you do your tasks or collaborate with others?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Makes it abit hard to collaborate sometimes because when got supplier issue, I just anyhow guess who to ping on Teams. Takes a bit longer to get answers since we on different shifts and blur about who handles what, but still can manage lah, just need time to get used to it."
+  },
+  {
+   "from": "bot",
+   "text": "What would make it easier for you to know who handles each supplier and connect with the team?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Like I said lah, having a simple list of who handles which supplier would be super helpful. Also maybe a quick team meeting right when my shift starts at 3 pm so can kenal-kenal with everyone and don't have to anyhow guess who to ping on Teams."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire feels isolated and unclear about who handles each supplier, asking for a list and a quick team meeting at shift start. [BELONGING, ROLE_CLARITY] \"Probably during the welcome lunch at 12:30 lah since my shift only start at 3pm, so never get to meet anyone in person yet. Just see them on Teams, blur blur don't even know who handle what supplier, just anyhow guess.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Can you describe a recent moment when you felt left out by the team?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 548,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [],\n  \"question\": \"Can you describe a recent moment when you felt left out by the team?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "How does feeling left out affect the way you do your tasks or collaborate with others?",
+    "goals_met": [
+     "what_happened",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 902,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [\"what_happened\", \"what_would_help\"],\n  \"question\": \"How does feeling left out affect the way you do your tasks or collaborate with others?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "What would make it easier for you to know who handles each supplier and connect with the team?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 795,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [\"what_happened\", \"effect_on_work\"],\n  \"question\": \"What would make it easier for you to know who handles each supplier and connect with the team?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "BELONGING",
+    "ROLE_CLARITY"
+   ],
+   "evidence_quote": "Probably during the welcome lunch at 12:30 lah since my shift only start at 3pm, so never get to meet anyone in person yet. Just see them on Teams, blur blur don't even know who handle what supplier, just anyhow guess.",
+   "summary": "The new hire feels isolated and unclear about who handles each supplier, asking for a list and a quick team meeting at shift start.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 1241,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\"BELONGING\", \"ROLE_CLARITY\"],\n  \"evidence_quote\": \"Probably during the welcome lunch at 12:30 lah since my shift only start at 3pm, so never get to meet anyone in person yet. Just see them on Teams, blur blur don't even know who handle what supplier, just anyhow guess.\",\n  \"summary\": \"The new hire feels isolated and unclear about who handles each supplier, asking for a list and a quick team meeting at shift start.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

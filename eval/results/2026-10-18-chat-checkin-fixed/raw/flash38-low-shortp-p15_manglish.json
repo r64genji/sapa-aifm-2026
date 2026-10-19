@@ -1,0 +1,138 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Heavy",
+   "score": 2
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Heavy\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Daily quota is 80 invoices already even though trainer said 50 for first month. Last week had to stay until 9pm three times to hit it, and rushing just makes more mistakes lah."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you manage the 80 invoice target better?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Would help a lot if got proper ramp-up quota for the first 2 months instead. At least can build up speed slowly without so many mistakes."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee is working late to meet a daily quota of 80 invoices and suggests a ramp-up quota for the first two months. [WORKLOAD] \"Last week had to stay until 9pm three times to hit it, and rushing just makes more mistakes lah.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you manage the 80 invoice target better?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2720,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you manage the 80 invoice target better?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2869,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "Last week had to stay until 9pm three times to hit it, and rushing just makes more mistakes lah.",
+  "summary": "The employee is working late to meet a daily quota of 80 invoices and suggests a ramp-up quota for the first two months.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2280,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"WORKLOAD\"],\"evidence_quote\":\"Last week had to stay until 9pm three times to hit it, and rushing just makes more mistakes lah.\",\"summary\":\"The employee is working late to meet a daily quota of 80 invoices and suggests a ramp-up quota for the first two months.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  7708,
+  2167
+ ]
+}

@@ -1,0 +1,111 @@
+{
+ "persona": "p27_positive_tip",
+ "label": "Positive with one small tip",
+ "expect": "positive",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Good support",
+   "score": 4
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Manageable",
+   "score": 4
+  }
+ ],
+ "focus": null,
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anything that would make next week easier?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Things are going well overall! One small thing that would be super helpful is a simple one-page cheat sheet of who to contact for what (like IT, payroll, or SAP access). Last week I spent about an hour just trying to track down who handles SAP password resets, so having a quick list would definitely save time."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee suggested that a contact list for departments like IT and payroll would save time onboarding. [ONBOARDING_TRAINING] \"Last week I spent about an hour just trying to track down who handles SAP password resets, so having a quick list would definitely save time.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 8002,
+     "ok": false,
+     "error": "timeout",
+     "raw": ""
+    },
+    {
+     "ms": 2268,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "Last week I spent about an hour just trying to track down who handles SAP password resets, so having a quick list would definitely save time.",
+  "summary": "The employee suggested that a contact list for departments like IT and payroll would save time onboarding.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2473,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"Last week I spent about an hour just trying to track down who handles SAP password resets, so having a quick list would definitely save time.\",\"summary\":\"The employee suggested that a contact list for departments like IT and payroll would save time onboarding.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2743
+ ]
+}

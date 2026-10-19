@@ -1,0 +1,105 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Terlalu banyak",
+   "score": 1
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Terlalu banyak\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Sebab ada dua orang resign, so sekarang kuota journal naik dari 40 ke 60 sehari. Masa last month-end close pun terpaksa balik pukul 11 malam lima hari berturut-turut, bank reconciliation pun jadi lambat sikit. Nasib baik ada team lain tolong cover kerja month-end hari tu. Kalau dapat ganti dua orang yang resign tu cepat atau continue share kerja dengan team sebelah, memang sangat membantu."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Dua kakitangan telah meletakkan jawatan, menyebabkan peningkatan kuota kerja harian dan keperluan bekerja lewat semasa penutupan bulanan. [WORKLOAD] \"kuota journal naik dari 40 ke 60 sehari\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 3377,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"done\",\n  \"question\": \"\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\",\n    \"what_would_help\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"goals_met\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "WORKLOAD"
+  ],
+  "evidence_quote": "kuota journal naik dari 40 ke 60 sehari",
+  "summary": "Dua kakitangan telah meletakkan jawatan, menyebabkan peningkatan kuota kerja harian dan keperluan bekerja lewat semasa penutupan bulanan.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 7646,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"WORKLOAD\"],\"evidence_quote\":\"kuota journal naik dari 40 ke 60 sehari\",\"summary\":\"Dua kakitangan telah meletakkan jawatan, menyebabkan peningkatan kuota kerja harian dan keperluan bekerja lewat semasa penutupan bulanan.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  3051
+ ]
+}

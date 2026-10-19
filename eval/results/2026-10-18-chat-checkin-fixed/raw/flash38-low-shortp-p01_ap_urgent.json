@@ -1,0 +1,138 @@
+{
+ "persona": "p01_ap_urgent",
+ "label": "AP analyst, every country says urgent",
+ "expect": "normal",
+ "language": "en",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Unclear",
+   "score": 2
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Partly prepared",
+   "score": 3
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"Unclear\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Every country team emails saying their invoices are urgent, but there's no set priority order so I waste time asking around and keep missing my daily quota. Last Tuesday Vietnam and Thailand both asked for same-day payment, and my lead was unhappy with which one I processed first."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you know which country's invoice to process first?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "A simple priority order from my lead, or having just one designated person who decides, would really help."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports missing daily quotas because multiple teams request urgent invoice processing without a set priority order. [ROLE_CLARITY] \"there's no set priority order so I waste time asking around and keep missing my daily quota\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you know which country's invoice to process first?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2573,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"What would help you know which country's invoice to process first?\",\"goals_met\":[\"what_happened\",\"effect_on_work\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 2215,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ROLE_CLARITY"
+  ],
+  "evidence_quote": "there's no set priority order so I waste time asking around and keep missing my daily quota",
+  "summary": "The employee reports missing daily quotas because multiple teams request urgent invoice processing without a set priority order.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 2131,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ROLE_CLARITY\"],\"evidence_quote\":\"there's no set priority order so I waste time asking around and keep missing my daily quota\",\"summary\":\"The employee reports missing daily quotas because multiple teams request urgent invoice processing without a set priority order.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2152,
+  2560
+ ]
+}

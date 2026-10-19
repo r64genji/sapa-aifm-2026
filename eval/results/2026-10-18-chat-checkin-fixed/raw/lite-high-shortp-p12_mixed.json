@@ -1,0 +1,138 @@
+{
+ "persona": "p12_mixed",
+ "label": "Mixed good and bad",
+ "expect": "normal",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Great support",
+   "score": 5
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "On the edge",
+   "score": 2
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "BELONGING",
+ "stop": "ai_done:goals_met",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You tapped \"On the edge\". What is happening?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "The team chats mostly in Hokkien during lunch and in our group chat, which I don't speak, so I've been missing out on work and dispute-handling tips. Last week I actually missed a customer rule that everyone else knew from the chat."
+  },
+  {
+   "from": "bot",
+   "text": "What would help you stay updated on those customer rules?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "It would really help if work and dispute-handling tips were posted in English too. That way I wouldn't miss out on important customer rules shared in the chat."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports missing work updates because team chats and lunch conversations are conducted in a language they do not speak. [BELONGING] \"The team chats mostly in Hokkien during lunch and in our group chat, which I don't speak, so I've been missing out on work and dispute-handling tips.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "What would help you stay updated on those customer rules?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 4847,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"What would help you stay updated on those customer rules?\",\n  \"goals_met\": [\n    \"what_happened\",\n    \"effect_on_work\"\n  ],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4030,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "BELONGING"
+  ],
+  "evidence_quote": "The team chats mostly in Hokkien during lunch and in our group chat, which I don't speak, so I've been missing out on work and dispute-handling tips.",
+  "summary": "The employee reports missing work updates because team chats and lunch conversations are conducted in a language they do not speak.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 5391,
+   "ok": true,
+   "error": "",
+   "raw": "{\n  \"drivers\": [\n    \"BELONGING\"\n  ],\n  \"evidence_quote\": \"The team chats mostly in Hokkien during lunch and in our group chat, which I don't speak, so I've been missing out on work and dispute-handling tips.\",\n  \"summary\": \"The employee reports missing work updates because team chats and lunch conversations are conducted in a language they do not speak.\",\n  \"serious_concern\": false\n}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  2392,
+  1805
+ ]
+}

@@ -1,0 +1,132 @@
+{
+ "persona": "p11_dah",
+ "label": "Says 'dah' to stop (BM)",
+ "expect": "done_signal",
+ "language": "ms",
+ "setup": "flash38-low",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Not sure",
+   "score": 3
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Some support",
+   "score": 3
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Somewhat part",
+   "score": 3
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Kurang bersedia",
+   "score": 2
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Just OK",
+   "score": 3
+  }
+ ],
+ "focus": "ONBOARDING_TRAINING",
+ "stop": "ai_done:person_done",
+ "ai_questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anda tekan \"Kurang bersedia\". Apa yang berlaku?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "Training SAP tak cukup, kena belajar sendiri."
+  },
+  {
+   "from": "bot",
+   "text": "Bagaimanakah situasi ini memberi kesan kepada tugasan kerja harian anda?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "dah"
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Pekerja menyatakan bahawa latihan SAP tidak mencukupi dan mereka terpaksa belajar sendiri. [ONBOARDING_TRAINING] \"Training SAP tak cukup, kena belajar sendiri.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Bagaimanakah situasi ini memberi kesan kepada tugasan kerja harian anda?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 2568,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Bagaimanakah situasi ini memberi kesan kepada tugasan kerja harian anda?\",\n  \"goals_met\": [\"what_happened\"],\n  \"work_detail\": true,\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened"
+    ],
+    "work_detail": false,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "person_done"
+   },
+   "attempts": [
+    {
+     "ms": 2516,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\"],\"work_detail\":false,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"person_done\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "Training SAP tak cukup, kena belajar sendiri.",
+  "summary": "Pekerja menyatakan bahawa latihan SAP tidak mencukupi dan mereka terpaksa belajar sendiri.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 3584,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"Training SAP tak cukup, kena belajar sendiri.\",\"summary\":\"Pekerja menyatakan bahawa latihan SAP tidak mencukupi dan mereka terpaksa belajar sendiri.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": []
+}

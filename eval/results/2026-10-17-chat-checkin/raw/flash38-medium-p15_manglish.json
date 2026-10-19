@@ -1,0 +1,121 @@
+{
+ "persona": "p15_manglish",
+ "label": "Manglish, workload",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said your workload is heavy. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Aiya, week 4 in AP already mah. Quota 80 invoices a day, but trainer said 50 for the first month. Last week stayed till 9pm three times to hit it. Rush already make more mistakes lah. Better to ramp-up quota for the first 2 months."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The employee reports working until 9pm to meet an 80-invoice daily quota that conflicts with the 50-invoice target stated by their trainer. [ROLE_CLARITY, WORKLOAD] \"Last week stayed till 9pm three times to hit it.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said your workload is heavy. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 5952,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"question\":\"You said your workload is heavy. What is happening?\",\"goals_met\":[],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 6357,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY",
+    "WORKLOAD"
+   ],
+   "evidence_quote": "Last week stayed till 9pm three times to hit it.",
+   "summary": "The employee reports working until 9pm to meet an 80-invoice daily quota that conflicts with the 50-invoice target stated by their trainer.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 7498,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"WORKLOAD\"],\"evidence_quote\":\"Last week stayed till 9pm three times to hit it.\",\"summary\":\"The employee reports working until 9pm to meet an 80-invoice daily quota that conflicts with the 50-invoice target stated by their trainer.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

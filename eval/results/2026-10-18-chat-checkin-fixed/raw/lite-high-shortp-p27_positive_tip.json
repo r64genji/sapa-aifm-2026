@@ -1,0 +1,105 @@
+{
+ "persona": "p27_positive_tip",
+ "label": "Positive with one small tip",
+ "expect": "positive",
+ "language": "en",
+ "setup": "lite-high",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "question": "How clear are you on what is expected of you this week?",
+   "answer": "Mostly clear",
+   "score": 4
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "question": "How much support did you get from your manager this week?",
+   "answer": "Good support",
+   "score": 4
+  },
+  {
+   "driver": "BELONGING",
+   "question": "How connected are you with your team this week?",
+   "answer": "Mostly part",
+   "score": 4
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "question": "How well has your training prepared you for your work this week?",
+   "answer": "Mostly prepared",
+   "score": 4
+  },
+  {
+   "driver": "WORKLOAD",
+   "question": "How manageable is your workload this week?",
+   "answer": "Manageable",
+   "score": 4
+  }
+ ],
+ "focus": null,
+ "stop": "ai_done:goals_met",
+ "ai_questions": 0,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Anything that would make next week easier?",
+   "kind": "fixed_opener"
+  },
+  {
+   "from": "new_hire",
+   "text": "A one-page list of who to ask for things like IT, payroll, or SAP access would be really helpful. Last week I spent an hour just trying to find who resets SAP passwords."
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire suggested a contact list for IT, payroll, and system access to simplify navigating internal resources. [ONBOARDING_TRAINING] \"A one-page list of who to ask for things like IT, payroll, or SAP access would be really helpful.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "work_detail": true,
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 4412,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"work_detail\":true,\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "drivers": [
+   "ONBOARDING_TRAINING"
+  ],
+  "evidence_quote": "A one-page list of who to ask for things like IT, payroll, or SAP access would be really helpful.",
+  "summary": "The new hire suggested a contact list for IT, payroll, and system access to simplify navigating internal resources.",
+  "serious_concern": false
+ },
+ "summaryAttempts": [
+  {
+   "ms": 4338,
+   "ok": true,
+   "error": "",
+   "raw": "{\"drivers\":[\"ONBOARDING_TRAINING\"],\"evidence_quote\":\"A one-page list of who to ask for things like IT, payroll, or SAP access would be really helpful.\",\"summary\":\"The new hire suggested a contact list for IT, payroll, and system access to simplify navigating internal resources.\",\"serious_concern\":false}"
+  }
+ ],
+ "quoteHolds": true,
+ "summaryFeel": null,
+ "personaCalls": [
+  6393
+ ]
+}

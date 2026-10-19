@@ -1,0 +1,1829 @@
+{
+ "_format": "grades[model][persona][question number] = [good|bad, one-line reason, flags]. Flags: leading, feelings, contact, advice, language, repeat, injection. Graded by Claude after reading each transcript. Not blind.",
+ "flash38-low": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Opens on the low tap. Neutral and open.",
+    []
+   ],
+   "2": [
+    "good",
+    "Goes to what would help. Skips the impact the person already gave.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to billing disputes. Asks for help, not for a cause.",
+    []
+   ]
+  },
+  "p03_europe_shift": {
+   "1": [
+    "good",
+    "Neutral, but the grammar is awkward ('You said left out').",
+    []
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral opener. The person answered all 3 goals at once.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "good",
+    "In BM. Uses the tap word. Open.",
+    []
+   ],
+   "2": [
+    "good",
+    "Builds on the reconciliation and quota the person named.",
+    []
+   ]
+  },
+  "p06_all_positive": {
+   "1": [
+    "good",
+    "Light question. Stops when the answer is positive.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks for one concrete task. Right move after a vague reply.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push on a person who will not give detail. Adds nothing. It should stop.",
+    []
+   ]
+  },
+  "p08_one_word": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Turns 'busy' into a concrete open question about tasks.",
+    []
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral opener. Summary picks the real issue from the ramble.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks about the effect on tasks, not about the manager.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "bad",
+    "English, but the person's language is BM.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "bad",
+    "English reply to a BM message.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "good",
+    "Picks the one low tap among good ones. Neutral.",
+    []
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "good",
+    "BM. Slightly narrows to 'the training session', but stays open.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help with the SAP steps the person named.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese. Neutral and open.",
+    []
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Neutral opener. Person gave all 3 goals in one reply.",
+    []
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once, as the rule says. Then stops.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the poem request and steers back to work.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice. Asks about the effect on tasks.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Repeats question 2 in other words.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate. Asks about the effect on tasks.",
+    []
+   ],
+   "3": [
+    "good",
+    "Builds on the claim form point.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the probation question. Asks which tasks have unclear KPIs.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks about the effect of the changing quota. Specific.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "bad",
+    "Links 'little support' to 'what tasks did you work on'. Unclear what it asks.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to month-end work. Neutral.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "bad",
+    "English, but the person's language is BM.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "Switches to BM after the person writes BM. Neutral.",
+    []
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "good",
+    "BM with the English word 'workload'. Normal for Malaysia.",
+    []
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "Literal '在边缘' reads oddly, and it points to communication and task allocation as the problem.",
+    [
+     "leading"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Neutral opener.",
+    []
+   ],
+   "2": [
+    "good",
+    "After a crying emoji it asks about work, not mood. Correct.",
+    []
+   ]
+  },
+  "p27_positive_tip": {
+   "1": [
+    "good",
+    "Light question.",
+    []
+   ]
+  }
+ },
+ "lite-none": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Builds on the credit note example.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks what would help. Not asked before.",
+    []
+   ]
+  },
+  "p03_europe_shift": {
+   "1": [
+    "bad",
+    "Names a feeling ('feeling left out'). The tap label 'Left out' is enough.",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "good",
+    "Natural BM. Asks for one real example.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on daily tasks.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks what would help, tied to the journals and reconciliation.",
+    []
+   ]
+  },
+  "p06_all_positive": {
+   "1": [
+    "good",
+    "Light question. Stops on a positive reply.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks which tasks. Fair try.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push on a vague person. Should stop.",
+    []
+   ]
+  },
+  "p08_one_word": {
+   "1": [
+    "good",
+    "Open and concrete.",
+    []
+   ],
+   "2": [
+    "bad",
+    "Repeats question 1.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Picks the real issue (rejected invoices) out of a long ramble.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "bad",
+    "Terse English ('Training poorly prepared. What happened?') to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "Matches the person's BM-English mix. Specific.",
+    []
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "bad",
+    "Names a feeling ('feeling on the edge').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "good",
+    "BM-English mix. Understandable and open.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese. Neutral.",
+    []
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Asks which tasks take the time. Concrete.",
+    []
+   ],
+   "2": [
+    "bad",
+    "Asks what would help after the person already said it, and suggests 'tools or steps'.",
+    [
+     "repeat",
+     "leading"
+    ]
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Asks again after a second off-topic reply. The rule says stop.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the poem request. Steers back.",
+    []
+   ],
+   "3": [
+    "bad",
+    "'How does this affect...' refers to nothing. Should stop after the second off-topic message.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice. Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate. Asks for a task example.",
+    []
+   ],
+   "3": [
+    "good",
+    "Builds on the claim form code.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "Natural Malaysian BM-English mix.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the dismissal question. Asks for a task example.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks the effect of the changing quota.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to month-end work.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "bad",
+    "English reply to a BM message.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "bad",
+    "'kononnya' means 'supposedly'. It sounds like the bot doubts the person.",
+    [
+     "leading"
+    ]
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "Names a feeling ('感觉有点边缘化').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "bad",
+    "Names a feeling ('feeling on the edge').",
+    [
+     "feelings"
+    ]
+   ],
+   "2": [
+    "bad",
+    "After a crying emoji it asks what made them 'feel on the edge'. A feelings question.",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p27_positive_tip": {
+   "1": [
+    "good",
+    "Light question.",
+    []
+   ]
+  }
+ },
+ "flash38-medium": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Uses the tap question's words. Neutral.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help, tied to the person's words.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks for an example.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push on a vague person. Should stop.",
+    []
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Picks the real issue from the ramble and asks what would help.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on daily work.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "good",
+    "Formal but correct BM.",
+    []
+   ],
+   "2": [
+    "good",
+    "BM. Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "good",
+    "Uses the tap words without naming a feeling.",
+    []
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese.",
+    []
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once. Then stops.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the injection. Steers back. Then stops.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice. Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate. Asks the effect on work.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to month-end work.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "good",
+    "BM, asks about work tasks.",
+    []
+   ],
+   "2": [
+    "good",
+    "BM. Specific to OT alone.",
+    []
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "Names a feeling ('感觉处于团队边缘').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Asks about team work, not mood.",
+    []
+   ],
+   "2": [
+    "good",
+    "After a crying emoji it asks for a work example. Correct.",
+    []
+   ]
+  },
+  "p27_positive_tip": {
+   "1": [
+    "good",
+    "Light question.",
+    []
+   ]
+  }
+ },
+ "flash38-high": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Uses the tap question's words. Neutral.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help, tied to the person's words.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks for one task example.",
+    []
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "good",
+    "Chinese, asks about work, names no feeling.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p27_positive_tip": {
+   "1": [
+    "good",
+    "Light question.",
+    []
+   ]
+  }
+ },
+ "lite-low": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "bad",
+    "Names a feeling ('you feel little support').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p03_europe_shift": {
+   "1": [
+    "bad",
+    "Names a feeling ('feeling left out').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "Switches to BM. Asks what would help.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks for a recent task.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push on a vague person. Should stop.",
+    []
+   ]
+  },
+  "p08_one_word": {
+   "1": [
+    "good",
+    "Concrete and open.",
+    []
+   ],
+   "2": [
+    "bad",
+    "Repeats question 1.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Picks the real issue (vendor master rules) and asks what would help.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "Matches the person's BM-English mix.",
+    []
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "good",
+    "Uses the tap words.",
+    []
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese.",
+    []
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once. Then stops.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the injection. Steers back. Then stops.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Repeats question 2.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Concrete.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate. Asks which tasks cause the hours.",
+    []
+   ],
+   "3": [
+    "good",
+    "Builds on the claim form code.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the dismissal question. Stays on KPI.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks what would help with the changing quota.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "bad",
+    "Names a feeling ('you feel little support').",
+    [
+     "feelings"
+    ]
+   ],
+   "2": [
+    "good",
+    "Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "good",
+    "BM, short.",
+    []
+   ],
+   "2": [
+    "good",
+    "BM, asks the effect on work.",
+    []
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "Names a feeling ('感觉在团队的边缘').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "After a crying emoji it asks about team tasks, not mood.",
+    []
+   ]
+  }
+ },
+ "lite-medium": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help with the priority order.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "bad",
+    "Names a feeling ('feeling little support').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p03_europe_shift": {
+   "1": [
+    "bad",
+    "Names a feeling ('you feel left out').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "BM. Builds on the person's idea and asks what else would help.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks for one task example.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push, and names a feeling ('when you feel unsure').",
+    [
+     "feelings",
+     "repeat"
+    ]
+   ]
+  },
+  "p08_one_word": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Turns 'busy' into a concrete question.",
+    []
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Goes to what would help with the invoice issue.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "Matches the person's BM-English mix.",
+    []
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "good",
+    "Uses the tap word, no feeling word.",
+    []
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "good",
+    "BM with the tap's English words. Understandable.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "bad",
+    "English to a Chinese user.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Concrete: which tasks take the time.",
+    []
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once. Then stops.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the injection. Steers back. Then stops.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Repeats question 2.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Concrete.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate.",
+    []
+   ],
+   "3": [
+    "good",
+    "Builds on the claim form.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the dismissal question. Asks which KPI part is unclear.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks what would help with the quota.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to month-end work.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "bad",
+    "English to a BM user, and names a feeling ('you feel little support').",
+    [
+     "language",
+     "feelings"
+    ]
+   ],
+   "2": [
+    "good",
+    "Switches to BM.",
+    []
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "good",
+    "BM, neutral.",
+    []
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "Names a feeling ('感觉在团队边缘').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "After a crying emoji it asks about team tasks, not mood.",
+    []
+   ]
+  }
+ },
+ "lite-high": {
+  "p01_ap_urgent": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks what would help.",
+    []
+   ]
+  },
+  "p02_lead_calls": {
+   "1": [
+    "bad",
+    "Names a feeling ('you feel little support').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p03_europe_shift": {
+   "1": [
+    "bad",
+    "Names a feeling ('you feel left out').",
+    [
+     "feelings"
+    ]
+   ]
+  },
+  "p04_sap_youtube": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p05_overtime_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ],
+   "2": [
+    "good",
+    "BM. Asks what would help with closing.",
+    []
+   ]
+  },
+  "p07_vague": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks which tasks.",
+    []
+   ],
+   "3": [
+    "bad",
+    "Third push on a vague person. Should stop.",
+    [
+     "repeat"
+    ]
+   ]
+  },
+  "p08_one_word": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Concrete question after 'busy'.",
+    []
+   ]
+  },
+  "p09_rambling": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p10_done_button": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p11_dah": {
+   "1": [
+    "good",
+    "BM.",
+    []
+   ],
+   "2": [
+    "good",
+    "BM. Asks the effect on tasks.",
+    []
+   ]
+  },
+  "p12_mixed": {
+   "1": [
+    "good",
+    "Uses the tap word.",
+    []
+   ]
+  },
+  "p13_bm": {
+   "1": [
+    "good",
+    "BM.",
+    []
+   ]
+  },
+  "p14_chinese": {
+   "1": [
+    "good",
+    "Natural Chinese.",
+    []
+   ]
+  },
+  "p15_manglish": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p16_off_topic": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Steers back once. Then stops.",
+    []
+   ]
+  },
+  "p17_injection": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Ignores the injection. Steers back. Then stops.",
+    []
+   ]
+  },
+  "p18_advice": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Gives no advice. Asks the effect on tasks.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks what would help. New goal.",
+    []
+   ]
+  },
+  "p19_pay": {
+   "1": [
+    "good",
+    "Concrete.",
+    []
+   ],
+   "2": [
+    "good",
+    "Does not answer the OT rate.",
+    []
+   ],
+   "3": [
+    "good",
+    "Builds on the claim form codes.",
+    []
+   ]
+  },
+  "p20_probation": {
+   "1": [
+    "good",
+    "BM.",
+    []
+   ],
+   "2": [
+    "good",
+    "Asks how KPIs were set. Specific, not about the dismissal question.",
+    []
+   ],
+   "3": [
+    "good",
+    "Asks the effect of the quota change.",
+    []
+   ]
+  },
+  "p21_harass_t2": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "Specific to month-end work.",
+    []
+   ]
+  },
+  "p22_harass_kw_bm": {
+   "1": [
+    "good",
+    "BM.",
+    []
+   ],
+   "2": [
+    "good",
+    "Natural BM. Specific to OT alone.",
+    []
+   ]
+  },
+  "p23_debt_bm": {
+   "1": [
+    "bad",
+    "English to a BM user.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p24_debt_zh": {
+   "1": [
+    "bad",
+    "English to a Chinese user.",
+    [
+     "language"
+    ]
+   ]
+  },
+  "p25_passport": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ]
+  },
+  "p26_emoji": {
+   "1": [
+    "good",
+    "Neutral open opener on the low tap.",
+    []
+   ],
+   "2": [
+    "good",
+    "After a crying emoji it asks about tasks and meetings, not mood.",
+    []
+   ]
+  }
+ }
+}

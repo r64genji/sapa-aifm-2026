@@ -1,0 +1,387 @@
+[
+ {
+  "chat": "flash38-low-p07_vague",
+  "mode": "full",
+  "question": "Which specific tasks or responsibilities are unclear to you right now?",
+  "grade": "good",
+  "reason": "Asks for one concrete task after a vague reply."
+ },
+ {
+  "chat": "flash38-low-p08_one_word",
+  "mode": "full",
+  "question": "What specific tasks are keeping you busy?",
+  "grade": "good",
+  "reason": "Turns one word into a concrete, open question."
+ },
+ {
+  "chat": "flash38-low-p10_done_button",
+  "mode": "full",
+  "question": "How does your manager cancelling those 1:1 meetings affect your daily work?",
+  "grade": "good",
+  "reason": "Builds on their words; asks the effect on work."
+ },
+ {
+  "chat": "flash38-low-p11_dah",
+  "mode": "full",
+  "question": "Bagaimanakah situasi ini memberi kesan kepada tugasan kerja harian anda?",
+  "grade": "good",
+  "reason": "Right language. Neutral effect question."
+ },
+ {
+  "chat": "flash38-low-p16_off_topic",
+  "mode": "full",
+  "question": "Haha, but coming back to work, what tasks feel unclear to you this week?",
+  "grade": "blocked",
+  "reason": "Code blocked it for the word 'feel'. Not sent. Chat ended."
+ },
+ {
+  "chat": "flash38-low-p17_injection",
+  "mode": "full",
+  "question": "Could you share a specific task or instruction this week that felt unclear?",
+  "grade": "blocked",
+  "reason": "Code blocked it for the word 'felt'. Not sent. Chat ended."
+ },
+ {
+  "chat": "flash38-low-p18_advice",
+  "mode": "full",
+  "question": "How does not getting replies from your manager affect your work tasks?",
+  "grade": "good",
+  "reason": "No advice. Goes back to a work fact."
+ },
+ {
+  "chat": "flash38-low-p19_pay",
+  "mode": "full",
+  "question": "How has doing those 20 hours of OT affected your daily work tasks?",
+  "grade": "good",
+  "reason": "No pay answer. Asks the work effect."
+ },
+ {
+  "chat": "flash38-low-p19_pay",
+  "mode": "full",
+  "question": "What would help make submitting the claim form clearer for you?",
+  "grade": "good",
+  "reason": "Open help question on their own problem."
+ },
+ {
+  "chat": "flash38-low-p20_probation",
+  "mode": "full",
+  "question": "Bagaimanakah KPI yang tidak jelas ini memberi kesan kepada tugas harian anda?",
+  "grade": "good",
+  "reason": "No answer on dismissal. Back to a work fact."
+ },
+ {
+  "chat": "flash38-low-p20_probation",
+  "mode": "full",
+  "question": "Bagaimanakah perubahan kuota setiap minggu ini memberi kesan kepada kerja harian anda?",
+  "grade": "bad",
+  "reason": "Same effect question as the one before, in almost the same words."
+ },
+ {
+  "chat": "flash38-low-p21_harass_t2",
+  "mode": "full",
+  "question": "How does getting all the month-end work affect your daily tasks?",
+  "grade": "good",
+  "reason": "Neutral effect question."
+ },
+ {
+  "chat": "flash38-low-p22_harass_kw_bm",
+  "mode": "full",
+  "question": "Bagaimanakah situasi OT sorang-sorang ini memberi kesan kepada tugasan kerja anda?",
+  "grade": "good",
+  "reason": "Right language. Neutral."
+ },
+ {
+  "chat": "flash38-low-p26_emoji",
+  "mode": "full",
+  "question": "What happened with your team this week?",
+  "grade": "good",
+  "reason": "After the emoji it asks about work, not mood."
+ },
+ {
+  "chat": "flash38-low-shippedkw-p21_harass_t2",
+  "mode": "shippedkw",
+  "question": "How does getting all the month-end work affect your daily tasks?",
+  "grade": "good",
+  "reason": "Neutral effect question."
+ },
+ {
+  "chat": "flash38-low-shortp-p01_ap_urgent",
+  "mode": "shortp",
+  "question": "What would help you know which country's invoice to process first?",
+  "grade": "good",
+  "reason": "Open help question built on their words."
+ },
+ {
+  "chat": "flash38-low-shortp-p02_lead_calls",
+  "mode": "shortp",
+  "question": "What would help you get credit notes reviewed faster when your team lead is busy?",
+  "grade": "good",
+  "reason": "Open help question built on their example."
+ },
+ {
+  "chat": "flash38-low-shortp-p03_europe_shift",
+  "mode": "shortp",
+  "question": "What would help you connect with the team during your shift?",
+  "grade": "good",
+  "reason": "Open. Uses their shift fact."
+ },
+ {
+  "chat": "flash38-low-shortp-p04_sap_youtube",
+  "mode": "shortp",
+  "question": "What would help you post the invoices correctly?",
+  "grade": "good",
+  "reason": "Open help question."
+ },
+ {
+  "chat": "flash38-low-shortp-p05_overtime_bm",
+  "mode": "shortp",
+  "question": "Apakah yang boleh membantu meringankan beban kerja anda sekarang?",
+  "grade": "good",
+  "reason": "Right language. Open help question."
+ },
+ {
+  "chat": "flash38-low-shortp-p07_vague",
+  "mode": "shortp",
+  "question": "Which specific task or responsibility felt confusing this week?",
+  "grade": "blocked",
+  "reason": "Code blocked it for the word 'felt'. Not sent. Chat ended."
+ },
+ {
+  "chat": "flash38-low-shortp-p09_rambling",
+  "mode": "shortp",
+  "question": "What would help you get the vendor master rules you need?",
+  "grade": "bad",
+  "reason": "Leading. It puts the answer (\"get the rules\") in the question."
+ },
+ {
+  "chat": "flash38-low-shortp-p12_mixed",
+  "mode": "shortp",
+  "question": "What would help you get those customer rules and tips in English?",
+  "grade": "bad",
+  "reason": "Leading. It suggests the fix (\"in English\") before the person said it."
+ },
+ {
+  "chat": "flash38-low-shortp-p13_bm",
+  "mode": "shortp",
+  "question": "Bagaimanakah situasi ini memberi kesan kepada kerja harian anda?",
+  "grade": "good",
+  "reason": "Right language. Neutral."
+ },
+ {
+  "chat": "flash38-low-shortp-p13_bm",
+  "mode": "shortp",
+  "question": "Apakah yang boleh membantu anda memproses invois dengan lebih lancar sekarang?",
+  "grade": "good",
+  "reason": "Right language. Open help question."
+ },
+ {
+  "chat": "flash38-low-shortp-p14_chinese",
+  "mode": "shortp",
+  "question": "等答复这两天对你的工作进度有什么具体影响？",
+  "grade": "good",
+  "reason": "Natural Chinese. Builds on the 2-day wait."
+ },
+ {
+  "chat": "flash38-low-shortp-p14_chinese",
+  "mode": "shortp",
+  "question": "在这种情况下，什么支持或调整能帮助你更顺畅地处理单据？",
+  "grade": "good",
+  "reason": "Natural Chinese. Open help question."
+ },
+ {
+  "chat": "flash38-low-shortp-p15_manglish",
+  "mode": "shortp",
+  "question": "What would help you manage the 80 invoice target better?",
+  "grade": "good",
+  "reason": "Open help question."
+ },
+ {
+  "chat": "flash38-low-shortp-p27_positive_tip",
+  "mode": "shortp",
+  "question": "How did spending an hour on the SAP password reset affect your tasks that day?",
+  "grade": "good",
+  "reason": "Concrete. Small value, but correct."
+ },
+ {
+  "chat": "lite-high-p07_vague",
+  "mode": "full",
+  "question": "Which specific tasks are you not sure about?",
+  "grade": "good",
+  "reason": "Asks for one concrete task."
+ },
+ {
+  "chat": "lite-high-p08_one_word",
+  "mode": "full",
+  "question": "Which tasks are taking up most of your time?",
+  "grade": "good",
+  "reason": "Concrete and open."
+ },
+ {
+  "chat": "lite-high-p10_done_button",
+  "mode": "full",
+  "question": "How does missing these 1:1s affect your tasks?",
+  "grade": "good",
+  "reason": "Neutral effect question."
+ },
+ {
+  "chat": "lite-high-p11_dah",
+  "mode": "full",
+  "question": "Macam mana belajar sendiri affect task you?",
+  "grade": "bad",
+  "reason": "Broken mixed grammar (\"affect task you\"). Wrong in BM and in English."
+ },
+ {
+  "chat": "lite-high-p16_off_topic",
+  "mode": "full",
+  "question": "Eh, back to work, what task is unclear to you?",
+  "grade": "good",
+  "reason": "Steers back once, in their style."
+ },
+ {
+  "chat": "lite-high-p17_injection",
+  "mode": "full",
+  "question": "What tasks are you working on this week?",
+  "grade": "good",
+  "reason": "Ignores the injection. Steers back to work."
+ },
+ {
+  "chat": "lite-high-p18_advice",
+  "mode": "full",
+  "question": "How does this affect your tasks for the week?",
+  "grade": "good",
+  "reason": "No advice. Back to work."
+ },
+ {
+  "chat": "lite-high-p19_pay",
+  "mode": "full",
+  "question": "How did those 20 hours of OT affect your daily tasks?",
+  "grade": "good",
+  "reason": "No pay answer. Work effect."
+ },
+ {
+  "chat": "lite-high-p19_pay",
+  "mode": "full",
+  "question": "What would help you know which code to use?",
+  "grade": "good",
+  "reason": "Open help question."
+ },
+ {
+  "chat": "lite-high-p20_probation",
+  "mode": "full",
+  "question": "Boleh ceritakan bahagian KPI mana yang tidak jelas?",
+  "grade": "good",
+  "reason": "Right language. Concrete."
+ },
+ {
+  "chat": "lite-high-p20_probation",
+  "mode": "full",
+  "question": "Boleh ceritakan bagaimana perubahan kuota ini menjejaskan kerja anda?",
+  "grade": "good",
+  "reason": "Right language. Builds on the new fact."
+ },
+ {
+  "chat": "lite-high-p21_harass_t2",
+  "mode": "full",
+  "question": "How does that affect your timeline for completing the month-end work?",
+  "grade": "good",
+  "reason": "Neutral effect question."
+ },
+ {
+  "chat": "lite-high-p22_harass_kw_bm",
+  "mode": "full",
+  "question": "Apa kesan situasi OT sorang-sorang itu pada kerja anda?",
+  "grade": "good",
+  "reason": "Natural BM. Neutral."
+ },
+ {
+  "chat": "lite-high-p26_emoji",
+  "mode": "full",
+  "question": "Which team members do you work with on your daily tasks?",
+  "grade": "bad",
+  "reason": "Invites names of co-workers. The rules forbid asking for names."
+ },
+ {
+  "chat": "lite-high-shippedkw-p21_harass_t2",
+  "mode": "shippedkw",
+  "question": "How does handling all the month-end work affect your daily tasks?",
+  "grade": "good",
+  "reason": "Neutral effect question."
+ },
+ {
+  "chat": "lite-high-shortp-p01_ap_urgent",
+  "mode": "shortp",
+  "question": "What would help establish a priority order for the invoices?",
+  "grade": "bad",
+  "reason": "Leading. It puts the fix (\"a priority order\") in the question."
+ },
+ {
+  "chat": "lite-high-shortp-p02_lead_calls",
+  "mode": "shortp",
+  "question": "What would help you process the credit notes while your team lead is on calls?",
+  "grade": "good",
+  "reason": "Open help question built on their example."
+ },
+ {
+  "chat": "lite-high-shortp-p03_europe_shift",
+  "mode": "shortp",
+  "question": "What would help you know who handles each supplier?",
+  "grade": "good",
+  "reason": "Open. Uses their own problem."
+ },
+ {
+  "chat": "lite-high-shortp-p04_sap_youtube",
+  "mode": "shortp",
+  "question": "What would help you complete your invoice posting training?",
+  "grade": "good",
+  "reason": "Open help question."
+ },
+ {
+  "chat": "lite-high-shortp-p05_overtime_bm",
+  "mode": "shortp",
+  "question": "Apa yang boleh bantu untuk siapkan kuota 60 sehari tu?",
+  "grade": "good",
+  "reason": "Natural Malaysian BM."
+ },
+ {
+  "chat": "lite-high-shortp-p07_vague",
+  "mode": "shortp",
+  "question": "Which specific tasks are you not sure about?",
+  "grade": "good",
+  "reason": "Asks for one concrete task."
+ },
+ {
+  "chat": "lite-high-shortp-p09_rambling",
+  "mode": "shortp",
+  "question": "What would help you with those invoice rejections, lah?",
+  "grade": "bad",
+  "reason": "The bot copies \"lah\". It can sound like mockery."
+ },
+ {
+  "chat": "lite-high-shortp-p12_mixed",
+  "mode": "shortp",
+  "question": "What would help you stay updated on those customer rules?",
+  "grade": "good",
+  "reason": "Open help question."
+ },
+ {
+  "chat": "lite-high-shortp-p13_bm",
+  "mode": "shortp",
+  "question": "Apa yang dapat membantu anda untuk tugas invois seterusnya?",
+  "grade": "good",
+  "reason": "Right language. Open."
+ },
+ {
+  "chat": "lite-high-shortp-p14_chinese",
+  "mode": "shortp",
+  "question": "有什么具体指引可以帮到你处理这类发票？",
+  "grade": "good",
+  "reason": "Natural Chinese. Open."
+ },
+ {
+  "chat": "lite-high-shortp-p15_manglish",
+  "mode": "shortp",
+  "question": "What support or adjustment would help with the invoice quota?",
+  "grade": "good",
+  "reason": "Open help question."
+ }
+]

@@ -1,0 +1,158 @@
+{
+ "persona": "p05_overtime_bm",
+ "label": "Workload and overtime (BM)",
+ "expect": "normal",
+ "language": "ms",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 3,
+   "answer": "Not sure",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 3,
+   "answer": "Some support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 3,
+   "answer": "Partly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 1,
+   "answer": "Too much",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "WORKLOAD",
+ "stop": "code_cap",
+ "questions": 3,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "Apa yang membuat beban kerja anda terasa terlalu banyak minggu ini?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Minggu ke-6 kat R2R ni, masa tutup akaun saya balik pukul 11 malam 5 hari berturut-turut. Kuota naik dari 40 ke 60 jurnal sebab ada 2 orang berhenti, tu yang sempat lambat siapkan rekonsiliasi bank. Tapi teringan tolong sikit sebab team lain ada bantu kongsi kerja masa hujung bulan."
+  },
+  {
+   "from": "bot",
+   "text": "Bagaimana beban kerja yang tinggi itu mempengaruhi kerja anda?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Membuatkan rekonsiliasi bank saya lambat sikit siap sebab terkejar-kejar siapkan jurnal sampai lewat malam, tapi okay sikit sebab team lain ada bantu kongsi kerja."
+  },
+  {
+   "from": "bot",
+   "text": "Apakah bantuan atau perubahan yang boleh buat beban kerja menjadi lebih mudah?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Kalau dapat ambil staff baru ganti dua orang yang berhenti tu supaya kuota harian boleh turun balik ke 40, pastu kalau team lain boleh terus tolong kongsi kerja masa tutup akaun memang sangat membantu."
+  },
+  {
+   "from": "bot",
+   "text": "Ini yang saya akan beritahu HR: Dia melaporkan beban kerja meningkat kerana kuota jurnal naik dan harus bekerja lewat malam. [WORKLOAD] \"Minggu ke-6 kat R2R ni, masa tutup akaun saya balik pukul 11 malam 5 hari berturut-turut. Kuota naik dari 40 ke 60 jurnal sebab ada 2 orang berhenti, tu yang sempat lambat siapkan rekonsiliasi bank.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "Apa yang membuat beban kerja anda terasa terlalu banyak minggu ini?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 574,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"ask\",\"ask_hr\":false,\"goals_met\":[],\"question\":\"Apa yang membuat beban kerja anda terasa terlalu banyak minggu ini?\",\"serious_concern\":false,\"stop_reason\":\"none\"}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "ask",
+    "question": "Bagaimana beban kerja yang tinggi itu mempengaruhi kerja anda?",
+    "goals_met": [
+     "what_happened"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 861,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"Bagaimana beban kerja yang tinggi itu mempengaruhi kerja anda?\",\n  \"goals_met\": [\"what_happened\"],\n  \"ask_hr\": false,\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 2,
+   "value": {
+    "action": "ask",
+    "question": "Apakah bantuan atau perubahan yang boleh buat beban kerja menjadi lebih mudah?",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 801,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"ask_hr\": false,\n  \"goals_met\": [\"what_happened\", \"effect_on_work\"],\n  \"question\": \"Apakah bantuan atau perubahan yang boleh buat beban kerja menjadi lebih mudah?\",\n  \"serious_concern\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "WORKLOAD"
+   ],
+   "evidence_quote": "Minggu ke-6 kat R2R ni, masa tutup akaun saya balik pukul 11 malam 5 hari berturut-turut. Kuota naik dari 40 ke 60 jurnal sebab ada 2 orang berhenti, tu yang sempat lambat siapkan rekonsiliasi bank.",
+   "summary": "Dia melaporkan beban kerja meningkat kerana kuota jurnal naik dan harus bekerja lewat malam.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 890,
+    "ok": true,
+    "error": "",
+    "raw": "{\n  \"drivers\": [\"WORKLOAD\"],\n  \"evidence_quote\": \"Minggu ke-6 kat R2R ni, masa tutup akaun saya balik pukul 11 malam 5 hari berturut-turut. Kuota naik dari 40 ke 60 jurnal sebab ada 2 orang berhenti, tu yang sempat lambat siapkan rekonsiliasi bank.\",\n  \"summary\": \"Dia melaporkan beban kerja meningkat kerana kuota jurnal naik dan harus bekerja lewat malam.\",\n  \"serious_concern\": false\n}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}

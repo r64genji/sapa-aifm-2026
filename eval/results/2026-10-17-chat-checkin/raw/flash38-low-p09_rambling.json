@@ -1,0 +1,123 @@
+{
+ "persona": "p09_rambling",
+ "label": "Long rambling reply",
+ "expect": "normal",
+ "language": "en",
+ "taps": [
+  {
+   "driver": "ROLE_CLARITY",
+   "score": 2,
+   "answer": "Unclear",
+   "question": "How clear are you on what is expected of you this week?"
+  },
+  {
+   "driver": "MANAGER_SUPPORT",
+   "score": 2,
+   "answer": "Little support",
+   "question": "How supported do you feel by your manager this week?"
+  },
+  {
+   "driver": "BELONGING",
+   "score": 3,
+   "answer": "Somewhat part",
+   "question": "How much do you feel part of the team this week?"
+  },
+  {
+   "driver": "ONBOARDING_TRAINING",
+   "score": 2,
+   "answer": "Poorly prepared",
+   "question": "How well has your training prepared you for your work this week?"
+  },
+  {
+   "driver": "WORKLOAD",
+   "score": 2,
+   "answer": "Heavy",
+   "question": "How manageable is your workload this week?"
+  }
+ ],
+ "focus": "ROLE_CLARITY",
+ "stop": "ai_done:goals_met",
+ "questions": 1,
+ "conversation": [
+  {
+   "from": "bot",
+   "text": "You said expectations are unclear. What is happening?",
+   "kind": "question"
+  },
+  {
+   "from": "new_hire",
+   "text": "Wah, being a new hire in AP here in week 3 is quite an experience lah, especially when my morning bus from Butterworth also can tio late this week, then walking into the office the aircon damn freezing cold like Siberia already! Plus my SAP access came quite late, so right now rushing to meet the very high quota is quite shag also, especially when my team lead is always stuck in endless calls. But never mind lah, at least the canteen nasi lemak is nice and comforting during lunch. The main real issue actually is that nobody gave me the vendor master rules yet, so many of my invoices keep getting rejected and I have to redo them all over again. Hopefully someone can brief me properly soon so I can clear my queue smoothly, but other than that, everything is still quite okay lah!"
+  },
+  {
+   "from": "bot",
+   "text": "Here is what I will tell HR: The new hire faced delayed system access, high work quotas, unavailable leadership, and missing vendor rules causing repeated invoice rejections. [ROLE_CLARITY, MANAGER_SUPPORT, ONBOARDING_TRAINING, WORKLOAD] \"The main real issue actually is that nobody gave me the vendor master rules yet, so many of my invoices keep getting rejected and I have to redo them all over again.\"",
+   "kind": "summary"
+  }
+ ],
+ "turns": [
+  {
+   "after_reply": 0,
+   "value": {
+    "action": "ask",
+    "question": "You said expectations are unclear. What is happening?",
+    "goals_met": [],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "none"
+   },
+   "attempts": [
+    {
+     "ms": 3883,
+     "ok": true,
+     "error": "",
+     "raw": "{\n  \"action\": \"ask\",\n  \"question\": \"You said expectations are unclear. What is happening?\",\n  \"goals_met\": [],\n  \"serious_concern\": false,\n  \"ask_hr\": false,\n  \"stop_reason\": \"none\"\n}"
+    }
+   ]
+  },
+  {
+   "after_reply": 1,
+   "value": {
+    "action": "done",
+    "question": "",
+    "goals_met": [
+     "what_happened",
+     "effect_on_work",
+     "what_would_help"
+    ],
+    "serious_concern": false,
+    "ask_hr": false,
+    "stop_reason": "goals_met"
+   },
+   "attempts": [
+    {
+     "ms": 5014,
+     "ok": true,
+     "error": "",
+     "raw": "{\"action\":\"done\",\"question\":\"\",\"goals_met\":[\"what_happened\",\"effect_on_work\",\"what_would_help\"],\"serious_concern\":false,\"ask_hr\":false,\"stop_reason\":\"goals_met\"}"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "value": {
+   "drivers": [
+    "ROLE_CLARITY",
+    "MANAGER_SUPPORT",
+    "ONBOARDING_TRAINING",
+    "WORKLOAD"
+   ],
+   "evidence_quote": "The main real issue actually is that nobody gave me the vendor master rules yet, so many of my invoices keep getting rejected and I have to redo them all over again.",
+   "summary": "The new hire faced delayed system access, high work quotas, unavailable leadership, and missing vendor rules causing repeated invoice rejections.",
+   "serious_concern": false
+  },
+  "attempts": [
+   {
+    "ms": 4961,
+    "ok": true,
+    "error": "",
+    "raw": "{\"drivers\":[\"ROLE_CLARITY\",\"MANAGER_SUPPORT\",\"ONBOARDING_TRAINING\",\"WORKLOAD\"],\"evidence_quote\":\"The main real issue actually is that nobody gave me the vendor master rules yet, so many of my invoices keep getting rejected and I have to redo them all over again.\",\"summary\":\"The new hire faced delayed system access, high work quotas, unavailable leadership, and missing vendor rules causing repeated invoice rejections.\",\"serious_concern\":false}"
+   }
+  ]
+ },
+ "quoteHolds": true
+}
