@@ -41,14 +41,14 @@ export type ReplyRowProps = {
   whole?: boolean;
 };
 
-export function TranslatedQuote({ id, language, text, evidence }: { id: string; language?: string; text: string; evidence?: string | null }) {
+export function TranslatedQuote({ id, language, text, evidence, size }: { id: string; language?: string; text: string; evidence?: string | null; size?: "md" | "lg" }) {
   const [original, setOriginal] = useState(false);
   const { data } = useApi<{ translation?: { label: string; text: string } | null }>(language && language !== "en" ? `/api/hr/replies/${id}/translation` : null, 0);
   const translated = data?.translation;
-  if (!translated) return <Quote text={text} evidence={evidence} />;
+  if (!translated) return <Quote text={text} evidence={evidence} size={size} />;
   return (
     <div className="flex flex-col gap-1.5">
-      {original ? <Quote text={text} evidence={evidence} /> : <Quote text={translated.text} />}
+      {original ? <Quote text={text} evidence={evidence} size={size} /> : <Quote text={translated.text} size={size} />}
       <span className="flex flex-wrap items-center gap-2">
         {original ? null : <AiMark label={translated.label} />}
         <button type="button" className="sp-link text-[13px]" aria-pressed={original} onClick={() => setOriginal(!original)}>
@@ -156,7 +156,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   return (
     <Dialog title="Pick the right label" onClose={onClose}>
       <div className="rounded-lg p-3" style={{ background: "var(--surface-sunken)" }}>
-        <Quote text={item.text ?? ""} />
+        <TranslatedQuote id={item.id} language={item.language} text={item.text ?? ""} />
       </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {Object.entries(DRIVERS)
