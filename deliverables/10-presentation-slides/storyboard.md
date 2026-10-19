@@ -6,7 +6,7 @@
 - The company and its people are fictional. Say so once on slide 2 and once at the demo, then do not apologise. Real research carries its source in small text.
 - No invented quotes or results. Slide 8 uses real test numbers only. Interview slots stay empty until real interviews fill them.
 - 10 slides, no more. The guide recommends 10 or fewer and the pitching trainer said "maximum 10" ([docs/07](../../docs/07-official-rules-and-requirements.md)). Extra material goes in the appendix for Q&A.
-- No pilot, no ask, no fundraising. The ending is impact for HR and the roadmap.
+- One small ask (agreed 19 Oct 2026), on slide 10 only: a pilot with one real team. No fundraising, no ask for money or a vote. The ending is impact for HR, the roadmap, then the ask.
 - Timing: slides about 5 min, demo 2 min, Q&A 2 min.
 
 ## The story
@@ -78,6 +78,7 @@ Not saving everyone keeps the story believable.
   - Sapa costs RM18,000 a year. One early leaver costs about RM9,700 in hard costs only. Two kept a year pays for it. The Group's 85% goal needs about 24 more kept a year.
 - **Roadmap:** WhatsApp (Arif) → job-match check and agency view (Nurul) → check-ins at 6 months, 1 year and beyond for every employee → private chat with HR → worker-voice export for ESG reports.
   - Source for the all-staff step: HR practitioner, 19 Oct 2026: "retention should be an ongoing exercise for every employee, regardless of seniority."
+- **The ask (one sentence, just before the last line):** "Give us 15 minutes with your HR lead. We want to test Sapa with one real team." Say what the judge gains in the same breath: an early look at problems before people resign. Pilot only; Sapa stays a demo until then.
 - **Last line:** "Same 17 people. Same Day 14. This time, someone was listening."
 - **Sources:** cost per leaver and break-even in [docs/09](../../docs/09-client-story.md).
 
