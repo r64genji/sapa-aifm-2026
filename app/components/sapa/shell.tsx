@@ -37,7 +37,7 @@ export function Shell({ children }: { children: ReactNode }) {
   const me = useApi<Me>("/api/hr/me", 60000);
   const queue = useApi<{ escalate: boolean | null; status: string | null }[]>(me.data ? "/api/hr/queue" : null);
 
-  if (me.error instanceof ApiError && me.error.status !== 401) {
+  if (!me.data && me.error instanceof ApiError && me.error.status < 500 && me.error.status !== 401) {
     return (
       <div className="flex min-h-screen items-center justify-center p-6">
         <div className="sp-card flex max-w-sm flex-col items-start gap-3 p-6">
