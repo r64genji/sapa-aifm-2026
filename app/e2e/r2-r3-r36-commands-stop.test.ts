@@ -143,23 +143,6 @@ test("R36: /skip closes the open check-in", async () => {
   await freezeClock("2026-10-14T01:00:00.000Z");
 });
 
-test("R36, R25: /privacy shows the visibility buttons and the choice is saved and audited", async () => {
-  const chat = 5550000022;
-  await activeHire(chat, "English", en.agree);
-  await say(chat, "/privacy");
-  assert.equal((await sentTo(chat)).at(-1)!.text, en.visibilityPrompt);
-  await tap(chat, en.visibilityHrManager);
-  assert.ok((await texts(chat)).includes(`You tapped "${en.visibilityHrManager}". ${en.visibilitySaved}`));
-  const { id } = await personRow(chat);
-  const { data: consents } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", id).order("granted_at");
-  assert.deepEqual(
-    consents!.map((row) => [row.scope, row.withdrawn_at !== null]),
-    [["hr_only", true], ["share_with_manager", false]],
-  );
-  const { data: audits } = await db.from("audit_log").select("actor, action").eq("target", id).order("at");
-  assert.ok(audits!.some((row) => row.actor === "new_hire" && row.action === "change_consent_scope"));
-});
-
 test("R36: /bahasa offers the languages and switching changes the person's language and menu", async () => {
   const chat = 5550000023;
   await activeHire(chat, "English", en.agree);

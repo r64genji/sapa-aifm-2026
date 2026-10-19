@@ -46,8 +46,7 @@ before(async () => {
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
   for (const chat of [ticked, unticked, company, safety, replier, stopper, control]) {
     await joined(chat, "2026-10-02");
-    await tap(chat, en.visibilityHrOnly);
-    await tap(chat, chat === unticked || chat === control ? en.exitNo : en.exitYes);
+    await db.from("people").update({ exit_ok: !(chat === unticked || chat === control) }).eq("telegram_chat_id", chat);
     const { data } = await db.from("people").select("code_name").eq("telegram_chat_id", chat).single();
     names[chat] = data!.code_name;
   }
@@ -128,12 +127,11 @@ test("R49, R13: an exit answer goes through the safety check", async () => {
   assert.notEqual((await texts(safety)).at(-1), en.exit.thanks);
 });
 
-test("R49: the exit answer of a hire who shared with the manager never reaches the manager", async () => {
+test("R49: the exit answer of a seeded resigned hire is stored as exit rows", async () => {
   const sharer = 5550000708;
   await freezeClock("2026-10-15T15:00:00.000Z");
   await joined(sharer, "2026-10-02");
-  await tap(sharer, en.visibilityHrManager);
-  await tap(sharer, en.exitYes);
+  await db.from("people").update({ exit_ok: true }).eq("telegram_chat_id", sharer);
   const { data } = await db.from("people").select("code_name").eq("telegram_chat_id", sharer).single();
   names[sharer] = data!.code_name;
   await freezeClock("2026-10-16T02:00:00.000Z");
@@ -155,13 +153,6 @@ test("R49: the exit answer of a hire who shared with the manager never reaches t
   ]);
   await say(sharer, "I left because of too many hours");
   assert.deepEqual((await exitRows(sharer)).map((r) => r.question_id), ["exit.WORKLOAD", "exit_open"]);
-
-  const res = await fetch(`${appUrl}/api/manager/replies`, { headers: { authorization: `Bearer ${await hrToken("raj@contoh.test")}` } });
-  assert.equal(res.status, 200);
-  assert.deepEqual(
-    ((await res.json()) as { text: string }[]).map(({ text }) => ({ text })),
-    [{ text: "tak tahu mana nak buat dulu" }],
-  );
 });
 
 test("R41: an offer to a hire who left shows the same generic reason as for one who stopped", async () => {

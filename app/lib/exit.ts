@@ -9,45 +9,12 @@ import { detect } from "@/lib/safety";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export function exitTickPrompt(language: Language): Reply {
-  const pack = packs[language];
-  return {
-    text: pack.exitPrompt,
-    buttons: [
-      { label: pack.exitYes, id: "exitok", value: "yes" },
-      { label: pack.exitNo, id: "exitok", value: "no" },
-    ],
-  };
-}
-
 export function exitQuestion(language: Language): Reply {
   const { exit } = packs[language];
   return {
     text: exit.question,
     buttons: Object.entries(exit.drivers).map(([value, label]) => ({ label, id: "exit", value })),
   };
-}
-
-export async function needsExitTick(person: Person) {
-  const { data, error } = await createAdminClient()
-    .from("people")
-    .select("exit_ok")
-    .eq("id", person.id)
-    .single();
-  if (error) throw error;
-  return data.exit_ok === null;
-}
-
-export async function setExitTick(person: Person, value: string): Promise<Reply[] | null> {
-  if (value !== "yes" && value !== "no") return null;
-  const { data, error } = await createAdminClient()
-    .from("people")
-    .update({ exit_ok: value === "yes" })
-    .eq("id", person.id)
-    .is("exit_ok", null)
-    .select("id");
-  if (error) throw error;
-  return data.length === 1 ? [{ text: packs[person.language].exitSaved }] : null;
 }
 
 export async function markLeft(organisationId: string, actor: string, codeName: string, reason: string) {

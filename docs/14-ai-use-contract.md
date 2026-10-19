@@ -102,7 +102,6 @@ These work even when the AI is down (R2):
 
 - Skip a check-in, or stop all check-ins (R3).
 - Delete everything (R4).
-- Choose who may read their words: HR only (the default), or HR and their manager.
 - See the AI's reading of their own replies and mark it wrong. A challenged label leaves the counts until HR reviews it (R40).
 - Ask for a person instead of the bot.
 

@@ -122,27 +122,3 @@ export async function managerSnapshots(accessToken: string) {
         },
   );
 }
-
-export async function sharedReplies(managerId: string, actor: string) {
-  const db = createAdminClient();
-  const { data, error } = await db
-    .from("responses")
-    .select("id, created_at, text_encrypted, ai_tags!inner(escalate), people!inner(team, manager_id, consents!inner(scope, withdrawn_at))")
-    .eq("kind", "checkin")
-    .not("ai_tags.escalate", "is", true)
-    .eq("people.manager_id", managerId)
-    .eq("people.consents.scope", "share_with_manager")
-    .is("people.consents.withdrawn_at", null)
-    .not("text_encrypted", "is", null)
-    .neq("kind", "exit")
-    .order("created_at");
-  if (error) throw error;
-  const visible = data as unknown as { id: string; created_at: string; text_encrypted: string; people: { team: string | null } }[];
-  for (const row of visible) await audit(actor, "manager_read_reply_text", row.id);
-  return visible.map((row) => ({
-    id: row.id,
-    team: row.people.team,
-    text: decrypt(row.text_encrypted),
-    created_at: row.created_at,
-  }));
-}

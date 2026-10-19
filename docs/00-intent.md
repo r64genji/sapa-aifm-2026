@@ -32,7 +32,7 @@ Agreed 16 Oct 2026. Raised to "anonymous to the company" on 17 Oct 2026.
 - HR gives one join link (QR code) per team in each intake. There is no personal invite link. HR hands the team QRs out, for example on each team's Day 1 welcome sheet. A team lead never hands them out, because the lead would see who joins.
 - The team QR sets the new hire's team. The new hire does not pick a team in the bot.
 - Sapa never asks for or keeps a new hire's real name or Telegram name.
-- HR and managers see what a new hire wrote, never who wrote it. HR sees no code name and no ID that links one person's replies. A reply shows only its team and day, for example "A new hire · AP Asia · Day 14".
+- HR sees what a new hire wrote, never who wrote it. A manager never sees what a new hire wrote, only weekly counts. HR sees no code name and no ID that links one person's replies. A reply shows only its team and day, for example "A new hire · AP Asia · Day 14".
 - Phone numbers, emails and ID numbers in a reply are masked in what HR sees, not only in what the AI sees.
 - A fix goes to a team, several teams or an intake, never to one person.
 - Sapa never asks for a name or phone, not even on a serious concern.

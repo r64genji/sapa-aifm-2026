@@ -247,7 +247,6 @@ test("R41: only an HR admin can send a hire's data, only to that hire, only with
   assert.ok(!body.includes(reply) && !body.includes(summary));
   const sent = (await texts(exported)).slice(count).join("\n");
   assert.ok(sent.startsWith(en.export.intro));
-  assert.ok(sent.includes(`${en.export.visibility} ${en.visibilityHrOnly}`));
   assert.ok(sent.includes(reply));
   assert.ok(sent.includes(`${en.export.question} ${question}`));
   const all = await telegramMessagesOutside(exported);

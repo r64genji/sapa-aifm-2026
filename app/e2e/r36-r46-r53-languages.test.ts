@@ -54,7 +54,7 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
   const menu = (await telegramCalls("setMyCommands")).find((m: any) => m.scope.chat_id === chat) as any;
   assert.deepEqual(
     menu.commands.map((c: any) => c.command),
-    ["start", "ask", "say", "skip", "privacy", "language", "stop", "delete", "myanswers", "help"],
+    ["start", "ask", "say", "skip", "language", "stop", "delete", "myanswers", "help"],
   );
   assert.deepEqual(
     menu.commands.map((c: any) => c.description),
@@ -63,7 +63,7 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
   assert.notEqual(menu.commands[0].description, en.commands.start.description);
 
   await tap(chat, zh.agree);
-  assert.equal((await texts()).at(-1), `你选了“${zh.agree}”。 ${zh.visibilityPrompt}`);
+  assert.equal((await texts()).at(-1), `你选了“${zh.agree}”。 ${zh.help}`);
 });
 
 test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and nothing of the translation is stored", async () => {

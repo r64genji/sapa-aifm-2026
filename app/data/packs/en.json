@@ -3,7 +3,7 @@
   "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join.",
   "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
   "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you. Send /whatican to see what you can see in Sapa.",
-  "whatICanSee": "What I can see: the words of a new hire, only if they chose HR and my manager, and never a serious concern. A weekly count of what your team's new hires named, shown as fewer than 3 when the count is small. Sapa never ranks teams or managers. HR sees your team's count only when a problem is more common there than in the company, so help reaches you. You never see other teams.",
+  "whatICanSee": "What I can see: a weekly count of what your team's new hires named, shown as fewer than 3 when the count is small. You never see what new hires write. Sapa never ranks teams or managers. HR sees your team's count only when a problem is more common there than in the company, so help reaches you. You never see other teams.",
   "action": {
     "alert": "New action from HR: {title}",
     "due": "Due {date}.",
@@ -39,16 +39,12 @@
   },
   "languagePrompt": "Please choose your language.",
   "typeInstead": "Sapa can't handle voice notes, pictures or files yet. Please type your message instead.",
-  "consentVersion": "en-2026-10-16",
-  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. You choose who can read your answers, and you can type STOP at any time to end everything. HR cannot see who you are unless you choose to tell them. Sapa keeps your chat ID only to send you questions, and Telegram can see this chat. Do you agree to take part?",
+  "consentVersion": "en-2026-10-19",
+  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. Only HR can read your answers, never your manager. You can type STOP at any time to end everything. HR cannot see who you are unless you choose to tell them. Sapa keeps your chat ID only to send you questions, and Telegram can see this chat. Do you agree to take part?",
   "agree": "I agree",
   "decline": "No thanks",
   "declined": "No problem. You won't get any more messages from Sapa.",
-  "visibilityPrompt": "Thank you. Who may read your answers? HR only is the default.",
   "teamPrompt": "Which team are you in?",
-  "visibilityHrOnly": "HR only",
-  "visibilityHrManager": "HR and my manager",
-  "visibilitySaved": "Saved. You can change this later with /privacy.",
   "tapped": "You tapped \"{label}\".",
   "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
@@ -58,7 +54,6 @@
     "ask": { "name": "ask", "description": "Ask a question about the company" },
     "say": { "name": "say", "description": "Help me say it to my lead" },
     "skip": { "name": "skip", "description": "Skip this check-in" },
-    "privacy": { "name": "privacy", "description": "See who can read your answers" },
     "language": { "name": "language", "description": "Change your language" },
     "stop": { "name": "stop", "description": "Stop all messages" },
     "delete": { "name": "delete", "description": "Delete your answers" },
@@ -79,7 +74,7 @@
     "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },
   "checkin": {
-    "intro": "Hi, it's time for your Sapa check-in. A few quick taps so HR can see if things get better for your team.\nSapa does not know your name. Your company sees what you write, never who wrote it. Leave out names and details if you want to stay anonymous.",
+    "intro": "Hi, it's time for your Sapa check-in.\nDisclaimer: Sapa does not know your name. Your company sees what you write, never who wrote it. Leave out names if you want to stay anonymous.",
     "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",
     "thanks": "Thank you, your answers are saved.",
     "questions": [
@@ -306,10 +301,6 @@
       "wage_legal": ["salary not paid", "not paid my salary", "no salary for", "haven't been paid"]
     }
   },
-  "exitPrompt": "If you resign one day, may HR ask you one short question about why?",
-  "exitYes": "Yes, that's fine",
-  "exitNo": "No, I would rather not",
-  "exitSaved": "Saved.",
   "end": "Your check-ins have ended. Your answers are kept until {date}. Type DELETE to remove them now.",
   "exit": {
     "question": "One last question, if you are willing: what was the main reason you left?",
@@ -347,7 +338,6 @@
   },
   "export": {
     "intro": "HR asked Sapa to send you the data Sapa holds about you. Here it is.",
-    "visibility": "Who may read your answers:",
     "question": "Your question:",
     "answer": "Answer sent:"
   },

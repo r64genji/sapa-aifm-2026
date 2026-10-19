@@ -177,12 +177,6 @@ export async function exportPerson(organisationId: string, actor: string, codeNa
   const language = person.language;
   const pack = packs[language];
   const zone = await timeZone(organisationId);
-  const { data: consents, error: consentError } = await db
-    .from("consents")
-    .select("scope")
-    .eq("person_id", person.id)
-    .is("withdrawn_at", null);
-  if (consentError) throw consentError;
   const { data: questions, error: questionError } = await db
     .from("asked_questions")
     .select("text_encrypted, answer_encrypted, created_at")
@@ -190,9 +184,6 @@ export async function exportPerson(organisationId: string, actor: string, codeNa
     .order("created_at");
   if (questionError) throw questionError;
   const parts = [pack.export.intro];
-  for (const consent of consents) {
-    parts.push(`${pack.export.visibility} ${consent.scope === "share_with_manager" ? pack.visibilityHrManager : pack.visibilityHrOnly}`);
-  }
   for (const row of await stored(person.id)) {
     if (row.scale_value !== null) {
       const question = pack.checkin.questions.find((q) => q.id === row.question_id);

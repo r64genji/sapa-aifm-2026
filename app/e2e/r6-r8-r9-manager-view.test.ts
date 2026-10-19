@@ -69,14 +69,10 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
-  await tap(live, en.visibilityHrManager);
   await joined(shared, "2026-10-02");
-  await tap(shared, en.visibilityHrManager);
   await joined(hrOnly, "2026-10-02");
   await joined(escalated, "2026-10-02");
-  await tap(escalated, en.visibilityHrManager);
   await joined(waiting, "2026-10-02");
-  await tap(waiting, en.visibilityHrManager);
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
 });
 
@@ -90,30 +86,15 @@ test("R9: the supervisor sees only the last weekly snapshot, with counts under 3
   assert.equal((await fetch(`${appUrl}/api/manager/snapshots`)).status, 401);
 });
 
-test("R6, R7: the supervisor reads reply text only from hires who chose share with manager, never an escalated one", async () => {
+test("R6, R7: the supervisor can never read reply text, not even from a hire who tapped every button, and an escalated reply stays hidden", async () => {
   await reply(live, sharedText, {});
   await reply(shared, "My supervisor never says which job matters most", { evidence_quote: "never says which job matters most" });
   await reply(hrOnly, hrOnlyText, { evidence_quote: "Nobody told me who to ask" });
   await reply(escalated, escalatedText, { evidence_quote: escalatedText });
 
-  const res = await asManager("/api/manager/replies", rajToken);
-  assert.equal(res.status, 200);
-  const replies = (await res.json()) as { team: string; text: string }[];
-  assert.deepEqual(
-    replies.map(({ team, text }) => ({ team, text })),
-    [
-      { team: "Accounts Payable Asia", text: sharedText },
-      { team: "Accounts Payable Asia", text: "My supervisor never says which job matters most" },
-    ],
-  );
-  assert.ok(replies.every((r) => !("author" in r)));
-  assert.equal((await asManager("/api/manager/replies", await hrToken())).status, 401);
-});
-
-test("R6: a hire who changes to HR only takes their words away from the supervisor at once", async () => {
-  await tap(shared, en.visibilityHrOnly);
-  const replies = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
-  assert.deepEqual(replies.map((r) => r.text), [sharedText]);
+  assert.equal((await asManager("/api/manager/replies", rajToken)).status, 404);
+  const snapshots = JSON.stringify(await (await asManager("/api/manager/snapshots", rajToken)).json());
+  for (const text of [sharedText, hrOnlyText, escalatedText]) assert.ok(!snapshots.includes(text));
 });
 
 test("R9: the snapshot does not move when HR confirms a label, and the nightly job takes it only on the snapshot day", async () => {
@@ -196,7 +177,7 @@ async function lastTextTo(chat: number) {
   return String((await sentTo(chat)).at(-1)?.text);
 }
 
-test("R7, R49: the supervisor never reads a crisis reply while it is being checked, nor a sharing hire's unprompted text", async () => {
+test("R7: a crisis reply is escalated by keyword while the model is down", async () => {
   await tapScore(waiting, 4);
   await tapScore(waiting, 3);
   await tapScore(waiting, 5);
@@ -205,8 +186,6 @@ test("R7, R49: the supervisor never reads a crisis reply while it is being check
   const crisisText = "I can't take it anymore, I want to kill myself";
   const pending = postUpdate(update("text", { chat_id: waiting, text: crisisText }));
   await settle(1000);
-  const during = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
-  assert.ok(!during.some((r) => r.text === crisisText));
   await pending;
   for (let i = 0; i < 60 && !(await lastTextTo(waiting)).includes(en.safety.message); i++) await settle(500);
 
@@ -219,16 +198,10 @@ test("R7, R49: the supervisor never reads a crisis reply while it is being check
   ]);
   await say(escalated, "The canteen queue is long but the team is kind");
   assert.equal(await lastTextTo(escalated), en.checkin.thanks);
-  const after = (await (await asManager("/api/manager/replies", rajToken)).json()) as { text: string }[];
-  assert.deepEqual(after.map((r) => r.text), [sharedText]);
 });
 
 test("R6, R9: HR removes a manager and the supervisor's still-valid session is refused at once, by the API and by the tables", async () => {
-  const before = (await (await asManager("/api/manager/replies", rajToken)).json()) as unknown[];
-  assert.equal(before.length, 1);
-
   assert.equal((await hrRequest(`/api/hr/managers/${raj}/revoke`, "POST")).status, 200);
-  assert.equal((await asManager("/api/manager/replies", rajToken)).status, 401);
   assert.equal((await asManager("/api/manager/snapshots", rajToken)).status, 401);
   const { data } = await (await sessionClient("raj@contoh.test")).from("manager_snapshots").select("team");
   assert.deepEqual(data, []);

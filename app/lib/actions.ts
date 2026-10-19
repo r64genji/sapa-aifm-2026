@@ -58,17 +58,6 @@ async function organisation(id: string) {
   return data;
 }
 
-async function isSharing(personId: string) {
-  const { data, error } = await createAdminClient()
-    .from("consents")
-    .select("id")
-    .eq("person_id", personId)
-    .eq("scope", "share_with_manager")
-    .is("withdrawn_at", null);
-  if (error) throw error;
-  return data.length > 0;
-}
-
 async function loadAction(organisationId: string, id: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
@@ -80,27 +69,8 @@ async function loadAction(organisationId: string, id: string) {
   return data as Action | null;
 }
 
-async function replyAuthor(responseId: string) {
-  const { data, error } = await createAdminClient()
-    .from("responses")
-    .select("person_id")
-    .eq("id", responseId)
-    .maybeSingle();
-  if (error) throw error;
-  return data?.person_id as string | undefined;
-}
-
-async function teamOf(personId: string) {
-  const { data, error } = await createAdminClient().from("people").select("team").eq("id", personId).single();
-  if (error) throw error;
-  return data.team as string | null;
-}
-
 async function isHeld(action: Action) {
-  if (action.source === "reply") {
-    const author = action.source_response_id ? await replyAuthor(action.source_response_id) : undefined;
-    return !author || !(await isSharing(author));
-  }
+  if (action.source === "reply") return true;
   const { data, error } = await createAdminClient().rpc("action_held", {
     org: action.organisation_id,
     drv: action.driver,
@@ -118,7 +88,6 @@ export async function draftAction(
 ): Promise<{ id: string } | Failure> {
   const db = createAdminClient();
   if (!DRIVERS.includes(body.driver)) return { error: "Unknown driver", code: 422 };
-  let replyTeam: string | null = null;
   if (body.response_id) {
     const { data: tag, error } = await db
       .from("ai_tags")
@@ -129,15 +98,11 @@ export async function draftAction(
     if (error) throw error;
     if (!tag) return { error: "Not found", code: 404 };
     if (!tag.drivers.includes(body.driver)) return { error: "The reply does not carry this driver", code: 422 };
-    const author = await replyAuthor(body.response_id);
-    if (!author || !(await isSharing(author))) {
-      return {
-        error: "This reply is from someone who did not share it with a manager. Start the action from the theme card.",
-        code: 409,
-        theme_card: THEME_CARD,
-      };
-    }
-    replyTeam = await teamOf(author);
+    return {
+      error: "A reply is never shared with a manager. Start the action from the theme card.",
+      code: 409,
+      theme_card: THEME_CARD,
+    };
   }
   const [entry] = await libraryWithEvidence(organisationId, body.driver);
   if (!entry) return { error: "The action library has no entry for this driver", code: 409 };
@@ -151,7 +116,6 @@ export async function draftAction(
       draft_reason: "",
       source: body.response_id ? "reply" : "theme",
       source_response_id: body.response_id ?? null,
-      ...(replyTeam && { scope_type: "team", scope_team: replyTeam }),
       title: entry.title,
       steps: entry.text,
       created_by: actor,

@@ -197,32 +197,6 @@ export async function recordConsent(person: Person, textVersion: string) {
   await audit("new_hire", "grant_consent", person.id);
 }
 
-export async function setScope(person: Person, scope: "hr_only" | "share_with_manager", textVersion: string) {
-  const db = createAdminClient();
-  const at = (await now()).toISOString();
-  const { data, error } = await db
-    .from("consents")
-    .select("id, scope")
-    .eq("person_id", person.id)
-    .is("withdrawn_at", null);
-  if (error) throw error;
-  if (data.some((row) => row.scope === scope)) return;
-  const { error: withdrawError } = await db
-    .from("consents")
-    .update({ withdrawn_at: at })
-    .in("id", data.map((row) => row.id));
-  if (withdrawError) throw withdrawError;
-  const { error: insertError } = await db.from("consents").insert({
-    organisation_id: person.organisation_id,
-    person_id: person.id,
-    text_version: textVersion,
-    scope,
-    granted_at: at,
-  });
-  if (insertError) throw insertError;
-  await audit("new_hire", "change_consent_scope", person.id);
-}
-
 export async function passPackTest(organisationId: string, language: string, resultsFile: string) {
   const { data, error } = await createAdminClient()
     .from("language_packs")

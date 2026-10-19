@@ -30,7 +30,7 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.visibilityPrompt}`]);
+  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
@@ -45,13 +45,6 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
       scope: { type: "chat", chat_id: chat },
     },
   ]);
-
-  await tap(chat, en.visibilityHrManager);
-  const { data: after } = await db.from("consents").select("scope, withdrawn_at").eq("person_id", (await chatPerson(chat)).id).order("granted_at");
-  assert.deepEqual(
-    after!.map((c) => [c.scope, c.withdrawn_at !== null]),
-    [["hr_only", true], ["share_with_manager", false]],
-  );
 });
 
 test("R36: a hire who picks Bahasa Malaysia gets the BM consent text and a BM menu", async () => {
@@ -80,7 +73,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.visibilityPrompt}`]);
+    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }

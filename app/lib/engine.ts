@@ -1,6 +1,6 @@
 import { managerChat } from "@/lib/actions";
 import { checkinButton, checkinText, skipCheckin } from "@/lib/checkin";
-import { exitButton, exitText, exitTickPrompt, needsExitTick, setExitTick } from "@/lib/exit";
+import { exitButton, exitText } from "@/lib/exit";
 import { answerOffer } from "@/lib/offers";
 import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy";
 import { ask } from "@/lib/qa";
@@ -12,7 +12,6 @@ import {
   recordConsent,
   redeemInvite,
   setLanguage,
-  setScope,
   stopPerson,
   type Person,
 } from "@/lib/directory";
@@ -53,17 +52,6 @@ const languageReply = (languages: Language[]): Reply => ({
   text: languages.map((language) => packs[language].languagePrompt).join("\n"),
   buttons: languages.map((language) => ({ label: packs[language].name, id: "lang", value: language })),
 });
-
-const visibilityReply = (language: Language): Reply => {
-  const pack = packs[language];
-  return {
-    text: pack.visibilityPrompt,
-    buttons: [
-      { label: pack.visibilityHrOnly, id: "visibility", value: "hr_only" },
-      { label: pack.visibilityHrManager, id: "visibility", value: "share_with_manager" },
-    ],
-  };
-};
 
 async function prompt(person: Person, languages: Language[]): Promise<Reply[]> {
   const pack = packs[person.language];
@@ -109,21 +97,8 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      return { replies: [visibilityReply(person.language)] };
+      return { replies: [{ text: pack.help }] };
     }
-  }
-  if (
-    id === "visibility" &&
-    person.state === "active" &&
-    (value === "hr_only" || value === "share_with_manager")
-  ) {
-    await setScope(person, value, pack.consentVersion);
-    const saved = { text: pack.visibilitySaved };
-    return { replies: (await needsExitTick(person)) ? [saved, exitTickPrompt(person.language)] : [saved] };
-  }
-  if (id === "exitok" && person.state === "active") {
-    const replies = await setExitTick(person, value);
-    if (replies) return { replies };
   }
   if (id === "offer" && person.state === "active" && (value === "yes" || value === "no_thanks")) {
     const replies = await answerOffer(person, value);
@@ -190,7 +165,6 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "active" && command === "skip") {
     return { replies: (await skipCheckin(person)) ? [{ text: packs[person.language].skipped }] : await prompt(person, languages) };
   }
-  if (person.state === "active" && command === "privacy") return { replies: [visibilityReply(person.language)] };
   if (person.state === "active" && command === "language") return { replies: [languageReply(languages)] };
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
     return { replies: [{ text: packs[person.language].invalidInvite }] };

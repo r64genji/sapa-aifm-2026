@@ -45,7 +45,6 @@ async function run() {
   await link(chat, await resetDemo());
   await tapData(chat, button("lang", "en"));
   await tapData(chat, button("consent", "yes"));
-  await tapData(chat, button("visibility", "share_with_manager"));
   await until("the live hire to be active", async () => {
     const { data } = await db.from("people").select("id, state").eq("telegram_chat_id", chat).maybeSingle();
     livePerson = data?.id ?? "";

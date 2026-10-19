@@ -86,7 +86,6 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   rajToken = await hrToken("raj@contoh.test");
   await joined(sharer, "2026-10-02");
-  await tap(sharer, en.visibilityHrManager);
   await joined(hrOnly, "2026-10-02");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await reply(sharer, sharerText);
@@ -104,22 +103,17 @@ before(async () => {
   await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
 });
 
-test("R10: Draft action on a reply from someone who chose HR only is blocked and points to the theme card; a shared reply can be drafted", async () => {
-  const blocked = await draft("Never used", "ROLE_CLARITY", 1, await replyId(hrOnlyText));
-  assert.equal(blocked.status, 409);
-  assert.equal(blocked.body.theme_card, themeCard);
-  assert.match(blocked.body.error, /did not share/);
+test("R10: Draft action on any reply is blocked and points to the theme card", async () => {
+  for (const text of [hrOnlyText, sharerText]) {
+    const blocked = await draft("Never used", "ROLE_CLARITY", 1, await replyId(text));
+    assert.equal(blocked.status, 409);
+    assert.equal(blocked.body.theme_card, themeCard);
+    assert.match(blocked.body.error, /never shared with a manager/);
+  }
   assert.deepEqual(await board(), []);
-
-  const allowed = await draft("Reply action", "ROLE_CLARITY", 1, await replyId(sharerText));
-  assert.equal(allowed.status, 201);
-  const [row] = await board();
-  assert.equal(row.library_entry_id, library(1));
-  assert.equal(row.status, "draft");
 });
 
-test("R10, R41: scope one person is always refused, and an action drafted from a reply starts scoped to that reply's team", async () => {
-  const [fromReply] = await board();
+test("R10, R41: scope one person is always refused", async () => {
   const fromCard = await draft("Card action", "ROLE_CLARITY", 2);
   assert.equal(fromCard.status, 201);
 
@@ -128,16 +122,9 @@ test("R10, R41: scope one person is always refused, and an action drafted from a
 
   assert.equal((await patch(fromCard.body.id, person("Synthetic hire 1"))).status, 422);
   assert.equal((await patch(fromCard.body.id, person(`Hire ${sharer}`))).status, 422);
-  assert.equal((await patch(fromReply.id as string, person(`Hire ${hrOnly}`))).status, 422);
-  await tap(sharer, en.visibilityHrOnly);
-  assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 422);
-  await tap(sharer, en.visibilityHrManager);
-  assert.equal((await patch(fromReply.id as string, person(`Hire ${sharer}`))).status, 422);
-  assert.equal(fromReply.scope_type, "team");
-  assert.equal(fromReply.scope_team, "Accounts Payable Asia");
+  assert.equal((await patch(fromCard.body.id, person(`Hire ${hrOnly}`))).status, 422);
   assert.equal((await patch(fromCard.body.id, { scope: { type: "team", team: "Accounts Payable Asia" } })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${fromCard.body.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);
-  assert.equal((await hrRequest(`/api/hr/actions/${fromReply.id}/dismiss`, "POST", { reason: "Test setup" })).status, 200);
 });
 
 test("R10: in demo mode the alert goes at once, says it normally waits until Monday, and a snapshot count of 2 is not called several", async () => {

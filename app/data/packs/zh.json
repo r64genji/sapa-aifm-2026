@@ -4,16 +4,12 @@
   "invalidInvite": "此邀请链接无法使用。请向 HR 索取新的链接。",
   "languagePrompt": "请选择你的语言。",
   "typeInstead": "Sapa 暂时无法处理语音、图片或文件。请直接打字发送你的消息。",
-  "consentVersion": "zh-2026-10-16",
-  "consent": "Sapa 会在你入职的前六个月里问你几个简短的问题。参与完全自愿。你可以选择谁能看到你的回答，也可以随时输入 停止 来结束一切。除非你自己选择告诉 HR，否则 HR 无法知道你是谁。Sapa 只保存你的聊天 ID，用来给你发送问题；Telegram 也能看到这个对话。你同意参与吗？",
+  "consentVersion": "zh-2026-10-19",
+  "consent": "Sapa 会在你入职的前六个月里问你几个简短的问题。参与完全自愿。只有 HR 能看到你的回答，你的主管看不到。你也可以随时输入 停止 来结束一切。除非你自己选择告诉 HR，否则 HR 无法知道你是谁。Sapa 只保存你的聊天 ID，用来给你发送问题；Telegram 也能看到这个对话。你同意参与吗？",
   "agree": "我同意",
   "decline": "不，谢谢",
   "declined": "没问题。你不会再收到 Sapa 的消息。",
-  "visibilityPrompt": "谢谢。谁可以查看你的回答？默认是仅 HR。",
   "teamPrompt": "你在哪个团队？",
-  "visibilityHrOnly": "仅 HR",
-  "visibilityHrManager": "HR 和我的主管",
-  "visibilitySaved": "已保存。你以后可以用 /privacy 更改。",
   "tapped": "你选了“{label}”。",
   "skipped": "已跳过。本次问候已关闭。Sapa 会在下一次问候时联系你。",
   "stopped": "你已停止。Sapa 不会再给你发送消息。",
@@ -23,7 +19,6 @@
     "ask": { "name": "ask", "description": "询问有关公司的问题" },
     "say": { "name": "say", "description": "帮我向主管表达" },
     "skip": { "name": "skip", "description": "跳过本次问候" },
-    "privacy": { "name": "privacy", "description": "查看谁能看到你的回答" },
     "language": { "name": "language", "description": "更改语言" },
     "stop": { "name": "stop", "description": "停止所有消息" },
     "delete": { "name": "delete", "description": "删除你的回答" },
@@ -44,7 +39,7 @@
     "fallback": "此回答使用{language}。如不清楚，请询问人事部。"
   },
   "checkin": {
-    "intro": "你好，该做 Sapa 问候了。点几下就好，让 HR 看到你的团队有没有变好。\nSapa 不知道你的名字。公司能看到你写的内容，但永远不知道是谁写的。如果你想保持匿名，请不要写名字和细节。",
+    "intro": "你好，该做 Sapa 问候了。\n免责声明：Sapa 不知道你的名字。公司能看到你写的内容，但永远不知道是谁写的。如果你想保持匿名，请不要写名字。",
     "reminder": "温馨提醒：你的 Sapa 问候还没完成。可以从上次中断的地方继续，也可以忽略，它会自动关闭。",
     "thanks": "谢谢，你的回答已保存。",
     "questions": [
@@ -245,10 +240,6 @@
       "wage_legal": ["没发工资", "工资没发", "拖欠工资", "没拿到工资", "没有发薪水"]
     }
   },
-  "exitPrompt": "如果您以后辞职，人力资源部可以问您一个关于原因的简短问题吗？",
-  "exitYes": "可以",
-  "exitNo": "不用了",
-  "exitSaved": "已保存。",
   "end": "您的跟进已结束。您的回答将保存到{date}。输入 DELETE 可立即删除。",
   "exit": {
     "question": "最后一个问题，如果您愿意回答：您离开的主要原因是什么？",
@@ -286,7 +277,6 @@
   },
   "export": {
     "intro": "HR 请 Sapa 把 Sapa 保存的关于你的数据发给你。内容如下。",
-    "visibility": "谁可以看你的回答：",
     "question": "你的问题：",
     "answer": "发给你的回答："
   },
