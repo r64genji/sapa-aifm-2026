@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { ApiError, apiSend, useApi } from "@/components/sapa/data";
 import { QualityWatch } from "@/components/sapa/quality";
 import { ReplyRow, type ReplyItem } from "@/components/sapa/reply";
-import { DRIVERS, Empty, Loading, PageHeader, Tabs } from "@/components/sapa/ui";
+import { CountUp, DRIVERS, Empty, Loading, PageHeader, Select, Tabs } from "@/components/sapa/ui";
 
 type QueueRow = { id: string; escalate: boolean | null; status: string | null; note: string | null };
 type Before = { status: string | null; drivers: string[]; context_tags: string[]; changed_by_hr: boolean | null };
@@ -16,14 +16,7 @@ const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort((
 
 function Filter({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: [string, string][] }) {
   return (
-    <select aria-label={label} className="sp-input" style={{ width: "auto" }} value={value} onChange={(e) => onChange(e.target.value)}>
-      <option value="all">{label}: all</option>
-      {options.map(([key, text]) => (
-        <option key={key} value={key}>
-          {text}
-        </option>
-      ))}
-    </select>
+    <Select auto label={label} value={value} onChange={onChange} options={[{ value: "all", label: `${label}: all` }, ...options.map(([key, text]) => ({ value: key, label: text }))]} />
   );
 }
 
@@ -36,8 +29,22 @@ function Replies() {
   const [language, setLanguage] = useState("all");
   const [checked, setChecked] = useState<Record<string, Before>>({});
   const [error, setError] = useState<string | null>(null);
-  const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
-  const queue = useApi<QueueRow[]>("/api/hr/queue");
+  const replies = useApi<ReplyItem[]>("/api/hr/replies", 2000);
+  const queue = useApi<QueueRow[]>("/api/hr/queue", 2000);
+  const seen = useRef<Set<string> | null>(null);
+  const [fresh, setFresh] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!replies.data) return;
+    const ids = replies.data.map((item) => item.id);
+    const known = seen.current;
+    seen.current = new Set(ids);
+    if (!known) return;
+    const added = ids.filter((id) => !known.has(id));
+    if (!added.length) return;
+    setFresh(new Set(added));
+    const timer = setTimeout(() => setFresh(new Set()), 800);
+    return () => clearTimeout(timer);
+  }, [replies.data]);
   if (!replies.data || !queue.data) return <Loading />;
 
   const notes = new Map(queue.data.map((row) => [row.id, row.note]));
@@ -90,8 +97,8 @@ function Replies() {
             value={view}
             onChange={setView}
             items={[
-              ["needs", `Needs you · ${needs.size}`],
-              ["all", `All · ${all.length}`],
+              ["needs", <>Needs you · <CountUp value={needs.size} /></>],
+              ["all", <>All · <CountUp value={all.length} /></>],
             ]}
           />
         }
@@ -129,6 +136,7 @@ function Replies() {
             <ReplyRow
               key={item.id}
               chat
+              fresh={fresh.has(item.id)}
               item={item}
               onConfirm={() => review(item, {})}
               onChange={(change) => review(item, change)}

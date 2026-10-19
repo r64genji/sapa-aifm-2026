@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./live.css";
 import { Shield } from "lucide-react";
 import { useApi } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
@@ -30,6 +31,7 @@ export type ChatEntry = { from: "bot" | "new_hire"; kind: "fixed" | "ai" | "tap"
 export type ReplyChange = { drivers?: string[]; context_tags?: string[]; serious?: boolean };
 
 export type ReplyRowProps = {
+  fresh?: boolean;
   item: ReplyItem;
   onConfirm: () => Promise<unknown>;
   onChange: (change: ReplyChange) => Promise<unknown>;
@@ -173,7 +175,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   );
 }
 
-export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, whole: full }: ReplyRowProps) {
+export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fresh, whole: full }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [whole, setWhole] = useState(!!full || !item.text);
@@ -194,7 +196,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, who
   const state = reviewed ? (item.changed_by_hr ? "corrected" : "confirmed") : item.status === "needs_review" ? "unsure" : "suggested";
 
   return (
-    <article className="sp-card flex flex-wrap overflow-hidden">
+    <article className={`sp-card flex flex-wrap overflow-hidden${fresh ? " sp-swipe-in" : ""}`}>
       <div className="flex min-w-0 flex-[999_1_360px] flex-col gap-3 px-5 py-5 sm:px-6">
         <span className="sp-caption">
           {item.byline} · {shortDate(item.created_at)}

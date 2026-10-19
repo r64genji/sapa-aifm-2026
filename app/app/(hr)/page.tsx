@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { AiMark, Button, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
+import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Quote, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
@@ -194,7 +194,7 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
               <span className="flex justify-between gap-2 text-[13px]">
                 <span className="font-semibold">{driverName(c.driver)}</span>
                 <span className="sp-num sp-muted">
-                  {c.n} of {c.m}
+                  <CountUp value={c.n ?? 0} /> of <CountUp value={c.m ?? 0} />
                 </span>
               </span>
               <span className="h-1.5 overflow-hidden rounded-full" style={{ background: "var(--track-empty)" }}>
@@ -216,8 +216,8 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
 export default function Page() {
   const [done, setDone] = useState<{ row: QueueRow; undo: () => Promise<unknown> }[]>([]);
   const me = useApi<Me>("/api/hr/me", 60000);
-  const themes = useApi<Themes>("/api/hr/themes?touchpoint=14");
-  const queue = useApi<QueueRow[]>("/api/hr/queue");
+  const themes = useApi<Themes>("/api/hr/themes?touchpoint=14", 2000);
+  const queue = useApi<QueueRow[]>("/api/hr/queue", 2000);
   const actions = useApi<Action[]>("/api/hr/actions");
   const questions = useApi<Questions>("/api/hr/questions");
   const upcoming = useApi<Upcoming>("/api/hr/upcoming");

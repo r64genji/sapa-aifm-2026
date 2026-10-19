@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Clock, MessageSquare, Shield, SquareCheck, Users } from "lucide-react";
+import { Check, ChevronDown, Clock, MessageSquare, Shield, SquareCheck, Users } from "lucide-react";
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 export type Lane = "serious" | "problems" | "ai" | "fixes";
@@ -46,8 +46,8 @@ export function Button({ variant = "secondary", lane = "ink", why, href, classNa
 }
 
 export function CountUp({ value }: { value: number }) {
-  const [shown, setShown] = useState(0);
-  const from = useRef(0);
+  const [shown, setShown] = useState(value);
+  const from = useRef(value);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       from.current = value;
@@ -147,7 +147,7 @@ export function CountBar({ count, of, label = "who answered", lane = "problems",
     <div>
       <div>
         <span className="sp-num" style={{ fontWeight: 700 }}>
-          {count} of {of}
+          <CountUp value={count ?? 0} /> of <CountUp value={of ?? 0} />
         </span>{" "}
         <span className="sp-count-muted">{label}</span>
       </div>
@@ -224,7 +224,7 @@ export function Waiting({ children }: { children: ReactNode }) {
   );
 }
 
-export function Tabs<T extends string>({ value, onChange, items, label }: { value: T; onChange: (v: T) => void; items: [T, string][]; label: string }) {
+export function Tabs<T extends string>({ value, onChange, items, label }: { value: T; onChange: (v: T) => void; items: [T, ReactNode][]; label: string }) {
   return (
     <div role="group" aria-label={label} className="sp-tabs">
       {items.map(([key, text]) => (
@@ -301,4 +301,73 @@ export function fixScope(a: { hiring_side: boolean; scope_type: string | null; s
   if (a.scope_type === "team") return `${a.scope_team} team`;
   if (a.scope_type === "intake") return `${new Date(a.scope_intake!).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })} starters`;
   return "No scope yet";
+}
+
+export type SelectOption = { value: string; label: string; hint?: string; flag?: string; disabled?: boolean };
+
+export function Select({ id, label, value, onChange, options, auto }: { id?: string; label: string; value: string; onChange: (v: string) => void; options: SelectOption[]; auto?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const root = useRef<HTMLDivElement>(null);
+  const current = options.find((o) => o.value === value) ?? options[0];
+  const move = (from: number, step: number) => {
+    for (let i = from + step; i >= 0 && i < options.length; i += step) if (!options[i].disabled) return i;
+    return from;
+  };
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => {
+      if (!root.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [open]);
+  const show = () => {
+    setActive(Math.max(options.findIndex((o) => o.value === value), 0));
+    setOpen(true);
+  };
+  const choose = (o: SelectOption) => {
+    if (o.disabled) return;
+    onChange(o.value);
+    setOpen(false);
+  };
+  const key = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") return setOpen(false);
+    if (!["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) return;
+    e.preventDefault();
+    if (!open) return show();
+    if (e.key === "ArrowDown") setActive(move(active, 1));
+    else if (e.key === "ArrowUp") setActive(move(active, -1));
+    else choose(options[active]);
+  };
+  return (
+    <div ref={root} className={cx("sp-select", auto && "sp-select-auto")} onKeyDown={key}>
+      <button type="button" id={id} className="sp-input sp-select-btn" aria-label={label} aria-haspopup="listbox" aria-expanded={open} onClick={() => (open ? setOpen(false) : show())}>
+        <span className="sp-select-value">{current?.label}</span>
+        <ChevronDown size={16} aria-hidden="true" className="sp-select-chev" />
+      </button>
+      {open ? (
+        <ul role="listbox" aria-label={label} className="sp-select-list">
+          {options.map((o, i) => (
+            <li
+              key={o.value}
+              role="option"
+              aria-selected={o.value === value}
+              aria-disabled={o.disabled || undefined}
+              className={cx("sp-select-opt", i === active && "is-active", o.disabled && "is-disabled")}
+              onPointerEnter={() => !o.disabled && setActive(i)}
+              onClick={() => choose(o)}
+            >
+              <span className="sp-select-main">
+                <span className="sp-select-text">{o.label}</span>
+                {o.hint ? <span className="sp-caption">{o.hint}</span> : null}
+              </span>
+              {o.flag ? <span className="sp-select-flag">{o.flag}</span> : null}
+              {o.value === value ? <Check size={16} strokeWidth={2.5} aria-hidden="true" /> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
 }
