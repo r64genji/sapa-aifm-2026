@@ -419,8 +419,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const byId = new Map(mine.map((r) => [r.id, r]));
   const intakes = intakePoints(d);
   const days = (d?.by_day ?? []).flatMap((s) => (s.enough ? [{ label: dayLabel(s.touchpoint), n: s.n, m: s.m }] : []));
-  const roles = (d?.by_role ?? []).flatMap((s) => (s.enough ? [{ label: s.role, n: s.n, m: s.m }] : []));
-  const smallRoles = (d?.by_role ?? []).length - roles.length;
   const read = (title: string | null) => {
     setFilter(title);
     setOpen(true);
@@ -496,12 +494,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   <Columns points={days} />
                 </Panel>
               ) : null}
-              <Panel title="By role">
-                {roles.map((r) => (
-                  <HBar key={r.label} label={r.label} n={r.n} of={r.m} />
-                ))}
-                {smallRoles ? <span className="sp-caption">{roles.length ? "Other roles" : `${smallRoles} roles`}: under 5, no number.</span> : null}
-              </Panel>
             </div>
           ) : (
             <div className="sp-skel h-40" />
