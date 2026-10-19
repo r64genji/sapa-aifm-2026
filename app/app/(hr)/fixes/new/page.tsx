@@ -352,9 +352,6 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 <LaneIcon lane="fixes" size={18} />
               </div>
               <h2 className="sp-section-title">The fix</h2>
-              {mode === "ai" && decision === "accepted" ? (
-                <AiMark state="confirmed" reviewer={hr} label="Drafted with AI" />
-              ) : null}
             </div>
             <div className="flex flex-col gap-4 p-4">
               {banner ? (
