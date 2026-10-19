@@ -8,9 +8,7 @@ Sapa checks in with new employees on Telegram during their first six months, use
 
 | If you want to… | Go to |
 | --- | --- |
-| Understand the product in 5 minutes | [docs/01 — Product rundown](docs/01-product-rundown-and-deliverables.md) |
 | See what we must hand in and who's doing what | [deliverables/ — master checklist](deliverables/README.md) |
-| See how the prototype is built | [docs/02 — Prototype architecture](docs/02-prototype-architecture.md) |
 | See what the AI may do alone and what needs a person | [docs/14 — AI use contract](docs/14-ai-use-contract.md) |
 | Find a statistic, persona, question or Q&A answer | [docs/03 — Research dossier](docs/03-research-dossier.md) |
 | Read the official rules | [docs/reference — AIFM guide PDF](docs/reference/AIFM_2026_Student_Challenge_Guide_All_Challenges.pdf) |
@@ -33,8 +31,6 @@ Replace the placeholders with GitHub handles.
 ├── README.md                    ← you are here
 ├── CONTRIBUTING.md              ← how we work (read once)
 ├── docs/
-│   ├── 01-product-rundown-and-deliverables.md
-│   ├── 02-prototype-architecture.md
 │   ├── 03-research-dossier.md
 │   └── reference/               ← organisers' guide PDF
 ├── deliverables/                ← one folder per deliverable, each with a checklist

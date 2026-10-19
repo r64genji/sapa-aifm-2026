@@ -16,7 +16,6 @@
 ## Starting material
 
 - Full answers: [dossier section D](../../docs/03-research-dossier.md#d-answers-to-the-guides-7-required-questions)
-- One-line answers: [rundown section 3](../../docs/01-product-rundown-and-deliverables.md#3-what-the-judges-score)
 
 ## What goes in this folder
 

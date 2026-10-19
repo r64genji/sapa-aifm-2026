@@ -22,7 +22,7 @@ The Drive folder holds six videos, all shared by the organisers:
 | 03: Industry Problem & AI Discovery (Ms Christine Chua) | `03-industry-problem.txt` | 52 min |
 | 04: AI Solution & Creativity Lab (Ricky Soo) | `04-ai-solution-lab.txt` | 73 min |
 
-**Correction to older notes:** `01-product-rundown-and-deliverables.md` says aifm.asia could not be opened. It opens. Several answers in that doc's "open questions" list are now answered below.
+**Correction to older notes:** The deleted product rundown said aifm.asia could not be opened. It opens. Several answers in that doc's "open questions" list are now answered below.
 
 ---
 

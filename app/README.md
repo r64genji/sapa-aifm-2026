@@ -2,7 +2,7 @@
 
 The Sapa backend: one Next.js app (scaffolded from the `with-supabase` template) with Supabase migrations in `supabase/`. Vercel's **Root Directory** is `app`.
 
-Design reference: [docs/05 — Implementation spec](../docs/05-implementation-spec.md) (wins over [docs/02](../docs/02-prototype-architecture.md) where they disagree).
+Rules and test method: [docs/05](../docs/05-implementation-spec.md).
 
 ## Test
 

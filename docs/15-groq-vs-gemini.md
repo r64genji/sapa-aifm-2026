@@ -112,4 +112,4 @@ Groq prices are from third-party trackers that cite the Groq docs; check the Gro
 - 90 classify items, about 20 per language: per-language κ is rough. One run per model.
 - gpt-oss-120b used `reasoning_effort: low`. `medium` may close the classify gap; it was not tested because the daily cap ran out. Rerun with `GROQ_REASONING=medium`.
 - No prompt work for the Groq models. The classify prompt was written for Gemini.
-- AI-written gold labels, as in [13](13-classifier-bakeoff.md). Do not use these numbers on slide 8.
+- AI-written gold labels, as in the earlier classifier bake-off (`eval/bakeoff/`). Do not use these numbers on slide 8.

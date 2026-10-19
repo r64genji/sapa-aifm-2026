@@ -12,7 +12,7 @@
 
 **Challenge 4 · RETAIN — Early Employee Disengagement** (guide p.6): "Help HR understand employee difficulties earlier."
 
-Why we picked it is in the [dossier](../../docs/03-research-dossier.md) (sections A–B) and the [rundown](../../docs/01-product-rundown-and-deliverables.md).
+Why we picked it is in the [dossier](../../docs/03-research-dossier.md) (sections A–B).
 
 ## What goes in this folder
 
