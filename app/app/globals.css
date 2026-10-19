@@ -376,3 +376,23 @@ main:focus { outline: none; }
   .sp-reveal { opacity: 1; transform: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+.sp-pill { display: inline-flex; align-items: center; gap: 5px; flex: 0 0 auto; font-size: 12px; line-height: 16px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-round); background: var(--surface-sunken); border: 1px solid var(--line); color: var(--ink-muted); white-space: nowrap; }
+.sp-chipbox { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 48px; padding: 8px 10px; border-radius: var(--radius-control); border: 1px solid var(--line-strong); background: var(--surface-raised); cursor: text; }
+.sp-chipbox:focus-within { border-color: var(--ink); outline: 2px solid var(--focus); outline-offset: 1px; }
+.sp-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; line-height: 18px; font-weight: 600; padding: 4px 4px 4px 11px; border-radius: var(--radius-round); background: var(--problems-soft); color: var(--problems); animation: sp-pop 0.15s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.sp-chip-x { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.sp-chip-x:hover { background: rgba(11, 93, 90, 0.16); }
+.sp-chip-input { flex: 1 1 110px; min-width: 90px; border: 0; outline: 0; background: transparent; font: inherit; font-size: 14px; color: var(--ink); padding: 4px 2px; }
+.sp-chipbox:focus-within .sp-chip-input { outline: 0; }
+.sp-qrow { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 14px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-raised); cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; }
+.sp-qrow:hover { border-color: var(--line-strong); }
+.sp-qrow.is-on { background: var(--problems-soft); border-color: transparent; }
+.sp-qrow:not(.is-on) > span { color: var(--ink-muted); }
+.sp-switch { appearance: none; flex: 0 0 auto; position: relative; width: 40px; height: 24px; margin: 0; border-radius: 999px; background: var(--line-strong); cursor: pointer; transition: background 0.15s ease; }
+.sp-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgba(28, 34, 38, 0.3); transition: transform 0.15s ease; }
+.sp-switch:checked { background: var(--problems); }
+.sp-switch:checked::after { transform: translateX(16px); }
+.sp-savebar { position: sticky; bottom: 12px; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-card); background: var(--surface-raised); border: 1px solid var(--line); box-shadow: var(--shadow-pop); }
+.sp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--waiting); flex: 0 0 auto; }
+@media (prefers-reduced-motion: reduce) { .sp-chip { animation: none; } .sp-switch, .sp-switch::after, .sp-qrow { transition: none; } }
