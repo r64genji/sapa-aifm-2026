@@ -189,6 +189,8 @@ textarea.sp-input { min-height: 84px; resize: vertical; }
 .sp-ai-reviewed .sp-ai-tag { border-color: var(--ink); color: var(--ink); }
 .sp-ai-reviewed .sp-ai-text { color: var(--ink); border-bottom: none; }
 .sp-input-ai { background: var(--ai-soft); border-color: var(--ai); }
+.sp-writing, .sp-writing:disabled { background: linear-gradient(90deg, var(--ai-soft) 0%, var(--surface-raised) 50%, var(--ai-soft) 100%); background-size: 200% 100%; animation: sp-shimmer 1.4s linear infinite; border-color: var(--ai); color: var(--ink-muted); }
+@media (prefers-reduced-motion: reduce) { .sp-writing { animation: none; } }
 .sp-ai-text, .sp-ai-voice { font-family: var(--font-sans); font-size: 13px; }
 .sp-ai-voice { line-height: 20px; font-style: normal; }
 .sp-suggest-bar { background: var(--ai-soft); border: 1px solid var(--ai); border-radius: var(--radius-control); padding: 10px 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Trash2 } from "lucide-react";
+import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Sparkles, Trash2 } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "@/components/sapa/data";
 import type { Me } from "@/components/sapa/shell";
 import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Select, Tabs, driverName, shortDate } from "@/components/sapa/ui";
@@ -207,35 +207,49 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wanted, entries, id]);
 
-  const addOwn = (fixName = name, reuse: string | null = null) =>
+  const addOwn = (fixName = name) => {
+    stash();
+    const next = crypto.randomUUID();
+    const clean = fixName.trim().slice(0, 60);
+    setDrafts((all) => [...all, { id: next, title: clean, steps: "", notes: EMPTY, suggestion: null, decision: "pending" }]);
+    setDraftId(next);
+    setOwnFix(true);
+    setEntryId(null);
+    setSuggestion(null);
+    setMode("library");
+    setDecision("pending");
+    setTitle(clean);
+    setSteps("");
+    setNotes(EMPTY);
+    setName("");
+    setBanner(null);
+    setMenu(false);
+    setAdding(false);
+  };
+
+  const draftWithAi = () =>
     run(async () => {
-      stash();
-      setMenu(false);
-      setAdding(false);
-      setDrafting(fixName.trim().slice(0, 60));
-      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName.trim().slice(0, 60) }).finally(() => setDrafting(null));
-      const next = reuse ?? crypto.randomUUID();
-      const written = result.notes ? { suggestion: { title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." }, notes: result.notes } : { suggestion: null, notes: EMPTY };
-      const draft: Draft = { id: next, title: result.title, steps: result.notes ? result.steps : "", notes: written.notes, suggestion: written.suggestion, decision: "pending" };
-      setDrafts((all) => (reuse ? all.map((d) => (d.id === reuse ? draft : d)) : [...all, draft]));
+      const fixName = title.trim().slice(0, 60);
+      const next = draftId ?? crypto.randomUUID();
+      setDrafting(fixName);
+      const result = await apiSend<{ title: string; steps: string; notes: Notes | null }>(`/api/hr/actions/${id}/own-fix`, "POST", { name: fixName }).finally(() => setDrafting(null));
+      const written = result.notes ? { title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." } : null;
+      const draft: Draft = { id: next, title: result.title, steps: result.steps, notes: result.notes ?? notes, suggestion: written, decision: "pending" };
+      setDrafts((all) => (all.some((d) => d.id === next) ? all.map((d) => (d.id === next ? draft : d)) : [...all, draft]));
       setDraftId(next);
       setOwnFix(true);
       setEntryId(null);
-      setNotes(EMPTY);
-      setName("");
-      if (result.notes) {
-        setSuggestion({ title: result.title, steps: result.steps, notes: result.notes, entryId: null, reason: "You named this fix. The AI wrote the steps and the note." });
+      setTitle(result.title);
+      if (written) {
+        setSuggestion(written);
         setMode("ai");
         setDecision("pending");
-        setTitle(result.title);
         setSteps(result.steps);
-        setNotes(result.notes);
+        setNotes(result.notes!);
         setBanner(null);
       } else {
         setSuggestion(null);
         setMode("library");
-        setTitle(result.title);
-        setSteps("");
         setBanner("The AI is not available, so write the steps and the note yourself.");
       }
     });
@@ -265,7 +279,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     setDecision("pending");
   };
 
-  const tryAgain = () => addOwn(suggestion!.title, draftId);
+  const tryAgain = () => draftWithAi();
 
   const pending = mode === "ai" && decision === "pending" && !drafting;
   const noteOk = !!notes.en.trim() && !!notes.ms.trim();
@@ -291,7 +305,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       await apiSend(`/api/hr/actions/${id}`, "PATCH", {
         title: title.trim(),
         steps: steps.trim(),
-        ...(!ownFix && entry ? { library_entry_id: entry.id } : {}),
+        ...(ownFix ? { own_fix: true } : entry ? { library_entry_id: entry.id } : {}),
         scope: target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
@@ -312,7 +326,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       : `${owner.name} gets it today`
     : "It stays with you";
   const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", shortDate(dueOn))];
-  const draftClass = pending ? "sp-input sp-input-ai sp-words" : "sp-input sp-words";
+  const draftClass = drafting ? "sp-input sp-writing sp-words" : pending ? "sp-input sp-input-ai sp-words" : "sp-input sp-words";
   const pendingMark = pending ? <AiMark label="Drafted for your new fix" /> : null;
 
   return (
@@ -423,13 +437,6 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 ) : null}
               </div>
 
-              {drafting ? (
-                <div className="sp-meta sp-fade-in flex items-center gap-2" role="status" aria-live="polite" style={{ background: "var(--surface-sunken)", padding: "8px 12px", borderRadius: "var(--radius-control)" }}>
-                  <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
-                  <span>The AI is writing “{drafting}”: the message and the note. This takes a few seconds.</span>
-                </div>
-              ) : null}
-
               {decision === "rejected" && mode === "ai" && !drafting ? (
                 <div className="sp-meta flex flex-wrap items-center gap-2">
                   <span>Your own words.</span>
@@ -447,9 +454,18 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 <label htmlFor="fix-steps" className="sp-caption" style={{ fontWeight: 600 }}>
                   Message to {ownerName}
                 </label>
-                <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent || !!drafting} onChange={(e) => setSteps(e.target.value)} placeholder={`What you ask ${ownerName} to do. This is the Telegram message.`} />
+                <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent || !!drafting} onChange={(e) => setSteps(e.target.value)} placeholder={drafting ? "The AI is writing…" : `What you ask ${ownerName} to do. This is the Telegram message.`} />
                 <span className="sp-caption">{words(steps)} of 60 words</span>
               </div>
+
+              {!sent && !pending && title.trim() && (ownFix || !entry) ? (
+                <div>
+                  <Button lane="ai" onClick={draftWithAi} disabled={busy || !!drafting}>
+                    {drafting ? <LoaderCircle size={16} className="animate-spin" aria-hidden="true" /> : <Sparkles size={16} aria-hidden="true" />}
+                    {drafting ? "Writing…" : "Draft with AI"}
+                  </Button>
+                </div>
+              ) : null}
 
               {pending && suggestion ? (
                 <div className="sp-suggest-bar" role="group" aria-label="AI draft">
