@@ -14,7 +14,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R19, R23: Outreach now sends the chosen check-in to the live hire only, at night", async () => {
+test("R19, R23: Outreach now sends the chosen check-in to a joined phone, not to synthetic hires, at night", async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
@@ -81,4 +81,24 @@ test("R19: Outreach now sends the Day 30 check-in at once, whatever its due date
   assert.deepEqual(await res.json(), { sent: 1 });
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
+});
+
+test("R19: Outreach now sends the check-in to every joined phone", async () => {
+  await resetDemo();
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  const second = 5550000202;
+  for (const chat of [live, second]) {
+    await link(chat, liveInvite);
+    await tap(chat, "English");
+    await tap(chat, en.agree);
+  }
+  const before = [(await sentTo(live)).length, (await sentTo(second)).length];
+
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { sent: 2 });
+
+  const texts = async (chat: number, from: number) => (await sentTo(chat)).map((m) => m.text).slice(from);
+  assert.deepEqual(await texts(live, before[0]), [en.checkin.intro, question("ROLE_CLARITY")]);
+  assert.deepEqual(await texts(second, before[1]), [en.checkin.intro, question("ROLE_CLARITY")]);
 });
