@@ -101,7 +101,7 @@ function Tile({ label, value, base, href }: { label: string; value: number | und
 
 function Loop({ steps }: { steps: { step: string; lane: Lane; value: ReactNode; label: string; href: string }[] }) {
   return (
-    <section aria-label="From replies to results" className="sp-card grid grid-cols-2 gap-px overflow-hidden md:grid-cols-4" style={{ background: "var(--line-soft)" }}>
+    <section aria-label="From replies to results" className="sp-card grid grid-cols-2 gap-px overflow-hidden sm:grid-cols-4" style={{ background: "var(--line-soft)" }}>
       {steps.map((s, i) => (
         <Link key={s.step} href={s.href} className="flex flex-col gap-1 px-[18px] py-4 no-underline" style={{ color: "var(--ink)", background: "var(--surface-raised)" }}>
           <span className="sp-caption font-semibold uppercase tracking-wide" style={{ color: `var(--${s.lane})` }}>
