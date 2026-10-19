@@ -32,7 +32,6 @@ export function DemoBar() {
   const [invite, setInvite] = useState<{ team: string; link: string }[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [choice, setChoice] = useState<number | null>(null);
 
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
@@ -46,7 +45,7 @@ export function DemoBar() {
   };
   const outreach = () =>
     run(async () => {
-      const result = await apiSend<{ sent: number }>("/api/hr/demo/outreach", "POST", { touchpoint: pick });
+      const result = await apiSend<{ sent: number }>("/api/hr/demo/outreach", "POST", { touchpoint: next?.touchpoint });
       setMessage(`${result.sent} message${result.sent === 1 ? "" : "s"} sent.`);
     });
   const reset = (full: boolean) =>
@@ -59,24 +58,18 @@ export function DemoBar() {
 
   const s = status.data;
   const next = s?.live_hire.next_check_in;
-  const pick = choice !== null && s?.live_hire.scheduled.includes(choice) ? choice : next?.touchpoint;
   return (
     <section aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="flex flex-auto flex-col md:flex-none">
-          <span className="sp-num text-[15px] font-bold">{s?.live_hire.next_check_in ? `Next: Day ${s.live_hire.next_check_in.touchpoint} check-in` : "No check-in left"}</span>
+          <span className="sp-num text-[15px] font-bold">{next ? `Next: Day ${next.touchpoint} check-in` : s && !s.phones.live_hire_bound ? "No hire has joined yet" : "No check-in left"}</span>
         </span>
         <button type="button" className="sp-btn sp-btn-secondary sp-lane-ink md:hidden" aria-expanded={open} aria-controls="demo-controls" onClick={() => setOpen(!open)}>
           Demo controls
           <ChevronDown size={16} aria-hidden="true" className="sp-chev" style={{ transform: open ? "rotate(180deg)" : undefined }} />
         </button>
         <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
-          <select className="sp-input" style={{ width: "auto" }} aria-label="Check-in to send" value={pick ?? ""} onChange={(e) => setChoice(Number(e.target.value))}>
-            {s?.live_hire.scheduled.map((day) => (
-              <option key={day} value={day}>Day {day}</option>
-            ))}
-          </select>
-          <Button variant="primary" disabled={busy || pick === undefined} onClick={outreach}>Outreach now</Button>
+          <Button variant="primary" disabled={busy || !next} onClick={outreach}>Outreach now</Button>
           <Button disabled={busy} onClick={() => setConfirming("seed")}>Reset to seed</Button>
           <Button disabled={busy} onClick={() => setConfirming("full")}>Full reset</Button>
         </span>
