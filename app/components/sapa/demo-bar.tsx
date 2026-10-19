@@ -7,7 +7,7 @@ import { Button, Dialog } from "./ui";
 
 type Reach = { reachable: boolean; ms: number };
 type Status = {
-  live_hire: { day: number; next_check_in: { touchpoint: number; due_at: string } | null; scheduled: number[] };
+  live_hire: { next_check_in: { touchpoint: number; due_at: string } | null; scheduled: number[] };
   main_ai: Reach;
   fallback_ai: Reach & { spend: number; cap: number };
   ai_checked_at: string;
@@ -64,8 +64,7 @@ export function DemoBar() {
     <section aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="flex flex-auto flex-col md:flex-none">
-          <span className="sp-num text-[15px] font-bold">{s ? `Live hire: Day ${s.live_hire.day}` : "Live hire: …"}</span>
-          {s?.live_hire.next_check_in ? <span className="sp-caption">Next: Day {s.live_hire.next_check_in.touchpoint} check-in</span> : null}
+          <span className="sp-num text-[15px] font-bold">{s?.live_hire.next_check_in ? `Next: Day ${s.live_hire.next_check_in.touchpoint} check-in` : "No check-in left"}</span>
         </span>
         <button type="button" className="sp-btn sp-btn-secondary sp-lane-ink md:hidden" aria-expanded={open} aria-controls="demo-controls" onClick={() => setOpen(!open)}>
           Demo controls

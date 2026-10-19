@@ -1,4 +1,3 @@
-import { now } from "@/lib/clock";
 import { providers } from "@/lib/ai";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -94,7 +93,7 @@ export async function demoStatus(organisationId: string) {
   const db = createAdminClient();
   const { data: org, error } = await db
     .from("organisations")
-    .select("demo_mode, time_zone")
+    .select("demo_mode")
     .eq("id", organisationId)
     .single();
   if (error) throw error;
@@ -111,12 +110,10 @@ export async function demoStatus(organisationId: string) {
   if (nextError) throw nextError;
   const { data: spend, error: spendError } = await db.from("ai_usage").select("cost").eq("provider", "deepseek");
   if (spendError) throw spendError;
-  const today = Date.parse((await now()).toLocaleDateString("en-CA", { timeZone: org.time_zone }));
   const manager = live?.managers as unknown as { telegram_chat_id: number | null; revoked_at: string | null } | null;
   const [ai, tg] = await Promise.all([models(), telegram()]);
   return {
     live_hire: {
-      day: live ? Math.round((today - Date.parse(live.joined_on ?? live.start_date)) / 86400000) : 0,
       next_check_in: next[0]
         ? { touchpoint: next[0].touchpoint, due_at: next[0].due_at }
         : null,
