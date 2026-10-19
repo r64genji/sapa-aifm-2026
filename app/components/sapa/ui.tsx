@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Check, ChevronDown, Clock, MessageSquare, Shield, SquareCheck, Users } from "lucide-react";
+import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 export type Lane = "serious" | "problems" | "ai" | "fixes";
@@ -269,13 +270,14 @@ export function Loading() {
 }
 
 export function Dialog({ title, children, onClose }: { title: string; children: ReactNode; onClose: () => void }) {
-  return (
+  return createPortal(
     <div className="sp-dialog-backdrop" onClick={onClose}>
       <div className="sp-dialog" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
         <h2 className="m-0 text-[17px] font-bold">{title}</h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
