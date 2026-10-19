@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "@/components/sapa/data";
 import { Button, Loading, PageHeader } from "@/components/sapa/ui";
 
-type TeamLink = { team: string; lead: string; link: string };
+type TeamLink = { team: string; lead: string; link: string; lead_link: string | null; lead_linked: boolean };
 
 function Qr({ link, label }: { link: string; label: string }) {
   const [src, setSrc] = useState("");
@@ -15,20 +15,36 @@ function Qr({ link, label }: { link: string; label: string }) {
   return src ? <img src={src} width={160} height={160} alt={`QR code to join ${label}`} /> : <div style={{ width: 160, height: 160 }} />;
 }
 
-function TeamCard({ row }: { row: TeamLink }) {
+function CopyButton({ link }: { link: string }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(row.link);
+    await navigator.clipboard.writeText(link);
     setCopied(true);
   };
+  return <Button onClick={copy}>{copied ? "Copied" : "Copy link"}</Button>;
+}
+
+function TeamCard({ row }: { row: TeamLink }) {
   return (
     <section className="sp-card flex flex-col items-start gap-3 p-5" aria-label={row.team}>
       <div className="flex flex-col gap-0.5">
         <span className="text-[15px] font-bold">{row.team}</span>
-        <span className="sp-caption">Team lead: {row.lead}</span>
+        <span className="sp-caption">New hires join here</span>
       </div>
       <Qr link={row.link} label={row.team} />
-      <Button onClick={copy}>{copied ? "Copied" : "Copy link"}</Button>
+      <CopyButton link={row.link} />
+      <div className="flex w-full flex-col items-start gap-3 pt-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
+        <div className="flex flex-col gap-0.5">
+          <span className="font-semibold">Team lead: {row.lead}</span>
+          <span className="sp-caption">{row.lead_linked ? "Phone linked. Gets fixes in Telegram." : "Scan on the team lead's phone to get fixes in Telegram."}</span>
+        </div>
+        {row.lead_link ? (
+          <>
+            <Qr link={row.lead_link} label={`${row.team} as team lead ${row.lead}`} />
+            <CopyButton link={row.lead_link} />
+          </>
+        ) : null}
+      </div>
     </section>
   );
 }

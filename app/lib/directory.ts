@@ -131,13 +131,22 @@ export async function teamLinks(organisationId: string) {
   if (error) throw error;
   const { data: managers, error: managersError } = await createAdminClient()
     .from("managers")
-    .select("id, display_name")
+    .select("id, display_name, bind_token, telegram_chat_id, revoked_at")
     .eq("organisation_id", organisationId);
   if (managersError) throw managersError;
-  const lead = new Map(managers.map((row) => [row.id, row.display_name]));
+  const lead = new Map(managers.map((row) => [row.id, row]));
   return {
     intake: data.label,
-    teams: data.teams.map((row) => ({ team: row.team, lead: lead.get(row.manager_id) ?? "", link: joinLink(row.join_token) })),
+    teams: data.teams.map((row) => {
+      const manager = lead.get(row.manager_id);
+      return {
+        team: row.team,
+        lead: manager?.display_name ?? "",
+        link: joinLink(row.join_token),
+        lead_link: manager?.bind_token && !manager.revoked_at ? joinLink(manager.bind_token) : null,
+        lead_linked: Boolean(manager?.telegram_chat_id) && !manager?.revoked_at,
+      };
+    }),
   };
 }
 

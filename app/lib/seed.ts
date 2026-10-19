@@ -27,6 +27,7 @@ import fix_follow_up from "@/data/seed/fix_follow_up.json";
 import demo_open_fixes from "@/data/seed/demo_open_fixes.json";
 import { encrypt } from "@/lib/crypto";
 import { joinLink } from "@/lib/directory";
+import { MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 async function seedUsers() {
@@ -151,9 +152,10 @@ export async function resetDemo() {
   const teams = intakes[0].teams.map((row) => ({ ...row, join_token: randomBytes(16).toString("base64url") }));
   const intake = { ...intakes[0], ...liveStart, teams };
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
+  const leads = process.env.SAPA_TEST === "1" ? managers : managers.map((row) => ({ ...row, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") }));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();
