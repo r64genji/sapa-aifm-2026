@@ -342,7 +342,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
   );
 }
 
-function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
+function ReplyCard({ r, label, onOpen }: { r: ReplyItem; label: string; onOpen?: () => void }) {
   return (
     <article className="sp-card flex flex-col gap-2 px-4 py-3.5">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -353,6 +353,12 @@ function ReplyCard({ r, label }: { r: ReplyItem; label: string }) {
       </div>
       <Quote text={r.text ?? ""} evidence={r.evidence_quote} />
       <Translation id={r.id} language={r.language} />
+      {onOpen ? (
+        <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[13px]" aria-haspopup="dialog" onClick={onOpen}>
+          <MessageSquare size={14} aria-hidden="true" />
+          See the full check-in
+        </button>
+      ) : null}
     </article>
   );
 }
@@ -361,7 +367,7 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
   const [error, setError] = useState<string | null>(null);
   const group = groups.find((g) => g.title === filter);
   const shown = group ? replies.filter((r) => group.reply_ids.includes(r.id)) : replies;
-  const name = driverName(driver);
+  const name = driver === "none" ? "No area" : driverName(driver);
   useEffect(() => {
     const back = document.activeElement as HTMLElement | null;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -397,7 +403,7 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
           </div>
           <div className="flex flex-col">
             <h2 className="m-0 text-[22px] font-bold leading-[28px]">{name}</h2>
-            <span className="sp-meta">Day 14 replies counted here, with the whole check-in</span>
+            <span className="sp-meta">{driver === "none" ? "The whole check-in" : "Day 14 replies counted here, with the whole check-in"}</span>
           </div>
           {groups.length ? (
             <div role="group" aria-label="Show replies" className="sp-tabs self-start">
@@ -605,6 +611,9 @@ function QuestionPanel({ g }: { g: Questions["groups"][number] }) {
 }
 
 function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const close = useCallback(() => setOpenId(null), []);
+  const opened = replies.filter((r) => r.id === openId);
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card flex min-w-0 scroll-mt-4 flex-col gap-4 px-5 py-5 sm:px-6">
       <div className="flex flex-col gap-1">
@@ -622,9 +631,10 @@ function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
       {replies.length === 0 ? <span className="sp-muted">Every reply fits a problem area.</span> : null}
       <div className="sp-stagger grid gap-3 lg:grid-cols-2">
         {replies.map((r) => (
-          <ReplyCard key={r.id} r={r} label="No area" />
+          <ReplyCard key={r.id} r={r} label="No area" onOpen={() => setOpenId(r.id)} />
         ))}
       </div>
+      {opened.length ? <ReplySheet driver="none" replies={opened} groups={[]} filter={null} setFilter={() => {}} onClose={close} /> : null}
     </section>
   );
 }
