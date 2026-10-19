@@ -98,7 +98,7 @@ export function DemoBar() {
       ) : null}
       {confirming ? (
         <Dialog title="Reset to seed?" onClose={() => setConfirming(false)}>
-          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. Every team gets a new join link.</p>
+          <p className="m-0 text-[14px] leading-[21px]">This erases everything done in the demo so far and loads the seed again. Linked phones stay linked: the live hire is back at the start, and team leads keep their link.</p>
           <div className="flex flex-wrap gap-2">
             <Button variant="primary" onClick={reset}>Reset to seed</Button>
             <Button onClick={() => setConfirming(false)}>Cancel</Button>

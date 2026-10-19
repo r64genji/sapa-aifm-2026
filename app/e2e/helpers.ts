@@ -13,8 +13,18 @@ export const db = createClient(
 export let liveInvite = "";
 export let teamInvites: Record<string, string> = {};
 
+export async function unlinkPhones() {
+  await db.from("people").update({ telegram_chat_id: null }).not("telegram_chat_id", "is", null);
+  await db.from("managers").update({ telegram_chat_id: null }).not("telegram_chat_id", "is", null);
+}
+
 export async function resetSeed() {
   await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
+  await unlinkPhones();
+  await callReset();
+}
+
+export async function callReset() {
   const res = await fetch(`${appUrl}/api/demo/reset`, {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.DEMO_RESET_SECRET}` },

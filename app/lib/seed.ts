@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { createHmac, randomBytes } from "node:crypto";
 import organisations from "@/data/seed/organisations.json";
 import language_packs from "@/data/seed/language_packs.json";
 import managers from "@/data/seed/managers.json";
@@ -26,8 +26,10 @@ import demo_history from "@/data/seed/demo_history.json";
 import fix_follow_up from "@/data/seed/fix_follow_up.json";
 import demo_open_fixes from "@/data/seed/demo_open_fixes.json";
 import { encrypt } from "@/lib/crypto";
-import { joinLink } from "@/lib/directory";
+import { joinIntake, joinLink, recordConsent } from "@/lib/directory";
 import { MANAGER_TOKEN_PREFIX } from "@/lib/managers";
+import { packs, type Language } from "@/lib/packs";
+import { scheduleFor } from "@/lib/scheduler";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 async function seedUsers() {
@@ -143,17 +145,47 @@ function passedPacks() {
   return language_packs.map((pack) => (pack.language === "zh" ? pack : { ...pack, ...results }));
 }
 
+async function linkedPhones() {
+  const db = createAdminClient();
+  const seeded = new Set(people.map((row) => row.id));
+  const [hires, leads] = await Promise.all([
+    db.from("people").select("id, team, language, telegram_chat_id").eq("state", "active").not("telegram_chat_id", "is", null).order("invite_used_at"),
+    db.from("managers").select("id, telegram_chat_id").is("revoked_at", null).not("telegram_chat_id", "is", null),
+  ]);
+  for (const { error } of [hires, leads]) if (error) throw error;
+  return { hires: hires.data!.filter((row) => !seeded.has(row.id)), leads: leads.data! };
+}
+
+async function relinkPhones({ hires, leads }: Awaited<ReturnType<typeof linkedPhones>>, teams: { team: string; join_token: string }[]) {
+  const db = createAdminClient();
+  for (const lead of leads) {
+    const { error } = await db.from("managers").update({ telegram_chat_id: lead.telegram_chat_id, bind_token: null }).eq("id", lead.id);
+    if (error) throw error;
+  }
+  for (const hire of hires) {
+    const token = teams.find((row) => row.team === hire.team)?.join_token;
+    const person = token ? await joinIntake(token, hire.telegram_chat_id) : null;
+    if (!person) continue;
+    const language = hire.language as Language;
+    const { error } = await db.from("people").update({ language, state: "active" }).eq("id", person.id);
+    if (error) throw error;
+    await recordConsent(person, packs[language].consentVersion);
+    await scheduleFor(person.id);
+  }
+}
+
 export async function resetDemo() {
   const db = createAdminClient();
   const { data: live, error: modeError } = await db.from("organisations").select("id").eq("demo_mode", false).limit(1);
   if (modeError) throw modeError;
   if (live.length > 0) return { error: "Demo mode is off", code: 409 };
   const liveStart = liveDates(organisations[0].time_zone);
-  const teams = intakes[0].teams.map((row) => ({ ...row, join_token: randomBytes(16).toString("base64url") }));
+  const teams = intakes[0].teams.map((row) => ({ ...row, join_token: createHmac("sha256", process.env.DEMO_RESET_SECRET!).update(`${intakes[0].id}:${row.team}`).digest("base64url").slice(0, 22) }));
   const intake = { ...intakes[0], ...liveStart, teams };
   const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const leads = process.env.SAPA_TEST === "1" ? managers : managers.map((row) => ({ ...row, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") }));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
+  const phones = await linkedPhones();
   const { error } = await db.rpc("reset_demo", {
     seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
@@ -162,6 +194,7 @@ export async function resetDemo() {
   await seedFixFollowUp();
   await seedNotices();
   await seedUsers();
+  await relinkPhones(phones, teams);
   const { data: lead } = await db.from("managers").select("id, display_name");
   const names = new Map(lead!.map((row) => [row.id, row.display_name]));
   return { team_links: teams.map((row) => ({ team: row.team, lead: names.get(row.manager_id) ?? "", link: joinLink(row.join_token) })) };
