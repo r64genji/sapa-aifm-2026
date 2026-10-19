@@ -73,8 +73,8 @@ export function CountUp({ value }: { value: number }) {
 export function LaneTile({ lane, count, label, hint, href }: { lane: Lane; count: ReactNode; label: string; hint?: ReactNode; href?: string }) {
   const body = (
     <>
-      <div className="sp-tile-count">{typeof count === "number" ? <CountUp value={count} /> : count}</div>
       <div className="sp-tile-label">{label}</div>
+      <div className="sp-tile-count">{typeof count === "number" ? <CountUp value={count} /> : count}</div>
       {hint ? <div className="sp-tile-hint">{hint}</div> : null}
     </>
   );
