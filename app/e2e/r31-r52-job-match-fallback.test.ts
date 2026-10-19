@@ -157,11 +157,9 @@ test("R31: an English question on a page that exists only in Bahasa Malaysia get
   const replies = (await sentTo(asker)).slice(before).map((m) => String(m.text));
   assert.deepEqual(replies, [
     [
-      en.qa.label,
       "Letakkan kereta anda di Lot B dengan pas daripada HR.",
-      `${en.qa.from} "${quote}" (facilities/parking.md)`,
-      `${en.qa.hr} ${organisation.escalation_contacts.general[0]}`,
       "This answer is in Bahasa Malaysia. Ask HR if it is not clear.",
+      `\n${en.qa.disclaimer}`,
     ].join("\n"),
   ]);
 });

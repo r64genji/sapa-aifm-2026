@@ -114,10 +114,8 @@ test("R31: 'How do I claim overtime?' gets a grounded answer with the AI label, 
   const replies = await ask(overtime, "How do I claim overtime?");
   assert.deepEqual(replies, [
     [
-      en.qa.label,
       "Fill in the overtime form on the same day and give it to your supervisor.",
-      `${en.qa.from} "${overtimeQuote}" (pay/overtime.md)`,
-      `${en.qa.hr} ${hrLine}`,
+      `\n${en.qa.disclaimer}`,
     ].join("\n"),
   ]);
   assert.deepEqual(await asked(overtime), [
@@ -142,7 +140,7 @@ test("R31: a quote that is not in the cited page gets 'I don't know yet' and is 
   assert.equal(rows[0].outcome, "unknown");
 });
 
-test("R31: a draft page is never cited, and is quoted only after HR publishes it", async () => {
+test("R31: a draft page is never cited, and is answered from only after HR publishes it", async () => {
   const body = "# Parking\n\nMotorbikes may park in the yard behind the canteen. Cars may not park inside the gate.";
   const quote = "Motorbikes may park in the yard behind the canteen.";
   const saved = await hrRequest("/api/hr/handbook", "PUT", { path: "facilities/parking.md", language: "en", body });
@@ -165,7 +163,7 @@ test("R31: a draft page is never cited, and is quoted only after HR publishes it
   assert.equal(published.status, 200);
   await script(parking);
   const replies = await ask(draft, "Where can I park my motorbike?");
-  assert.ok(replies[0].includes(`${en.qa.from} "${quote}" (facilities/parking.md)`));
+  assert.ok(replies[0].includes("Motorbikes park in the yard behind the canteen."));
   assert.ok((await answerPrompt()).includes("yard behind the canteen"));
 
   const manager = await hrToken("raj@contoh.test");
@@ -177,7 +175,7 @@ test("R32: a pay dispute gets the important-matter message, no AI answer and no 
   await script(output({ important_topic: "pay_problem", answer: "Talk to payroll.", cited_path: "pay/payslip.md" }));
   const replies = await ask(payDispute, "The company paid me less than my contract says, I want to dispute it");
   assert.deepEqual(replies, [[en.qa.important, hrLine].join("\n")]);
-  assert.ok(!replies[0].includes(en.qa.label));
+  assert.ok(!replies[0].includes(en.qa.disclaimer));
   assert.deepEqual(await asked(payDispute), [
     { outcome: "important", important_topic: "pay_problem", cited_path: null, group_id: null },
   ]);
@@ -189,7 +187,7 @@ test("R32, R13: a crisis message gets the safe message with no model call and op
   const replies = await ask(crisis, "I want to kill myself");
   assert.equal(replies.length, 1);
   assert.ok(replies[0].includes(en.safety.message));
-  assert.ok(!replies[0].includes(en.qa.label));
+  assert.ok(!replies[0].includes(en.qa.disclaimer));
   assert.equal((await modelCalls("omniroute")).length, calls);
   assert.deepEqual((await newEscalations()).map((e) => e.category), ["self_harm_crisis"]);
   assert.equal((await asked(crisis))[0].important_topic, "self_harm_crisis");
@@ -355,7 +353,7 @@ test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese han
   );
   const replies = await ask(chat, "怎么申请加班费？");
   assert.deepEqual(replies, [
-    [zh.qa.label, "请在当天填写加班表格，并交给主管签字。", `${zh.qa.from} "${quote}" (pay/overtime.md)`, `${zh.qa.hr} ${hrLine}`].join("\n"),
+    ["请在当天填写加班表格，并交给主管签字。", `\n${zh.qa.disclaimer}`].join("\n"),
   ]);
   const prompt = await answerPrompt();
   assert.ok(prompt.includes("加班前必须获得主管批准"));

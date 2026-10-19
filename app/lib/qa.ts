@@ -202,15 +202,12 @@ export async function ask(person: Person, text: string, forced: boolean): Promis
     answer: result.answer,
     group: result.group,
   });
-  const contacts = await contactsOf(person.organisation_id);
   return [
     {
       text: [
-        pack.qa.label,
         result.answer,
-        `${pack.qa.from} "${result.supporting_quote}" (${page.path})`,
-        `${pack.qa.hr} ${contacts.general[0]}`,
         ...(page.fallback ? [pack.qa.fallback.replace("{language}", packs[page.fallback].name)] : []),
+        `\n${pack.qa.disclaimer}`,
       ].join("\n"),
     },
   ];
