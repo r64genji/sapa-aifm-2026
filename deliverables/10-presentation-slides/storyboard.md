@@ -52,13 +52,13 @@ Not saving everyone keeps the story believable.
 | --- | --- | --- | --- | --- |
 | 1 | **Day 14** | Mei Ling is lost, and too afraid to ask. | "Mei Ling. Day 14." Team name, Challenge 4 · RETAIN. | Full illustration, below |
 | 2 | **The intake** | 17 started. 5 were gone by Month 6. | Bayan GBS (fictional): 54 of 200 a year leave before Month 6, about RM522,000 a year. Real: over 2 in 10 new hires (23%) leave firms of 200–500 staff within 6 months (Employment Hero, 2023). Malaysia attrition 18.2% (Aon, Dec 2025). | Class photo of 17; Mei Ling in colour; 5 fade out |
-| 3 | **Day 61** | HR heard why, 47 days too late. | Aishah's exit spreadsheet: 5 rows, 5 reasons; Mei Ling's row repeats what she felt on Day 14. The yearly survey only reaches staff with 6 months' service. Research: 25% of Malaysian employees engaged and 62% say it is a good time to find a job (Gallup 2026); 57% would consider quitting without a manager's career support (Randstad 2025). Interview quotes slot. | Her empty desk, a box of her things; the spreadsheet row slides in |
+| 3 | **Day 61** | HR heard why, 47 days too late. | Aishah's exit spreadsheet: 5 rows, 5 reasons; Mei Ling's row repeats what she felt on Day 14. The yearly survey only reaches staff with 6 months' service. Research: 25% of Malaysian employees engaged and 62% say it is a good time to find a job (Gallup 2026); 57% would consider quitting without a manager's career support (Randstad 2025). Real quote, small text, "one HR practitioner, 19 Oct 2026": "I didn't want to find out at the end of probation that there were issues, and by that time the new hire had probably submitted their resignations because nobody listened to them." Her group already runs monthly Google Forms for 3 months, read by one person: good, but not anonymous and no AI grouping. Her top reason new hires leave: "the job role did not turn out to be what they expected." | Her empty desk, a box of her things; the spreadsheet row slides in |
 | 4 | **Rewind** | Same 17 people. Same Monday. Now with Sapa. | New hire: check-ins on Telegram, own phone, from Day 1. HR: one screen of shared problems. Team lead: the fix in Telegram. | Slide 1's scene again, but her phone lights up |
 | 5 | **How it works** | One message in, one fix out. | Her reply → AI label with her words highlighted → "23 of 64 said the same" → Aishah confirms, Raj gets the fix. The database counts; the AI suggests. | Four steps in a row |
 | 6 | **Why AI** | No person reads 3,000 replies. | 54 exit notes in one weekend, months late → 3,000+ replies a year (200 hires × 7 check-ins × 2–3 answers), read the same day, in BM, English and 中文. | Paper pile vs live bars |
-| 7 | **Demo** | Watch Day 14 again, live. | The six beats in [05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo): reply → label → confirm → fix to Raj → "Update from HR" → asked again. Say: "Today at Bayan GBS. Sapa has run here for a year. The company is made up; the product is real." | Live app |
-| 8 | **Testing** | Real people stood in for the October intake. | Real test numbers and quotes only: AI accuracy per language, HR time, HR tester score, one honest limit. | Results |
-| 9 | **Trust** | Why Mei Ling dares to speak. | She is on probation and Raj confirms it. Team leads never see who wrote what. Groups under 5 are hidden. AI suggests, a person decides. Serious concerns go only to HR. | Her figure; her name blurs to "New hire · Day 14" |
+| 7 | **Demo** | Watch Day 14 again, live. | Keep one path, no jumping (practitioner feedback): join, check-in, grouped replies, HR fix, recheck, result. The six beats in [05 "Updated 2-minute demo"](../../docs/05-implementation-spec.md#updated-2-minute-demo): reply → label → confirm → fix to Raj → "Update from HR" → asked again. Say: "Today at Bayan GBS. Sapa has run here for a year. The company is made up; the product is real." | Live app |
+| 8 | **Testing** | Real people stood in for the October intake. | Real test numbers and quotes only: AI accuracy per language, HR time, HR tester score, one honest limit. One HR practitioner saw the dashboard: layout fine, but words like "8 points above baseline" were too technical. Show the plain-words fix, not a score. | Results |
+| 9 | **Trust** | Why Mei Ling dares to speak. | She is on probation and Raj confirms it. Team leads never see who wrote what. Groups under 5 are hidden. AI suggests, a person decides. Serious concerns go only to HR. | Her figure; her name blurs to "New hire · Day 14". Serious-concern line from the practitioner: "by this stage, we need to know who they are because it's potentially a police case." |
 | 10 | **Day 180 and what's next** | 2 left, not 5. The roadmap saves the last 2. | See below | Two class photos: before (12 of 17) and after (15 of 17), colour all around |
 
 ### Slide 1 in detail
@@ -76,7 +76,8 @@ Not saving everyone keeps the story believable.
   - They hear the problem on Day 14, not at the exit on Day 61.
   - They read every reply the same day, not one weekend of notes months later.
   - Sapa costs RM18,000 a year. One early leaver costs about RM9,700 in hard costs only. Two kept a year pays for it. The Group's 85% goal needs about 24 more kept a year.
-- **Roadmap:** WhatsApp (Arif) → job-match check and agency view (Nurul) → private chat with HR → worker-voice export for ESG reports.
+- **Roadmap:** WhatsApp (Arif) → job-match check and agency view (Nurul) → check-ins at 6 months, 1 year and beyond for every employee → private chat with HR → worker-voice export for ESG reports.
+  - Source for the all-staff step: HR practitioner, 19 Oct 2026: "retention should be an ongoing exercise for every employee, regardless of seniority."
 - **Last line:** "Same 17 people. Same Day 14. This time, someone was listening."
 - **Sources:** cost per leaver and break-even in [docs/09](../../docs/09-client-story.md).
 
@@ -100,6 +101,6 @@ Not saving everyone keeps the story believable.
 ## Open slots
 
 - Team name (slide 1)
-- HR interview quotes (slide 3)
+- More HR interviews (slide 3 has one practitioner so far; the practitioner will send more names; the call is in [docs/16](../../docs/16-interview-deanna-tung.md))
 - Test results (slide 8)
 - The rename from Contoh to Bayan GBS in docs/09, the app seed and the demo script
