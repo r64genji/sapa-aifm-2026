@@ -217,7 +217,12 @@
       "changed": "What changed?",
       "stillNot": "What is still not working?",
       "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
-      "done": "Done"
+      "done": "Skip",
+      "context": "You tapped {taps}.",
+      "tap": "\"{label}\" for {topic}",
+      "and": " and ",
+      "good": "Your taps look good.",
+      "optional": "Optional. Tap Skip if you prefer not to answer."
     },
     "probe": {
       "skip": "Skip",

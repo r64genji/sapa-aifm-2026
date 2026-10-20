@@ -38,7 +38,7 @@ export type Schedule = {
 export const SCHEDULE = "id, progress, touchpoint, questions, recheck_action_id, recheck_driver, chat, actions!recheck_action_id(notes)";
 
 const CHAT_WINDOW_MS = 48 * 3600 * 1000;
-const MAX_PROBES = 2;
+const MAX_PROBES = 0;
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
 
 const followUp = (schedule: Schedule) => !!schedule.recheck_action_id && !!schedule.actions?.notes;
@@ -207,14 +207,26 @@ async function startChat(person: Person, open: Schedule) {
   const change = data.find((row) => row.question_id === "FIX_CHANGE");
   const probed = open.chat?.probed ?? [];
   const low = taps.reduce<(typeof taps)[number] | null>(
-    (min, tap) => (tap.score <= 2 && !probed.includes(tap.driver) && (!min || tap.score < min.score) ? tap : min),
+    (min, tap) => (tap.score <= 3 && !probed.includes(tap.driver) && (!min || tap.score < min.score) ? tap : min),
     null,
   );
-  const [topic, focus, text]: [Input["topic"], string | null, string] = change
+  const [topic, focus, fallback]: [Input["topic"], string | null, string] = change
     ? ["fix_follow_up", open.recheck_driver, change.scale_value >= 4 ? checkin.chat.changed : checkin.chat.stillNot]
     : low
-      ? ["low_tap", low.driver, checkin.chat.opener]
+      ? ["low_tap", low.driver, (checkin.probe.topics as Record<string, { open: string }>)[low.driver].open]
       : ["light", null, checkin.chat.light];
+  let text = fallback;
+  if (!change) {
+    const asked = await interview(person.organisation_id, { language_setting: person.language, topic, taps, focus_driver: focus, conversation: [], questions_asked: 0 });
+    const weak = taps.filter((tap) => tap.score <= 3).sort((a, b) => a.score - b.score).slice(0, 2);
+    const context = weak.length
+      ? checkin.chat.context.replace(
+          "{taps}",
+          weak.map((tap) => checkin.chat.tap.replace("{label}", tap.answer).replace("{topic}", fillTopic(person.language, "{topic}", tap.driver))).join(checkin.chat.and),
+        )
+      : checkin.chat.good;
+    text = `${context}\n\n${asked?.action === "ask" && asked.question.trim() ? asked.question.trim() : fallback}\n\n${checkin.chat.optional}`;
+  }
   const chat: Chat = { open: true, at: "", topic, taps, focus, turns: [{ from: "bot", text }], asked: 1, no_detail: 0, response_id: null, probed, kept: open.chat?.kept ?? [] };
   await saveChat(open.id, chat);
   return { text, buttons: [doneButton(person.language)] };

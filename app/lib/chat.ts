@@ -3,7 +3,7 @@ import { complete } from "@/lib/ai";
 import { mask } from "@/lib/mask";
 import { packs, type Language } from "@/lib/packs";
 
-export const MAX_QUESTIONS = 3;
+export const MAX_QUESTIONS = 1;
 
 export const Interview = z.object({
   action: z.enum(["ask", "done"]),
@@ -37,6 +37,8 @@ Your aim: help HR understand one work problem. Collect three goals:
 - what_would_help: what would make it better.
 
 When topic is "fix_follow_up", HR made a change for the team on focus_driver, and the first question asked what changed or what is still not working. Aim the same three goals at that: one real example of what changed or did not, how it affects their work, what would still help.
+
+When questions_asked is 0 and conversation is empty, write the first and only question. The app shows the new hire their lowest taps above it, so do not repeat them or say why you ask. Make it one specific question about the work situation behind the lowest taps in taps, using focus_driver as the main one. If every tap is 4 or 5 and focus_driver is null, ask what would make next week easier.
 
 Rules for each question:
 - Exactly one short, open, neutral question, at most 20 words. No yes/no questions.

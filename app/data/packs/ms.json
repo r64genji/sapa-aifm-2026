@@ -185,7 +185,12 @@
       "changed": "Apa yang berubah?",
       "stillNot": "Apa yang masih tidak berjalan baik?",
       "askHr": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
-      "done": "Selesai"
+      "done": "Langkau",
+      "context": "Anda memilih {taps}.",
+      "tap": "\"{label}\" untuk {topic}",
+      "and": " dan ",
+      "good": "Pilihan anda nampak baik.",
+      "optional": "Pilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
     },
     "probe": {
       "skip": "Langkau",
