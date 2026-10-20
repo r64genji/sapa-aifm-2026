@@ -8,6 +8,7 @@ import { packs, type Language } from "@/lib/packs";
 import { detect } from "@/lib/safety";
 import { MAX_QUESTIONS, fixedFits, fixedQuestion, hasLetters, interview, wordCount, type Input, type Turn } from "@/lib/chat";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { send, typing } from "@/lib/telegram";
 
 type Chat = {
   open: boolean;
@@ -217,7 +218,13 @@ async function startChat(person: Person, open: Schedule) {
       : ["light", null, checkin.chat.light];
   let text = fallback;
   if (!change) {
-    const asked = await interview(person.organisation_id, { language_setting: person.language, topic, taps, focus_driver: focus, conversation: [], questions_asked: 0 });
+    const chatId = person.telegram_chat_id;
+    if (chatId) await send(chatId, { text: checkin.chat.wait }).catch(() => {});
+    const keepTyping = chatId ? setInterval(() => void typing(chatId), 4000) : null;
+    if (chatId) void typing(chatId);
+    const asked = await interview(person.organisation_id, { language_setting: person.language, topic, taps, focus_driver: focus, conversation: [], questions_asked: 0 }).finally(() => {
+      if (keepTyping) clearInterval(keepTyping);
+    });
     const weak = taps.filter((tap) => tap.score <= 3).sort((a, b) => a.score - b.score).slice(0, 2);
     const context = weak.length
       ? checkin.chat.context.replace(

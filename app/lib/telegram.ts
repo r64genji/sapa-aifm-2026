@@ -27,3 +27,12 @@ export async function send(chatId: number, reply: Reply) {
   if (!res.ok) throw new Error(`sendMessage failed: ${res.status}`);
   return true;
 }
+
+export async function typing(chatId: number) {
+  const base = process.env.TELEGRAM_API_BASE_URL ?? "https://api.telegram.org";
+  await fetch(`${base}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendChatAction`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, action: "typing" }),
+  }).catch(() => {});
+}

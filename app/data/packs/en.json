@@ -218,6 +218,7 @@
       "stillNot": "What is still not working?",
       "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
       "done": "Skip",
+      "wait": "Thanks. One moment while I write your last question…",
       "context": "You tapped {taps}.",
       "tap": "\"{label}\" for {topic}",
       "and": " and ",
