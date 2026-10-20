@@ -9,7 +9,7 @@ import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
 import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, driverName, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
-type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; message?: string };
+type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
 type Themes = { cards: Card[] };
 type Detail = {
   card: Share;
@@ -498,6 +498,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                     <span className="text-[20px] font-semibold sp-muted"> of {card.m}</span>
                   </span>
                   <span className="sp-meta">who answered Day 14</span>
+                  {card.avg != null ? <span className="sp-meta">Company average {card.avg} of 5</span> : null}
                 </div>
                 <Waffle c={card} />
               </>
