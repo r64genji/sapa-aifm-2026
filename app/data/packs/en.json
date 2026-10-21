@@ -40,9 +40,9 @@
   },
   "languagePrompt": "Please choose your language.",
   "typeInstead": "Sapa can't handle voice notes, pictures or files yet. Please type your message instead.",
-  "consentVersion": "en-2026-10-21",
-  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. Only HR can read your answers, never your manager. You can type STOP at any time to end everything. HR sees your name with your answers. Sapa keeps your chat ID only to send you questions, and Telegram can see this chat. Do you agree to take part?",
-  "yourName": { "question": "What is your name? HR will see it with your answers. Your manager will not." },
+  "consentVersion": "en-2026-10-21b",
+  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. Only HR can read your answers, never your manager. You can type STOP at any time to end everything. HR sees your name with your answers. Your manager sees your name only if HR sends them a fix about you, never your answers. Sapa keeps your chat ID only to send you questions, and Telegram can see this chat. Do you agree to take part?",
+  "yourName": { "question": "What is your name? HR will see it with your answers. Your manager will see it only if HR sends them a fix about you." },
   "firstJob": { "question": "Is this your first full-time job?", "yes": "Yes", "no": "No", "thanks": "Thanks. Sapa will message you for your next check-in." },
   "agree": "I agree",
   "decline": "No thanks",
@@ -75,7 +75,7 @@
     "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },
   "checkin": {
-    "intro": "Hi, it's time for your Sapa check-in.\nYour HR team sees your name and what you write. Your manager sees neither.",
+    "intro": "Hi, it's time for your Sapa check-in.\nYour HR team sees your name and what you write. Your manager sees your name only if HR sends them a fix about you, never what you write.",
     "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",
     "thanks": "Thank you, your answers are saved.",
     "questions": [

@@ -38,7 +38,7 @@ Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after th
 - The AI never sees a name.
 - Serious concerns still go to the company's speak-up channel, which is a separate and anonymous system.
 - Sapa keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
-- The consent text and each check-in start say that HR sees the new hire's name and words and that the manager sees neither.
+- The consent text and each check-in start say that HR sees the new hire's name and words and that the manager sees the name only if HR sends a fix about that hire, and never the words.
 
 ## Show-off list
 

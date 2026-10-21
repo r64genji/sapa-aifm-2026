@@ -67,7 +67,7 @@ test("R55: the check-in starts with the privacy line and shows word buttons, one
   assert.ok(intro.text.includes("A few quick taps so HR can see if things get better for your team."));
   assert.ok(
     intro.text.includes(
-      "Your HR team sees your name and what you write. Your manager sees neither.",
+      "Your HR team sees your name and what you write. Your manager sees your name only if HR sends them a fix about you, never what you write.",
     ),
   );
   assert.equal(first.text, "How clear are you on what is expected of you this week?");
