@@ -103,7 +103,7 @@ before(async () => {
   await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
 });
 
-test("R10: a fix from one reply goes only to that hire's own manager, at once, with no name and no words", async () => {
+test("R10: a fix from one reply goes only to that hire's own manager, at once, with the hire's name and no words", async () => {
   const citraChat = 5550001003;
   const citra = await (await hrRequest("/api/hr/managers", "POST", { display_name: "Citra", email: "citra-r10@contoh.test" })).json();
   await link(citraChat, String(citra.telegram_link).split("?start=")[1]);
@@ -123,7 +123,8 @@ test("R10: a fix from one reply goes only to that hire's own manager, at once, w
   assert.equal((await right.json()).alert_sent, true);
 
   const [message] = await alertTo(citraChat, "Name the escalation contact");
-  assert.doesNotMatch(String(message.text), /Test Hire|Nobody told me|last weekly snapshot/);
+  assert.match(String(message.text), /This is about Test Hire, one of your new hires\./);
+  assert.doesNotMatch(String(message.text), /Nobody told me|last weekly snapshot/);
 });
 
 test("R10: scope one person is refused unless the action starts from a reply", async () => {

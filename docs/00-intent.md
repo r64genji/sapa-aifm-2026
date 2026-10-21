@@ -27,11 +27,11 @@ A chat bot that checks in with new employees during their first six months, and 
 
 ## Privacy: HR knows who, managers never do
 
-Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after three HR professionals (docs/16, 17, 18) said a new hire cannot hide from HR. Managers never see a name.
+Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after three HR professionals (docs/16, 17, 18) said a new hire cannot hide from HR. Managers never see a name, except in a fix HR sends from one hire's reply (R10).
 
 - HR gives one join link (QR code) per team in each intake. There is no personal invite link. The team QR sets the new hire's team.
 - After consent, Sapa asks the new hire for their name once. HR sees that name with every reply, for example "Aina Rahman · AP Asia · Day 14".
-- A manager never sees a name, a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives carries a new hire's name or words.
+- A manager never sees a name, a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives carries a new hire's words. A manager receives a hire's name only in a fix HR sends from that hire's reply, so the manager can act for that person.
 - There is no minimum group size. HR sees every count, even for one person.
 - HR can send a fix from one reply to that hire's own manager (R10). HR can still send a fix to a team, several teams or an intake.
 - Phone numbers, emails and ID numbers in a reply are masked in what HR sees, not only in what the AI sees.

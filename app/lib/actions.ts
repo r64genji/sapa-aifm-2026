@@ -283,7 +283,7 @@ export async function draftView(organisationId: string, id: string) {
     alert_on: alertOn,
     alert_label: demoLabel(org, held),
     scopes: person
-      ? [{ type: "person", key: "person", label: `${person.name ?? "One new hire"} (${person.team})`, n: 1, managers: person.manager_id && person.managers ? [{ id: person.manager_id, name: person.managers.display_name }] : [], lines: [], counts: null, why: null }]
+      ? [{ type: "person", key: "person", label: `${person.name ?? "One new hire"} (${person.team})`, n: 1, managers: person.manager_id && person.managers ? [{ id: person.manager_id, name: person.managers.display_name }] : [], lines: [person.name ? text.person.replace("{name}", person.name) : text.personUnnamed], counts: null, why: null }]
       : [...teams, ...intakes],
     all_counts: card && "n" in card ? { n: card.n, m: card.m } : null,
     telegram: { alert: text.alert, due: text.due, accept: text.accept, done: text.done },
@@ -652,8 +652,12 @@ export async function stepAction(
 }
 
 async function context(action: Action, managerId: string) {
-  if (action.scope_type === "person") return [];
   const db = createAdminClient();
+  if (action.scope_type === "person") {
+    const { data: person, error: personError } = await db.from("people").select("name").eq("id", action.scope_person_id!).single();
+    if (personError) throw personError;
+    return [person.name ? text.person.replace("{name}", person.name) : text.personUnnamed];
+  }
   const { data: hires, error } = await db.from("people").select("team").eq("manager_id", managerId);
   if (error) throw error;
   const teams = [...new Set(hires.map((hire) => hire.team as string))]
