@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./live.css";
 import { Shield } from "lucide-react";
-import { apiGet, apiSend } from "./data";
+import { ApiError, apiGet, apiSend, useApi } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
 export type ReplyItem = {
@@ -221,10 +221,76 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   );
 }
 
+type LibraryFix = { id: string; title: string; text: string; result: string };
+
+function FixDialog({ item, onClose }: { item: ReplyItem; onClose: () => void }) {
+  const router = useRouter();
+  const driver = item.drivers[0];
+  const library = useApi<LibraryFix[]>(`/api/hr/actions/library?driver=${driver}`);
+  const [picked, setPicked] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [sent, setSent] = useState<string | null>(null);
+  const go = async (body: Record<string, string>, then: (result: { id: string; manager?: string }) => void) => {
+    setBusy(true);
+    setError(null);
+    try {
+      then(await apiSend<{ id: string; manager?: string }>("/api/hr/actions", "POST", { driver, response_id: item.id, ...body }));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Something went wrong. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Dialog title={`Fix for ${driverName(driver)}`} onClose={onClose}>
+      {sent ? (
+        <>
+          <p role="status">Sent to {sent}. They get it today.</p>
+          <Button className="ml-auto" onClick={onClose}>
+            Close
+          </Button>
+        </>
+      ) : (
+        <>
+          <p className="sp-caption">Pick a fix. It goes to this new hire&apos;s own manager.</p>
+          <div className="flex flex-col gap-2">
+            {(library.data ?? []).map((fix) => (
+              <button
+                key={fix.id}
+                type="button"
+                className="sp-input flex flex-col text-left"
+                aria-pressed={picked === fix.id}
+                style={picked === fix.id ? { borderColor: "var(--ink)" } : undefined}
+                onClick={() => setPicked(fix.id)}
+              >
+                <span className="font-semibold">{fix.title}</span>
+                <span className="sp-caption">{fix.result}</span>
+              </button>
+            ))}
+          </div>
+          {error ? <p role="alert">{error}</p> : null}
+          <div className="flex flex-wrap items-center gap-2 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
+            <Button variant="primary" disabled={busy || !picked} why={picked ? null : "Pick a fix first"} onClick={() => go({ send_library_entry_id: picked! }, (r) => setSent(r.manager ?? "their manager"))}>
+              Send to their manager
+            </Button>
+            <Button disabled={busy} onClick={() => go({}, (r) => router.push(`/fixes/new?id=${r.id}`))}>
+              Draft a different fix
+            </Button>
+            <Button className="ml-auto" onClick={onClose}>
+              Cancel
+            </Button>
+          </div>
+        </>
+      )}
+    </Dialog>
+  );
+}
+
 export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fresh, whole: full }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
-  const router = useRouter();
+  const [fixing, setFixing] = useState(false);
   const [whole, setWhole] = useState(!!full || !item.text);
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
@@ -298,15 +364,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
             </Button>
           ) : null}
           {item.drivers.length && !item.serious && !item.escalate ? (
-            <Button
-              disabled={busy}
-              onClick={() =>
-                run(async () => {
-                  const { id } = await apiSend<{ id: string }>("/api/hr/actions", "POST", { driver: item.drivers[0], response_id: item.id });
-                  router.push(`/fixes/new?id=${id}`);
-                })
-              }
-            >
+            <Button disabled={busy} onClick={() => setFixing(true)}>
               Send to their manager
             </Button>
           ) : null}
@@ -322,6 +380,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           ) : null}
         </div>
       </div>
+      {fixing ? <FixDialog item={item} onClose={() => setFixing(false)} /> : null}
       {open ? (
         <ChangeDialog
           item={item}

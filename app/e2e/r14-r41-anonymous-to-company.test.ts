@@ -106,3 +106,17 @@ test("R10, R41: a fix from one reply is scoped to that hire, and no HR response 
   const body = await (await hrRequest(`/api/hr/actions/${id}`, "GET")).text();
   assert.ok(!/"(person_id|scope_person_id)"/.test(body));
 });
+
+test("R10: one click sends a library fix with its fixed note to that hire's own manager at once", async () => {
+  const replies = (await (await hrRequest("/api/hr/replies", "GET")).json()) as { id: string; text: string; drivers: string[] }[];
+  const mine = replies.find((r) => r.text.includes(quote))!;
+  const library = (await (await hrRequest(`/api/hr/actions/library?driver=${mine.drivers[0]}`, "GET")).json()) as { id: string; title: string; notes: { en: string } }[];
+  const made = await hrRequest("/api/hr/actions", "POST", { driver: mine.drivers[0], response_id: mine.id, send_library_entry_id: library[0].id });
+  assert.equal(made.status, 201);
+  const { id, manager } = (await made.json()) as { id: string; manager: string };
+  const action = (await (await hrRequest(`/api/hr/actions/${id}`, "GET")).json()) as { status: string; scope_type: string; title: string; notes: { en: string }; owner: string };
+  assert.deepEqual(
+    { status: action.status, scope_type: action.scope_type, title: action.title, note: action.notes.en, owner: action.owner },
+    { status: "assigned", scope_type: "person", title: library[0].title, note: library[0].notes.en, owner: manager },
+  );
+});

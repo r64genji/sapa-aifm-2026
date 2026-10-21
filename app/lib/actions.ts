@@ -134,6 +134,47 @@ export async function draftAction(
   return { id: data.id };
 }
 
+export async function sendLibraryFix(
+  organisationId: string,
+  actor: string,
+  body: { driver: string; response_id: string; library_entry_id: string },
+): Promise<{ id: string; manager: string } | Failure> {
+  const db = createAdminClient();
+  const { data: entry, error: entryError } = await db
+    .from("action_library")
+    .select("id, notes")
+    .eq("organisation_id", organisationId)
+    .eq("driver", body.driver)
+    .eq("id", body.library_entry_id)
+    .is("deleted_at", null)
+    .maybeSingle();
+  if (entryError) throw entryError;
+  if (!entry) return { error: "No such library entry for this driver", code: 422 };
+  const notes = entry.notes as { en?: string; ms?: string; zh?: string } | null;
+  if (!notes?.en || !notes.ms || !notes.zh) return { error: "This fix has no note in every language. Open it in the editor.", code: 422 };
+  const { data: reply, error: replyError } = await db
+    .from("responses")
+    .select("people(manager_id, managers(display_name))")
+    .eq("organisation_id", organisationId)
+    .eq("id", body.response_id)
+    .maybeSingle();
+  if (replyError) throw replyError;
+  if (!reply) return { error: "Not found", code: 404 };
+  const hire = reply.people as unknown as { manager_id: string | null; managers: { display_name: string } | null } | null;
+  if (!hire?.manager_id || !hire.managers) return { error: "This new hire has no manager yet", code: 422 };
+  const draft = await draftAction(organisationId, actor, { driver: body.driver, response_id: body.response_id });
+  if ("error" in draft) return draft;
+  for (const step of [
+    () => editAction(organisationId, actor, draft.id, { library_entry_id: entry.id, scope: { type: "person" } }),
+    () => approveNotice(organisationId, actor, draft.id, { notes: { en: notes.en!, ms: notes.ms!, zh: notes.zh } }),
+    () => assignAction(organisationId, actor, draft.id, hire.manager_id, 7),
+  ]) {
+    const result = await step();
+    if ("error" in result) return result;
+  }
+  return { id: draft.id, manager: hire.managers.display_name };
+}
+
 export const OwnDraft = z.object({ steps: z.string(), notes: Notes });
 export const ownSchema = z.toJSONSchema(OwnDraft);
 export const ownSystem = `You write one fix for an HR person who named it. Output only JSON that matches the schema.
