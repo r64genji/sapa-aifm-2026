@@ -55,6 +55,8 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - AI quality watch.
 - "What new hires mean": the AI groups replies inside one problem area.
 - Fix library, only as the `DraftFix` board in the Fixes design shows it.
+- Fresher vs experienced split (agreed 21 Oct 2026). On join, Sapa asks one tap: "Is this your first full-time job?" Sapa stores the answer on the person and never shows it with a person. The problem page shows each problem area split by fresher and experienced, under the same minimum group size as every other split.
+- Repeat flag (agreed 21 Oct 2026). When the same team shows the same problem area again within 6 months, the problem page says so, for example "2nd time in 6 months". It comes from SQL counts, not from the AI.
 - `/ask` in Telegram: answers from the handbook. Plain text outside a check-in goes to `/ask`. Questions the handbook cannot answer go to HR.
 - Serious concerns: Sapa tells the new hire, in one short message, to report it to HR through the company's speak-up channel (demo: Contoh Speak Up, with web form, email and 24-hour phone). It names only that channel: never 999, helplines, the tribunal or any outside authority. Official complaints are 100% anonymous and are a separate company system, not Sapa's problem to solve. HR sees the replies and a count, and nothing to act on in Sapa (agreed 16 Oct 2026).
 - Check-in schedule screen: HR sets the days and questions of two tracks, New hire and Employee (R60). The join code stays the same. This is not the Settings page.

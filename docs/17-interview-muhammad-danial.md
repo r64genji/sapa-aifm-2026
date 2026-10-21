@@ -1,0 +1,39 @@
+# 17 HR interview: Muhammad Danial
+
+HR consultant, 61, advises SMEs and MNCs, 200+ engagement surveys. Call on 2026-10-21. Full text: [transcript](reference/interviews/2026-10-21-muhammad-danial-hr-consultant.txt). One person's opinion, not data. Cite as "one HR consultant".
+
+## What he told us
+
+- Most AI HR tools send a Google Form. They do not explain why.
+- New hires leave because of unclear roles, no training plan and little talk with the manager.
+- Fresh graduates and experienced hires need different reading. Pooling them adds noise.
+- Nobody acts on one comment. HR needs a repeat pattern, such as a second case from the same team.
+- HR wants a root cause, not a report.
+- "Belonging" sounds corny. Onboarding and Training are separate things.
+- He said new hire check-ins should name the person. We keep "anonymous to the company" ([00](00-intent.md)). He and Deanna Tung both raised this. Slide 3 and slide 10 must answer it.
+- The tool works only if the company already has onboarding and a training plan.
+
+## Decisions
+
+| Advice | Decision |
+| --- | --- |
+| Rename Belonging, split Onboarding and Training | Done (agreed 21 Oct) |
+| Fresher vs experienced | Build. One tap on join, split on the problem page |
+| Repeat pattern by team | Build. SQL counts only |
+| Root cause line per problem | **TODO, not built.** See below |
+| Names in check-ins | Kept anonymous. Pitch as a trust choice, next step is an opt-in "share my name with HR" |
+
+## TODO: root cause line
+
+Not built for the 23 Oct pitch. A plain line per problem, such as "Fresher hires say the job is unclear. Experienced hires do not."
+
+- It must use only counts from SQL. The AI summary rule is R18: no number that is not in the input.
+- It needs a new AI use row in [14](14-ai-use-contract.md) before any code.
+- Build it after the fresher split and the repeat flag exist, since it reads them.
+
+## For the slides
+
+- Slide 3: answer "why not Google Forms" with Telegram, AI-grouped text, repeat patterns across teams, and fix tracking.
+- Slide 8: show the fresher split and the repeat flag.
+- Slide 10: ongoing check-ins, company-set questions, opt-in name sharing, root cause line.
+- Pitch ask: he offered to introduce his colleagues, a pilot lead.
