@@ -40,6 +40,7 @@ export async function callReset() {
 export async function resetDemo() {
   await resetSeed();
   await db.from("language_packs").update({ test_passed_on: "2026-10-15" }).in("language", ["en", "ms"]);
+  await db.from("organisations").update({ min_group_size: 5 }).neq("id", "00000000-0000-0000-0000-000000000000");
 }
 
 export const modelUrl = `http://127.0.0.1:${process.env.FAKE_MODEL_PORT}`;
@@ -236,4 +237,5 @@ export async function joined(chat: number, startDate: string) {
   await link(chat, token);
   await tap(chat, "English");
   await tap(chat, "I agree");
+  await say(chat, "Test Hire");
 }

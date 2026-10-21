@@ -5,8 +5,9 @@
   "managerLinked": "Berjaya dipautkan. Sapa akan menghubungi anda di sini apabila HR menugaskan tindakan kepada anda.",
   "languagePrompt": "Sila pilih bahasa anda.",
   "typeInstead": "Sapa belum dapat mengendalikan nota suara, gambar atau fail. Sila taip mesej anda.",
-  "consentVersion": "ms-2026-10-19",
-  "consent": "Sapa akan bertanya beberapa soalan pendek sepanjang enam bulan pertama anda. Penyertaan adalah sukarela. Hanya HR yang boleh membaca jawapan anda, bukan pengurus anda. Anda boleh menaip BERHENTI pada bila-bila masa untuk menamatkan semuanya. HR tidak dapat melihat siapa anda melainkan anda memilih untuk memberitahu mereka. Sapa menyimpan ID sembang anda hanya untuk menghantar soalan, dan Telegram boleh melihat sembang ini. Adakah anda bersetuju untuk menyertai?",
+  "consentVersion": "ms-2026-10-21",
+  "consent": "Sapa akan bertanya beberapa soalan pendek sepanjang enam bulan pertama anda. Penyertaan adalah sukarela. Hanya HR yang boleh membaca jawapan anda, bukan pengurus anda. Anda boleh menaip BERHENTI pada bila-bila masa untuk menamatkan semuanya. HR akan melihat nama anda bersama jawapan anda. Sapa menyimpan ID sembang anda hanya untuk menghantar soalan, dan Telegram boleh melihat sembang ini. Adakah anda bersetuju untuk menyertai?",
+  "yourName": { "question": "Siapa nama anda? HR akan melihatnya bersama jawapan anda. Pengurus anda tidak akan melihatnya." },
   "firstJob": { "question": "Adakah ini kerja sepenuh masa pertama anda?", "yes": "Ya", "no": "Tidak", "thanks": "Terima kasih. Sapa akan menghubungi anda untuk semakan seterusnya." },
   "agree": "Saya setuju",
   "decline": "Tidak, terima kasih",
@@ -39,7 +40,7 @@
     "fallback": "Jawapan ini dalam {language}. Tanya HR jika tidak jelas."
   },
   "checkin": {
-    "intro": "Hai, tiba masanya untuk semakan Sapa anda.\nPenafian: Sapa tidak tahu nama anda. Syarikat anda nampak apa yang anda tulis, tetapi tidak pernah tahu siapa yang menulisnya. Jangan tulis nama jika anda mahu kekal tanpa nama.",
+    "intro": "Hai, tiba masanya untuk semakan Sapa anda.\nPasukan HR anda nampak nama anda dan apa yang anda tulis. Pengurus anda tidak nampak kedua-duanya.",
     "reminder": "Peringatan ringkas: semakan Sapa anda masih terbuka. Sambung di mana anda tinggalkan, atau abaikan dan ia akan ditutup.",
     "thanks": "Terima kasih, jawapan anda telah disimpan.",
     "questions": [

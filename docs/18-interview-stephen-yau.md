@@ -19,8 +19,8 @@ Transformation & Change Management Officer, Setia Awan Land Sdn Bhd. Call on 202
 
 | Advice | Decision |
 | --- | --- |
-| Drop anonymity for new hires | Kept anonymous to the company ([00](00-intent.md)). Third source after Deanna Tung and Muhammad Danial. Slide 3 and slide 10 must answer it |
-| Lone joiner cannot hide | Minimum group size (R8) shows "Not enough people yet". Serious concerns go to the speak-up channel (R14). The next step is the opt-in "share my name with HR" |
+| Drop anonymity for new hires | Done 21 Oct, as the third source after Deanna Tung and Muhammad Danial. HR sees the name, managers never do, there is no minimum group, and HR can send a fix from one reply to that hire's manager ([00](00-intent.md)) |
+| Lone joiner cannot hide | Solved by the same change |
 | Weekly in month 1, fortnightly in month 2 | Check against the HR-set rhythm in the app. Open |
 | Workload for all staff | Already proposed by Deanna Tung. He supports it as common practice |
 | Reminder lifts response 70% to 90% | Quote as practice. Check the bot sends a reminder |
@@ -28,5 +28,5 @@ Transformation & Change Management Officer, Setia Awan Land Sdn Bhd. Call on 202
 ## For the slides
 
 - Slide 3: "Today it is a Google Form, read by hand, at 3 and 6 months." Source: Stephen Yau.
-- Slide 10: opt-in name sharing is the answer to the lone-joiner case.
+- Slide 3 and slide 10: HR sees who, managers never do. Say why: HR must act on a lone joiner.
 - Quote him by name and title. Use Newsreader regular, as for every quote.

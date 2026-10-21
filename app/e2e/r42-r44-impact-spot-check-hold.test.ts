@@ -107,6 +107,7 @@ test("R44: each Monday the nightly job queues 3 AI-confident tags per driver and
   await link(hire, token);
   await tap(hire, "Bahasa Malaysia");
   await tap(hire, ms_.agree);
+  await say(hire, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(hire, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], evidence_quote: "Kerja terlalu banyak" }) }]);

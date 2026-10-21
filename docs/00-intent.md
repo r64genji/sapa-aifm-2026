@@ -25,20 +25,20 @@ We must not miss anything the organisers require. A missed requirement can lose 
 
 A chat bot that checks in with new employees during their first six months, and after that with longer-serving employees on a lighter schedule (agreed 19 Oct 2026, to help with retention and workload; HR sets the days and questions of each track in the dashboard), plus a dashboard that shows HR the problems those employees share, so HR and managers can fix them before people resign.
 
-## Privacy: anonymous to the company
+## Privacy: HR knows who, managers never do
 
-Agreed 16 Oct 2026. Raised to "anonymous to the company" on 17 Oct 2026.
+Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after three HR professionals (docs/16, 17, 18) said a new hire cannot hide from HR. Managers never see a name.
 
-- HR gives one join link (QR code) per team in each intake. There is no personal invite link. HR hands the team QRs out, for example on each team's Day 1 welcome sheet. A team lead never hands them out, because the lead would see who joins.
-- The team QR sets the new hire's team. The new hire does not pick a team in the bot.
-- Sapa never asks for or keeps a new hire's real name or Telegram name.
-- HR sees what a new hire wrote, never who wrote it. A manager never sees what a new hire wrote, only weekly counts. HR sees no code name and no ID that links one person's replies. A reply shows only its team and day, for example "A new hire · AP Asia · Day 14".
+- HR gives one join link (QR code) per team in each intake. There is no personal invite link. The team QR sets the new hire's team.
+- After consent, Sapa asks the new hire for their name once. HR sees that name with every reply, for example "Aina Rahman · AP Asia · Day 14".
+- A manager never sees a name, a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives carries a new hire's name or words.
+- There is no minimum group size. HR sees every count, even for one person.
+- HR can send a fix from one reply to that hire's own manager (R10). HR can still send a fix to a team, several teams or an intake.
 - Phone numbers, emails and ID numbers in a reply are masked in what HR sees, not only in what the AI sees.
-- A fix goes to a team, several teams or an intake, never to one person.
-- Sapa never asks for a name or phone, not even on a serious concern.
-- Sapa still keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats. A person's own words can still show who they are.
-- Each check-in starts with: "Sapa does not know your name. Your company sees what you write, never who wrote it. Leave out names and details if you want to stay anonymous."
-- Say "anonymous to your company". Never say "fully anonymous" or "100% anonymous": the chat ID, Telegram and a person's own words make that untrue.
+- The AI never sees a name.
+- Serious concerns still go to the company's speak-up channel, which is a separate and anonymous system.
+- Sapa keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
+- The consent text and each check-in start say that HR sees the new hire's name and words and that the manager sees neither.
 
 ## Show-off list
 
@@ -48,7 +48,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 
 - Check-in on Telegram as a short chat (agreed 17 Oct 2026). Scale questions show words that fit each question, not numbers, and Sapa stores 1–5. After the taps, a fixed first question asks about the lowest tap, then the AI asks up to 2 follow-up questions and stops at a natural point. There is no "what I will tell HR" step. The AI labels the reply and quotes the words it used.
 - HR confirms the AI label.
-- HR drafts a fix and assigns it to a manager.
+- HR drafts a fix and assigns it to a manager. A fix can start from one reply and go to that hire's own manager.
 - The manager accepts the fix and marks it done in Telegram.
 - New hires get "Update from HR". The next check-in asks the same scale question again, first and with no hint of the fix. Later in that check-in it asks "Since the last Update from HR about <topic>, how has it changed for you?" (Much worse … Much better; <topic> names the fixed driver, such as "your workload"), and the chat asks what changed or what still does not work. HR sees the answers and quotes on the fix.
 - Outcome: the score change against other teams, and the Impact view.

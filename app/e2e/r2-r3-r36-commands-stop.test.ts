@@ -35,6 +35,7 @@ async function activeHire(chat: number, language: "English" | "Bahasa Malaysia",
   await link(chat, token);
   await tap(chat, language);
   await tap(chat, agree);
+  await say(chat, "Test Hire");
 }
 
 const texts = async (chat: number) => (await sentTo(chat)).map((m) => m.text);

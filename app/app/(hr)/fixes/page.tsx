@@ -32,7 +32,8 @@ type Action = {
   title: string;
   created_at: string;
   status: string;
-  scope_type: "team" | "intake" | null;
+  scope_type: "person" | "team" | "intake" | null;
+  scope_name: string | null;
   scope_team: string | null;
   scope_intake: string | null;
   owner: string | null;

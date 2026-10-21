@@ -10,7 +10,7 @@ HR consultant, 61, advises SMEs and MNCs, 200+ engagement surveys. Call on 2026-
 - Nobody acts on one comment. HR needs a repeat pattern, such as a second case from the same team.
 - HR wants a root cause, not a report.
 - "Belonging" sounds corny. Onboarding and Training are separate things.
-- He said new hire check-ins should name the person. We keep "anonymous to the company" ([00](00-intent.md)). He and Deanna Tung both raised this. Slide 3 and slide 10 must answer it.
+- He said new hire check-ins should name the person. Deanna Tung and Stephen Yau said the same. We changed to named to HR on 21 Oct ([00](00-intent.md)).
 - The tool works only if the company already has onboarding and a training plan.
 
 ## Decisions
@@ -21,7 +21,7 @@ HR consultant, 61, advises SMEs and MNCs, 200+ engagement surveys. Call on 2026-
 | Fresher vs experienced | Build. One tap on join, split on the problem page |
 | Repeat pattern by team | Build. SQL counts only |
 | Root cause line per problem | **TODO, not built.** See below |
-| Names in check-ins | Kept anonymous. Pitch as a trust choice, next step is an opt-in "share my name with HR" |
+| Names in check-ins | Done 21 Oct. HR sees the name, managers never do |
 
 ## TODO: root cause line
 

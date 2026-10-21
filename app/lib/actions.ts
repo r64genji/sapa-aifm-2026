@@ -14,7 +14,6 @@ import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const THEME_CARD = "/api/hr/themes?touchpoint=14";
 const text = packs.en.action;
 
 type Action = {
@@ -28,7 +27,8 @@ type Action = {
   source_response_id: string | null;
   title: string;
   steps: string;
-  scope_type: "team" | "intake" | null;
+  scope_type: "person" | "team" | "intake" | null;
+  scope_person_id: string | null;
   scope_team: string | null;
   scope_intake: string | null;
   owner_manager_id: string | null;
@@ -40,7 +40,7 @@ type Action = {
   score_change: { scope: { n: number; before: number; after: number }; other: { n: number; before: number; after: number } } | null;
 };
 
-type Failure = { error: string; code: number; theme_card?: string };
+type Failure = { error: string; code: number };
 
 const localDate = (at: Date, timeZone: string) => at.toLocaleDateString("en-CA", { timeZone });
 const addDays = (date: string, days: number) => new Date(Date.parse(date) + days * 86400000).toISOString().slice(0, 10);
@@ -70,7 +70,7 @@ async function loadAction(organisationId: string, id: string) {
 }
 
 async function isHeld(action: Action) {
-  if (action.source === "reply") return true;
+  if (action.source === "reply") return false;
   const { data, error } = await createAdminClient().rpc("action_held", {
     org: action.organisation_id,
     drv: action.driver,
@@ -87,6 +87,7 @@ export async function draftAction(
   body: { driver: string; response_id?: string },
 ): Promise<{ id: string } | Failure> {
   const db = createAdminClient();
+  let personId: string | null = null;
   if (!DRIVERS.includes(body.driver)) return { error: "Unknown driver", code: 422 };
   if (body.response_id) {
     const { data: tag, error } = await db
@@ -98,11 +99,14 @@ export async function draftAction(
     if (error) throw error;
     if (!tag) return { error: "Not found", code: 404 };
     if (!tag.drivers.includes(body.driver)) return { error: "The reply does not carry this driver", code: 422 };
-    return {
-      error: "A reply is never shared with a manager. Start the action from the theme card.",
-      code: 409,
-      theme_card: THEME_CARD,
-    };
+    const { data: reply, error: replyError } = await db
+      .from("responses")
+      .select("person_id")
+      .eq("organisation_id", organisationId)
+      .eq("id", body.response_id)
+      .single();
+    if (replyError) throw replyError;
+    personId = reply.person_id;
   }
   const [entry] = await libraryWithEvidence(organisationId, body.driver);
   if (!entry) return { error: "The action library has no entry for this driver", code: 409 };
@@ -116,6 +120,7 @@ export async function draftAction(
       draft_reason: "",
       source: body.response_id ? "reply" : "theme",
       source_response_id: body.response_id ?? null,
+      ...(personId && { scope_type: "person", scope_person_id: personId }),
       title: entry.title,
       steps: entry.text,
       created_by: actor,
@@ -177,7 +182,7 @@ export async function draftOwnFix(
   return { id, title, steps: draft.steps, notes: draft.notes };
 }
 
-type Option = { type: "team" | "intake"; key: string; label: string; n: number; managers: { id: string; name: string }[]; lines: string[]; counts: { n: number; m: number; week: string } | null; why: string | null };
+type Option = { type: "person" | "team" | "intake"; key: string; label: string; n: number; managers: { id: string; name: string }[]; lines: string[]; counts: { n: number; m: number; week: string } | null; why: string | null };
 
 export async function draftView(organisationId: string, id: string) {
   const action = (await loadAction(organisationId, id)) as (Action & { draft_reason: string | null; draft_notes: Record<string, string> | null }) | null;
@@ -187,7 +192,7 @@ export async function draftView(organisationId: string, id: string) {
   const today = localDate(await now(), org.time_zone);
   const held = await isHeld(action);
   const [people, snapshots, cards] = await Promise.all([
-    db.from("people").select("id, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
+    db.from("people").select("id, name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
     db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }),
     themeCards(organisationId, 14, null),
   ]);
@@ -200,7 +205,7 @@ export async function draftView(organisationId: string, id: string) {
     const n = row.counts?.[action.driver]?.n ?? 0;
     return [(n >= 3 ? text.several : text.fewer).replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))];
   };
-  const rows = people.data as unknown as { id: string; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
+  const rows = people.data as unknown as { id: string; name: string | null; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
   const group = (match: (row: (typeof rows)[number]) => boolean) => {
     const members = rows.filter(match);
     const managers = new Map(members.flatMap((row) => (row.manager_id && row.managers ? [[row.manager_id, row.managers.display_name] as const] : [])));
@@ -219,6 +224,7 @@ export async function draftView(organisationId: string, id: string) {
     return { type: "intake", key: month, label: `${label} intake`, n: members.length, managers, lines, counts: null, why: null };
   });
   const card = cards.cards.find((candidate) => candidate.driver === action.driver);
+  const person = action.scope_person_id ? rows.find((row) => row.id === action.scope_person_id) : undefined;
   const alertOn = held && !org.demo_mode ? nextSnapshotDay(today, org.snapshot_weekday) : today;
   return {
     id,
@@ -235,7 +241,9 @@ export async function draftView(organisationId: string, id: string) {
     today,
     alert_on: alertOn,
     alert_label: demoLabel(org, held),
-    scopes: [...teams, ...intakes],
+    scopes: person
+      ? [{ type: "person", key: "person", label: `${person.name ?? "One new hire"} (${person.team})`, n: 1, managers: person.manager_id && person.managers ? [{ id: person.manager_id, name: person.managers.display_name }] : [], lines: [], counts: null, why: null }]
+      : [...teams, ...intakes],
     all_counts: card && "n" in card ? { n: card.n, m: card.m } : null,
     telegram: { alert: text.alert, due: text.due, accept: text.accept, done: text.done },
   };
@@ -318,6 +326,10 @@ type Scope =
 async function scopeFields(action: Action, scope: Scope): Promise<Record<string, unknown> | Failure> {
   const db = createAdminClient();
   const none = { scope_type: scope.type, scope_person_id: null, scope_team: null, scope_intake: null };
+  if (scope.type === "person") {
+    if (action.source !== "reply" || !action.scope_person_id) return { error: "A fix for one new hire starts from their reply", code: 422 };
+    return { ...none, scope_person_id: action.scope_person_id };
+  }
   if (scope.type === "intake") return { ...none, scope_intake: `${scope.month}-01` };
   if (scope.type === "team") {
     const { data, error } = await db
@@ -330,7 +342,7 @@ async function scopeFields(action: Action, scope: Scope): Promise<Record<string,
     if (data.length === 0) return { error: "No new hires in this team", code: 422 };
     return { ...none, scope_team: scope.team };
   }
-  return { error: "A fix goes to a team, several teams or an intake, never to one person", code: 422 };
+  return { error: "Unknown scope", code: 422 };
 }
 
 export async function editAction(
@@ -447,6 +459,11 @@ export async function assignAction(
       .maybeSingle();
     if (error) throw error;
     if (!manager) return { error: "No such manager", code: 422 };
+    if (action.scope_type === "person") {
+      const { data: person, error: personError } = await db.from("people").select("manager_id").eq("id", action.scope_person_id!).single();
+      if (personError) throw personError;
+      if (person.manager_id !== manager.id) return { error: "A fix for one new hire goes to their own manager", code: 422 };
+    }
     if (held && (await inScopeHires(action, manager.id)) < 3) {
       return { error: "This manager has fewer than 3 in-scope new hires, so this action cannot go to them", code: 422 };
     }
@@ -594,6 +611,7 @@ export async function stepAction(
 }
 
 async function context(action: Action, managerId: string) {
+  if (action.scope_type === "person") return [];
   const db = createAdminClient();
   const { data: hires, error } = await db.from("people").select("team").eq("manager_id", managerId);
   if (error) throw error;
@@ -658,13 +676,14 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_team, scope_intake, status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, people!actions_scope_person_id_fkey(name), status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");
   if (error) throw error;
   const rows = data as unknown as ((typeof data)[number] & {
     managers: { display_name: string } | null;
+    people: { name: string | null } | null;
   })[];
   const { data: notices, error: noticesError } = await createAdminClient()
     .from("notices")
@@ -672,13 +691,15 @@ export async function listActions(organisationId: string) {
     .eq("organisation_id", organisationId);
   if (noticesError) throw noticesError;
   return Promise.all(
-    rows.map(async ({ managers, ...row }) => {
+    rows.map(async ({ managers, people, ...row }) => {
       const queued = notices.filter((notice) => notice.action_id === row.id);
       const sent = queued.filter((notice) => notice.sent_at);
       const last = sent.map((notice) => notice.sent_at as string).sort().at(-1);
       const result = row.status === "done" ? await scoreOf(row) : null;
       return {
         ...row,
+        scope_person_id: undefined,
+        scope_name: people?.name ?? null,
         owner: managers?.display_name ?? (row.status === "draft" ? null : "HR"),
         overdue: ["assigned", "accepted"].includes(row.status) && row.due_on !== null && row.due_on < today,
         alert_label: demoLabel(org, row.held && managers !== null),
@@ -739,7 +760,7 @@ export async function actionDetail(organisationId: string, id: string) {
   return {
     ...row,
     library: library < 0 ? null : { title: entry.title, rank: library + 1, used: entry.used, difference: entry.difference },
-    hires: row.hiring_side || !row.scope_type ? null : (await members(row, false)).length,
+    hires: row.hiring_side || !row.scope_type ? null : row.scope_type === "person" ? 1 : (await members({ ...row, scope_person_id: null }, false)).length,
     recheck: { asked: asked ?? 0, answered: linked.filter((response) => response.question_id === row.driver).length },
     follow_up: {
       answers: taps.length,

@@ -10,6 +10,7 @@ import { Card, Loading, dayLabel } from "@/components/sapa/ui";
 
 type Case = Concern & {
   team: string;
+  name: string | null;
   text: string | null;
   language: string;
   sent_by_bot: string[];
@@ -36,7 +37,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </Link>
         <h1 className="sp-page-title">{categoryName(c.category)}</h1>
         <p className="m-0 text-[15px]">
-          <span className="font-semibold">A new hire</span>
+          <span className="font-semibold">{c.name ?? "A new hire"}</span>
           <span className="sp-muted"> · {c.team}{c.touchpoint !== null ? ` · ${dayLabel(c.touchpoint)}` : ""}</span>
         </p>
         <span className="inline-flex items-center gap-1.5 text-[13px] sp-muted">

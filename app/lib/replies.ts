@@ -12,8 +12,8 @@ import { fillTopic, type Schedule } from "@/lib/checkin";
 import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const byline = (team: string | null | undefined, touchpoint: number | null | undefined) =>
-  ["A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`].filter(Boolean).join(" · ");
+const byline = (name: string | null | undefined, team: string | null | undefined, touchpoint: number | null | undefined) =>
+  [name ?? "A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`].filter(Boolean).join(" · ");
 
 type Entry = { from: "bot" | "new_hire"; kind: "fixed" | "ai" | "tap" | "text"; text: string; en?: string; echo?: string; score?: number };
 
@@ -59,13 +59,13 @@ export async function readReplies(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("responses")
     .select(
-      "id, question_id, schedule_id, text_encrypted, language, created_at, people(team), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
+      "id, question_id, schedule_id, text_encrypted, language, created_at, people(team, name), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
     )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;
-  type Joined = { people: { team: string | null } | null; checkin_schedule: (Pick<Schedule, "recheck_driver" | "chat"> & { touchpoint: number }) | null; ai_tags: { evidence_quote?: string | null } | null };
+  type Joined = { people: { team: string | null; name: string | null } | null; checkin_schedule: (Pick<Schedule, "recheck_driver" | "chat"> & { touchpoint: number }) | null; ai_tags: { evidence_quote?: string | null } | null };
   const schedules = [...new Set(data.map((row) => row.schedule_id).filter(Boolean))];
   const { data: taps, error: tapsError } = await db
     .from("responses")
@@ -89,7 +89,7 @@ export async function readReplies(organisationId: string, actor: string) {
         text,
         language: row.language,
         created_at: row.created_at,
-        byline: byline(joined.people?.team, joined.checkin_schedule?.touchpoint),
+        byline: byline(joined.people?.name, joined.people?.team, joined.checkin_schedule?.touchpoint),
         ...joined.ai_tags,
         evidence_quote: joined.ai_tags?.evidence_quote ? mask(joined.ai_tags.evidence_quote) : null,
         log: chatLog({ ...row, text }, joined.checkin_schedule, row.schedule_id ? taps.filter((tap) => tap.schedule_id === row.schedule_id) : []),
@@ -148,7 +148,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team), checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team, name), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -157,7 +157,7 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string | null } | null; checkin_schedule: { touchpoint: number } | null } })[];
+  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string | null; name: string | null } | null; checkin_schedule: { touchpoint: number } | null } })[];
   const { data: held, error: heldError } = await db
     .from("quality_holds")
     .select("driver, language, reason")
@@ -182,7 +182,7 @@ export async function readQueue(organisationId: string, actor: string) {
         summary: row.summary ? mask(row.summary) : null,
         text,
         language: responses.language,
-        byline: byline(responses.people?.team, responses.checkin_schedule?.touchpoint),
+        byline: byline(responses.people?.name, responses.people?.team, responses.checkin_schedule?.touchpoint),
         note:
           challenged_at && !challenge_resolved_at
             ? challenged

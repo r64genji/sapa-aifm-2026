@@ -4,7 +4,7 @@
     "name": "Contoh Global Business Services (Penang) Sdn Bhd",
     "time_zone": "Asia/Kuala_Lumpur",
     "hr_language": "en",
-    "min_group_size": 5,
+    "min_group_size": 1,
     "retention_days": 182,
     "demo_offset_days": 0,
     "demo_mode": true,

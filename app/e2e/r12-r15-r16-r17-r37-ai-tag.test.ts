@@ -73,6 +73,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   await Promise.all([wrongTwice, wrongOnce, badJson, down, fallback, capped, spender].map((chat) => joined(chat, "2026-10-02")));
   const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal((await res.json()).sent, 8);

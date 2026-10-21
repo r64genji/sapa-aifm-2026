@@ -71,6 +71,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   await joined(shared, "2026-10-02");
   await joined(hrOnly, "2026-10-02");
   await joined(escalated, "2026-10-02");

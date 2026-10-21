@@ -6,6 +6,7 @@ import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy
 import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
+  askName,
   moveState,
   joinIntake,
   personByChat,
@@ -13,6 +14,7 @@ import {
   redeemInvite,
   setFirstJob,
   setLanguage,
+  setName,
   stopPerson,
   type Person,
 } from "@/lib/directory";
@@ -98,7 +100,8 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      return { replies: [{ text: pack.help }, { text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] }] };
+      await askName(person);
+      return { replies: [{ text: pack.help }, { text: pack.yourName.question }] };
     }
   }
   if (id === "firstjob" && person.state === "active" && (value === "yes" || value === "no")) {
@@ -181,6 +184,12 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   }
   if (person.state === "active" && input.kind === "text" && (!command || command === "ask")) {
     if (!command) {
+      const name = input.text.trim().replace(/\s+/g, " ");
+      if (person.awaiting_name && /^[^?!@\d]{2,60}$/u.test(name) && name.split(" ").length <= 5) {
+        const pack = packs[person.language];
+        await setName(person, name);
+        return { replies: [{ text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] }] };
+      }
       const replies = await checkinText(person, input.text);
       if (replies) return { replies };
     }

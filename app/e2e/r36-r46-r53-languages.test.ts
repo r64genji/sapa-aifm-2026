@@ -64,7 +64,8 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
 
   await tap(chat, zh.agree);
   assert.equal((await texts()).at(-2), `你选了“${zh.agree}”。 ${zh.help}`);
-  assert.equal((await texts()).at(-1), zh.firstJob.question);
+  assert.equal((await texts()).at(-1), zh.yourName.question);
+  await say(chat, "王小明");
 });
 
 test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and nothing of the translation is stored", async () => {
@@ -128,6 +129,7 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await link(other, token);
   await tapData(other, 'chat:{"a":"lang","v":"zh"}');
   await tap(other, zh.agree);
+  await say(other, "王小明");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await tapScore(other, 4);
   await tapScore(other, 3);

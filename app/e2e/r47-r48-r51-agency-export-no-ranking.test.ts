@@ -197,6 +197,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
     await link(chat, token);
     await tap(chat, "Bahasa Malaysia");
     await tap(chat, ms.agree);
+    await say(chat, "Test Hire");
   }
   for (const chat of askers.slice(0, 5)) await ask(chat, overtime.id);
   for (const chat of askers.slice(0, 4)) await ask(chat, payday.id);

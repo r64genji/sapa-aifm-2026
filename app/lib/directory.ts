@@ -15,10 +15,12 @@ export type Person = {
   telegram_chat_id: number | null;
   intake_id: string | null;
   team: string | null;
+  name: string | null;
+  awaiting_name: boolean | null;
 };
 
 const personColumns =
-  "id, organisation_id, language, state, telegram_chat_id, intake_id, team";
+  "id, organisation_id, language, state, telegram_chat_id, intake_id, team, name, awaiting_name";
 
 export async function addHire(
   organisationId: string,
@@ -188,6 +190,16 @@ export async function setLanguage(person: Person, language: Language) {
 
 export async function setFirstJob(person: Person, firstJob: boolean) {
   const { error } = await createAdminClient().from("people").update({ first_job: firstJob }).eq("id", person.id).is("first_job", null);
+  if (error) throw error;
+}
+
+export async function setName(person: Person, name: string) {
+  const { error } = await createAdminClient().from("people").update({ name, awaiting_name: false }).eq("id", person.id).is("name", null);
+  if (error) throw error;
+}
+
+export async function askName(person: Person) {
+  const { error } = await createAdminClient().from("people").update({ awaiting_name: true }).eq("id", person.id);
   if (error) throw error;
 }
 

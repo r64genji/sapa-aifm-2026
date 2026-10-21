@@ -1,9 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./live.css";
 import { Shield } from "lucide-react";
-import { apiGet } from "./data";
+import { apiGet, apiSend } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
 export type ReplyItem = {
@@ -223,6 +224,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
 export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fresh, whole: full }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
   const [whole, setWhole] = useState(!!full || !item.text);
   const run = async (action: () => Promise<unknown>) => {
     setBusy(true);
@@ -293,6 +295,19 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           ) : tagged && !item.serious && !item.escalate ? (
             <Button disabled={busy} onClick={() => setOpen(true)}>
               Change
+            </Button>
+          ) : null}
+          {item.drivers.length && !item.serious && !item.escalate ? (
+            <Button
+              disabled={busy}
+              onClick={() =>
+                run(async () => {
+                  const { id } = await apiSend<{ id: string }>("/api/hr/actions", "POST", { driver: item.drivers[0], response_id: item.id });
+                  router.push(`/fixes/new?id=${id}`);
+                })
+              }
+            >
+              Send to their manager
             </Button>
           ) : null}
           {awaiting ? (

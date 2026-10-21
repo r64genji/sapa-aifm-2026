@@ -25,7 +25,6 @@ const [sharer, hrOnly] = [5550001101, 5550001102];
 const aishaChat = 5550001001;
 const sharerText = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 const hrOnlyText = "Nobody told me who to ask when the line stops";
-const themeCard = "/api/hr/themes?touchpoint=14";
 const nightly = () =>
   fetch(`${appUrl}/api/nightly`, { method: "POST", headers: { authorization: `Bearer ${process.env.DISPATCH_SECRET}` } });
 const asManager = (path: string, token: string, method = "GET", body?: Record<string, unknown>) =>
@@ -104,17 +103,30 @@ before(async () => {
   await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
 });
 
-test("R10: Draft action on any reply is blocked and points to the theme card", async () => {
-  for (const text of [hrOnlyText, sharerText]) {
-    const blocked = await draft("Never used", "ROLE_CLARITY", 1, await replyId(text));
-    assert.equal(blocked.status, 409);
-    assert.equal(blocked.body.theme_card, themeCard);
-    assert.match(blocked.body.error, /never shared with a manager/);
-  }
-  assert.deepEqual(await board(), []);
+test("R10: a fix from one reply goes only to that hire's own manager, at once, with no name and no words", async () => {
+  const citraChat = 5550001003;
+  const citra = await (await hrRequest("/api/hr/managers", "POST", { display_name: "Citra", email: "citra-r10@contoh.test" })).json();
+  await link(citraChat, String(citra.telegram_link).split("?start=")[1]);
+  await hrRequest(`/api/hr/managers/${citra.manager_id}/hires`, "POST", { code_names: [`Hire ${hrOnly}`] });
+
+  const made = await draft("Name the escalation contact", "ROLE_CLARITY", 1, await replyId(hrOnlyText));
+  assert.equal(made.status, 201);
+  const view = await (await hrRequest(`/api/hr/actions/${made.body.id}/draft`, "GET")).json();
+  assert.deepEqual(view.scopes.map((s: { type: string; label: string; managers: { name: string }[] }) => [s.type, s.label, s.managers.map((m) => m.name)]), [
+    ["person", "Test Hire (Accounts Payable Asia)", ["Citra"]],
+  ]);
+
+  const wrong = await hrRequest(`/api/hr/actions/${made.body.id}/assign`, "POST", { owner: { manager_id: aisha }, due_in_days: 7 });
+  assert.equal(wrong.status, 422);
+  const right = await hrRequest(`/api/hr/actions/${made.body.id}/assign`, "POST", { owner: { manager_id: citra.manager_id }, due_in_days: 7 });
+  assert.equal(right.status, 200);
+  assert.equal((await right.json()).alert_sent, true);
+
+  const [message] = await alertTo(citraChat, "Name the escalation contact");
+  assert.doesNotMatch(String(message.text), /Test Hire|Nobody told me|last weekly snapshot/);
 });
 
-test("R10, R41: scope one person is always refused", async () => {
+test("R10: scope one person is refused unless the action starts from a reply", async () => {
   const fromCard = await draft("Card action", "ROLE_CLARITY", 2);
   assert.equal(fromCard.status, 201);
 

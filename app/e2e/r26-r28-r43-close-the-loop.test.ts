@@ -36,6 +36,7 @@ async function onboard(chat: number, fields: Record<string, string>, language = 
   await link(chat, token);
   await tap(chat, language);
   await tap(chat, agree);
+  await say(chat, "Test Hire");
 }
 
 async function baseline(chat: number, scores: number[], text: string) {

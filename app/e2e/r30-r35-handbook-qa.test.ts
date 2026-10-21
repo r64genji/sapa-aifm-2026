@@ -345,6 +345,7 @@ test("R31, R36: a Chinese question gets a Chinese answer quoting the Chinese han
   await link(chat, token);
   await tapData(chat, 'chat:{"a":"lang","v":"zh"}');
   await tap(chat, zh.agree);
+  await say(chat, "王小明");
   const quote = "申请加班费时，请在当天填写加班表格，并交给主管签字。";
   await script(
     overtimeOutput({

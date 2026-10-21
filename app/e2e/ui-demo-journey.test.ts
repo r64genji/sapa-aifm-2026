@@ -22,6 +22,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   browser = await chromium.launch();
   page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${appUrl}/auth/login`);

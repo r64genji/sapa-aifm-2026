@@ -13,6 +13,7 @@ import {
   liveInvite,
   modelCalls,
   resetDemo,
+  resetSeed,
   say,
   scriptModel,
   tap,
@@ -53,6 +54,7 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await tapScore(live, 4);
   await tapScore(live, 3);
@@ -134,11 +136,18 @@ test("R25: a corrected tag, a follow-up change and a minimum-group change each w
   assert.equal(korean.cards[0].message, "Not enough people yet (3 of 6 needed)");
 });
 
-test("R8: the minimum group size cannot be set below 5", async () => {
-  for (const value of [4, 0, -1, 5.5]) {
+test("R8: the minimum group size cannot be set below 1", async () => {
+  for (const value of [0, -1, 5.5]) {
     assert.equal((await hrRequest("/api/hr/settings", "PUT", { min_group_size: value })).status, 400);
   }
   const { data } = await db.from("organisations").select("min_group_size");
   assert.deepEqual(data, [{ min_group_size: 6 }]);
+  assert.equal((await hrRequest("/api/hr/settings", "PUT", { min_group_size: 1 })).status, 200);
   assert.equal((await hrRequest("/api/hr/settings", "PUT", { min_group_size: 5 })).status, 200);
+});
+
+test("R8: the demo seed has no minimum group", async () => {
+  await resetSeed();
+  const { data } = await db.from("organisations").select("min_group_size");
+  assert.deepEqual(data, [{ min_group_size: 1 }]);
 });

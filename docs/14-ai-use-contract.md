@@ -94,7 +94,7 @@ The phone number goes only to HR. It never goes to the AI or the manager. HR nev
 - NRIC numbers, phone numbers and email addresses are masked before any text leaves Sapa (R17).
 - Replies are sent to the AI as data, not as instructions. The AI has no tools.
 - Summaries use only counts and short masked summaries, never raw replies.
-- The AI never sees names. HR adds each new hire with a code name.
+- The AI never sees names. A new hire's name stays in the people table and is added to the label HR sees after the AI has finished.
 
 ## 6. What a new hire can always do
 

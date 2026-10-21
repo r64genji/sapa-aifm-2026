@@ -10,7 +10,7 @@ import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Select,
 type Notes = { en: string; ms: string; zh: string };
 type Entry = { id: string; title: string; text: string; notes: Partial<Notes> | null; custom: boolean; result: string };
 type Scope = {
-  type: "team" | "intake";
+  type: "person" | "team" | "intake";
   key: string;
   label: string;
   n: number;
@@ -306,7 +306,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
         title: title.trim(),
         steps: steps.trim(),
         ...(ownFix ? { own_fix: true } : entry ? { library_entry_id: entry.id } : {}),
-        scope: target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
+        scope: target.type === "person" ? { type: "person" } : target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
       if (multi) {
@@ -682,8 +682,8 @@ function Page() {
   useEffect(() => {
     if (resume || !driver || started.current) return;
     started.current = true;
-    apiGet<{ id: string; driver: string; status: string; hiring_side: boolean }[]>("/api/hr/actions")
-      .then((actions) => actions.find((a) => a.status === "draft" && a.driver === driver && !a.hiring_side) ?? apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }))
+    apiGet<{ id: string; driver: string; status: string; hiring_side: boolean; source: string }[]>("/api/hr/actions")
+      .then((actions) => actions.find((a) => a.status === "draft" && a.driver === driver && !a.hiring_side && a.source !== "reply") ?? apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }))
       .then(({ id }) => setId(id), (e) => setError(fail(e)));
   }, [driver, resume]);
 

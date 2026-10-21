@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, chatPerson, db, freezeClock, link, resetDemo, sentTo, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite, teamInvites } from "./helpers.ts";
+import { addHire, chatPerson, db, freezeClock, link, resetDemo, sentTo, say, tap, tapData, telegramCalls, hrToken, appUrl, liveInvite, teamInvites } from "./helpers.ts";
 
 const pack = (language: string) =>
   JSON.parse(readFileSync(new URL(`../data/packs/${language}.json`, import.meta.url), "utf8"));
@@ -30,13 +30,18 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.firstJob.question]);
+  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.yourName.question]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
 
   const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at").eq("person_id", livePerson);
   assert.deepEqual(consents, [{ text_version: en.consentVersion, scope: "hr_only", withdrawn_at: null }]);
+
+  await say(chat, "Aina Rahman");
+  assert.equal((await texts(chat)).at(-1), en.firstJob.question);
+  const { data: named } = await db.from("people").select("name").eq("id", livePerson).single();
+  assert.deepEqual(named, { name: "Aina Rahman" });
 
   await tap(chat, en.firstJob.yes);
   assert.equal((await texts(chat)).at(-1), `You tapped "${en.firstJob.yes}". ${en.firstJob.thanks}`);
@@ -78,7 +83,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.firstJob.question]);
+    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.yourName.question]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }

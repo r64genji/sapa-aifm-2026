@@ -18,6 +18,7 @@ test("R19, R23: Outreach now sends the chosen check-in to a joined phone, not to
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   const before = (await sentTo(live)).length;
 
   const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
@@ -93,6 +94,7 @@ test("R19: Outreach now sends the check-in to every joined phone", async () => {
     await link(chat, liveInvite);
     await tap(chat, "English");
     await tap(chat, en.agree);
+    await say(chat, "Test Hire");
   }
   const before = [(await sentTo(live)).length, (await sentTo(second)).length];
 

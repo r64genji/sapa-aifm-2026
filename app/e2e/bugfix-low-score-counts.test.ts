@@ -25,6 +25,7 @@ test("Bug fix: a hire who scores workload 1 and types nothing about it counts fo
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await say(live, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const score of [4, 3, 5, 3, 3, 1, 3]) await tapScore(live, score);
   await scriptModel("omniroute", [

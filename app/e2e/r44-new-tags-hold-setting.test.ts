@@ -12,6 +12,7 @@ async function onboard(chat: number) {
   await link(chat, token);
   await tap(chat, "Bahasa Malaysia");
   await tap(chat, ms.agree);
+  await say(chat, "Test Hire");
 }
 
 async function answer(chat: number, drivers: string[]) {
