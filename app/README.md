@@ -34,6 +34,10 @@ REHEARSAL_CHAT_ID=<your Telegram chat ID> npm run rehearsal
 
 Run before each rehearsal, not on every commit. It runs required journey 2 against the deployed app (`APP_URL`, default https://sapa-aifm-2026.vercel.app) with the real model and the real Telegram Bot API: it resets the demo seed, binds the live hire to your chat (message the bot once first, so Telegram lets it write to you), sends scripted updates to the real webhook, then does the HR and manager steps through the real routes. It ends when the action is done, the notice is sent and the Day 30 check-in carries the neutral 1-5 question, then resets the seed again and checks it is restored. The last line is `REHEARSAL PASS: ...` or `REHEARSAL FAIL: ...`. Needs `.env.local`.
 
+## Production database
+
+A Vercel deploy does not run migrations. After a commit that adds one, apply it to prod from `app/` with `npx supabase db push --yes` (this checkout is linked to the prod project). Do not use the Supabase MCP `apply_migration` for this: it asks for a confirmation the app cannot show, so any migration with a `drop` or `update` comes back `declined`.
+
 ## Production jobs
 
 Two `pg_cron` jobs on the cloud Supabase project call the app with `Authorization: Bearer $DISPATCH_SECRET`. They are created by SQL, not by a migration, so the secret stays out of git. `sapa-dispatch` runs every minute (`* * * * *`) and posts to `/api/dispatch`. `sapa-nightly` runs at 03:00 Kuala Lumpur time (`0 19 * * *` UTC) and posts to `/api/nightly`: retention purge, weekly snapshots, held manager alerts and spot checks. Without it none of these run.
