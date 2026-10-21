@@ -157,7 +157,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030049",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -607,7 +607,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030175",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -657,7 +657,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030189",
     "status": "ok",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -707,7 +707,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030203",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -782,7 +782,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030224",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -1006,7 +1006,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030287",
     "status": "ok",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -1031,7 +1031,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030294",
     "status": "ok",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -1081,7 +1081,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030308",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -1155,7 +1155,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030329",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,
@@ -1479,7 +1479,7 @@
     "response_id": "6f1c2a3e-0000-4000-8000-000000030420",
     "status": "reviewed",
     "drivers": [
-      "ONBOARDING_TRAINING"
+      "TRAINING"
     ],
     "context_tags": [],
     "positive": false,

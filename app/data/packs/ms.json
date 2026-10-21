@@ -82,10 +82,23 @@
         ]
       },
       {
-        "id": "ONBOARDING_TRAINING",
-        "driver": "ONBOARDING_TRAINING",
+        "id": "ONBOARDING",
+        "driver": "ONBOARDING",
         "type": "scale",
-        "text": "Sejauh mana latihan anda menyediakan anda untuk kerja anda minggu ini?",
+        "text": "Sejauh mana arah tuju syarikat, polisi dan prosedur jelas kepada anda minggu ini?",
+        "labels": [
+          "Tidak jelas",
+          "Sedikit jelas",
+          "Agak jelas",
+          "Jelas",
+          "Sangat jelas"
+        ]
+      },
+      {
+        "id": "TRAINING",
+        "driver": "TRAINING",
+        "type": "scale",
+        "text": "Sejauh mana latihan kerja anda menyediakan anda untuk kerja anda minggu ini?",
         "labels": [
           "Langsung tidak",
           "Kurang baik",
@@ -141,7 +154,8 @@
       "ROLE_CLARITY": "peranan dan tugas anda",
       "MANAGER_SUPPORT": "sokongan daripada pengurus anda",
       "BELONGING": "pasukan anda",
-      "ONBOARDING_TRAINING": "latihan anda",
+      "ONBOARDING": "orientasi anda",
+      "TRAINING": "latihan anda",
       "WORKLOAD": "beban kerja anda"
     },
     "gotIt": "Baik, difahami. Jawapan anda telah disimpan dan HR akan melihatnya.",
@@ -175,7 +189,8 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
-      "ONBOARDING_TRAINING",
+      "ONBOARDING",
+      "TRAINING",
       "WORKLOAD",
       "OPEN"
     ],
@@ -255,7 +270,23 @@
             "lunch"
           ]
         },
-        "ONBOARDING_TRAINING": {
+        "ONBOARDING": {
+          "open": "Polisi, prosedur atau faedah yang mana masih tidak jelas kepada anda?",
+          "words": [
+            "polisi",
+            "prosedur",
+            "faedah",
+            "arah",
+            "orientasi",
+            "onboarding",
+            "peraturan",
+            "tuntutan",
+            "cuti",
+            "buku panduan",
+            "hr"
+          ]
+        },
+        "TRAINING": {
           "open": "Bahagian kerja yang mana tidak diliputi oleh latihan anda?",
           "words": [
             "latih",
@@ -391,7 +422,7 @@
   "end": "Semakan anda telah tamat. Jawapan anda disimpan sehingga {date}. Taip DELETE untuk memadamkannya sekarang.",
   "exit": {
     "question": "Satu soalan terakhir, jika anda sudi: apakah sebab utama anda berhenti?",
-    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Rasa diterima", "ONBOARDING_TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
+    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Integrasi pasukan", "ONBOARDING": "Orientasi", "TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
     "open": "Adakah anda mahu menambah apa-apa? Sila taip.",
     "thanks": "Terima kasih. Sapa tidak akan menghantar mesej lagi."
   },
@@ -416,8 +447,9 @@
   "labels": {
     "ROLE_CLARITY": "Kejelasan tugas",
     "MANAGER_SUPPORT": "Sokongan daripada pengurus",
-    "BELONGING": "Rasa sebahagian daripada pasukan",
-    "ONBOARDING_TRAINING": "Latihan",
+    "BELONGING": "Integrasi pasukan",
+    "ONBOARDING": "Orientasi",
+    "TRAINING": "Latihan",
     "WORKLOAD": "Beban kerja",
     "PAY_BENEFITS": "Gaji dan faedah",
     "GROWTH": "Peluang berkembang",

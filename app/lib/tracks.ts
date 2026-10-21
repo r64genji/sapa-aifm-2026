@@ -1,6 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD", "OPEN"];
+export const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN"];
 
 export type Track = { id: "new_hire" | "employee"; name: string; days: number[]; questions: string[] };
 

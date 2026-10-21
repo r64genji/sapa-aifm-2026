@@ -56,7 +56,7 @@ let seed: { n: number; m: number; reviewed: number; ai_confident: number };
 
 test("R17, R22: the reply reaches the model masked, and the same update sent again changes nothing", async () => {
   seed = await roleClarity();
-  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(live, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   const body = update("text", { chat_id: live, text: reply });
   assert.equal((await postUpdate(body)).status, 200);
@@ -87,6 +87,6 @@ test("R8, R51: the Korean Desk team view says Not enough people yet (3 of 5 need
   const res = await hrRequest("/api/hr/themes?team=Korean%20Desk", "GET");
   assert.equal(res.status, 200);
   const body = await res.json();
-  assert.equal(body.cards.length, 5);
+  assert.equal(body.cards.length, 6);
   assert.ok(body.cards.every((card: { enough: boolean; message: string }) => !card.enough && card.message === "Not enough people yet (3 of 5 needed)"));
 });

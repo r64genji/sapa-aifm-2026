@@ -42,6 +42,7 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, ...tag }) }]);
   await say(chat, text);
 }
@@ -55,7 +56,8 @@ const production = {
     ROLE_CLARITY: 6,
     MANAGER_SUPPORT: "fewer than 3",
     BELONGING: "fewer than 3",
-    ONBOARDING_TRAINING: "fewer than 3",
+    ONBOARDING: "fewer than 3",
+    TRAINING: "fewer than 3",
     WORKLOAD: "fewer than 3",
   },
 };
@@ -122,7 +124,8 @@ test("R9: the snapshot does not move when HR confirms a label, and the nightly j
         ROLE_CLARITY: 9,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
-        ONBOARDING_TRAINING: "fewer than 3",
+        ONBOARDING: "fewer than 3",
+        TRAINING: "fewer than 3",
         WORKLOAD: "fewer than 3",
       },
     },
@@ -181,6 +184,7 @@ test("R7: a crisis reply is escalated by keyword while the model is down", async
   await tapScore(waiting, 4);
   await tapScore(waiting, 3);
   await tapScore(waiting, 5);
+  await tapScore(waiting, 3);
   await scriptModel("omniroute", [{ kind: "timeout" }]);
   await scriptModel("deepseek", [{ kind: "timeout" }]);
   const crisisText = "I can't take it anymore, I want to kill myself";

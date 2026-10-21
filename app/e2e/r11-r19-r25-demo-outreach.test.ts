@@ -37,13 +37,15 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
   await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts.map((text) => String(text).replace(/^You tapped "[^"]*"\. /, "")), [
     question("MANAGER_SUPPORT"),
     question("BELONGING"),
-    question("ONBOARDING_TRAINING"),
+    question("ONBOARDING"),
+    question("TRAINING"),
     question("WORKLOAD"),
     question("JOB_MATCH"),
     en.checkin.chat.light,
@@ -56,8 +58,8 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
     .eq("person_id", (await chatPerson(live)).id);
   const byQuestion = Object.fromEntries(rows!.map((r) => [r.question_id, r]));
   assert.deepEqual(
-    ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD", "JOB_MATCH"].map((id) => byQuestion[id].scale_value),
-    [4, 3, 5, 3, 3, 3],
+    ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "JOB_MATCH"].map((id) => byQuestion[id].scale_value),
+    [4, 3, 5, 3, 3, 3, 3],
   );
   assert.ok(byQuestion.OPEN.text_encrypted);
   assert.ok(!byQuestion.OPEN.text_encrypted.includes("urgent"));

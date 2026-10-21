@@ -57,7 +57,7 @@ test("R51: teams under 5 in one tower pool into one tower row, listed by the sam
 });
 
 test("R51: a team under 5 never appears alone, and a manager gets a refusal on the list", async () => {
-  for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"]) {
+  for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"]) {
     const body = await (await teams(driver)).json();
     for (const row of body.rows) assert.ok(!(row.kind === "team" && ["Japanese Desk", "Korean Desk", "Thai Desk", "Order-to-Cash Asia", "Record-to-Report"].includes(row.name)), `${driver} lists ${row.name}`);
   }

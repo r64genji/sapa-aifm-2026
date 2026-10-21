@@ -33,7 +33,7 @@ as $$
     join scope sc on sc.id = r.schedule_id
     where r.scale_value is not null
       and sc.id in (select schedule_id from counted)
-      and r.question_id in ('ROLE_CLARITY', 'MANAGER_SUPPORT', 'BELONGING', 'ONBOARDING_TRAINING', 'WORKLOAD')
+      and r.question_id in ('ROLE_CLARITY', 'MANAGER_SUPPORT', 'BELONGING', 'ONBOARDING', 'TRAINING', 'WORKLOAD')
       and not exists (
         select 1 from responses e
         left join escalations x on x.response_id = e.id

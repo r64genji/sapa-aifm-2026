@@ -1,7 +1,7 @@
 import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+export const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const CONTEXT = ["PAY_BENEFITS", "GROWTH", "COMMUTE_LOGISTICS"];
 
 export type Counts = {

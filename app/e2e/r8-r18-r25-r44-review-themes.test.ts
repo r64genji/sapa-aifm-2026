@@ -60,6 +60,7 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 

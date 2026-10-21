@@ -30,8 +30,9 @@
     "drivers": {
       "ROLE_CLARITY": "role clarity",
       "MANAGER_SUPPORT": "manager support",
-      "BELONGING": "belonging",
-      "ONBOARDING_TRAINING": "onboarding and training",
+      "BELONGING": "team integration",
+      "ONBOARDING": "onboarding",
+      "TRAINING": "training",
       "WORKLOAD": "workload"
     }
   },
@@ -114,10 +115,23 @@
         ]
       },
       {
-        "id": "ONBOARDING_TRAINING",
-        "driver": "ONBOARDING_TRAINING",
+        "id": "ONBOARDING",
+        "driver": "ONBOARDING",
         "type": "scale",
-        "text": "How well has your training prepared you for your work this week?",
+        "text": "How clear are the company's direction, policies and procedures to you this week?",
+        "labels": [
+          "Not clear",
+          "A little clear",
+          "Somewhat clear",
+          "Clear",
+          "Very clear"
+        ]
+      },
+      {
+        "id": "TRAINING",
+        "driver": "TRAINING",
+        "type": "scale",
+        "text": "How well is your job training preparing you for your work this week?",
         "labels": [
           "Not at all",
           "Poorly",
@@ -173,7 +187,8 @@
       "ROLE_CLARITY": "your role",
       "MANAGER_SUPPORT": "support from your manager",
       "BELONGING": "your team",
-      "ONBOARDING_TRAINING": "your training",
+      "ONBOARDING": "your onboarding",
+      "TRAINING": "your training",
       "WORKLOAD": "your workload"
     },
     "gotIt": "Got it. Your answer is saved and HR will look at it.",
@@ -207,7 +222,8 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
-      "ONBOARDING_TRAINING",
+      "ONBOARDING",
+      "TRAINING",
       "WORKLOAD",
       "OPEN"
     ],
@@ -290,7 +306,25 @@
             "social"
           ]
         },
-        "ONBOARDING_TRAINING": {
+        "ONBOARDING": {
+          "open": "Which company policy, procedure or benefit is still unclear to you?",
+          "words": [
+            "policy",
+            "policies",
+            "procedure",
+            "benefit",
+            "direction",
+            "orientation",
+            "onboard",
+            "induction",
+            "rules",
+            "claim",
+            "leave",
+            "handbook",
+            "hr"
+          ]
+        },
+        "TRAINING": {
           "open": "Which part of your work did the training not cover?",
           "words": [
             "train",
@@ -452,7 +486,7 @@
   "end": "Your check-ins have ended. Your answers are kept until {date}. Type DELETE to remove them now.",
   "exit": {
     "question": "One last question, if you are willing: what was the main reason you left?",
-    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Belonging", "ONBOARDING_TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
+    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Team integration", "ONBOARDING": "Onboarding", "TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
     "open": "Is there anything you want to add? Please type it.",
     "thanks": "Thank you. Sapa will not message you again."
   },
@@ -477,8 +511,9 @@
   "labels": {
     "ROLE_CLARITY": "Role clarity",
     "MANAGER_SUPPORT": "Support from your manager",
-    "BELONGING": "Feeling part of the team",
-    "ONBOARDING_TRAINING": "Training",
+    "BELONGING": "Team integration",
+    "ONBOARDING": "Onboarding",
+    "TRAINING": "Training",
     "WORKLOAD": "Workload",
     "PAY_BENEFITS": "Pay and benefits",
     "GROWTH": "Growth",

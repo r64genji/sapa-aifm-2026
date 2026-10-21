@@ -7,7 +7,7 @@ import { Button, Loading, PageHeader, driverName } from "@/components/sapa/ui";
 
 type Track = { id: "new_hire" | "employee"; name: string; days: number[]; questions: string[] };
 
-const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD", "OPEN"];
+const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN"];
 const label = (id: string) => (id === "OPEN" ? "Open question" : driverName(id));
 const sameTracks = (a: Track[], b: Track[]) => JSON.stringify(a) === JSON.stringify(b);
 

@@ -43,14 +43,14 @@
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "language": "en",
     "done": 15,
     "changed": 1
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "language": "ms",
     "done": 11,
     "changed": 0

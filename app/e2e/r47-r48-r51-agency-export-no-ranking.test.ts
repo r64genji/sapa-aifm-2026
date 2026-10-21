@@ -30,7 +30,7 @@ const groups: { id: string; text: string }[] = read("../data/seed/question_group
 const ms = read("../data/packs/ms.json");
 const overtime = groups.find((g) => g.text === "How do I claim overtime?")!;
 const payday = groups.find((g) => g.text === "When is my first payday?")!;
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const trend = "This shows a trend, not proof that Sapa caused it";
 
 function seededThemes(match: (person: Person) => boolean) {
@@ -207,7 +207,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
 
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const chat of answerers) {
-    for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
+    for (const score of [4, 3, 5, 3, 3, 3, 3]) await tapScore(chat, score);
     await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
     await say(chat, "Bos bagi tiga tugas semua penting, saya tak tahu mana nak buat dulu");
   }
@@ -323,7 +323,8 @@ test("R51: HR can open the themes of one chosen team, and the Korean desk reads 
     { driver: "ROLE_CLARITY", enough: false, message },
     { driver: "MANAGER_SUPPORT", enough: false, message },
     { driver: "BELONGING", enough: false, message },
-    { driver: "ONBOARDING_TRAINING", enough: false, message },
+    { driver: "ONBOARDING", enough: false, message },
+    { driver: "TRAINING", enough: false, message },
     { driver: "WORKLOAD", enough: false, message },
   ]);
 });

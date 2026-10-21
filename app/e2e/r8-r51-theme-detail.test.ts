@@ -53,7 +53,7 @@ test("R51: a team view never splits further by intake or role", async () => {
 });
 
 test("Every count on the detail route matches GET /api/hr/themes for the same touchpoint", async () => {
-  for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"]) {
+  for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"]) {
     const cards = (await (await hrRequest("/api/hr/themes?touchpoint=14", "GET")).json()).cards;
     const body = await detail("?touchpoint=14", driver);
     const card = cards.find((candidate: { driver: string }) => candidate.driver === driver);

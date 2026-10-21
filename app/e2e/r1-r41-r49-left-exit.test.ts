@@ -142,6 +142,7 @@ test("R49: the exit answer of a seeded resigned hire is stored as exit rows", as
   await tapScore(sharer, 3);
   await tapScore(sharer, 3);
   await tapScore(sharer, 3);
+  await tapScore(sharer, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(sharer, "tak tahu mana nak buat dulu");
 
@@ -161,6 +162,7 @@ test("R41: an offer to a hire who left shows the same generic reason as for one 
     await tapScore(chat, 4);
     await tapScore(chat, 3);
     await tapScore(chat, 5);
+    await tapScore(chat, 3);
     await tapScore(chat, 3);
     await tapScore(chat, 3);
     await tapScore(chat, 3);

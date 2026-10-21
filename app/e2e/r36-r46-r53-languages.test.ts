@@ -75,6 +75,7 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote, summary: "Unclear task priorities." }) }]);
   await say(chat, reply);
 
@@ -130,6 +131,7 @@ test("R17: HR opening a Chinese reply that holds a phone number sends the model 
   await tapScore(other, 4);
   await tapScore(other, 3);
   await tapScore(other, 5);
+  await tapScore(other, 3);
   await tapScore(other, 3);
   await tapScore(other, 3);
   await tapScore(other, 3);

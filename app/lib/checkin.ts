@@ -40,7 +40,7 @@ export const SCHEDULE = "id, progress, touchpoint, questions, recheck_action_id,
 
 const CHAT_WINDOW_MS = 48 * 3600 * 1000;
 const MAX_PROBES = 0;
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 
 const followUp = (schedule: Schedule) => !!schedule.recheck_action_id && !!schedule.actions?.notes;
 

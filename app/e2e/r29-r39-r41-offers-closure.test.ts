@@ -35,7 +35,7 @@ async function twoReplies(chat: number) {
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, quote);
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();
-  await db.from("checkin_schedule").update({ status: "sent", progress: 5 }).eq("person_id", who!.id).eq("touchpoint", 30);
+  await db.from("checkin_schedule").update({ status: "sent", progress: 6 }).eq("person_id", who!.id).eq("touchpoint", 30);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, quote);
   replies[chat] = await responseIds(chat);
@@ -57,6 +57,7 @@ before(async () => {
     await tapScore(chat, 4);
     await tapScore(chat, 3);
     await tapScore(chat, 5);
+    await tapScore(chat, 3);
     await tapScore(chat, 3);
     await tapScore(chat, 3);
     await tapScore(chat, 3);

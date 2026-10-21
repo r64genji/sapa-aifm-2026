@@ -55,7 +55,7 @@
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "language": "en",
     "state": "trusted",
     "spot_checks_done": 0,
@@ -64,7 +64,7 @@
   },
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "language": "ms",
     "state": "trusted",
     "spot_checks_done": 0,

@@ -12,7 +12,7 @@ const probes = packs.en.checkin.probes;
 
 export const Tag = z.object({
   drivers: z.array(
-    z.enum(["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"]),
+    z.enum(["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"]),
   ),
   context_tags: z.array(z.enum(["PAY_BENEFITS", "GROWTH", "COMMUTE_LOGISTICS"])),
   positive: z.boolean(),
@@ -44,8 +44,9 @@ export const system = `You tag one reply from a new hire to an onboarding check-
 Drivers (tag only what the reply says):
 - ROLE_CLARITY: unclear tasks, priorities or expectations.
 - MANAGER_SUPPORT: little guidance, feedback or help from the supervisor.
-- BELONGING: feeling left out, isolated or unwelcome in the team.
-- ONBOARDING_TRAINING: weak or missing training, orientation or tools.
+- BELONGING: feeling left out, isolated or unwelcome in the team (shown to HR as Team integration).
+- ONBOARDING: unclear company direction, policies, procedures or benefits; weak orientation.
+- TRAINING: weak, missing or off-target job training: not relevant, not enough, or learning is off track.
 - WORKLOAD: too much or too little work, long hours.
 Context tags: PAY_BENEFITS, GROWTH, COMMUTE_LOGISTICS.
 
@@ -63,7 +64,7 @@ ${probes.map((p) => `- ${p.id}: ${p.text}`).join("\n")}
 
 Examples (reply -> drivers, quote):
 - "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu" -> ROLE_CLARITY, "tak tahu mana nak buat dulu"
-- "Nobody showed me how to use the machine, I just watched others" -> ONBOARDING_TRAINING, "Nobody showed me how to use the machine"
+- "Nobody showed me how to use the machine, I just watched others" -> TRAINING, "Nobody showed me how to use the machine"
 - "我的主管很少回答我的问题" -> MANAGER_SUPPORT, "很少回答我的问题"
 - "Everyone eats together but I always sit alone lah" -> BELONGING, "I always sit alone"
 - "Overtime every day, balik pun dah lewat malam" -> WORKLOAD, "Overtime every day"

@@ -31,6 +31,7 @@ before(async () => {
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary }) }]);
   await say(chat, text);
 });
@@ -66,7 +67,8 @@ test("R7: a reply escalated by keyword alone, with a label HR confirmed, is in n
         ROLE_CLARITY: 6,
         MANAGER_SUPPORT: "fewer than 3",
         BELONGING: "fewer than 3",
-        ONBOARDING_TRAINING: "fewer than 3",
+        ONBOARDING: "fewer than 3",
+        TRAINING: "fewer than 3",
         WORKLOAD: "fewer than 3",
       },
     },

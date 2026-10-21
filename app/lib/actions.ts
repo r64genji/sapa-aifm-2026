@@ -12,7 +12,7 @@ import { sendNotices } from "@/lib/scheduler";
 import { mask } from "@/lib/mask";
 import { themeCards } from "@/lib/themes";
 
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const THEME_CARD = "/api/hr/themes?touchpoint=14";
 const text = packs.en.action;

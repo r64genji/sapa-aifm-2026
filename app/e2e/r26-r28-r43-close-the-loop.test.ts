@@ -69,7 +69,7 @@ before(async () => {
   await onboard(p6, { code_name: "Hire 6", team: "IT Service Desk" });
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await baseline(p1, [3, 2, 5, 3, 3, 3], "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
-  await baseline(p2, [4, 3, 5, 3, 3, 3], "Tak ada orang beritahu saya siapa nak tanya");
+  await baseline(p2, [4, 3, 5, 3, 3, 3, 3], "Tak ada orang beritahu saya siapa nak tanya");
   await baseline(p6, [2, 4, 3, 3, 3, 3], "The training felt rushed to me");
   await say(p3, "/stop");
   await say(p4, "DELETE");

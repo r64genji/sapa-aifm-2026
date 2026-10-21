@@ -600,7 +600,7 @@ function QuestionPanel({ g }: { g: Questions["groups"][number] }) {
       </div>
       <span className="sp-muted">{known ? "Many still asked. Say it earlier in onboarding." : "Add it to onboarding so the next group of new hires knows."}</span>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <Button variant="primary" lane="problems" className="min-h-12 px-6 text-[15px]" href={`/fixes/new?driver=ONBOARDING_TRAINING&own=${encodeURIComponent(g.text)}`}>
+        <Button variant="primary" lane="problems" className="min-h-12 px-6 text-[15px]" href={`/fixes/new?driver=ONBOARDING&own=${encodeURIComponent(g.text)}`}>
           Draft an onboarding fix
           <ArrowRight size={17} aria-hidden="true" />
         </Button>
@@ -642,7 +642,8 @@ function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
 function TeamGrid({ drivers }: { drivers: string[] }) {
   const lists: Record<string, Teams | undefined> = {
     ROLE_CLARITY: useApi<Teams>("/api/hr/themes/ROLE_CLARITY/teams", 60000).data,
-    ONBOARDING_TRAINING: useApi<Teams>("/api/hr/themes/ONBOARDING_TRAINING/teams", 60000).data,
+    ONBOARDING: useApi<Teams>("/api/hr/themes/ONBOARDING/teams", 60000).data,
+    TRAINING: useApi<Teams>("/api/hr/themes/TRAINING/teams", 60000).data,
     MANAGER_SUPPORT: useApi<Teams>("/api/hr/themes/MANAGER_SUPPORT/teams", 60000).data,
     BELONGING: useApi<Teams>("/api/hr/themes/BELONGING/teams", 60000).data,
     WORKLOAD: useApi<Teams>("/api/hr/themes/WORKLOAD/teams", 60000).data,

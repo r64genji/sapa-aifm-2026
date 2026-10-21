@@ -125,7 +125,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000804",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "library_entry_id": null,
     "draft_reason": "Written by HR.",
     "source": "theme",
@@ -289,7 +289,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000808",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "library_entry_id": null,
     "draft_reason": "Written by HR.",
     "source": "theme",
@@ -330,7 +330,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000809",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "library_entry_id": null,
     "draft_reason": "Written by HR.",
     "source": "theme",
@@ -576,7 +576,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000815",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "library_entry_id": null,
     "draft_reason": "Written by HR.",
     "source": "theme",
@@ -658,7 +658,7 @@
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000817",
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
-    "driver": "ONBOARDING_TRAINING",
+    "driver": "TRAINING",
     "library_entry_id": null,
     "draft_reason": "Written by HR.",
     "source": "theme",

@@ -108,7 +108,7 @@ test("R44: each Monday the nightly job queues 3 AI-confident tags per driver and
   await tap(hire, "Bahasa Malaysia");
   await tap(hire, ms_.agree);
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
-  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(hire, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(hire, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], evidence_quote: "Kerja terlalu banyak" }) }]);
   await say(hire, "Kerja terlalu banyak minggu ini");
   await freezeClock(`${mondays[0]}T03:00:00.000Z`);

@@ -12,7 +12,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { fraction, kappa, share } from "./stats.ts";
 
 const FALLBACK_CAP = 1.5;
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"] as const;
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"] as const;
 const LANGUAGES = ["ms", "en", "zh", "manglish"];
 const sets = new URL("../../eval/sets/", import.meta.url);
 const results = new URL("../../eval/results/", import.meta.url);

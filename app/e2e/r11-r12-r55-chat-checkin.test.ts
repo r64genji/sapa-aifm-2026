@@ -102,7 +102,7 @@ test("R55, R12: a low tap opens a fixed probe at once, a reply that names the dr
   const { data: scores } = await db.from("responses").select("question_id, scale_value").eq("person_id", who!.id).not("scale_value", "is", null);
   assert.deepEqual(
     Object.fromEntries(scores!.map((r) => [r.question_id, r.scale_value])),
-    { ROLE_CLARITY: 2, MANAGER_SUPPORT: 5, BELONGING: 4, ONBOARDING_TRAINING: 4, WORKLOAD: 4, JOB_MATCH: 4 },
+    { ROLE_CLARITY: 2, MANAGER_SUPPORT: 5, BELONGING: 4, TRAINING: 4, WORKLOAD: 4, JOB_MATCH: 4 },
   );
 
   await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ question: "Which list would help most?" }) }]);

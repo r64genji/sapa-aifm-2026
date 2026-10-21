@@ -18,6 +18,7 @@ async function reply(chat: number) {
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
+  await tapScore(chat, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu");
 }

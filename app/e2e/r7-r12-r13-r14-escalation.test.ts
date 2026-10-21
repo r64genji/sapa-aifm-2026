@@ -35,6 +35,7 @@ async function reachOpenQuestion(chat: number) {
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
+  await tapScore(chat, 3);
 }
 
 async function answer(chat: number, text: string) {

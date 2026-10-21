@@ -81,10 +81,23 @@
         ]
       },
       {
-        "id": "ONBOARDING_TRAINING",
-        "driver": "ONBOARDING_TRAINING",
+        "id": "ONBOARDING",
+        "driver": "ONBOARDING",
         "type": "scale",
-        "text": "本周的培训对你的工作帮助有多大？",
+        "text": "本周你觉得公司的方向、政策和流程清楚吗？",
+        "labels": [
+          "很不清楚",
+          "不太清楚",
+          "一般",
+          "比较清楚",
+          "非常清楚"
+        ]
+      },
+      {
+        "id": "TRAINING",
+        "driver": "TRAINING",
+        "type": "scale",
+        "text": "本周的岗位培训对你的工作帮助有多大？",
         "labels": [
           "完全没有",
           "帮助很少",
@@ -139,8 +152,9 @@
     "topics": {
       "ROLE_CLARITY": "角色和任务",
       "MANAGER_SUPPORT": "主管的支持",
-      "BELONGING": "团队归属感",
-      "ONBOARDING_TRAINING": "培训",
+      "BELONGING": "融入团队",
+      "ONBOARDING": "入职引导",
+      "TRAINING": "培训",
       "WORKLOAD": "工作量"
     },
     "gotIt": "好的，收到了。你的回答已保存，HR 会查看。",
@@ -174,7 +188,8 @@
       "ROLE_CLARITY",
       "MANAGER_SUPPORT",
       "BELONGING",
-      "ONBOARDING_TRAINING",
+      "ONBOARDING",
+      "TRAINING",
       "WORKLOAD",
       "OPEN"
     ],
@@ -249,7 +264,23 @@
             "认识"
           ]
         },
-        "ONBOARDING_TRAINING": {
+        "ONBOARDING": {
+          "open": "公司的哪项政策、流程或福利你还不清楚？",
+          "words": [
+            "政策",
+            "流程",
+            "福利",
+            "方向",
+            "入职",
+            "制度",
+            "规定",
+            "报销",
+            "请假",
+            "手册",
+            "人事"
+          ]
+        },
+        "TRAINING": {
           "open": "培训没有涉及你工作的哪一部分？",
           "words": [
             "培训",
@@ -369,7 +400,7 @@
   "end": "您的跟进已结束。您的回答将保存到{date}。输入 DELETE 可立即删除。",
   "exit": {
     "question": "最后一个问题，如果您愿意回答：您离开的主要原因是什么？",
-    "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "归属感", "ONBOARDING_TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
+    "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "融入团队", "ONBOARDING": "入职引导", "TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
     "open": "您还有什么想补充的吗？请输入。",
     "thanks": "谢谢。Sapa 不会再给您发消息了。"
   },
@@ -395,7 +426,8 @@
     "ROLE_CLARITY": "工作职责是否清楚",
     "MANAGER_SUPPORT": "主管的支持",
     "BELONGING": "融入团队",
-    "ONBOARDING_TRAINING": "培训",
+    "ONBOARDING": "入职引导",
+    "TRAINING": "培训",
     "WORKLOAD": "工作量",
     "PAY_BENEFITS": "薪酬和福利",
     "GROWTH": "发展机会",

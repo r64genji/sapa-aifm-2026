@@ -7,7 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export const MANAGER_TOKEN_PREFIX = "mgr-";
 
-const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING_TRAINING", "WORKLOAD"];
+const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 
 export async function managerUser(request: Request) {
   const token = request.headers.get("authorization")?.replace(/^Bearer /, "");

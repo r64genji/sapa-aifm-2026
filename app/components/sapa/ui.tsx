@@ -283,9 +283,10 @@ export function Dialog({ title, children, onClose }: { title: string; children: 
 
 export const DRIVERS: Record<string, string> = {
   ROLE_CLARITY: "Role clarity",
-  ONBOARDING_TRAINING: "Onboarding and training",
+  ONBOARDING: "Onboarding",
+  TRAINING: "Training",
   MANAGER_SUPPORT: "Manager support",
-  BELONGING: "Belonging",
+  BELONGING: "Team integration",
   WORKLOAD: "Workload",
 };
 

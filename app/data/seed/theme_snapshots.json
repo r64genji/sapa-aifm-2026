@@ -53,7 +53,7 @@
         "ai_confident": 1,
         "avg": 3.8
       },
-      "ONBOARDING_TRAINING": {
+      "TRAINING": {
         "n": 4,
         "reviewed": 3,
         "ai_confident": 1,
@@ -132,7 +132,7 @@
         "ai_confident": 0,
         "avg": 3.2
       },
-      "ONBOARDING_TRAINING": {
+      "TRAINING": {
         "n": 2,
         "reviewed": 1,
         "ai_confident": 1,

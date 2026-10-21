@@ -92,6 +92,7 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);
+  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const [queued] = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
@@ -209,6 +210,7 @@ test("R41: only an HR admin can send a hire's data, only to that hire, only with
   await tapScore(exported, 4);
   await tapScore(exported, 3);
   await tapScore(exported, 5);
+  await tapScore(exported, 3);
   await tapScore(exported, 3);
   await tapScore(exported, 3);
   await tapScore(exported, 3);
