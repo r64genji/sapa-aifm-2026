@@ -28,7 +28,7 @@ Contoh GBS is a shared services centre in Bayan Lepas, Penang. It hires about 20
 - **Team leads:** 38. Most were promoted from analyst within three years for being good at the work. The Group's people-lead course has a long waiting list, so most lead people for months before any training.
 - **Hiring:** a monthly intake of 15–18 people on the first Monday, trained as one batch. About 60% come through three recruitment agencies. Each agency fee is 18% of annual salary, with a 90-day free replacement.
 - **Probation:** 3 months.
-- **Pay:** local analysts about RM3,400 a month. Language-desk hires about RM5,200. Language desks are about a quarter of hires, so the intake average is about RM3,850 a month (RM46,200 a year, about RM890 a week).
+- **Pay:** local analysts about RM3,000 a month. Language-desk hires about RM5,000. Language desks are about a quarter of hires, so the intake average is about RM3,500 a month (RM42,000 a year).
 - **Training plan:** 3 weeks in a classroom, then 5 weeks beside a buddy. A new analyst works a full queue alone from about week 10–12.
 - **System access:** a laptop, a company email, SAP and the ticket system arrive 3–5 working days after Day 1.
 - **Languages:** staff are Malay, Chinese and Indian Malaysians, and some language-desk hires are foreign nationals. Day-to-day talk is English, Bahasa Malaysia, Manglish and, among Mandarin speakers, Chinese.
@@ -97,29 +97,29 @@ Other October-intake hires named in the demo: Arif, Priya, Nurul and Kumar.
 
 ## Money (for slide 10)
 
-The cost per early leaver is **our estimate**, built from Contoh's own numbers. It counts only what is easy to see: pay during training that never came back as work, and a second agency fee. It leaves out overtime to cover the queue, missed deadlines, buddy and team lead time, and recruiting time.
+The cost per early leaver is **our estimate**, and it is one multiplication: 16% of a year's pay. A new hire earns about RM3,500 a month, so RM42,000 a year. 16% × RM42,000 = RM6,720, about **RM6,700**. The 16% is the typical cost of replacing a worker paid under US$30,000 a year, from the Center for American Progress review of turnover studies (Source, US, 2012). It covers recruiting, training and lost output.
 
-| Part | People | Cost each | Total | Basis |
-| --- | --- | --- | --- | --- |
-| Left inside 90 days: about 7 weeks of pay, almost no full work | 32 | about RM6,200 | about RM198,000 | Fictional; 7 × RM890 a week |
-| Left on Day 91–180: about 11 weeks of training pay | 22 | about RM9,800 | about RM216,000 | Fictional; 11 × RM890 |
-| Agency hires among the Day 91–180 leavers: a second fee (the free replacement has ended) | 13 (60% of 22) | about RM8,300 | about RM108,000 | 18% of RM46,200; fee range is Source |
-| **All 54 early leavers** | 54 | **about RM9,700 on average** | **about RM522,000 a year** | |
+| Item | Figure | Basis |
+| --- | --- | --- |
+| Average pay | RM3,500 a month, RM42,000 a year | Fictional; Penang customer-service jobs advertise about RM3,000–4,000 a month |
+| Cost of one early leaver | about RM6,700 | 16% × RM42,000 = RM6,720 |
+| Early leavers a year | 54 | Fictional |
+| **All early leavers** | **about RM362,000 a year** | 54 × RM6,700 |
 
-**Cross-checks.** The Center for American Progress review of turnover studies puts replacement at about 16% of salary for jobs paying under US$30,000, and 21% across all jobs (Source, US, 2012). That is RM7,400–9,700 here. The Malaysian Employers Federation's RM25,000–30,000 per leaver (Source, 2012, old) is the high case. Our RM9,700 sits at the top of the US range and far below the Malaysian one.
+**Cross-checks.** Newer US studies give higher rates: 19.3% of pay for below-average wages (Source, US, 2020), which is RM8,100 here, and 33% of base pay (Source, US, 2025), which is RM13,900 here. We use the lowest, 16%, so the figure is hard to attack. The Malaysian Employers Federation's RM25,000–30,000 per leaver (Source, 2012, old) is the high case.
 
 | Item | Figure | Basis |
 | --- | --- | --- |
 | Sapa price | RM90 per new hire for six months | Proposed |
 | Sapa cost a year | RM18,000 | 200 × RM90 |
-| Break-even | about 2 prevented early exits a year, of 54 | RM18,000 ÷ RM9,700 = 1.9 |
+| Break-even | about 3 prevented early exits a year, of 54 | RM18,000 ÷ RM6,700 = 2.7 |
 
 | Scenario | Early exits prevented a year | Saving | Return on RM18,000 |
 | --- | --- | --- | --- |
-| Break-even | 1.9 of 54 | RM18,000 | 1× |
-| Conservative | 3 of 54 | RM29,100 | about 1.6× |
-| Base | 8 of 54 (15%) | RM77,600 | about 4.3× |
-| Optimistic | 14 of 54 (about a quarter) | RM135,800 | about 7.5× |
+| Break-even | 2.7 of 54 | RM18,000 | 1× |
+| Conservative | 3 of 54 | RM20,100 | about 1.1× |
+| Base | 8 of 54 (15%) | RM53,600 | about 3.0× |
+| Optimistic | 14 of 54 (about a quarter) | RM93,800 | about 5.2× |
 
 **"Even your base case misses the Group's 85%. Why buy?"** Reaching 85% means about 30 early leavers a year instead of 54. Sapa does not do that alone, and does not claim to. The fixes do the work: clear priorities, team lead training, honest job adverts, buddies on every shift. Sapa tells Kavitha which fix each team needs, weeks before the resignation, checks whether it worked, and gives her the evidence the Group asks for. Without it she has 54 spreadsheet rows and a guess. Nobody can prove one person stayed because of Sapa, so the pilot measures retention by intake, as a trend and not proof.
 

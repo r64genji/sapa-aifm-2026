@@ -321,15 +321,15 @@ The guide asks whether the prototype made the process faster, clearer, more cons
 
 ## H. Business and economic impact
 
-For Contoh GBS, about two prevented early exits a year, out of 54, pay for Sapa. A prevented exit cannot be proven per person; the pilot measures retention by intake.
+For Contoh GBS, about three prevented early exits a year, out of 54, pay for Sapa. A prevented exit cannot be proven per person; the pilot measures retention by intake.
 
 ### H1. Worked ROI example (illustrative, state the assumptions on the slide)
 
 The full table, with each input marked sourced or fictional, is in the [client story](09-client-story.md#money-for-slide-10). In short:
 
-- 200 hires a year at an average RM46,200 salary; 54 leave before Month 6 (fictional).
-- Cost per early leaver about **RM9,700**, our estimate built from Contoh's own numbers: pay during training that never came back as work, plus a second agency fee for agency hires who leave after the 90-day free replacement. Cross-check: the Center for American Progress review ([Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/)) gives about 16% of salary for jobs under US$30,000 and 21% across all jobs, so RM7,400–9,700. The Malaysian Employers Federation's older RM25,000–30,000 is the high case.
-- Early leavers cost about **RM522,000 a year**. Sapa costs 200 × RM90 = **RM18,000 a year**. Break-even is **1.9 prevented exits a year**. Base case 8 of 54 prevented: about RM77,600, about 4.3×.
+- 200 hires a year at an average RM42,000 salary; 54 leave before Month 6 (fictional).
+- Cost per early leaver about **RM6,700**, our estimate: 16% of a year's pay (RM42,000 × 16% = RM6,720). The 16% is the Center for American Progress figure for jobs under US$30,000 ([Boushey & Glynn 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/)). Newer US studies give 19.3% (Equitable Growth, 2020) and 33% (Work Institute, 2025), so RM8,100–13,900; we use the lowest. The Malaysian Employers Federation's older RM25,000–30,000 is the high case.
+- Early leavers cost about **RM362,000 a year**. Sapa costs 200 × RM90 = **RM18,000 a year**. Break-even is **2.7 prevented exits a year**. Base case 8 of 54 prevented: about RM53,600, about 3.0×.
 
 **What this cannot prove.** Nobody can show that one person stayed because of Sapa. The pilot measures retention by intake instead. HR enters the number hired and the number still employed per intake (spec 05 R42). The Impact view shows, per intake: response rate and median days from reply to action done; the average score change after done actions, as a difference against other teams; and, pooled across completed intakes, six-month retention against the company's own baseline, as a trend and not proof.
 
@@ -413,7 +413,7 @@ The pitch follows the guide's suggested structure: 8–10 minutes in total inclu
 7. **Demo** (script below).
 8. **Testing and results.** κ by language, time-saved bar, practitioner ratings and quotes, limitations.
 9. **Responsible AI.** "What Sapa never does"; consent tiers; minimum 5; escalations go to HR, never handled by AI; PDPA 2024 and Malaysia's AI ethics principles; synthetic data only.
-10. **Impact and next step.** Break-even first: about two prevented early exits a year, out of 54, pay for Sapa (about RM9,700 per early leaver against RM18,000 a year). Early leavers cost Contoh GBS about RM522,000 a year, and the Group's September 2027 review asks for 85% six-month retention, against 73% today. A prevented exit cannot be proven per person, so the pilot measures retention by intake. Ask for a pilot with one company and one agency: every new hire in three monthly intakes, each through its own Month 6, with pass marks set before it starts, a Day-90 report and a final report that shows pooled retention as a trend, not proof.
+10. **Impact and next step.** Break-even first: about three prevented early exits a year, out of 54, pay for Sapa (about RM6,700 per early leaver against RM18,000 a year). Early leavers cost Contoh GBS about RM362,000 a year, and the Group's September 2027 review asks for 85% six-month retention, against 73% today. A prevented exit cannot be proven per person, so the pilot measures retention by intake. Ask for a pilot with one company and one agency: every new hire in three monthly intakes, each through its own Month 6, with pass marks set before it starts, a Day-90 report and a final report that shows pooled retention as a trend, not proof.
 
 ### Demo script (2 minutes)
 
@@ -433,7 +433,7 @@ These are the questions HR and recruitment judges are most likely to ask, each w
 8. **"What if the AI misses a harassment report?"** Two independent detectors (keyword list and AI), tuned to miss nothing even at the cost of false alarms. We report recall as "k of n" with a 95% interval, plus the false alarms from Manglish hyperbole such as "OT everyday, mati la". The bot gives a fixed safe message and HR follows up within one working day. The employer's legal duty to inquire stays with HR.
 9. **"Is this PDPA-compliant?"** It is designed for it: explicit consent, purpose limits, retention limits, deletion and export, encryption and an audit log. As a vendor we are a data processor; the employer is the controller. We would get a legal review before commercial use.
 10. **"How do you know it reduces turnover?"** Not yet proven. The prototype shows earlier detection and faster action. A prevented exit cannot be proven per person. The next step is a pilot: three monthly intakes, each through its own Month 6, because one intake is too small to show an outcome. The pass marks are set before it starts. At Day 90 the report shows response rate, days from reply to fix, score change after fixes against other teams and manager milestones done. At the end it shows retention against the company's own baseline with the date when the pooled figure will be ready, as a trend and not proof.
-11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. At Contoh GBS's volume a year costs 200 × RM90 = RM18,000. Two prevented early leavers (about RM9,700 each, our estimate from lost training pay and second agency fees) pay for it.
+11. **"What does it cost and who pays?"** RM90 per new hire for six months of coverage, paid by the employer, or per placement through an agency. At Contoh GBS's volume a year costs 200 × RM90 = RM18,000. Three prevented early leavers (about RM6,700 each, our estimate from lost training pay and second agency fees) pay for it.
 12. **"Why would a recruitment agency care?"** Agencies commonly guarantee a free replacement for 1–3 months. Early warning inside that window protects their margin and gives clients a reason to choose them. An agency can log in with the `agency` role: it sees themes, the job-match card and retention for its own placements, pooled and at 5 or more people, and never replies, names or personal data (spec 05 R48). The job-match card shows which roles oversell the job, which is the number an agency most wants.
 13. **"Could managers use this to punish people?"** Managers never see individual answers without consent, the terms forbid disciplinary use, every view is logged, and HR can remove a manager's access.
 
