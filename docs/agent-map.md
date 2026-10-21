@@ -13,5 +13,6 @@ Pick the one doc for your task. Read only that doc.
 | What the AI may do alone and what needs a person | [14 AI use contract](14-ai-use-contract.md) |
 | What an HR practitioner told us, open slide questions, feature ideas | [16 HR interview](16-interview-deanna-tung.md) |
 | What an HR consultant told us, decisions from it, and the root cause TODO | [17 HR interview](17-interview-muhammad-danial.md) |
+| What a change-management officer told us, and why he said drop anonymity | [18 interview](18-interview-stephen-yau.md) |
 | The organisers' guide (the only official requirements) | [reference/](reference/AIFM_2026_Student_Challenge_Guide_All_Challenges.pdf) |
 
