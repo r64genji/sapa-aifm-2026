@@ -36,6 +36,12 @@ test("R8: a group under 5 people returns have and need and no count, on every sp
   }
 });
 
+test("R61: role clarity splits into First job 17 of 30 and Experienced 6 of 34, and a team view has no experience split", async () => {
+  const all = await detail("");
+  assert.deepEqual(all.by_experience.map((s: { group: string; n: number; m: number }) => [s.group, s.n, s.m]), [["First job", 17, 30], ["Experienced", 6, 34]]);
+  assert.deepEqual((await detail("?team=Accounts%20Payable%20Asia")).by_experience, []);
+});
+
 test("R51: a request for more than one team is refused and no route lists teams", async () => {
   for (const query of ["?team=Korean%20Desk&team=IT%20Service%20Desk", "?team=Korean%20Desk,IT%20Service%20Desk"]) {
     const res = await hrRequest(`/api/hr/themes/ROLE_CLARITY${query}`, "GET");

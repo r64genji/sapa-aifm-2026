@@ -151,5 +151,101 @@
         "avg": 3.6
       }
     }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-08-24",
+    "touchpoint": 14,
+    "team": "Accounts Payable Asia",
+    "respondents": 7,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 5,
+        "reviewed": 2,
+        "ai_confident": 3,
+        "avg": 2.6
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-08-24",
+    "touchpoint": 14,
+    "team": "Accounts Payable Europe",
+    "respondents": 14,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 3,
+        "reviewed": 1,
+        "ai_confident": 2,
+        "avg": 3.3
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-08-24",
+    "touchpoint": 14,
+    "team": "IT Service Desk",
+    "respondents": 6,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1,
+        "avg": 3.3
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-09-14",
+    "touchpoint": 14,
+    "team": "Accounts Payable Asia",
+    "respondents": 8,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 2,
+        "reviewed": 1,
+        "ai_confident": 1,
+        "avg": 3.3
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-09-14",
+    "touchpoint": 14,
+    "team": "Accounts Payable Europe",
+    "respondents": 16,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 4,
+        "reviewed": 2,
+        "ai_confident": 2,
+        "avg": 3.3
+      }
+    }
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "week": "2026-09-14",
+    "touchpoint": 14,
+    "team": "IT Service Desk",
+    "respondents": 7,
+    "suppressed": false,
+    "counts": {
+      "ROLE_CLARITY": {
+        "n": 1,
+        "reviewed": 0,
+        "ai_confident": 1,
+        "avg": 3.3
+      }
+    }
   }
 ]

@@ -19,6 +19,7 @@ export async function counts(
   agency: string | null = null,
   team: string | null = null,
   role: string | null = null,
+  firstJob: boolean | null = null,
 ) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
@@ -28,6 +29,7 @@ export async function counts(
     agency,
     team,
     person_role: role,
+    first_job: firstJob,
   });
   if (error) throw error;
   return data as Counts;

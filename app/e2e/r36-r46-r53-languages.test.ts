@@ -63,7 +63,8 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
   assert.notEqual(menu.commands[0].description, en.commands.start.description);
 
   await tap(chat, zh.agree);
-  assert.equal((await texts()).at(-1), `你选了“${zh.agree}”。 ${zh.help}`);
+  assert.equal((await texts()).at(-2), `你选了“${zh.agree}”。 ${zh.help}`);
+  assert.equal((await texts()).at(-1), zh.firstJob.question);
 });
 
 test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and nothing of the translation is stored", async () => {

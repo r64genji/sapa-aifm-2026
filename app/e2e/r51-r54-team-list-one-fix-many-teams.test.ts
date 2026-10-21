@@ -44,7 +44,7 @@ test("R51: the team list holds only teams with 5 or more answers at least 2 abov
   assert.deepEqual([clarity.company, clarity.verdict, clarity.rows], [
     { n: 23, m: 64, avg: 3.1 },
     "some",
-    [{ kind: "team", name: "Accounts Payable Asia", teams: ["Accounts Payable Asia"], n: 6, m: 9, avg: 2.4, leads: [{ id: raj, name: "Raj" }] }],
+    [{ kind: "team", name: "Accounts Payable Asia", teams: ["Accounts Payable Asia"], n: 6, m: 9, avg: 2.4, leads: [{ id: raj, name: "Raj" }], times: 2 }],
   ]);
 });
 

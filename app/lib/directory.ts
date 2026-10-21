@@ -186,6 +186,11 @@ export async function setLanguage(person: Person, language: Language) {
   if (error) throw error;
 }
 
+export async function setFirstJob(person: Person, firstJob: boolean) {
+  const { error } = await createAdminClient().from("people").update({ first_job: firstJob }).eq("id", person.id).is("first_job", null);
+  if (error) throw error;
+}
+
 export async function recordConsent(person: Person, textVersion: string) {
   const { error } = await createAdminClient().from("consents").insert({
     organisation_id: person.organisation_id,

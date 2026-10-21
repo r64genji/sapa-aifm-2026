@@ -30,13 +30,18 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`]);
+  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.firstJob.question]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
 
   const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at").eq("person_id", livePerson);
   assert.deepEqual(consents, [{ text_version: en.consentVersion, scope: "hr_only", withdrawn_at: null }]);
+
+  await tap(chat, en.firstJob.yes);
+  assert.equal((await texts(chat)).at(-1), `You tapped "${en.firstJob.yes}". ${en.firstJob.thanks}`);
+  const { data: first } = await db.from("people").select("first_job").eq("id", livePerson).single();
+  assert.deepEqual(first, { first_job: true });
 
   const menus = await telegramCalls("setMyCommands");
   assert.deepEqual(menus, [
@@ -73,7 +78,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`]);
+    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.firstJob.question]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }

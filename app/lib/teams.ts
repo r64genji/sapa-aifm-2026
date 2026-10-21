@@ -5,7 +5,9 @@ const MARGIN = 2;
 
 type Snapshot = { respondents: number; suppressed: boolean; counts: Record<string, { n: number; avg?: number | null }> | null };
 type Lead = { id: string; name: string };
-export type Row = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[] };
+export type Row = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[]; times?: number };
+
+const WEEK_MS = 7 * 86400000;
 
 export async function teamList(organisationId: string, driver: string) {
   const db = createAdminClient();
@@ -18,12 +20,15 @@ export async function teamList(organisationId: string, driver: string) {
   const card = cards.cards.find((c) => c.driver === driver)!;
   const week = latest.data![0]?.week as string | undefined;
   if (!("n" in card) || !week) return { enough: false as const };
-  const [teams, towers, people] = await Promise.all([
+  const since = new Date(week);
+  since.setUTCMonth(since.getUTCMonth() - 6);
+  const [teams, towers, people, history] = await Promise.all([
     db.from("theme_snapshots").select("team, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("week", week),
     db.from("tower_snapshots").select("tower, teams, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("week", week),
     db.from("people").select("team, manager_id, managers(display_name, revoked_at)").eq("organisation_id", organisationId).not("team", "is", null),
+    db.from("theme_snapshots").select("week, team, respondents, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("suppressed", false).gte("week", since.toISOString().slice(0, 10)).lte("week", week),
   ]);
-  for (const { error } of [teams, towers, people]) if (error) throw error;
+  for (const { error } of [teams, towers, people, history]) if (error) throw error;
 
   const leads = (names: string[]) => {
     const found = new Map<string, string>();
@@ -38,7 +43,20 @@ export async function teamList(organisationId: string, driver: string) {
   const eligible = teamRows.filter((s) => !s.suppressed).map((s) => row("team", s.team, [s.team], s));
   const pooled = (towers.data as (Snapshot & { tower: string; teams: string[] })[]).filter((s) => !s.suppressed).map((s) => row("tower", s.tower, s.teams, s));
   const rate = card.n / card.m;
-  const shown = [...eligible, ...pooled].filter((r) => r.n >= r.m * rate + MARGIN);
+  const past = history.data as { week: string; team: string; respondents: number; counts: Snapshot["counts"] }[];
+  const stood = new Map<string, Set<string>>();
+  for (const w of new Set(past.map((s) => s.week))) {
+    const rows = past.filter((s) => s.week === w);
+    const weekRate = rows.reduce((sum, s) => sum + (s.counts?.[driver]?.n ?? 0), 0) / rows.reduce((sum, s) => sum + s.respondents, 0);
+    for (const s of rows) {
+      if ((s.counts?.[driver]?.n ?? 0) >= s.respondents * weekRate + MARGIN) stood.set(s.team, (stood.get(s.team) ?? new Set()).add(w));
+    }
+  }
+  const times = (team: string) => {
+    const weeks = new Set(stood.get(team)).add(week);
+    return [...weeks].filter((w) => !weeks.has(new Date(Date.parse(w) - WEEK_MS).toISOString().slice(0, 10))).length;
+  };
+  const shown = [...eligible, ...pooled].filter((r) => r.n >= r.m * rate + MARGIN).map((r) => (r.kind === "team" && times(r.name) > 1 ? { ...r, times: times(r.name) } : r));
 
   const minimum = org.data!.min_group_size as number;
   const total = teamRows.reduce((sum, s) => sum + s.respondents, 0);

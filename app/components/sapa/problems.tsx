@@ -16,11 +16,12 @@ type Detail = {
   by_day: (Share & { touchpoint: number })[];
   by_intake: (Share & { intake: string })[];
   by_role: (Share & { role: string })[];
+  by_experience: (Share & { group: string })[];
 };
 type Groups = { status: "unavailable" } | { status: "ok"; enough: false; have: number; need: number } | { status: "ok"; groups: { title: string; n: number; reply_ids: string[] }[]; not_grouped: number };
 type Entry = { id: string; title: string; text: string; used: number; difference: number | null; evidence: string; result: string };
 type Lead = { id: string; name: string };
-type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[] };
+type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[]; times?: number };
 type Teams = { enough: false } | { enough: true; week: string; company: { n: number; m: number; avg: number | null }; verdict: "none" | "some" | "most"; rows: TeamRow[]; eligible: number; small: number; safety: number };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
@@ -34,6 +35,7 @@ const noArea = (r: ReplyItem) => !!r.text && !r.escalate && !r.drivers?.length &
 const inHandbook = (g: Questions["groups"][number]) => !!g.handbook_path && g.unknown === 0;
 const fixHref = (driver: string, entry: string | undefined, teams: string[]) =>
   `/fixes/new?driver=${driver}${entry ? `&entry=${entry}` : ""}${teams.map((t) => `&team=${encodeURIComponent(t)}`).join("")}`;
+const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10 < 4 ? n % 10 : 0]}`;
 const rate = (p: { n: number; m: number }) => (p.m ? p.n / p.m : 0);
 const pct = (p: { n: number; m: number }) => `${Math.round(rate(p) * 100)}%`;
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
@@ -521,6 +523,15 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 <Columns points={intakes} />
               </div>
             ) : null}
+            {where.data?.enough
+              ? where.data.rows
+                  .filter((r) => r.times)
+                  .map((r) => (
+                    <span key={r.name} className="sp-meta font-semibold" style={{ color: "var(--problems)" }}>
+                      {r.name}: {ordinal(r.times!)} time in 6 months
+                    </span>
+                  ))
+              : null}
             {waiting > 0 ? (
               <Link href={`/replies?area=${driver}`} className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
                 <MessageSquare size={14} aria-hidden="true" />
@@ -552,6 +563,22 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 )}
                 {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 && grouped.length ? <span className="sp-caption">+{g.not_grouped} not grouped</span> : null}
               </Panel>
+              {d.by_experience.length ? (
+                <Panel title="First job or experienced">
+                  {d.by_experience.map((s) => (
+                    <span key={s.group} className="text-[14px]">
+                      <span className="font-semibold">{s.group}:</span>{" "}
+                      {s.enough ? (
+                        <>
+                          <span className="sp-num font-bold">{s.n} of {s.m}</span> named {name.toLowerCase()}
+                        </>
+                      ) : (
+                        <span className="sp-caption">Not enough people yet ({s.have} of {s.need} needed)</span>
+                      )}
+                    </span>
+                  ))}
+                </Panel>
+              ) : null}
               {days.length > 1 ? (
                 <Panel title="Each check-in">
                   <Columns points={days} />

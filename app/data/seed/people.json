@@ -13,7 +13,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010002",
@@ -29,7 +30,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010003",
@@ -45,7 +47,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010004",
@@ -61,7 +64,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010005",
@@ -77,7 +81,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010006",
@@ -93,7 +98,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010007",
@@ -109,7 +115,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010008",
@@ -125,7 +132,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010009",
@@ -141,7 +149,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010010",
@@ -157,7 +166,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Bintang Resource",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010011",
@@ -172,7 +182,8 @@
     "invite_expires_at": "2026-05-30T01:00:00Z",
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010012",
@@ -188,7 +199,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010013",
@@ -204,7 +216,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010014",
@@ -220,7 +233,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Bintang Resource",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010015",
@@ -236,7 +250,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010016",
@@ -252,7 +267,8 @@
     "invite_used_at": "2026-05-04T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Bintang Resource",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010017",
@@ -268,7 +284,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010018",
@@ -284,7 +301,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010019",
@@ -300,7 +318,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010020",
@@ -316,7 +335,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010021",
@@ -332,7 +352,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Bintang Resource"
+    "agency": "Bintang Resource",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010022",
@@ -348,7 +369,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010023",
@@ -364,7 +386,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010024",
@@ -380,7 +403,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010025",
@@ -396,7 +420,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010026",
@@ -412,7 +437,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010027",
@@ -428,7 +454,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010028",
@@ -444,7 +471,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010029",
@@ -460,7 +488,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010030",
@@ -476,7 +505,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010031",
@@ -492,7 +522,8 @@
     "invite_used_at": "2026-06-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010032",
@@ -508,7 +539,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010033",
@@ -524,7 +556,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010034",
@@ -540,7 +573,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010035",
@@ -556,7 +590,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010036",
@@ -572,7 +607,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010037",
@@ -588,7 +624,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010038",
@@ -604,7 +641,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010039",
@@ -620,7 +658,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010040",
@@ -636,7 +675,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010041",
@@ -652,7 +692,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010042",
@@ -667,7 +708,8 @@
     "invite_expires_at": "2026-08-01T01:00:00Z",
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010043",
@@ -683,7 +725,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010044",
@@ -698,7 +741,8 @@
     "invite_expires_at": "2026-08-01T01:00:00Z",
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010045",
@@ -714,7 +758,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010046",
@@ -730,7 +775,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010047",
@@ -746,7 +792,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010048",
@@ -762,7 +809,8 @@
     "invite_used_at": "2026-07-06T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010049",
@@ -777,7 +825,8 @@
     "invite_expires_at": "2026-08-29T01:00:00Z",
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010050",
@@ -793,7 +842,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010051",
@@ -809,7 +859,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010052",
@@ -825,7 +876,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010053",
@@ -841,7 +893,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010054",
@@ -857,7 +910,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010055",
@@ -873,7 +927,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010056",
@@ -888,7 +943,8 @@
     "invite_expires_at": "2026-08-29T01:00:00Z",
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010057",
@@ -904,7 +960,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010058",
@@ -919,7 +976,8 @@
     "invite_expires_at": "2026-08-29T01:00:00Z",
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010059",
@@ -935,7 +993,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010060",
@@ -951,7 +1010,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010061",
@@ -967,7 +1027,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010062",
@@ -983,7 +1044,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010063",
@@ -999,7 +1061,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010064",
@@ -1014,7 +1077,8 @@
     "invite_expires_at": "2026-08-29T01:00:00Z",
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010065",
@@ -1030,7 +1094,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010066",
@@ -1046,7 +1111,8 @@
     "invite_used_at": "2026-08-03T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010067",
@@ -1062,7 +1128,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010068",
@@ -1078,7 +1145,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010069",
@@ -1093,7 +1161,8 @@
     "invite_expires_at": "2026-10-03T01:00:00Z",
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010070",
@@ -1109,7 +1178,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010071",
@@ -1125,7 +1195,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010072",
@@ -1141,7 +1212,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010073",
@@ -1157,7 +1229,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010074",
@@ -1173,7 +1246,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010075",
@@ -1189,7 +1263,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010076",
@@ -1204,7 +1279,8 @@
     "invite_expires_at": "2026-10-03T01:00:00Z",
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010077",
@@ -1220,7 +1296,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010078",
@@ -1235,7 +1312,8 @@
     "invite_expires_at": "2026-10-03T01:00:00Z",
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010079",
@@ -1251,7 +1329,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010080",
@@ -1267,7 +1346,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010081",
@@ -1283,7 +1363,8 @@
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010082",
@@ -1298,7 +1379,8 @@
     "invite_expires_at": "2026-10-03T01:00:00Z",
     "invite_used_at": "2026-09-07T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010083",
@@ -1314,7 +1396,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000202",
@@ -1331,7 +1414,8 @@
     "state": "active",
     "synthetic": true,
     "agency": "Maju Staffing",
-    "telegram_chat_id": 5550009001
+    "telegram_chat_id": 5550009001,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010085",
@@ -1347,7 +1431,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010086",
@@ -1362,7 +1447,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010087",
@@ -1377,7 +1463,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010088",
@@ -1392,7 +1479,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010089",
@@ -1407,7 +1495,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010090",
@@ -1423,7 +1512,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010091",
@@ -1438,7 +1528,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010092",
@@ -1454,7 +1545,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010093",
@@ -1470,7 +1562,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010094",
@@ -1485,7 +1578,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010095",
@@ -1501,7 +1595,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010096",
@@ -1517,7 +1612,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Maju Staffing"
+    "agency": "Maju Staffing",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010097",
@@ -1533,7 +1629,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010098",
@@ -1549,7 +1646,8 @@
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
     "synthetic": true,
-    "agency": "Kerjaya Talent"
+    "agency": "Kerjaya Talent",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000010099",
@@ -1564,7 +1662,8 @@
     "invite_expires_at": "2026-10-27T01:00:00Z",
     "invite_used_at": "2026-10-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011001",
@@ -1582,7 +1681,8 @@
     "synthetic": true,
     "left_reason": "ended_by_company",
     "left_at": "2026-03-25T09:00:00Z",
-    "end_sent_at": "2026-03-25T09:00:00Z"
+    "end_sent_at": "2026-03-25T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011002",
@@ -1600,7 +1700,8 @@
     "synthetic": true,
     "left_reason": "ended_by_company",
     "left_at": "2026-01-07T09:00:00Z",
-    "end_sent_at": "2026-01-07T09:00:00Z"
+    "end_sent_at": "2026-01-07T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011003",
@@ -1620,7 +1721,8 @@
     "left_at": "2026-01-14T09:00:00Z",
     "end_sent_at": "2026-01-14T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-01-14T09:00:00Z"
+    "exit_asked_at": "2026-01-14T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011004",
@@ -1635,7 +1737,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011005",
@@ -1650,7 +1753,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011006",
@@ -1665,7 +1769,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011007",
@@ -1680,7 +1785,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011008",
@@ -1695,7 +1801,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011009",
@@ -1710,7 +1817,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011010",
@@ -1725,7 +1833,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011011",
@@ -1740,7 +1849,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011012",
@@ -1755,7 +1865,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011013",
@@ -1770,7 +1881,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011014",
@@ -1785,7 +1897,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011015",
@@ -1800,7 +1913,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011016",
@@ -1815,7 +1929,8 @@
     "invite_expires_at": "2025-11-29T01:00:00Z",
     "invite_used_at": "2025-11-03T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011017",
@@ -1835,7 +1950,8 @@
     "left_at": "2026-01-25T09:00:00Z",
     "end_sent_at": "2026-01-25T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-01-25T09:00:00Z"
+    "exit_asked_at": "2026-01-25T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011018",
@@ -1855,7 +1971,8 @@
     "left_at": "2026-04-13T09:00:00Z",
     "end_sent_at": "2026-04-13T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-04-13T09:00:00Z"
+    "exit_asked_at": "2026-04-13T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011019",
@@ -1875,7 +1992,8 @@
     "left_at": "2026-04-19T09:00:00Z",
     "end_sent_at": "2026-04-19T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-04-19T09:00:00Z"
+    "exit_asked_at": "2026-04-19T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011020",
@@ -1895,7 +2013,8 @@
     "left_at": "2026-03-05T09:00:00Z",
     "end_sent_at": "2026-03-05T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-03-05T09:00:00Z"
+    "exit_asked_at": "2026-03-05T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011021",
@@ -1910,7 +2029,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011022",
@@ -1925,7 +2045,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011023",
@@ -1940,7 +2061,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011024",
@@ -1955,7 +2077,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011025",
@@ -1970,7 +2093,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011026",
@@ -1985,7 +2109,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011027",
@@ -2000,7 +2125,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011028",
@@ -2015,7 +2141,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011029",
@@ -2030,7 +2157,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011030",
@@ -2045,7 +2173,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011031",
@@ -2060,7 +2189,8 @@
     "invite_expires_at": "2025-12-27T01:00:00Z",
     "invite_used_at": "2025-12-01T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011032",
@@ -2080,7 +2210,8 @@
     "left_at": "2026-05-30T09:00:00Z",
     "end_sent_at": "2026-05-30T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-05-30T09:00:00Z"
+    "exit_asked_at": "2026-05-30T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011033",
@@ -2100,7 +2231,8 @@
     "left_at": "2026-04-15T09:00:00Z",
     "end_sent_at": "2026-04-15T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-04-15T09:00:00Z"
+    "exit_asked_at": "2026-04-15T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011034",
@@ -2120,7 +2252,8 @@
     "left_at": "2026-05-26T09:00:00Z",
     "end_sent_at": "2026-05-26T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-05-26T09:00:00Z"
+    "exit_asked_at": "2026-05-26T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011035",
@@ -2135,7 +2268,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011036",
@@ -2150,7 +2284,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011037",
@@ -2165,7 +2300,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011038",
@@ -2180,7 +2316,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011039",
@@ -2195,7 +2332,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011040",
@@ -2210,7 +2348,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011041",
@@ -2225,7 +2364,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011042",
@@ -2240,7 +2380,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011043",
@@ -2255,7 +2396,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011044",
@@ -2270,7 +2412,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011045",
@@ -2285,7 +2428,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011046",
@@ -2300,7 +2444,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011047",
@@ -2315,7 +2460,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011048",
@@ -2330,7 +2476,8 @@
     "invite_expires_at": "2026-01-31T01:00:00Z",
     "invite_used_at": "2026-01-05T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011049",
@@ -2350,7 +2497,8 @@
     "left_at": "2026-07-13T09:00:00Z",
     "end_sent_at": "2026-07-13T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-07-13T09:00:00Z"
+    "exit_asked_at": "2026-07-13T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011050",
@@ -2370,7 +2518,8 @@
     "left_at": "2026-04-01T09:00:00Z",
     "end_sent_at": "2026-04-01T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-04-01T09:00:00Z"
+    "exit_asked_at": "2026-04-01T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011051",
@@ -2390,7 +2539,8 @@
     "left_at": "2026-05-24T09:00:00Z",
     "end_sent_at": "2026-05-24T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-05-24T09:00:00Z"
+    "exit_asked_at": "2026-05-24T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011052",
@@ -2410,7 +2560,8 @@
     "left_at": "2026-06-05T09:00:00Z",
     "end_sent_at": "2026-06-05T09:00:00Z",
     "exit_ok": true,
-    "exit_asked_at": "2026-06-05T09:00:00Z"
+    "exit_asked_at": "2026-06-05T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011053",
@@ -2425,7 +2576,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011054",
@@ -2440,7 +2592,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011055",
@@ -2455,7 +2608,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011056",
@@ -2470,7 +2624,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011057",
@@ -2485,7 +2640,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011058",
@@ -2500,7 +2656,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011059",
@@ -2515,7 +2672,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011060",
@@ -2530,7 +2688,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011061",
@@ -2545,7 +2704,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011062",
@@ -2560,7 +2720,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011063",
@@ -2575,7 +2736,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011064",
@@ -2590,7 +2752,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011065",
@@ -2605,7 +2768,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011066",
@@ -2620,7 +2784,8 @@
     "invite_expires_at": "2026-02-28T01:00:00Z",
     "invite_used_at": "2026-02-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011067",
@@ -2638,7 +2803,8 @@
     "synthetic": true,
     "left_reason": "resigned",
     "left_at": "2026-05-20T09:00:00Z",
-    "end_sent_at": "2026-05-20T09:00:00Z"
+    "end_sent_at": "2026-05-20T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011068",
@@ -2656,7 +2822,8 @@
     "synthetic": true,
     "left_reason": "resigned",
     "left_at": "2026-07-06T09:00:00Z",
-    "end_sent_at": "2026-07-06T09:00:00Z"
+    "end_sent_at": "2026-07-06T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011069",
@@ -2671,7 +2838,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011070",
@@ -2686,7 +2854,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011071",
@@ -2701,7 +2870,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011072",
@@ -2716,7 +2886,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011073",
@@ -2731,7 +2902,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011074",
@@ -2746,7 +2918,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011075",
@@ -2761,7 +2934,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011076",
@@ -2776,7 +2950,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011077",
@@ -2791,7 +2966,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011078",
@@ -2806,7 +2982,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011079",
@@ -2821,7 +2998,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011080",
@@ -2836,7 +3014,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011081",
@@ -2851,7 +3030,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011082",
@@ -2866,7 +3046,8 @@
     "invite_expires_at": "2026-03-28T01:00:00Z",
     "invite_used_at": "2026-03-02T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011083",
@@ -2884,7 +3065,8 @@
     "synthetic": true,
     "left_reason": "resigned",
     "left_at": "2026-08-02T09:00:00Z",
-    "end_sent_at": "2026-08-02T09:00:00Z"
+    "end_sent_at": "2026-08-02T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011084",
@@ -2902,7 +3084,8 @@
     "synthetic": true,
     "left_reason": "resigned",
     "left_at": "2026-07-31T09:00:00Z",
-    "end_sent_at": "2026-07-31T09:00:00Z"
+    "end_sent_at": "2026-07-31T09:00:00Z",
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011085",
@@ -2920,7 +3103,8 @@
     "synthetic": true,
     "left_reason": "resigned",
     "left_at": "2026-06-10T09:00:00Z",
-    "end_sent_at": "2026-06-10T09:00:00Z"
+    "end_sent_at": "2026-06-10T09:00:00Z",
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011086",
@@ -2935,7 +3119,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011087",
@@ -2950,7 +3135,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011088",
@@ -2965,7 +3151,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011089",
@@ -2980,7 +3167,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011090",
@@ -2995,7 +3183,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011091",
@@ -3010,7 +3199,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011092",
@@ -3025,7 +3215,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011093",
@@ -3040,7 +3231,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011094",
@@ -3055,7 +3247,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011095",
@@ -3070,7 +3263,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011096",
@@ -3085,7 +3279,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011097",
@@ -3100,7 +3295,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": true
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011098",
@@ -3115,7 +3311,8 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000011099",
@@ -3130,6 +3327,7 @@
     "invite_expires_at": "2026-05-02T01:00:00Z",
     "invite_used_at": "2026-04-06T01:00:00Z",
     "state": "active",
-    "synthetic": true
+    "synthetic": true,
+    "first_job": false
   }
 ]

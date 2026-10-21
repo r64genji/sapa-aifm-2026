@@ -48,10 +48,11 @@ export async function themeDetail(organisationId: string, driver: string, touchp
   const touchpoints = [...new Set(schedule.data!.map((row) => row.touchpoint as number))].sort((a, b) => a - b);
   const intakes = team ? [] : [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
   const roles = team ? [] : [...new Set(people.data!.map((row) => row.role as string))].sort();
-  const [days, byIntake, byRole] = await Promise.all([
+  const [days, byIntake, byRole, byExperience] = await Promise.all([
     Promise.all(touchpoints.map(async (day) => ({ day, c: await counts(organisationId, day, null, null, team) }))),
     Promise.all(intakes.map(async (intake) => ({ intake, c: await counts(organisationId, touchpoint, `${intake}-01`, null, team) }))),
     Promise.all(roles.map(async (role) => ({ role, c: await counts(organisationId, touchpoint, null, null, team, role) }))),
+    team ? [] : Promise.all([true, false].map(async (firstJob) => ({ group: firstJob ? "First job" : "Experienced", c: await counts(organisationId, touchpoint, null, null, team, null, firstJob) }))),
   ]);
 
   return {
@@ -64,5 +65,6 @@ export async function themeDetail(organisationId: string, driver: string, touchp
     by_day: days.map(({ day, c }) => ({ touchpoint: day, ...share(c, driver) })),
     by_intake: byIntake.filter(({ c }) => c.respondents > 0).map(({ intake, c }) => ({ intake, ...share(c, driver) })),
     by_role: byRole.filter(({ c }) => c.respondents > 0).map(({ role, c }) => ({ role, ...share(c, driver) })),
+    by_experience: byExperience.filter(({ c }) => c.respondents > 0).map(({ group, c }) => ({ group, ...share(c, driver) })),
   };
 }

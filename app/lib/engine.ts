@@ -11,6 +11,7 @@ import {
   personByChat,
   recordConsent,
   redeemInvite,
+  setFirstJob,
   setLanguage,
   stopPerson,
   type Person,
@@ -97,8 +98,12 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      return { replies: [{ text: pack.help }] };
+      return { replies: [{ text: pack.help }, { text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] }] };
     }
+  }
+  if (id === "firstjob" && person.state === "active" && (value === "yes" || value === "no")) {
+    await setFirstJob(person, value === "yes");
+    return { replies: [{ text: pack.firstJob.thanks }] };
   }
   if (id === "offer" && person.state === "active" && (value === "yes" || value === "no_thanks")) {
     const replies = await answerOffer(person, value);
