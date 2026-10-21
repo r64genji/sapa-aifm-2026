@@ -773,7 +773,7 @@ export function Problems({ driver }: { driver?: string }) {
       </header>
 
       <nav aria-label="Problem areas" className="flex flex-col gap-3">
-        <div className="sp-stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="sp-stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {cards.map((c) => (
             <Tile key={c.driver} c={c} active={c.driver === current?.driver} start={c.driver === start} fix={fixed(c.driver)} waiting={waitingOf(c.driver)} onPick={pick} />
           ))}
