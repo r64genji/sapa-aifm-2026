@@ -49,7 +49,8 @@ test("R11, R25: the check-in uses only bank text, the reply is stored encrypted,
     question("TRAINING"),
     question("WORKLOAD"),
     question("JOB_MATCH"),
-    en.checkin.chat.light,
+    en.checkin.chat.wait,
+    `You tapped "Some" for support from your manager and "Somewhat clear" for your onboarding.\n\n${en.checkin.probe.topics.MANAGER_SUPPORT.open}\n\n${en.checkin.chat.optional}`,
     en.checkin.thanks,
   ]);
 

@@ -48,7 +48,7 @@ before(async () => {
 
 test("R21, R19: at Day 14 two dispatch calls at the same time send the live hire one check-in", async () => {
   const before = (await sentTo(live)).length;
-  await freezeClock("2026-10-16T02:00:00.000Z");
+  await freezeClock("2026-10-29T02:00:00.000Z");
   const [first, second] = await Promise.all([dispatch(), dispatch()]);
   assert.deepEqual([first.status, second.status], [200, 200]);
   assert.deepEqual((await sentTo(live)).slice(before).map((m) => m.text), [en.checkin.intro, question("ROLE_CLARITY")]);

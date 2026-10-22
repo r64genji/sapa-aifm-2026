@@ -14,7 +14,6 @@ let browser: Browser;
 let page: Page;
 
 const texts = async () => (await sentTo(live)).map((m) => String(m.text));
-const topCard = () => page.locator("text=/\\d+ of \\d+ who answered at Day 14/").first();
 
 before(async () => {
   await resetDemo();
@@ -34,20 +33,18 @@ after(async () => {
 });
 
 test("Demo beat 1: Outreach now sends the live hire the Day 14 check-in", async () => {
-  await page.getByLabel("Check-in to send").selectOption("14");
   await page.getByRole("button", { name: "Outreach now" }).click();
   await page.getByText("1 message sent.").waitFor();
   assert.ok((await texts()).includes(question("ROLE_CLARITY")));
 });
 
-test("Demo beat 2: the reply moves the card to 24 of 65, and Confirm label marks it reviewed", async () => {
+test("Demo beat 2: the reply adds one AI label to the Role clarity card, and Confirm label marks it reviewed", async () => {
   for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 
   await page.goto(`${appUrl}/`);
-  await page.getByText("24 of 65 who answered at Day 14").first().waitFor();
-  assert.equal(await topCard().textContent(), "24 of 65 who answered at Day 14");
+  await page.getByText("16 checked by HR, 8 labelled by the AI").waitFor();
   await page.locator(".sp-row", { hasText: reply }).getByRole("button", { name: "Confirm label" }).click();
   await page.getByText("17 checked by HR, 7 labelled by the AI").waitFor();
 });
@@ -80,7 +77,6 @@ test("Demo beats 4 and 5: Raj marks it done, the hire gets the update, and the D
   await page.getByText("Raj marked it done").waitFor();
 
   const before = (await texts()).length;
-  await page.getByLabel("Check-in to send").selectOption("30");
   await page.getByRole("button", { name: "Outreach now" }).click();
   await page.getByText("1 message sent.").waitFor();
   const sent = (await texts()).slice(before);
