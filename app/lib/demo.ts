@@ -82,6 +82,8 @@ export async function liveHire(organisationId: string) {
     .from("people")
     .select("id, language, start_date, joined_on, telegram_chat_id, managers(telegram_chat_id, revoked_at)")
     .eq("intake_id", intake.id)
+    .eq("state", "active")
+    .not("telegram_chat_id", "is", null)
     .order("invite_used_at")
     .limit(1)
     .maybeSingle();

@@ -2,6 +2,7 @@
   "name": "Bahasa Malaysia",
   "start": "Hai, saya Sapa, pembantu semakan untuk pekerja baharu. Sila guna pautan jemputan daripada HR untuk menyertai.",
   "invalidInvite": "Pautan jemputan ini tidak boleh digunakan. Sila minta pautan baharu daripada HR.",
+  "alreadyJoined": "Anda sudah menyertai Sapa pada telefon ini. Sapa akan menghubungi anda untuk semakan seterusnya.",
   "managerLinked": "Berjaya dipautkan. Sapa akan menghubungi anda di sini apabila HR menugaskan tindakan kepada anda.",
   "languagePrompt": "Sila pilih bahasa anda.",
   "typeInstead": "Sapa belum dapat mengendalikan nota suara, gambar atau fail. Sila taip mesej anda.",

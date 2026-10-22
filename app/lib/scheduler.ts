@@ -129,7 +129,7 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
       next.set(row.person_id, row);
     }
   }
-  if (next.size === 0) return { error: "No one has a check-in left to send" };
+  if (next.size === 0) return { error: waiting.size > 0 ? "Every joined phone still has a check-in open" : "No one has a check-in left to send" };
   let sent = 0;
   for (const row of next.values()) {
     const { data: claimed, error: claimError } = await db

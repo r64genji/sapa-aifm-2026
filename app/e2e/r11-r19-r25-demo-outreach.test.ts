@@ -131,3 +131,17 @@ test("Bug fix: tapping the same word twice sends the next question once", async 
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
   assert.deepEqual(texts, [`You tapped "${label}". ${question("MANAGER_SUPPORT")}`]);
 });
+
+test("Bug fix: when the first phone that joined has stopped, the demo bar offers no check-in that no phone can get", async () => {
+  await resetDemo();
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  await link(live, liveInvite);
+  await tap(live, "English");
+  await tap(live, en.agree);
+  await say(live, "Test Hire");
+  await say(live, "/stop");
+
+  const res = await fetch(`${appUrl}/api/hr/demo/status`, { headers: { authorization: `Bearer ${await hrToken("admin@contoh.test")}` } });
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).live_hire.next_check_in, null);
+});

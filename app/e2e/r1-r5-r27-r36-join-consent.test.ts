@@ -89,7 +89,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
   }
 });
 
-test("R27: a second chat on the intake link joins as a new person, a chat that joined is refused, and HR sees no names", async () => {
+test("R27: a second chat on the intake link joins as a new person, a chat that joined is told it already joined, and HR sees no names", async () => {
   const other = 5550000003;
   await link(other, liveInvite);
   assert.deepEqual(await texts(other), [`${en.languagePrompt}\n${ms.languagePrompt}\n${zh.languagePrompt}`]);
@@ -98,7 +98,7 @@ test("R27: a second chat on the intake link joins as a new person, a chat that j
   assert.notEqual(second.id, first.id);
   assert.notEqual(second.code_name, first.code_name);
   await link(5550000001, liveInvite);
-  assert.equal((await texts(5550000001)).at(-1), en.invalidInvite);
+  assert.equal((await texts(5550000001)).at(-1), en.alreadyJoined);
 
   const res = await fetch(`${appUrl}/api/hr/hires`, { headers: { authorization: `Bearer ${await hrToken()}` } });
   const hires = (await res.json()) as Record<string, unknown>[];

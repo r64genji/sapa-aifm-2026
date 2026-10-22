@@ -2,6 +2,7 @@
   "name": "English",
   "start": "Hi, I'm Sapa, the new-hire check-in assistant. Please use the invite link from HR to join.",
   "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
+  "alreadyJoined": "You have already joined Sapa on this phone. Sapa will message you for your next check-in.",
   "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you. Send /whatican to see what you can see in Sapa.",
   "whatICanSee": "What I can see: a weekly count of what your team's new hires named, shown as fewer than 3 when the count is small. You never see what new hires write. Sapa never ranks teams or managers. HR sees your team's count only when a problem is more common there than in the company, so help reaches you. You never see other teams.",
   "action": {

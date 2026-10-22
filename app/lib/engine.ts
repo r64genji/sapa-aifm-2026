@@ -177,7 +177,7 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   }
   if (person.state === "active" && command === "language") return { replies: [languageReply(languages)] };
   if (command === "start" && input.text.trim().split(/\s+/).length > 1) {
-    return { replies: [{ text: packs[person.language].invalidInvite }] };
+    return { replies: [{ text: packs[person.language].alreadyJoined }] };
   }
   if (person.state === "active" && input.kind === "text" && command === "say") {
     const message = input.text.trim().replace(/^\S+\s*/, "");

@@ -2,6 +2,7 @@
   "name": "中文",
   "start": "你好，我是 Sapa，新员工入职问候助手。请使用 HR 发给你的邀请链接加入。",
   "invalidInvite": "此邀请链接无法使用。请向 HR 索取新的链接。",
+  "alreadyJoined": "你已经在这部手机上加入了 Sapa。Sapa 会在下一次问候时联系你。",
   "languagePrompt": "请选择你的语言。",
   "typeInstead": "Sapa 暂时无法处理语音、图片或文件。请直接打字发送你的消息。",
   "consentVersion": "zh-2026-10-21b",
