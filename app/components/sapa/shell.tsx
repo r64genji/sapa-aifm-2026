@@ -74,6 +74,9 @@ export function Shell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b py-1.5 pl-1.5 pr-3 md:hidden" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
         {logo}
         <span className="flex min-w-0 flex-auto items-center justify-end gap-2.5">{user}</span>
+        <Link href="/concerns" aria-label="Sent to Speak Up" className="flex h-11 w-11 flex-none items-center justify-center" style={{ color: "var(--ink-muted)" }}>
+          <Shield size={18} strokeWidth={2} aria-hidden="true" />
+        </Link>
       </header>
       <nav
         aria-label="Main"

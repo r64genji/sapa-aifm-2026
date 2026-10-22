@@ -82,6 +82,9 @@
   body {
     overflow-x: clip;
   }
+  html {
+    overflow-anchor: none;
+  }
   body {
     margin: 0;
     font-family: var(--font-sans);
@@ -358,7 +361,8 @@ main:focus { outline: none; }
   .sp-tip-sheet { position: fixed; left: 16px; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 45; padding: 14px 16px; border-radius: var(--radius-control); background: var(--ink); color: #ffffff; font-size: 14px; line-height: 20px; font-weight: 500; box-shadow: var(--shadow-pop); animation: sp-pop 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
   .sp-dialog-backdrop { align-items: flex-end; padding: 0; }
-  .sp-dialog { max-width: none; max-height: 90vh; overflow-y: auto; border-radius: var(--radius-card) var(--radius-card) 0 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+  .sp-input { font-size: 16px; }
+  .sp-dialog { max-width: none; max-height: 90dvh; overflow-y: auto; border-radius: var(--radius-card) var(--radius-card) 0 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
   .sp-dialog .sp-btn { flex: 1 1 auto; justify-content: center; }
 }
 
