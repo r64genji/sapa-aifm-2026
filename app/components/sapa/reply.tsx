@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./live.css";
-import { Shield } from "lucide-react";
+import { Send, Shield } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
@@ -223,7 +223,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
 
 type LibraryFix = { id: string; title: string; text: string; result: string };
 
-function FixDialog({ item, onClose }: { item: ReplyItem; onClose: () => void }) {
+export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "drivers">; onClose: () => void }) {
   const router = useRouter();
   const driver = item.drivers[0];
   const library = useApi<LibraryFix[]>(`/api/hr/actions/library?driver=${driver}`);
@@ -322,7 +322,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         ) : null}
       </div>
       <div
-        className="box-border flex min-w-0 flex-[1_1_260px] flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6"
+        className="box-border flex min-w-0 flex-[1_1_300px] flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6"
         style={{ background: "var(--surface-sunken)", borderColor: "var(--line-soft)" }}
       >
         <div className="flex flex-col gap-1.5">
@@ -348,34 +348,37 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
             </div>
           ) : null}
         </div>
-        <div className="flex gap-2">
-          {pending ? (
-            <Button variant="primary" disabled={busy} onClick={() => run(onConfirm)}>
-              Confirm label
-            </Button>
-          ) : null}
-          {awaiting ? (
-            <Button variant="primary" disabled={busy} onClick={() => setOpen(true)}>
-              Pick label
-            </Button>
-          ) : tagged && !item.serious && !item.escalate ? (
-            <Button disabled={busy} onClick={() => setOpen(true)}>
-              Change
-            </Button>
-          ) : null}
+        <div className="flex flex-col gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
+          <div className="grid grid-cols-2 gap-2">
+            {pending ? (
+              <Button variant="primary" disabled={busy} onClick={() => run(onConfirm)}>
+                Confirm
+              </Button>
+            ) : null}
+            {awaiting ? (
+              <Button variant="primary" disabled={busy} onClick={() => setOpen(true)}>
+                Pick label
+              </Button>
+            ) : tagged && !item.serious && !item.escalate ? (
+              <Button disabled={busy} onClick={() => setOpen(true)}>
+                Change label
+              </Button>
+            ) : null}
+            {awaiting ? (
+              <Button disabled={busy} onClick={() => run(onRetry)}>
+                Try AI again
+              </Button>
+            ) : null}
+            {onUndo ? (
+              <Button disabled={busy || item.serious} why={item.serious ? "Already sent to Serious concerns" : null} onClick={() => run(onUndo)}>
+                Undo
+              </Button>
+            ) : null}
+          </div>
           {item.drivers.length && !item.serious && !item.escalate ? (
             <Button disabled={busy} onClick={() => setFixing(true)}>
-              Send to their manager
-            </Button>
-          ) : null}
-          {awaiting ? (
-            <Button disabled={busy} onClick={() => run(onRetry)}>
-              Try AI again
-            </Button>
-          ) : null}
-          {onUndo ? (
-            <Button disabled={busy || item.serious} why={item.serious ? "Already sent to Serious concerns" : null} onClick={() => run(onUndo)}>
-              Undo
+              <Send size={15} strokeWidth={2} aria-hidden="true" />
+              Send fix to manager
             </Button>
           ) : null}
         </div>

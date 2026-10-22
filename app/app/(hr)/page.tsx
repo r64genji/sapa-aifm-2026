@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { TranslatedQuote } from "@/components/sapa/reply";
+import { Send } from "lucide-react";
+import { FixDialog, TranslatedQuote } from "@/components/sapa/reply";
 import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
@@ -27,6 +28,7 @@ const typedLine = (c: Card) => `${c.reviewed} checked by HR${c.ai_confident ? `,
 
 function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, undo: () => Promise<unknown>) => void }) {
   const [picking, setPicking] = useState(false);
+  const [fixing, setFixing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const label = row.drivers.length ? row.drivers.map(driverName).join(" and ") : row.context_tags.length ? row.context_tags.map((t) => CONTEXT[t] ?? t).join(" and ") : "Nothing to act on";
   const send = async (body: object) => {
@@ -46,7 +48,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
       metric={waiting ? <Waiting>Waiting for the AI</Waiting> : <AiMark state={row.status === "needs_review" ? "unsure" : "suggested"} label={label} />}
       action={
         waiting ? null : (
-          <>
+          <div className="grid w-full grid-cols-2 gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
             {row.status === "ok" || row.status === "needs_review" ? (
               <Button variant="primary" lane="ai" onClick={() => send({})}>
                 Confirm label
@@ -55,7 +57,13 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
             <Button variant="secondary" lane="ink" onClick={() => setPicking(true)}>
               Change label
             </Button>
-          </>
+            {row.drivers.length ? (
+              <Button className="col-span-2" onClick={() => setFixing(true)}>
+                <Send size={15} strokeWidth={2} aria-hidden="true" />
+                Send fix to manager
+              </Button>
+            ) : null}
+          </div>
         )
       }
     >
@@ -66,6 +74,7 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
       {row.text ? <TranslatedQuote language={row.language} text={row.text} evidence={row.evidence_quote} /> : null}
       {row.note ? <div className="sp-row-meta">{row.note}</div> : null}
       {error ? <div className="sp-row-meta" style={{ color: "var(--serious)" }}>{error}</div> : null}
+      {fixing ? <FixDialog item={row} onClose={() => setFixing(false)} /> : null}
       {picking ? (
         <Dialog title="What is this reply about?" onClose={() => setPicking(false)}>
           <span className="sp-muted">The AI said {label}. Pick the closer one.</span>

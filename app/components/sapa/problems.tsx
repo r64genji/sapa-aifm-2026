@@ -565,18 +565,16 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </Panel>
               {d.by_experience.length ? (
                 <Panel title="First job or experienced">
-                  {d.by_experience.map((s) => (
-                    <span key={s.group} className="text-[14px]">
-                      <span className="font-semibold">{s.group}:</span>{" "}
-                      {s.enough ? (
-                        <>
-                          <span className="sp-num font-bold">{s.n} of {s.m}</span> named {name.toLowerCase()}
-                        </>
-                      ) : (
-                        <span className="sp-caption">Not enough people yet ({s.have} of {s.need} needed)</span>
-                      )}
-                    </span>
-                  ))}
+                  {d.by_experience.map((s) =>
+                    s.enough ? (
+                      <HBar key={s.group} label={s.group} n={s.n} of={s.m} sub={`${Math.round((s.n / Math.max(s.m, 1)) * 100)}% named ${name.toLowerCase()}`} />
+                    ) : (
+                      <span key={s.group} className="flex flex-col gap-1.5 text-[13px]">
+                        <span className="font-semibold">{s.group}</span>
+                        <CountBar notEnough have={s.have} need={s.need} />
+                      </span>
+                    ),
+                  )}
                 </Panel>
               ) : null}
               {days.length > 1 ? (
