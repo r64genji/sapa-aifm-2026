@@ -108,14 +108,15 @@ export async function demoStatus(organisationId: string) {
         .order("due_at")
     : { data: [], error: null };
   if (nextError) throw nextError;
+  const stage = next.find((row) => row.touchpoint >= 14) ?? next[0];
   const { data: spend, error: spendError } = await db.from("ai_usage").select("cost").eq("provider", "deepseek");
   if (spendError) throw spendError;
   const manager = live?.managers as unknown as { telegram_chat_id: number | null; revoked_at: string | null } | null;
   const [ai, tg] = await Promise.all([models(), telegram()]);
   return {
     live_hire: {
-      next_check_in: next[0]
-        ? { touchpoint: next[0].touchpoint, due_at: next[0].due_at }
+      next_check_in: stage
+        ? { touchpoint: stage.touchpoint, due_at: stage.due_at }
         : null,
       scheduled: next.map((row) => row.touchpoint),
     },

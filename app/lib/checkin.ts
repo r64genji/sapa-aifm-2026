@@ -354,7 +354,8 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
   const sequence = sequenceOf(person.language, open);
   const [index, scale] = value.split(".").map(Number);
   const question = questionOf(person.language, sequence[open.progress]);
-  if (index !== open.progress || question.type !== "scale" || !(scale >= 1 && scale <= 5)) {
+  if (index !== open.progress) return [];
+  if (question.type !== "scale" || !(scale >= 1 && scale <= 5)) {
     return [questionReply(person, open, open.progress)];
   }
   if (!(await store(person, open, scale, null))) return null;

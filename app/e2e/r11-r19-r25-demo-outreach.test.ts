@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, db, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, liveInvite, chatPerson } from "./helpers.ts";
+import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, liveInvite, chatPerson } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -105,4 +105,28 @@ test("R19: Outreach now sends the check-in to every joined phone", async () => {
   const texts = async (chat: number, from: number) => (await sentTo(chat)).map((m) => m.text).slice(from);
   assert.deepEqual(await texts(live, before[0]), [en.checkin.intro, question("ROLE_CLARITY")]);
   assert.deepEqual(await texts(second, before[1]), [en.checkin.intro, question("ROLE_CLARITY")]);
+});
+
+test("Bug fix: for a phone that just joined, Outreach now offers the Day 14 check-in that the home cards count", async () => {
+  await resetDemo();
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  await link(live, liveInvite);
+  await tap(live, "English");
+  await tap(live, en.agree);
+  await say(live, "Test Hire");
+
+  const res = await fetch(`${appUrl}/api/hr/demo/status`, { headers: { authorization: `Bearer ${await hrToken("admin@contoh.test")}` } });
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).live_hire.next_check_in.touchpoint, 14);
+});
+
+test("Bug fix: tapping the same word twice sends the next question once", async () => {
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
+  assert.equal(res.status, 200);
+  const label = en.checkin.questions.find((q: { id: string }) => q.id === "ROLE_CLARITY").labels[3];
+  const before = (await sentTo(live)).length;
+  await tap(live, label);
+  await tap(live, label);
+  const texts = (await sentTo(live)).map((m) => m.text).slice(before);
+  assert.deepEqual(texts, [`You tapped "${label}". ${question("MANAGER_SUPPORT")}`]);
 });

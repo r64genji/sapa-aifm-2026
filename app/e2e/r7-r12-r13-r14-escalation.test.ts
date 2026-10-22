@@ -236,3 +236,12 @@ test("R25, R7: opening a case returns the reply and what the bot sent and writes
   const denied = await fetch(`${appUrl}/api/hr/escalations/${alert.id}`, { headers: { authorization: `Bearer ${manager}` } });
   assert.equal(denied.status, 401);
 });
+
+test("Bug fix: a message sent to Speak Up shows in HR's replies with no label instead of breaking the list", async () => {
+  const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", onScale).single();
+  const { data: stored } = await db.from("responses").select("id").eq("person_id", who!.id);
+  const res = await hrRequest("/api/hr/replies", "GET");
+  assert.equal(res.status, 200);
+  const item = (await res.json()).find((row: { id: string }) => row.id === stored![0].id);
+  assert.deepEqual([item.status, item.drivers, item.context_tags], [null, [], []]);
+});

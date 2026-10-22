@@ -15,7 +15,7 @@ export const CATEGORIES: Record<string, string> = {
   harassment: "Harassment",
   discrimination: "Discrimination",
   safety_hazard: "Safety hazard",
-  wage_or_legal: "Pay and wage law",
+  wage_legal: "Pay and wage law",
 };
 
 export const categoryName = (c: string) => CATEGORIES[c] ?? c.replace(/_/g, " ").replace(/^./, (x) => x.toUpperCase());

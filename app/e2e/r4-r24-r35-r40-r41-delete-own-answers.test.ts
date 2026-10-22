@@ -293,3 +293,16 @@ test("R24, R35: the nightly job deletes raw reply and question text once the ret
   const { data: tags } = await db.from("ai_tags").select("evidence_quote, responses!inner(person_id)").eq("responses.person_id", id);
   assert.deepEqual(tags!.map((t) => t.evidence_quote), [null]);
 });
+
+test("Bug fix: a Bahasa Malaysia hire who deletes everything gets the tap echo in Bahasa Malaysia", async () => {
+  const ms = read("../data/packs/ms.json");
+  const chat = 5550001405;
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  await link(chat, liveInvite);
+  await tap(chat, "Bahasa Malaysia");
+  await tap(chat, ms.agree);
+  await say(chat, "/padam");
+  await tap(chat, ms.delete.yes);
+  const sent = (await sentTo(chat)).map((m) => m.text);
+  assert.equal(sent.at(-1), `Anda tekan "${ms.delete.yes}". ${ms.delete.done}`);
+});

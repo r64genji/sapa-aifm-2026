@@ -133,3 +133,16 @@ test("R1: after No thanks the hire gets a confirmation and nothing more", async 
   assert.deepEqual([person!.state, data], ["declined", []]);
   assert.equal((await texts(chat)).length, before);
 });
+
+test("Bug fix: a one-letter name is asked again, and a six-word Malay name is taken", async () => {
+  const chat = 5550000009;
+  await link(chat, liveInvite);
+  await tap(chat, "English");
+  await tap(chat, en.agree);
+  await say(chat, "A");
+  assert.equal((await texts(chat)).at(-1), en.yourName.question);
+  await say(chat, "Siti Nurhaliza Binti Abdul Rahman Ismail");
+  assert.equal((await texts(chat)).at(-1), en.firstJob.question);
+  const { data } = await db.from("people").select("name").eq("telegram_chat_id", chat).single();
+  assert.equal(data!.name, "Siti Nurhaliza Binti Abdul Rahman Ismail");
+});

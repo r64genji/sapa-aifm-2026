@@ -124,9 +124,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
 }
 
 export async function handle(chatId: number, input: Input): Promise<Outcome> {
+  const before = input.kind === "button" ? (await personByChat(chatId))?.language : undefined;
   const outcome = await route(chatId, input);
   if (input.kind !== "button" || !input.label || outcome.replies.length === 0) return outcome;
-  const language = outcome.menu ?? (await personByChat(chatId))?.language ?? "en";
+  const language = outcome.menu ?? before ?? "en";
   const [first, ...rest] = outcome.replies;
   if (first.buttons?.[0]?.value === "done") return outcome;
   return { ...outcome, replies: [{ ...first, text: `${packs[language].tapped.replace("{label}", input.label)} ${first.text}` }, ...rest] };
@@ -185,13 +186,14 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "active" && input.kind === "text" && (!command || command === "ask")) {
     if (!command) {
       const name = input.text.trim().replace(/\s+/g, " ");
-      if (person.awaiting_name && /^[^?!@\d]{2,60}$/u.test(name) && name.split(" ").length <= 5) {
+      if (person.awaiting_name && /^[^?!@\d]{2,60}$/u.test(name) && name.split(" ").length <= 8) {
         const pack = packs[person.language];
         await setName(person, name);
         return { replies: [{ text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] }] };
       }
       const replies = await checkinText(person, input.text);
       if (replies) return { replies };
+      if (person.awaiting_name) return { replies: [{ text: packs[person.language].yourName.question }] };
     }
     const question = command ? input.text.trim().replace(/^\S+\s*/, "") : input.text;
     if (!question) return { replies: [{ text: packs[person.language].qa.askPrompt }] };
