@@ -1,6 +1,6 @@
 # 20 HR interview: Ammirul Iskandar Azman
 
-HR consultant. His own words: he holds an HR management degree and consults for companies, but does not work inside an HR department. He also says his firm builds a similar HR platform. Call on 2026-10-23. Full text: [transcript](reference/interviews/2026-10-23-ammirul-iskandar-azman-hr-consultant.txt). The transcript labels swap between speakers in places. He agreed to be named and quoted in the pitch. He will text his full name, company and role. Do not put a name or title on a slide until he does. One person's opinion, not data.
+Business Development Executive at Gem-Asia Sdn Bhd. His own words: he holds an HR management degree and consults for companies, but does not work inside an HR department. He also says his firm builds a similar HR platform. Call on 2026-10-23. Full text: [transcript](reference/interviews/2026-10-23-ammirul-iskandar-azman-hr-consultant.txt). The transcript labels swap between speakers in places. He agreed to be named and quoted in the pitch. One person's opinion, not data.
 
 ## What he told us
 
@@ -28,7 +28,7 @@ HR consultant. His own words: he holds an HR management degree and consults for 
 
 ## For the slides
 
-- Slide 3: "Instant messaging beats email. Some people do not have the routine of checking email." Source: the consultant, once name and title are confirmed.
+- Slide 3: "Instant messaging beats email. Some people do not have the routine of checking email." Source: Ammirul Iskandar Azman, Business Development Executive, Gem-Asia.
 - Slide 8: He found the dashboard easy to understand and said keep it uncrowded.
 - Slide 10: Real-time progress for HR is what firms want next. Sapa's loop covers wellbeing, not course progress.
-- Quote by name and title only after he texts them. Until then say "one HR consultant". Newsreader regular, as for every quote.
+- Quote him by name and title. Newsreader regular, as for every quote.

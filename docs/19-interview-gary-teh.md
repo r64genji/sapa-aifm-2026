@@ -1,6 +1,6 @@
 # 19 HR interview: Gary Teh
 
-HR Director at an HR solutions firm (he said "FairWork"; the transcript also says "Framework"). Before that, 14 years at Jabil. Call on 2026-10-22. Full text: [transcript](reference/interviews/2026-10-22-gary-teh-hr-director.txt). He agreed to be named and quoted in the pitch. Confirm the spelling of his name (Teh or Tay) and his firm before any slide uses them. One person's opinion, not data.
+HR Director at FairWork, an HR solutions firm. Before that, 14 years at Jabil. Call on 2026-10-22. Full text: [transcript](reference/interviews/2026-10-22-gary-teh-hr-director.txt). He agreed to be named and quoted in the pitch. His name is spelled Teh (owner confirmed 2026-10-23). One person's opinion, not data.
 
 ## What he told us
 
