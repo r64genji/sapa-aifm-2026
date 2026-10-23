@@ -159,7 +159,7 @@ test("R10: in demo mode the alert goes at once, says it normally waits until Mon
   assert.doesNotMatch(String(message.text), /\b2\b/);
   assert.deepEqual(
     (message.reply_markup as { inline_keyboard: { text: string }[][] }).inline_keyboard.flat().map((b) => b.text),
-    ["Accept", "Mark done"],
+    ["Mark done"],
   );
 });
 

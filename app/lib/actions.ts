@@ -706,7 +706,6 @@ async function sendAlert(id: string) {
   const reply: Reply = {
     text: [text.alert.replace("{title}", action.title), action.steps, ...lines, text.due.replace("{date}", dueDate(action.due_on!))].join("\n\n"),
     buttons: [
-      { label: text.accept, id: "accept", value: id },
       { label: text.done, id: "done", value: id },
     ],
   };
