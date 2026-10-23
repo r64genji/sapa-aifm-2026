@@ -45,7 +45,7 @@ Drivers (tag only what the reply says):
 - ROLE_CLARITY: unclear tasks, priorities or expectations.
 - MANAGER_SUPPORT: little guidance, feedback or help from the supervisor.
 - BELONGING: feeling left out, isolated or unwelcome in the team (shown to HR as Team integration).
-- ONBOARDING: unclear company direction, policies, procedures or benefits; weak orientation.
+- ONBOARDING: unclear company direction, policies, procedures or benefits; weak orientation; or the work environment: culture, facilities, canteen, engagement activities (shown to HR as Onboarding / Environment).
 - TRAINING: weak, missing or off-target job training: not relevant, not enough, or learning is off track.
 - WORKLOAD: too much or too little work, long hours.
 Context tags: PAY_BENEFITS, GROWTH, COMMUTE_LOGISTICS.

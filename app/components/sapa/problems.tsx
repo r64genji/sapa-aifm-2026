@@ -304,6 +304,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
               const id = f?.id ?? "own";
               const on = chosen === id;
               const good = (f?.difference ?? 0) > 0;
+              const best = good && id === shown[0].id;
               return (
                 <label key={id} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5" style={{ border: `1px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "transparent" }}>
                   <input type="radio" name={`fix-${driver}`} className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={on} onChange={() => setPick(id)} />
@@ -312,10 +313,11 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
                       <span className="font-semibold">{f ? f.title : "Write my own"}</span>
                       {f ? (
                         <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
-                          {good ? `Worked here · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
+                          {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
                         </span>
                       ) : null}
                     </span>
+                    {best && f ? <span className="sp-meta">Why: {f.evidence}</span> : null}
                     {on && f ? <span className="sp-meta">{f.text}</span> : null}
                   </span>
                 </label>

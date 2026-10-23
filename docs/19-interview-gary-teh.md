@@ -23,9 +23,9 @@ HR Director at FairWork, an HR solutions firm. Before that, 14 years at Jabil. C
 
 | Advice | Decision |
 | --- | --- |
-| Add Environment, fold it into Onboarding | Open. Changes a problem area name in the app and the rules in [05](05-implementation-spec.md). Owner to approve |
+| Add Environment, fold it into Onboarding | Built 23 Oct 2026: the area is now "Onboarding / Environment" (R12 in [05](05-implementation-spec.md)) |
 | Let the hire choose name or anonymous | Open. Conflicts with the 21 Oct decision (HR always sees the name, from Deanna Tung, Muhammad Danial and Stephen Yau). Owner to decide |
-| Open remarks box | Open. Check against R12 (one AI question) before adding |
+| Open remarks box | Built 23 Oct 2026 as a fixed last question (R63). The bot never sums it up in the chat; HR sees the AI summary |
 | Pick two fixes, management owns action | Pitch point. The app already sends a fix to one manager |
 | Ease of use 6/10 | Find what lowers it. Ask next time |
 

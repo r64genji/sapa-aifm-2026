@@ -160,7 +160,7 @@
       "ROLE_CLARITY": "角色和任务",
       "MANAGER_SUPPORT": "主管的支持",
       "BELONGING": "融入团队",
-      "ONBOARDING": "入职引导",
+      "ONBOARDING": "入职引导和工作环境",
       "TRAINING": "培训",
       "WORKLOAD": "工作量"
     },
@@ -212,7 +212,8 @@
       "tap": "“{label}”（{topic}）",
       "and": "和",
       "good": "你的选择看起来不错。",
-      "optional": "选填。不想回答可以点“跳过”。"
+      "optional": "选填。不想回答可以点“跳过”。",
+      "remarks": "最后一个问题：关于工作，还有什么想让 HR 知道的吗？什么都可以。请直接输入，或点“跳过”。"
     },
     "probe": {
       "skip": "跳过",
@@ -407,7 +408,7 @@
   "end": "您的跟进已结束。您的回答将保存到{date}。输入 DELETE 可立即删除。",
   "exit": {
     "question": "最后一个问题，如果您愿意回答：您离开的主要原因是什么？",
-    "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "融入团队", "ONBOARDING": "入职引导", "TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
+    "drivers": { "ROLE_CLARITY": "职责不清", "MANAGER_SUPPORT": "主管支持", "BELONGING": "融入团队", "ONBOARDING": "入职引导 / 工作环境", "TRAINING": "培训", "WORKLOAD": "工作量", "OTHER": "其他原因" },
     "open": "您还有什么想补充的吗？请输入。",
     "thanks": "谢谢。Sapa 不会再给您发消息了。"
   },
@@ -433,7 +434,7 @@
     "ROLE_CLARITY": "工作职责是否清楚",
     "MANAGER_SUPPORT": "主管的支持",
     "BELONGING": "融入团队",
-    "ONBOARDING": "入职引导",
+    "ONBOARDING": "入职引导 / 工作环境",
     "TRAINING": "培训",
     "WORKLOAD": "工作量",
     "PAY_BENEFITS": "薪酬和福利",

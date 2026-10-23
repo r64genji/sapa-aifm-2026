@@ -73,6 +73,10 @@ function chatLog(
     log.push({ from: "new_hire", kind: "tap", text: label, ...other(english.labels?.[tap.scale_value - 1], label), score: tap.scale_value });
     echo = packs[language].tapped.replace("{label}", label);
   }
+  if (row.question_id === "REMARKS") {
+    const asked = packs[language].checkin.chat.remarks;
+    return [{ from: "bot", kind: "fixed", text: asked, ...other(packs.en.checkin.chat.remarks, asked) }, { from: "new_hire", kind: "text", text: row.text }] as Entry[];
+  }
   const turns = schedule?.chat?.response_id === row.id ? schedule.chat.turns : [];
   if (row.question_id !== "OPEN") return [...log, { from: "new_hire", kind: "text", text: row.text } as Entry];
   const opener = turns[0]?.from === "bot" ? turns[0].text : question(language, "OPEN")!.text;

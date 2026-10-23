@@ -11,6 +11,7 @@ const speakUp = [
   ...organisation.escalation_contacts.general,
 ].join("\n");
 const thanks = "Thank you, your answers are saved.";
+const remarks = "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip.";
 const wait = en.checkin.chat.wait;
 const optional = en.checkin.chat.optional;
 const fixedQuestion = (driver: string) => en.checkin.probe.topics[driver].open;
@@ -80,7 +81,7 @@ test("R12, R17: a low tap opens no probe, the AI writes one question under the l
   assert.deepEqual(labels(opened[1]), [["Skip"]]);
 
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: "Three seniors give me urgent invoices at once" }) }]);
-  assert.deepEqual(await answer(low, "Three seniors give me urgent invoices at once, call me on 012-345 6789"), [thanks]);
+  assert.deepEqual(await answer(low, "Three seniors give me urgent invoices at once, call me on 012-345 6789"), [remarks]);
   const classify = (await modelCalls("omniroute")).at(-1)!;
   assert.ok(JSON.stringify(classify.body).includes("call me on [PHONE]"));
   assert.ok(!JSON.stringify(classify.body).includes("012-345 6789"));
@@ -148,6 +149,14 @@ test("R12: with no low tap the question comes under a good-taps line, and Skip e
   assert.deepEqual(await answer(light, "5"), [wait, `${en.checkin.chat.good}\n\nWhich list would help most?\n\n${optional}`]);
   const before = (await sentTo(light)).length;
   await tap(light, "Skip");
-  assert.deepEqual(((await sentTo(light)).slice(before) as Message[]).map((m) => m.text), [`You tapped "Skip". ${thanks}`]);
+  assert.deepEqual(((await sentTo(light)).slice(before) as Message[]).map((m) => m.text), [remarks]);
   assert.deepEqual(await openReply(light), []);
+});
+
+test("R63: the last question takes one message, the bot only says thanks, and HR gets it as its own reply", async () => {
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["ONBOARDING"], evidence_quote: "The canteen closes before my shift ends" }) }]);
+  assert.deepEqual(await answer(light, "The canteen closes before my shift ends"), [thanks]);
+  const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", light).single();
+  const { data: rows } = await db.from("responses").select("question_id").eq("person_id", who!.id).not("text_encrypted", "is", null);
+  assert.deepEqual(rows, [{ question_id: "REMARKS" }]);
 });

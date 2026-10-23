@@ -34,7 +34,7 @@
       "ROLE_CLARITY": "role clarity",
       "MANAGER_SUPPORT": "manager support",
       "BELONGING": "team integration",
-      "ONBOARDING": "onboarding",
+      "ONBOARDING": "onboarding / environment",
       "TRAINING": "training",
       "WORKLOAD": "workload"
     }
@@ -196,7 +196,7 @@
       "ROLE_CLARITY": "your role",
       "MANAGER_SUPPORT": "support from your manager",
       "BELONGING": "your team",
-      "ONBOARDING": "your onboarding",
+      "ONBOARDING": "your onboarding and work environment",
       "TRAINING": "your training",
       "WORKLOAD": "your workload"
     },
@@ -248,7 +248,8 @@
       "tap": "\"{label}\" for {topic}",
       "and": " and ",
       "good": "Your taps look good.",
-      "optional": "Optional. Tap Skip if you prefer not to answer."
+      "optional": "Optional. Tap Skip if you prefer not to answer.",
+      "remarks": "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip."
     },
     "probe": {
       "skip": "Skip",
@@ -495,7 +496,7 @@
   "end": "Your check-ins have ended. Your answers are kept until {date}. Type DELETE to remove them now.",
   "exit": {
     "question": "One last question, if you are willing: what was the main reason you left?",
-    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Team integration", "ONBOARDING": "Onboarding", "TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
+    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Team integration", "ONBOARDING": "Onboarding / Environment", "TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
     "open": "Is there anything you want to add? Please type it.",
     "thanks": "Thank you. Sapa will not message you again."
   },
@@ -521,7 +522,7 @@
     "ROLE_CLARITY": "Role clarity",
     "MANAGER_SUPPORT": "Support from your manager",
     "BELONGING": "Team integration",
-    "ONBOARDING": "Onboarding",
+    "ONBOARDING": "Onboarding / Environment",
     "TRAINING": "Training",
     "WORKLOAD": "Workload",
     "PAY_BENEFITS": "Pay and benefits",

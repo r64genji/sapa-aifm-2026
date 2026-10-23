@@ -23,6 +23,7 @@ type Chat = {
   asked: number;
   no_detail: number;
   response_id: string | null;
+  remarks?: boolean;
 };
 
 export type Schedule = {
@@ -271,16 +272,30 @@ async function probeAlert(person: Person, scheduleId: string, chat: Chat, text: 
   return endProbe(person, scheduleId, chat, [await escalate(person, id, keyword, model)]);
 }
 
+async function askRemarks(person: Person, scheduleId: string, chat: Chat | null): Promise<Reply[]> {
+  const base: Chat = chat ?? { open: true, at: "", topic: "light", taps: [], focus: null, turns: [], asked: 0, no_detail: 0, response_id: null };
+  await saveChat(scheduleId, { ...base, open: true, live: false, remarks: true });
+  return [{ text: packs[person.language].checkin.chat.remarks, buttons: [doneButton(person.language)] }];
+}
+
+async function remarksTurn(person: Person, scheduleId: string, chat: Chat, text: string): Promise<Reply[]> {
+  await saveChat(scheduleId, { ...chat, open: false });
+  return conclude(person, await insertResponse(person, scheduleId, "REMARKS", null, text), text, null);
+}
+
 async function endChat(person: Person, scheduleId: string, chat: Chat, model: string | null = null): Promise<Reply[]> {
   await saveChat(scheduleId, { ...chat, open: false });
-  if (!chat.response_id) return [{ text: packs[person.language].checkin.thanks }];
+  if (chat.remarks) return [{ text: packs[person.language].checkin.thanks }];
+  const remarks = () => askRemarks(person, scheduleId, chat);
+  if (!chat.response_id) return remarks();
   const text = wordsOf(chat);
   const { error } = await createAdminClient().from("responses").update({ text_encrypted: encrypt(text) }).eq("id", chat.response_id);
   if (error) throw error;
-  return conclude(person, chat.response_id, text, model);
+  return conclude(person, chat.response_id, text, model, remarks);
 }
 
 async function chatTurn(person: Person, scheduleId: string, before: Chat, text: string): Promise<Reply[]> {
+  if (before.remarks) return remarksTurn(person, scheduleId, before, text);
   const chat: Chat = { ...before, turns: [...before.turns, { from: "new_hire", text }] };
   const stop = () => (chat.live ? endProbe(person, scheduleId, chat) : endChat(person, scheduleId, chat));
   const keyword = detect(text);
@@ -314,7 +329,7 @@ async function chatTurn(person: Person, scheduleId: string, before: Chat, text: 
   return [...askHr, chat.live ? liveReply(person.language, { ...chat, turns: [{ from: "bot", text: question }] }) : { text: question, buttons: [doneButton(person.language)] }];
 }
 
-async function conclude(person: Person, responseId: string, text: string, chatModel: string | null): Promise<Reply[]> {
+async function conclude(person: Person, responseId: string, text: string, chatModel: string | null, then: (() => Promise<Reply[]>) | null = null): Promise<Reply[]> {
   const { checkin } = packs[person.language];
   const keyword = detect(text);
   if (keyword || chatModel) await escalate(person, responseId, keyword, chatModel);
@@ -324,6 +339,7 @@ async function conclude(person: Person, responseId: string, text: string, chatMo
   });
   const model = chatModel ?? (result.status !== "awaiting_ai" && result.tag.escalate ? result.tag.escalate_category : null);
   if (keyword || model) return [await escalate(person, responseId, keyword, model)];
+  if (then) return then();
   return [{ text: result.status === "awaiting_ai" ? checkin.gotIt : checkin.thanks }];
 }
 
@@ -340,9 +356,10 @@ async function chatDone(person: Person): Promise<Reply[] | null> {
     if (error) throw error;
     if (data.length !== 1) return null;
     const kept = open.chat?.kept ?? [];
-    if (!kept.length) return [{ text: packs[person.language].checkin.thanks }];
+    const remarks = () => askRemarks(person, open.id, open.chat);
+    if (!kept.length) return remarks();
     const text = kept.join("\n");
-    return conclude(person, await insertResponse(person, open.id, "OPEN", null, text), text, null);
+    return conclude(person, await insertResponse(person, open.id, "OPEN", null, text), text, null, remarks);
   }
   const chat = await openChat(person);
   return chat ? endChat(person, chat.id, chat.chat) : null;

@@ -221,7 +221,7 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
   );
 }
 
-type LibraryFix = { id: string; title: string; text: string; result: string };
+type LibraryFix = { id: string; title: string; text: string; result: string; difference: number | null };
 
 export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "drivers">; onClose: () => void }) {
   const router = useRouter();
@@ -255,7 +255,7 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
         <>
           <p className="sp-caption">Pick a fix. It goes to this new hire&apos;s own manager.</p>
           <div className="flex flex-col gap-2">
-            {(library.data ?? []).map((fix) => (
+            {(library.data ?? []).map((fix, i) => (
               <button
                 key={fix.id}
                 type="button"
@@ -265,7 +265,7 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
                 onClick={() => setPicked(fix.id)}
               >
                 <span className="font-semibold">{fix.title}</span>
-                <span className="sp-caption">{fix.result}</span>
+                <span className="sp-caption">{i === 0 && (fix.difference ?? 0) > 0 ? `Best fit. Why: ${fix.result}` : fix.result}</span>
               </button>
             ))}
           </div>

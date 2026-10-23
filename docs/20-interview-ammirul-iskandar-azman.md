@@ -21,7 +21,7 @@ Business Development Executive at Gem-Asia Sdn Bhd. His own words: he holds an H
 | --- | --- |
 | "Better offer" is the top reason | Owner decided 2026-10-23: keep it off the slides. It conflicts with [16](16-interview-deanna-tung.md) and [19](19-interview-gary-teh.md) (job not as told, manager, environment). Feeds the root cause TODO in [17](17-interview-muhammad-danial.md) |
 | Group problems broadly, keep dashboard uncrowded | Check the Problems page against the six areas. No change decided |
-| Weighted AI suggestion with a reason | Open. Check against [14](14-ai-use-contract.md) before any change |
+| Weighted AI suggestion with a reason | Built 23 Oct 2026 without AI: the top fix shows "Best fit" and a "Why:" line from SQL counts (R43). Nothing can be invented |
 | Telegram over email | Confirms the current design. Pitch point |
 | Training and progress bar, countdown clock | Out of scope ([00](00-intent.md)). Mention as a later step at most |
 | "Autonomic" wording | Optional pitch word for AI acting inside HR-set limits. Owner to decide |

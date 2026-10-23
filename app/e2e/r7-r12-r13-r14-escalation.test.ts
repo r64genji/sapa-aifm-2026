@@ -101,7 +101,7 @@ test("R14, R12: a passport held by the agent escalates by keyword with the same 
 
 test("R13: EPF and SOCSO taken from the pay alone does not escalate by keyword", async () => {
   const replies = await answer(epf, "EPF and SOCSO were taken from my pay");
-  assert.deepEqual(replies, [en.checkin.gotIt]);
+  assert.deepEqual(replies, [en.checkin.chat.remarks]);
   assert.equal((await escalations()).length, 2);
 });
 
@@ -128,7 +128,7 @@ test("R13, R12: the model alone escalates, and no probe follows", async () => {
 
 test("R7: a manager gets nothing for escalations, and an escalated reply is in no theme count", async () => {
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: "not sure what to do first" }) }]);
-  assert.deepEqual(await answer(plain, "Too many tasks, not sure what to do first"), [en.checkin.thanks]);
+  assert.deepEqual(await answer(plain, "Too many tasks, not sure what to do first"), [en.checkin.chat.remarks]);
 
   const escalated = await openResponse(passport);
   const { data: tag } = await db.from("ai_tags").select("status, drivers").eq("response_id", escalated).single();
@@ -195,7 +195,7 @@ test("R13, R14: a Manglish passport report with an English threat still escalate
 
 test("R13: HR retry of a reply that waited for AI escalates when the model now flags it, and the hire gets the safe message", async () => {
   const text = "My supervisor says I will regret it if I complain to anyone";
-  assert.deepEqual(await answer(retried, text), [en.checkin.gotIt]);
+  assert.deepEqual(await answer(retried, text), [en.checkin.chat.remarks]);
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ escalate: true, escalate_category: "bullying_threats", evidence_quote: text }) },
   ]);

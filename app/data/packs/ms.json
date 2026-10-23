@@ -161,7 +161,7 @@
       "ROLE_CLARITY": "peranan dan tugas anda",
       "MANAGER_SUPPORT": "sokongan daripada pengurus anda",
       "BELONGING": "pasukan anda",
-      "ONBOARDING": "orientasi anda",
+      "ONBOARDING": "orientasi dan persekitaran kerja anda",
       "TRAINING": "latihan anda",
       "WORKLOAD": "beban kerja anda"
     },
@@ -213,7 +213,8 @@
       "tap": "\"{label}\" untuk {topic}",
       "and": " dan ",
       "good": "Pilihan anda nampak baik.",
-      "optional": "Pilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+      "optional": "Pilihan sahaja. Tekan Langkau jika tidak mahu menjawab.",
+      "remarks": "Soalan terakhir: ada apa-apa lagi tentang kerja yang anda mahu HR tahu? Boleh tentang apa sahaja. Taip di sini, atau tekan Langkau."
     },
     "probe": {
       "skip": "Langkau",
@@ -429,7 +430,7 @@
   "end": "Semakan anda telah tamat. Jawapan anda disimpan sehingga {date}. Taip DELETE untuk memadamkannya sekarang.",
   "exit": {
     "question": "Satu soalan terakhir, jika anda sudi: apakah sebab utama anda berhenti?",
-    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Integrasi pasukan", "ONBOARDING": "Orientasi", "TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
+    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Integrasi pasukan", "ONBOARDING": "Orientasi / Persekitaran", "TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
     "open": "Adakah anda mahu menambah apa-apa? Sila taip.",
     "thanks": "Terima kasih. Sapa tidak akan menghantar mesej lagi."
   },
@@ -455,7 +456,7 @@
     "ROLE_CLARITY": "Kejelasan tugas",
     "MANAGER_SUPPORT": "Sokongan daripada pengurus",
     "BELONGING": "Integrasi pasukan",
-    "ONBOARDING": "Orientasi",
+    "ONBOARDING": "Orientasi / Persekitaran",
     "TRAINING": "Latihan",
     "WORKLOAD": "Beban kerja",
     "PAY_BENEFITS": "Gaji dan faedah",
