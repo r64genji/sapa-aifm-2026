@@ -29,9 +29,9 @@ The story and slide direction live in [storyboard.md](storyboard.md); it wins ov
 
 ## What goes in this folder
 
-- `deck.html` — the deck: open in a browser, arrows or space to step, F for fullscreen. Slots in `[BRACKETS]` wait for real data
-- `deck.pdf` — exported final deck (keep the editable source link in `links.md`)
-- `links.md` — link to the editable deck (Canva / Slides / Claude)
+The pitch deck lives in Claude artifacts, never on disk. Never save the deck, an export of it or a copy of it in this repo.
+
+- `links.md` — link to the deck's Claude artifact
 - `speaker-notes.md` — who says what on each slide
 - `illustrations/sapa-join-accounts-payable-asia.png` — QR for judges to join the live bot as Accounts Payable Asia new hires (Raj's team). It stays valid across demo resets; it changes only if production's `DEMO_RESET_SECRET` changes. Re-save it from Join codes on the production site if needed.
 
@@ -43,8 +43,7 @@ The story and slide direction live in [storyboard.md](storyboard.md); it wins ov
 - [ ] Every statistic on a slide has its source in small text
 - [ ] Assign each slide to a speaker in `speaker-notes.md`
 - [ ] Check the deck is 10 slides or fewer
-- [ ] Export `deck.pdf` here
 
 ## Definition of done
 
-The deck is 10 slides or fewer, every number is sourced, each slide has a speaker, and the PDF is saved here.
+The deck is 10 slides or fewer, every number is sourced, each slide has a speaker, and its Claude artifact link is in `links.md`.
