@@ -15,6 +15,7 @@ const save = async (tracks: unknown[], who?: string) =>
 
 before(async () => {
   await resetDemo();
+  await freezeClock("2026-10-14T01:00:00.000Z");
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
 });
 
