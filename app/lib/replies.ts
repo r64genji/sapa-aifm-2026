@@ -43,7 +43,7 @@ export async function heldAnonymous(organisationId: string) {
 }
 
 const byline = (name: string | null | undefined, team: string | null | undefined, touchpoint: number | null | undefined) =>
-  [name ?? "A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`].filter(Boolean).join(" · ");
+  [name ?? "A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? `Month ${Math.round(touchpoint / 30.4)}` : `Day ${touchpoint}`].filter(Boolean).join(" · ");
 
 type Entry = { from: "bot" | "new_hire"; kind: "fixed" | "ai" | "tap" | "text"; text: string; en?: string; echo?: string; score?: number };
 
@@ -80,7 +80,8 @@ function chatLog(
   if (row.question_id !== "OPEN") return [...log, { from: "new_hire", kind: "text", text: row.text } as Entry];
   const opener = turns[0]?.from === "bot" ? turns[0].text : question(language, "OPEN")!.text;
   const key = chatKey(language, opener);
-  log.push({ from: "bot", kind: "fixed", text: mask(opener), ...other(key ? packs.en.checkin.chat[key] : question("en", "OPEN")!.text, opener), ...(echo && { echo }) });
+  const written = turns[0]?.from === "bot" && !key;
+  log.push({ from: "bot", kind: written ? "ai" : "fixed", text: mask(opener), ...(written ? {} : other(key ? packs.en.checkin.chat[key] : question("en", "OPEN")!.text, opener)), ...(echo && { echo }) });
   const rest = turns[0]?.from === "bot" ? turns.slice(1) : turns;
   for (const turn of rest.length ? rest : [{ from: "new_hire" as const, text: row.text }]) {
     log.push(turn.from === "bot" ? { from: "bot", kind: "ai", text: mask(turn.text) } : { from: "new_hire", kind: "text", text: mask(turn.text) });

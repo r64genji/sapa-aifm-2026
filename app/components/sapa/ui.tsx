@@ -295,7 +295,7 @@ export const driverName = (d: string) => DRIVERS[d] ?? d.replace(/_/g, " ").toLo
 export const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
 export const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
 export const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
-export const dayLabel = (touchpoint: number) => (touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`);
+export const dayLabel = (touchpoint: number) => (touchpoint >= 180 ? `Month ${Math.round(touchpoint / 30.4)}` : `Day ${touchpoint}`);
 
 export function shortDate(iso: string | null | undefined) {
   if (!iso) return "";

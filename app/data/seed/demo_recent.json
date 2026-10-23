@@ -1,0 +1,2849 @@
+{
+  "people": [
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "anonymous": true,
+      "first_job": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "anonymous": true,
+      "first_job": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010002",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010006",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010020",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010052",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010005",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010001",
+      "anonymous": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "first_job": true
+    }
+  ],
+  "checkin_schedule": [
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "touchpoint": 14,
+      "due_at": "2026-05-18T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-05-18T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-05-18T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "A little clear"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"A little clear\" for your onboarding and work environment.\n\nWhich company policy or process has been hardest to find out about?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "Nobody told me how to submit my medical claim. I asked three people and got three answers."
+          },
+          {
+            "from": "bot",
+            "text": "Did you get a welcome pack or orientation session in your first week?",
+            "route": "ai"
+          },
+          {
+            "from": "new_hire",
+            "text": "No orientation. I only got my laptop and a seat."
+          }
+        ],
+        "asked": 2,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030701",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "touchpoint": 14,
+      "due_at": "2026-06-15T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-06-15T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-06-15T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 1,
+            "answer": "Not clear"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"Not clear\" for your onboarding and work environment.\n\nWhat about the company's procedures is still unclear to you?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "I don't know the leave policy. The handbook link in my email is broken."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030709",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "touchpoint": 14,
+      "due_at": "2026-07-20T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-07-20T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-07-20T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "A little clear"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"A little clear\" for your onboarding and work environment.\n\nWhat happened in your first weeks that made the company's way of working unclear?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "Orientation was cancelled twice. I still don't know who to ask about my access card."
+          },
+          {
+            "from": "bot",
+            "text": "Who did you end up asking?",
+            "route": "ai"
+          },
+          {
+            "from": "new_hire",
+            "text": "My buddy, but she is also new."
+          }
+        ],
+        "asked": 2,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030717",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "touchpoint": 14,
+      "due_at": "2026-08-17T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-08-17T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-08-17T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "BELONGING",
+            "score": 2,
+            "answer": "A little"
+          },
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "A little clear"
+          }
+        ],
+        "focus": "BELONGING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"A little\" for your team and \"A little clear\" for your onboarding and work environment.\n\nWhat would have made your first weeks here feel more settled?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "The canteen closes at 2pm. On late shift there is no food and nobody told us."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030724",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "touchpoint": 14,
+      "due_at": "2026-08-17T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-08-17T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-08-17T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "A little clear"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"A little clear\" for your onboarding and work environment.\n\nWhich part of the company's rules has been confusing?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "The dress code. Some say jeans OK on Friday, some say no. I got told off by security."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030732",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "touchpoint": 14,
+      "due_at": "2026-09-21T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-09-21T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-09-21T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 1,
+            "answer": "Tidak jelas"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Tidak jelas\" untuk orientasi dan persekitaran kerja anda.\n\nApa yang paling sukar difahami tentang polisi syarikat setakat ini?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Saya tak tahu macam mana nak claim OT dan siapa approve. Takde siapa terangkan masa hari pertama."
+          },
+          {
+            "from": "bot",
+            "text": "Ada sesiapa yang tunjukkan sistem HR kepada anda?",
+            "route": "ai"
+          },
+          {
+            "from": "new_hire",
+            "text": "Tak ada. Saya cuba sendiri tapi tak boleh login."
+          }
+        ],
+        "asked": 2,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030740",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "touchpoint": 14,
+      "due_at": "2026-09-21T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-09-21T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-09-21T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ROLE_CLARITY",
+            "score": 2,
+            "answer": "Kurang jelas"
+          },
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "Sedikit jelas"
+          }
+        ],
+        "focus": "ROLE_CLARITY",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Kurang jelas\" untuk peranan dan tugas anda dan \"Sedikit jelas\" untuk orientasi dan persekitaran kerja anda.\n\nApa yang membuatkan tugas dan cara kerja syarikat kurang jelas minggu ini?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Saya tak pasti target collection saya. SOP pun tak pernah dapat."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030748",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "touchpoint": 14,
+      "due_at": "2026-06-15T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-06-15T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-06-15T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "WORKLOAD",
+            "score": 1,
+            "answer": "Tidak boleh diurus"
+          }
+        ],
+        "focus": "WORKLOAD",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Tidak boleh diurus\" untuk beban kerja anda.\n\nApa yang membuatkan beban kerja anda sukar diurus minggu ini?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Month-end close, saya buat recon sampai pukul 10 malam tiga hari berturut-turut."
+          },
+          {
+            "from": "bot",
+            "text": "Apa yang boleh membantu minggu depan?",
+            "route": "ai"
+          },
+          {
+            "from": "new_hire",
+            "text": "Kalau ada orang share kerja recon bank."
+          }
+        ],
+        "asked": 2,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030755",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "touchpoint": 14,
+      "due_at": "2026-07-20T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-07-20T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-07-20T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "WORKLOAD",
+            "score": 2,
+            "answer": "Susah diurus"
+          }
+        ],
+        "focus": "WORKLOAD",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Susah diurus\" untuk beban kerja anda.\n\nApa yang paling banyak mengambil masa anda minggu ini?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Journal entries banyak sangat, senior cuti jadi saya cover kerja dia."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030763",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "touchpoint": 14,
+      "due_at": "2026-08-17T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-08-17T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-08-17T02:12:00Z",
+        "topic": "light",
+        "taps": [],
+        "focus": null,
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Pilihan anda nampak baik.\n\nAda apa-apa yang boleh buat minggu depan lebih senang?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Semua okay. Team sangat membantu."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030770",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "touchpoint": 14,
+      "due_at": "2026-09-21T02:00:00Z",
+      "progress": 7,
+      "sent_at": "2026-09-21T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "chat": {
+        "open": false,
+        "at": "2026-09-21T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "ONBOARDING",
+            "score": 2,
+            "answer": "A little clear"
+          },
+          {
+            "driver": "WORKLOAD",
+            "score": 2,
+            "answer": "Hard to manage"
+          }
+        ],
+        "focus": "ONBOARDING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"A little clear\" for your onboarding and work environment and \"Hard to manage\" for your workload.\n\nWhat made your workload hard to manage this week?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "Two close calendars running at once and I'm the only one who knows the new system."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030778",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "touchpoint": 273,
+      "due_at": "2026-08-03T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-08-03T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-08-03T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "MANAGER_SUPPORT",
+            "score": 2,
+            "answer": "Very little"
+          },
+          {
+            "driver": "WORKLOAD",
+            "score": 1,
+            "answer": "Not manageable"
+          }
+        ],
+        "focus": "WORKLOAD",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"Very little\" for support from your manager and \"Not manageable\" for your workload.\n\nWhat has made your workload hard to manage lately?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "Since two people resigned in August I'm doing three people's vendor queues."
+          },
+          {
+            "from": "bot",
+            "text": "What would help most?",
+            "route": "ai"
+          },
+          {
+            "from": "new_hire",
+            "text": "Either backfill the roles or tell us which queues can wait."
+          }
+        ],
+        "asked": 2,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030786",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "touchpoint": 273,
+      "due_at": "2026-08-03T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-08-03T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-08-03T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "MANAGER_SUPPORT",
+            "score": 1,
+            "answer": "None"
+          },
+          {
+            "driver": "WORKLOAD",
+            "score": 2,
+            "answer": "Hard to manage"
+          }
+        ],
+        "focus": "MANAGER_SUPPORT",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"None\" for support from your manager and \"Hard to manage\" for your workload.\n\nWhat kind of support from your manager has been missing?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "We haven't had a one-to-one since March. I don't know how I'm doing."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030791",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020703",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+      "touchpoint": 273,
+      "due_at": "2026-08-03T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-08-03T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-08-03T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "MANAGER_SUPPORT",
+            "score": 2,
+            "answer": "Very little"
+          }
+        ],
+        "focus": "MANAGER_SUPPORT",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "You tapped \"Very little\" for support from your manager.\n\nWhat would make support from your manager better?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "My lead only replies when something goes wrong. No feedback otherwise."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030796",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "touchpoint": 273,
+      "due_at": "2026-08-03T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-08-03T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-08-03T02:12:00Z",
+        "topic": "light",
+        "taps": [],
+        "focus": null,
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Your taps look good.\n\nAnything that would make next week easier?\n\nOptional. Tap Skip if you prefer not to answer."
+          },
+          {
+            "from": "new_hire",
+            "text": "Nothing really, the new rota is good."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030800",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020705",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "touchpoint": 273,
+      "due_at": "2026-08-31T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-08-31T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-08-31T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "BELONGING",
+            "score": 2,
+            "answer": "Sedikit"
+          }
+        ],
+        "focus": "BELONGING",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Sedikit\" untuk pasukan anda.\n\nApa yang membuatkan anda rasa kurang rapat dengan pasukan?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Ramai orang lama dah keluar. Team sekarang semua baru, kami jarang makan bersama."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030805",
+        "remarks": true
+      }
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "touchpoint": 273,
+      "due_at": "2026-10-05T02:00:00Z",
+      "progress": 4,
+      "sent_at": "2026-10-05T02:00:00Z",
+      "probes_used": 0,
+      "status": "answered",
+      "questions": [
+        "MANAGER_SUPPORT",
+        "BELONGING",
+        "WORKLOAD",
+        "OPEN"
+      ],
+      "chat": {
+        "open": false,
+        "at": "2026-10-05T02:12:00Z",
+        "topic": "low_tap",
+        "taps": [
+          {
+            "driver": "WORKLOAD",
+            "score": 2,
+            "answer": "Susah diurus"
+          }
+        ],
+        "focus": "WORKLOAD",
+        "turns": [
+          {
+            "from": "bot",
+            "text": "Anda memilih \"Susah diurus\" untuk beban kerja anda.\n\nApa yang paling berat dalam kerja anda sekarang?\n\nPilihan sahaja. Tekan Langkau jika tidak mahu menjawab."
+          },
+          {
+            "from": "new_hire",
+            "text": "Kerja collection naik dua kali ganda sejak client baru masuk."
+          }
+        ],
+        "asked": 1,
+        "no_detail": 0,
+        "response_id": "6f1c2a3e-0000-4000-8000-000000030809",
+        "remarks": true
+      }
+    }
+  ],
+  "responses": [
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030702",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030703",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030704",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030705",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030706",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030707",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030701",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:10:00Z",
+      "text": "Nobody told me how to submit my medical claim. I asked three people and got three answers.\nNo orientation. I only got my laptop and a seat."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030708",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020015",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-05-18T02:13:00Z",
+      "text": "Nothing else, thanks."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030710",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030711",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030712",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "BELONGING",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030713",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "ONBOARDING",
+      "scale_value": 1,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030714",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "TRAINING",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030715",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "WORKLOAD",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030709",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:10:00Z",
+      "text": "I don't know the leave policy. The handbook link in my email is broken."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030716",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010027",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020027",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:13:00Z",
+      "text": "The pantry fridge is always full, no space for my lunch."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030718",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030719",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030720",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030721",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030722",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "TRAINING",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030723",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030717",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010044",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020044",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:10:00Z",
+      "text": "Orientation was cancelled twice. I still don't know who to ask about my access card.\nMy buddy, but she is also new."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030725",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030726",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030727",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "BELONGING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030728",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030729",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030730",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "WORKLOAD",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030724",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:10:00Z",
+      "text": "The canteen closes at 2pm. On late shift there is no food and nobody told us."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030731",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020062",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:13:00Z",
+      "text": "Can we have a staff WhatsApp group for new joiners?"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030733",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030734",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030735",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030736",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030737",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030738",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "WORKLOAD",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030732",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:10:00Z",
+      "text": "The dress code. Some say jeans OK on Friday, some say no. I got told off by security."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030739",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010063",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020063",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:13:00Z",
+      "text": "Nothing else."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030741",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030742",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030743",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030744",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "ONBOARDING",
+      "scale_value": 1,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030745",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "TRAINING",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030746",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030740",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:10:00Z",
+      "text": "Saya tak tahu macam mana nak claim OT dan siapa approve. Takde siapa terangkan masa hari pertama.\nTak ada. Saya cuba sendiri tapi tak boleh login."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030747",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010078",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020078",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:13:00Z",
+      "text": "Surau di tingkat 3 selalu penuh waktu Jumaat."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030749",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 2,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030750",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030751",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030752",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030753",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "TRAINING",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030754",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030748",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020079",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:10:00Z",
+      "text": "Saya tak pasti target collection saya. SOP pun tak pernah dapat."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030756",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030757",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030758",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030759",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "ONBOARDING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030760",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "TRAINING",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030761",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "WORKLOAD",
+      "scale_value": 1,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030755",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:10:00Z",
+      "text": "Month-end close, saya buat recon sampai pukul 10 malam tiga hari berturut-turut.\nKalau ada orang share kerja recon bank."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030762",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020028",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-06-15T02:13:00Z",
+      "text": "Terima kasih sebab tanya."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030764",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030765",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030766",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030767",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "ONBOARDING",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030768",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030769",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "WORKLOAD",
+      "scale_value": 2,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030763",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010047",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020047",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-07-20T02:10:00Z",
+      "text": "Journal entries banyak sangat, senior cuti jadi saya cover kerja dia."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030771",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030772",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030773",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030774",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "ONBOARDING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030775",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030776",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "WORKLOAD",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030770",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:10:00Z",
+      "text": "Semua okay. Team sangat membantu."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030777",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020065",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-17T02:13:00Z",
+      "text": "Tiada."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030779",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "ROLE_CLARITY",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030780",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030781",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "BELONGING",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030782",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "ONBOARDING",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:04:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030783",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "TRAINING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:05:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030784",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "WORKLOAD",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:06:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030778",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:10:00Z",
+      "text": "Two close calendars running at once and I'm the only one who knows the new system."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030785",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020081",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-09-21T02:13:00Z",
+      "text": "Parking at the new office costs RM200 a month, that's a lot on my pay."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030787",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030788",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030789",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "question_id": "WORKLOAD",
+      "scale_value": 1,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030786",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:10:00Z",
+      "text": "Since two people resigned in August I'm doing three people's vendor queues.\nEither backfill the roles or tell us which queues can wait."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030790",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020701",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:13:00Z",
+      "text": "I like the team, I just can't keep this pace."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030792",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 1,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030793",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "question_id": "BELONGING",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030794",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "question_id": "WORKLOAD",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030791",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:10:00Z",
+      "text": "We haven't had a one-to-one since March. I don't know how I'm doing."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030795",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011007",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020702",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:13:00Z",
+      "text": "Is there a path to senior analyst? Nobody has told me."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030797",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020703",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 2,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030798",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020703",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030799",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020703",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030796",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020703",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:10:00Z",
+      "text": "My lead only replies when something goes wrong. No feedback otherwise."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030801",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030802",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030803",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "question_id": "WORKLOAD",
+      "scale_value": 4,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030800",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:10:00Z",
+      "text": "Nothing really, the new rota is good."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030804",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011012",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020704",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "en",
+      "kind": "checkin",
+      "created_at": "2026-08-03T02:13:00Z",
+      "text": "Thanks for still checking in after my first six months."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030806",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020705",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-31T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030807",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020705",
+      "question_id": "BELONGING",
+      "scale_value": 2,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-31T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030808",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020705",
+      "question_id": "WORKLOAD",
+      "scale_value": 3,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-31T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030805",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011025",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020705",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-08-31T02:10:00Z",
+      "text": "Ramai orang lama dah keluar. Team sekarang semua baru, kami jarang makan bersama."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030810",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "question_id": "MANAGER_SUPPORT",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-10-05T02:01:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030811",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "question_id": "BELONGING",
+      "scale_value": 4,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-10-05T02:02:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030812",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "question_id": "WORKLOAD",
+      "scale_value": 2,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-10-05T02:03:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030809",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "question_id": "OPEN",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-10-05T02:10:00Z",
+      "text": "Kerja collection naik dua kali ganda sejak client baru masuk."
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000030813",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+      "schedule_id": "6f1c2a3e-0000-4000-8000-000000020706",
+      "question_id": "REMARKS",
+      "scale_value": null,
+      "language": "ms",
+      "kind": "checkin",
+      "created_at": "2026-10-05T02:13:00Z",
+      "text": "Gaji belum naik sejak masuk."
+    }
+  ],
+  "ai_tags": [
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040701",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030701",
+      "status": "needs_review",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Nobody told me how to submit my medical claim",
+      "summary": "Could not find out how to make a medical claim and had no orientation.",
+      "confidence": "low",
+      "uncertain": true,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-05-18T02:11:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040702",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030708",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-05-18T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-05-18T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040703",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030709",
+      "status": "reviewed",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "The handbook link in my email is broken",
+      "summary": "Does not know the leave policy; the handbook link is broken.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-06-15T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-06-15T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040704",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030716",
+      "status": "reviewed",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "no space for my lunch",
+      "summary": "Pantry fridge has no space.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-06-15T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-06-15T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040705",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030717",
+      "status": "reviewed",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Orientation was cancelled twice",
+      "summary": "Orientation was cancelled twice; does not know who handles access cards.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-07-20T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-07-20T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040706",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030724",
+      "status": "reviewed",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "The canteen closes at 2pm",
+      "summary": "Canteen closes early and late shift has no food.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-17T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040707",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030731",
+      "status": "ok",
+      "drivers": [
+        "BELONGING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "staff WhatsApp group for new joiners",
+      "summary": "Wants a group for new joiners.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:14:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040708",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030732",
+      "status": "ok",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "I got told off by security",
+      "summary": "Dress code rules are unclear.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:11:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040709",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030739",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-17T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040710",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030740",
+      "status": "ok",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Takde siapa terangkan masa hari pertama",
+      "summary": "Nobody explained how to claim overtime or use the HR system on day one.",
+      "confidence": "low",
+      "uncertain": true,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-09-21T02:11:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040711",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030747",
+      "status": "ok",
+      "drivers": [
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Surau di tingkat 3 selalu penuh",
+      "summary": "The prayer room is often full on Fridays.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-09-21T02:14:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040712",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030748",
+      "status": "reviewed",
+      "drivers": [
+        "ROLE_CLARITY",
+        "ONBOARDING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "SOP pun tak pernah dapat",
+      "summary": "Unsure of collection target and never got the SOP.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-09-21T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-09-21T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040713",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030755",
+      "status": "reviewed",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "saya buat recon sampai pukul 10 malam",
+      "summary": "Worked until 10pm three days in a row at month-end.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-06-15T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-06-15T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040714",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030762",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-06-15T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-06-15T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040715",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030763",
+      "status": "reviewed",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "senior cuti jadi saya cover kerja dia",
+      "summary": "Covering a senior's work while they are on leave.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-07-20T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-07-20T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040716",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030770",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Team sangat membantu",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-17T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040717",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030777",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-17T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-17T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040718",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030778",
+      "status": "reviewed",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Two close calendars running at once",
+      "summary": "Handling two month-end calendars alone.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-09-21T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-09-21T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040719",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030785",
+      "status": "ok",
+      "drivers": [],
+      "context_tags": [
+        "PAY_BENEFITS",
+        "COMMUTE_LOGISTICS"
+      ],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Parking at the new office costs RM200 a month",
+      "summary": "Parking is expensive on their pay.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-09-21T02:14:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040720",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030786",
+      "status": "reviewed",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "I'm doing three people's vendor queues",
+      "summary": "Covering two leavers' queues since August.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-03T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040721",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030790",
+      "status": "ok",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "I just can't keep this pace",
+      "summary": "Cannot keep up the pace.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:14:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040722",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030791",
+      "status": "reviewed",
+      "drivers": [
+        "MANAGER_SUPPORT"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "We haven't had a one-to-one since March",
+      "summary": "No one-to-one with the manager since March.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-03T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040723",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030795",
+      "status": "ok",
+      "drivers": [],
+      "context_tags": [
+        "GROWTH"
+      ],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Is there a path to senior analyst?",
+      "summary": "Asks about promotion path.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:14:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040724",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030796",
+      "status": "reviewed",
+      "drivers": [
+        "MANAGER_SUPPORT"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "No feedback otherwise",
+      "summary": "Only hears from the lead when something goes wrong.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-03T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040725",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030800",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "the new rota is good",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-03T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040726",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030804",
+      "status": "reviewed",
+      "drivers": [],
+      "context_tags": [],
+      "positive": true,
+      "concern_level": "none",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "",
+      "summary": "",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-03T02:14:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-08-03T02:14:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040727",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030805",
+      "status": "ok",
+      "drivers": [
+        "BELONGING"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "kami jarang makan bersama",
+      "summary": "Most of the old team has left; the team rarely eats together.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-08-31T02:11:00Z",
+      "counted": true
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040728",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030809",
+      "status": "reviewed",
+      "drivers": [
+        "WORKLOAD"
+      ],
+      "context_tags": [],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "naik dua kali ganda sejak client baru masuk",
+      "summary": "Collections work doubled since the new client.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-10-05T02:11:00Z",
+      "counted": true,
+      "reviewed_by": "seed",
+      "reviewed_at": "2026-10-05T02:11:00Z"
+    },
+    {
+      "id": "6f1c2a3e-0000-4000-8000-000000040729",
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "response_id": "6f1c2a3e-0000-4000-8000-000000030813",
+      "status": "ok",
+      "drivers": [],
+      "context_tags": [
+        "PAY_BENEFITS"
+      ],
+      "positive": false,
+      "concern_level": "low",
+      "escalate": false,
+      "escalate_category": "none",
+      "evidence_quote": "Gaji belum naik sejak masuk",
+      "summary": "No pay rise since joining.",
+      "confidence": "high",
+      "uncertain": false,
+      "probe_id": "none",
+      "model": "seed",
+      "prompt_version": "classify-v1",
+      "created_at": "2026-10-05T02:14:00Z",
+      "counted": true
+    }
+  ],
+  "theme_snapshots": [
+    {
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "week": "2026-10-12",
+      "touchpoint": 14,
+      "team": "Order-to-Cash Asia",
+      "respondents": 16,
+      "suppressed": false,
+      "counts": {
+        "ROLE_CLARITY": {
+          "n": 4,
+          "reviewed": 3,
+          "ai_confident": 1,
+          "avg": 3.3
+        },
+        "TRAINING": {
+          "n": 2,
+          "reviewed": 2,
+          "ai_confident": 0,
+          "avg": 3.3
+        },
+        "WORKLOAD": {
+          "n": 2,
+          "reviewed": 2,
+          "ai_confident": 0,
+          "avg": 3.1
+        },
+        "BELONGING": {
+          "n": 2,
+          "reviewed": 1,
+          "ai_confident": 1,
+          "avg": 3.6
+        },
+        "ONBOARDING": {
+          "n": 7,
+          "reviewed": 4,
+          "ai_confident": 3,
+          "avg": 1.7
+        }
+      }
+    },
+    {
+      "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+      "week": "2026-10-12",
+      "touchpoint": 14,
+      "team": "Record-to-Report",
+      "respondents": 10,
+      "suppressed": false,
+      "counts": {
+        "ROLE_CLARITY": {
+          "n": 2,
+          "reviewed": 2,
+          "ai_confident": 0,
+          "avg": 3.5
+        },
+        "WORKLOAD": {
+          "n": 7,
+          "reviewed": 6,
+          "ai_confident": 1,
+          "avg": 2.2
+        },
+        "TRAINING": {
+          "n": 1,
+          "reviewed": 1,
+          "ai_confident": 0,
+          "avg": 3.5
+        },
+        "ONBOARDING": {
+          "n": 1,
+          "reviewed": 0,
+          "ai_confident": 1,
+          "avg": 3.2
+        }
+      }
+    }
+  ]
+}

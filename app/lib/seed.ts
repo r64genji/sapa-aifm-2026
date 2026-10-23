@@ -25,6 +25,7 @@ import milestone_nudges from "@/data/seed/milestone_nudges.json";
 import demo_history from "@/data/seed/demo_history.json";
 import fix_follow_up from "@/data/seed/fix_follow_up.json";
 import demo_open_fixes from "@/data/seed/demo_open_fixes.json";
+import demo_recent from "@/data/seed/demo_recent.json";
 import { encrypt } from "@/lib/crypto";
 import { joinIntake, joinLink, recordConsent } from "@/lib/directory";
 import { MANAGER_TOKEN_PREFIX } from "@/lib/managers";
@@ -81,6 +82,22 @@ function demoTags() {
   return ai_tags.map((t) =>
     UNSURE.includes(t.id) ? { ...t, status: "needs_review", confidence: "low", uncertain: true } : t.id === HELD_TAG ? { ...t, counted: false } : t,
   );
+}
+
+const merge = <T extends { id: string }>(rows: T[], extra: { id: string }[]) => [
+  ...rows.map((row) => ({ ...row, ...extra.find((e) => e.id === row.id) })),
+  ...extra.filter((e) => !rows.some((row) => row.id === e.id)),
+];
+
+function demoCheckins() {
+  if (process.env.SAPA_TEST === "1") return { people, checkin_schedule, responses, ai_tags: demoTags(), theme_snapshots };
+  return {
+    people: merge(people, demo_recent.people),
+    checkin_schedule: merge(checkin_schedule, demo_recent.checkin_schedule),
+    responses: [...responses, ...demo_recent.responses],
+    ai_tags: [...demoTags(), ...demo_recent.ai_tags],
+    theme_snapshots: theme_snapshots.map((row) => demo_recent.theme_snapshots.find((e) => e.week === row.week && e.team === row.team) ?? row),
+  };
 }
 
 function demoHolds() {
@@ -173,12 +190,13 @@ export async function resetDemo(full = false) {
   const salt = full ? randomBytes(8).toString("hex") : "";
   const teams = intakes[0].teams.map((row) => ({ ...row, join_token: createHmac("sha256", process.env.DEMO_RESET_SECRET!).update(`${intakes[0].id}:${row.team}${salt}`).digest("base64url").slice(0, 22) }));
   const intake = { ...intakes[0], ...liveStart, teams };
-  const replies = responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
+  const demo = demoCheckins();
+  const replies = demo.responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
   const leads = process.env.SAPA_TEST === "1" ? managers : managers.map((row) => ({ ...row, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") }));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const phones = full ? null : await linkedPhones();
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people, consents, checkin_schedule, responses: replies, ai_tags: demoTags(), escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people: demo.people, consents, checkin_schedule: demo.checkin_schedule, responses: replies, ai_tags: demo.ai_tags, escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots: demo.theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();
