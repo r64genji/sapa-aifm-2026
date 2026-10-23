@@ -459,15 +459,15 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const detail = useApi<Detail>(`/api/hr/themes/${driver}?touchpoint=14`);
+  const overview = useApi<Overview>("/api/hr/themes/overview").data;
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups?touchpoint=14`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
-  const where = useApi<Teams>(`/api/hr/themes/${driver}/teams`);
+  const where = { data: overview?.teams[driver] };
   const fixes = actions.filter((a) => a.driver === driver && live(a));
   const name = driverName(driver);
 
-  const d = detail.data;
+  const d = overview?.details[driver];
   const g = groups.data;
   const grouped = g && g.status === "ok" && "groups" in g ? g.groups : [];
   const mine = (replies.data ?? [])
@@ -744,6 +744,7 @@ export function Problems({ driver }: { driver?: string }) {
   const queue = useApi<ReplyItem[]>("/api/hr/queue");
   const questions = useApi<Questions>("/api/hr/questions");
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
+  useApi<Overview>("/api/hr/themes/overview");
   if (!themes.data || !actions.data) return <Loading />;
 
   const cards = [...themes.data.cards].sort((a, b) => Number(a.driver === "WORKLOAD") - Number(b.driver === "WORKLOAD") || (b.n ?? -1) - (a.n ?? -1));

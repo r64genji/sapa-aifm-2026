@@ -159,8 +159,8 @@ function ComingUp({ today, checkins, actions }: { today: string | undefined; che
 }
 
 function Focus({ top, others, context }: { top: Card; others: Card[]; context: Context[] }) {
-  const detail = useApi<Detail>(`/api/hr/themes/${top.driver}?touchpoint=14`);
-  const points = (detail.data?.by_intake ?? []).flatMap((s) => (s.enough ? [{ label: month(s.intake), n: s.n, m: s.m }] : []));
+  const detail = useApi<{ details: Record<string, Detail> }>("/api/hr/themes/overview").data?.details[top.driver];
+  const points = (detail?.by_intake ?? []).flatMap((s) => (s.enough ? [{ label: month(s.intake), n: s.n, m: s.m }] : []));
   return (
     <section aria-label="Focus now" className="sp-card flex flex-col" style={{ borderColor: "var(--problems)", borderWidth: 2 }}>
       <div className="flex flex-wrap gap-6 px-[22px] py-5">

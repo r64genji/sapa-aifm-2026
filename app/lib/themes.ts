@@ -12,7 +12,9 @@ export type Counts = {
   context?: Record<string, number>;
 };
 
-export async function counts(
+const running = new Map<string, Promise<Counts>>();
+
+export function counts(
   organisationId: string,
   touchpoint: number,
   month: string | null,
@@ -21,6 +23,15 @@ export async function counts(
   role: string | null = null,
   firstJob: boolean | null = null,
 ) {
+  const key = JSON.stringify([organisationId, touchpoint, month, agency, team, role, firstJob]);
+  const found = running.get(key);
+  if (found) return found;
+  const result = fetchCounts(organisationId, touchpoint, month, agency, team, role, firstJob).finally(() => running.delete(key));
+  running.set(key, result);
+  return result;
+}
+
+async function fetchCounts(organisationId: string, touchpoint: number, month: string | null, agency: string | null, team: string | null, role: string | null, firstJob: boolean | null) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
     touch: touchpoint,
