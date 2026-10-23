@@ -20,16 +20,14 @@ HR consultant at IHR Consulting, 61, advises SMEs and MNCs, 200+ engagement surv
 | Rename Belonging, split Onboarding and Training | Done (agreed 21 Oct) |
 | Fresher vs experienced | Build. One tap on join, split on the problem page |
 | Repeat pattern by team | Build. SQL counts only |
-| Root cause line per problem | **TODO, not built.** See below |
+| Root cause line per problem | Built 23 Oct as a "Root cause" box. See below |
 | Names in check-ins | Done 21 Oct. HR sees the name, managers never do |
 
-## TODO: root cause line
+## Root cause box
 
-Not built for the 23 Oct pitch. A plain line per problem, such as "Fresher hires say the job is unclear. Experienced hires do not."
+Built 23 Oct 2026. Both consultants (this one and [20](20-interview-ammirul-iskandar-azman.md)) asked for root cause because the page did not show it plainly. Each problem page now opens with a "Root cause" box: What (top shared meaning), Who (first job vs experienced), Where (teams above rate, with the repeat flag). The fix picker sits below it.
 
-- It must use only counts from SQL. The AI summary rule is R18: no number that is not in the input.
-- It needs a new AI use row in [14](14-ai-use-contract.md) before any code.
-- Build it after the fresher split and the repeat flag exist, since it reads them.
+- It uses only SQL counts and the AI grouping already on the page. No new AI writing, so no new row in [14](14-ai-use-contract.md) and no risk of invented facts.
 
 ## For the slides
 

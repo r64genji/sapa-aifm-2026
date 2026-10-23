@@ -454,6 +454,60 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+function RootCause({ name, top, experience, where }: { name: string; top?: { title: string; n: number }; experience?: Detail["by_experience"]; where?: Teams }) {
+  const [first, other] = ["First job", "Experienced"].map((g) => experience?.find((s) => s.group === g));
+  const who =
+    first?.enough && other?.enough
+      ? rate(first) >= rate(other) * 1.5
+        ? `First-job hires more: ${pct(first)} vs ${pct(other)}`
+        : rate(other) >= rate(first) * 1.5
+          ? `Experienced hires more: ${pct(other)} vs ${pct(first)}`
+          : `First job and experienced alike: ${pct(first)} vs ${pct(other)}`
+      : "Not enough people yet to split";
+  const facts: { label: string; value: ReactNode }[] = [
+    { label: "What", value: top ? `${top.title} (${top.n} people)` : "No shared idea yet" },
+    { label: "Who", value: who },
+    {
+      label: "Where",
+      value: !where?.enough
+        ? "Not enough people yet"
+        : where.verdict === "none"
+          ? "Spread evenly across teams"
+          : where.verdict === "most"
+            ? "Most teams: a company-wide cause"
+            : where.rows.map((r) => (
+                <span key={r.name} className="block">
+                  {r.name}
+                  {r.times ? (
+                    <span className="font-bold" style={{ color: "var(--problems)" }}>
+                      {" "}
+                      · {ordinal(r.times)} time in 6 months
+                    </span>
+                  ) : null}
+                </span>
+              )),
+    },
+  ];
+  return (
+    <div className="flex min-w-0 flex-col gap-3 self-start rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
+      <div className="flex flex-col gap-0.5">
+        <h3 className="m-0 text-[17px] font-bold" style={{ color: "var(--problems)" }}>
+          Root cause
+        </h3>
+        <span className="sp-caption">Why new hires name {name.toLowerCase()}, from counts only</span>
+      </div>
+      <dl className="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2.5 text-[15px]">
+        {facts.map((f) => (
+          <div key={f.label} className="contents">
+            <dt className="sp-meta font-bold">{f.label}</dt>
+            <dd className="m-0 font-semibold">{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -524,15 +578,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 <Columns points={intakes} />
               </div>
             ) : null}
-            {where.data?.enough
-              ? where.data.rows
-                  .filter((r) => r.times)
-                  .map((r) => (
-                    <span key={r.name} className="sp-meta font-semibold" style={{ color: "var(--problems)" }}>
-                      {r.name}: {ordinal(r.times!)} time in 6 months
-                    </span>
-                  ))
-              : null}
             {waiting > 0 ? (
               <Link href={`/replies?area=${driver}`} className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
                 <MessageSquare size={14} aria-hidden="true" />
@@ -541,11 +586,11 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </Link>
             ) : null}
           </div>
-          <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
+          <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
         </div>
 
         <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
-          <h3 className="m-0 text-[15px] font-bold">Why</h3>
+          <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (
             <div className="sp-stagger grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
               <Panel title="What they mean">
@@ -592,6 +637,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             Review the {mine.length} replies in full
           </button>
           {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
+        </div>
+
+        <div className="border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+          <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
         </div>
       </div>
     </section>
