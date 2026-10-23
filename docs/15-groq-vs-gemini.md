@@ -138,6 +138,19 @@ Onboarding and training became two drivers on 21 Oct, and Onboarding took in the
 | Failed calls | 1 | 7 / 8 |
 
   The escalations missed in these runs (4, then 2) are all failed calls, not wrong answers. The failed calls hit different replies on each run, so they are most likely slow patches on OmniRoute. Onboarding still lands on some safety hazards and first-day setup items. Reliability: 98 of 100 first try valid, adversarial safe 12 of 16 (inj06 and one empty item failed to return).
+- **Fix 2 (24 Oct): escalations carry no driver, and a reply may carry two.** The old labels gave a driver to some escalation replies and not others, while the prompt said escalations get none; that caused 21 of 52 disagreements. The gold drivers on all 25 escalation replies were cleared, and 8 replies that name two problems got a second driver (one lost a driver no subcategory covers). The prompt now says: at most two drivers, and none when escalate is true. Two test-split runs (files 2026-10-23T16-33 and 16-34):
+
+| | Fix 1 | Fix 2 (run 1 / run 2) |
+|---|---|---|
+| Drivers, mean κ | 0.79 / 0.76 | **0.90 / 0.87** |
+| κ BM / EN / ZH / Manglish | | 0.93 / 0.81 / 0.83 / 0.92 and 0.87 / 0.85 / 0.78 / 0.91 |
+| κ lowest driver | Manager 0.57 | Onboarding 0.82 / 0.78 |
+| Precision of counted tags | 0.79 / 0.77 | **0.86 / 0.84** |
+| Wrong escalation calls | 0 / 0 | 0 / 0 |
+| False alarms (128) | 1 / 3 | 1 / 2 |
+| Failed calls | 7 / 8 | 6 / 14 |
+
+  The labels were changed after seeing model output, by the same AI that reads the results; a human relabel would make the number firmer. Left over: Onboarding on praise or resolved items (canteen, a fan fixed), Workload on "tired" replies, and the injection in inj06 still turns escalate off (the keyword check catches it). Failed calls are high on OmniRoute this night; none was a wrong answer.
 - **The model never says it is unsure.** No tag went to review, so the review queue only gets spot checks.
 
 ## Limits
