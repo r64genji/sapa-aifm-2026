@@ -72,8 +72,10 @@ export function questionReply(person: Pick<Person, "language">, schedule: Schedu
   };
 }
 
-export function checkinStart(person: Pick<Person, "language">, schedule: Schedule): Reply[] {
-  return [{ text: packs[person.language].checkin.intro }, questionReply(person, schedule, 0)];
+export function checkinStart(person: Pick<Person, "language" | "name" | "anonymous">, schedule: Schedule): Reply[] {
+  const { checkin } = packs[person.language];
+  const intro = person.anonymous ? checkin.introAnonymous : person.name ? checkin.introNamed.replace("{name}", person.name) : checkin.intro;
+  return [{ text: intro }, questionReply(person, schedule, 0)];
 }
 
 export function checkinReminder(person: Pick<Person, "language">, schedule: Schedule): Reply[] {

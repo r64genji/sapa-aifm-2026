@@ -6,10 +6,11 @@
   "managerLinked": "Berjaya dipautkan. Sapa akan menghubungi anda di sini apabila HR menugaskan tindakan kepada anda.",
   "languagePrompt": "Sila pilih bahasa anda.",
   "typeInstead": "Sapa belum dapat mengendalikan nota suara, gambar atau fail. Sila taip mesej anda.",
-  "consentVersion": "ms-2026-10-21b",
-  "consent": "Sapa akan bertanya beberapa soalan pendek sepanjang enam bulan pertama anda. Penyertaan adalah sukarela. Hanya HR yang boleh membaca jawapan anda, bukan pengurus anda. Anda boleh menaip BERHENTI pada bila-bila masa untuk menamatkan semuanya. HR akan melihat nama anda bersama jawapan anda. Pengurus anda hanya akan melihat nama anda jika HR menghantar kepadanya satu penyelesaian tentang anda, tidak pernah jawapan anda. Sapa menyimpan ID sembang anda hanya untuk menghantar soalan, dan Telegram boleh melihat sembang ini. Adakah anda bersetuju untuk menyertai?",
-  "yourName": { "question": "Siapa nama anda? HR akan melihatnya bersama jawapan anda. Pengurus anda hanya akan melihatnya jika HR menghantar kepadanya satu penyelesaian tentang anda." },
+  "consentVersion": "ms-2026-10-23",
+  "consent": "Sapa akan bertanya beberapa soalan pendek dalam enam bulan pertama anda. Ia sukarela. Pengurus anda tidak pernah melihat jawapan anda. Taip BERHENTI pada bila-bila masa untuk menamatkannya. Sapa menyimpan ID sembang anda hanya untuk menghantar mesej kepada anda. HR dan pengurus anda tidak pernah melihatnya. Adakah anda bersetuju?",
+  "yourName": { "question": "Siapa nama anda?" },
   "firstJob": { "question": "Adakah ini kerja sepenuh masa pertama anda?", "yes": "Ya", "no": "Tidak", "thanks": "Terima kasih. Sapa akan menghubungi anda untuk semakan seterusnya." },
+  "privacy": {"question": "Patutkah HR melihat nama anda?\nKongsi nama saya: HR boleh meminta pengurus anda membantu anda secara terus.\nKekal tanpa nama: HR melihat jawapan anda hanya apabila 5 orang atau lebih dalam pasukan anda membangkitkan masalah yang sama.\nTukar pada bila-bila masa dengan /privasi.", "named": "Kongsi nama saya", "anonymous": "Kekal tanpa nama", "nowNamed": "HR melihat nama anda. Tukar?", "nowAnonymous": "HR tidak melihat nama anda. Tukar?", "anonymousDone": "Selesai. HR tidak akan melihat nama anda.", "switchedAnonymous": "Selesai. HR tidak akan melihat nama anda pada jawapan baharu.", "namedDone": "Selesai. HR akan melihat nama anda."},
   "agree": "Saya setuju",
   "decline": "Tidak, terima kasih",
   "declined": "Tiada masalah. Anda tidak akan menerima mesej lagi daripada Sapa.",
@@ -17,7 +18,7 @@
   "tapped": "Anda tekan \"{label}\".",
   "skipped": "Dilangkau. Semakan ini ditutup. Sapa akan menghubungi anda pada semakan seterusnya.",
   "stopped": "Anda telah berhenti. Sapa tidak akan menghantar mesej lagi kepada anda.",
-  "help": "Anda boleh menaip /bantuan, /berhenti, atau BERHENTI pada bila-bila masa. Sapa akan menghubungi anda untuk semakan seterusnya.",
+  "help": "Anda boleh menaip /bantuan, /privasi, /berhenti, atau BERHENTI pada bila-bila masa.",
   "commands": {
     "start": { "name": "start", "description": "Mulakan Sapa" },
     "ask": { "name": "tanya", "description": "Tanya soalan tentang syarikat" },
@@ -27,6 +28,7 @@
     "stop": { "name": "berhenti", "description": "Hentikan semua mesej" },
     "delete": { "name": "padam", "description": "Padam jawapan anda" },
     "myanswers": { "name": "jawapansaya", "description": "Lihat jawapan anda sendiri" },
+    "privacy": { "name": "privasi", "description": "Tukar sama ada HR melihat nama anda" },
     "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
   },
   "typedStop": "berhenti",
@@ -41,7 +43,9 @@
     "fallback": "Jawapan ini dalam {language}. Tanya HR jika tidak jelas."
   },
   "checkin": {
-    "intro": "Hai, tiba masanya untuk semakan Sapa anda.\nPasukan HR anda nampak nama anda dan apa yang anda tulis. Pengurus anda hanya nampak nama anda jika HR menghantar kepadanya satu penyelesaian tentang anda, tidak pernah apa yang anda tulis.",
+    "intro": "Hai, tiba masanya untuk semakan Sapa anda.",
+    "introNamed": "Hai {name}, tiba masanya untuk semakan Sapa anda.",
+    "introAnonymous": "Hai, tiba masanya untuk semakan Sapa anda. Anda tanpa nama.",
     "reminder": "Peringatan ringkas: semakan Sapa anda masih terbuka. Sambung di mana anda tinggalkan, atau abaikan dan ia akan ditutup.",
     "thanks": "Terima kasih, jawapan anda telah disimpan.",
     "questions": [

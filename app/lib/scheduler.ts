@@ -48,8 +48,13 @@ export async function dispatch() {
   if (error) throw error;
   const claims = data as Claim[];
   const rechecks = await withQuestions(claims.map((claim) => claim.schedule_id));
+  const { data: people, error: peopleError } = await createAdminClient()
+    .from("people")
+    .select("telegram_chat_id, name, anonymous")
+    .in("telegram_chat_id", claims.map((claim) => claim.chat_id));
+  if (peopleError) throw peopleError;
   for (const claim of claims) {
-    const person = { language: claim.language };
+    const person = { language: claim.language, name: null, anonymous: false, ...people.find((row) => row.telegram_chat_id === claim.chat_id) };
     const row = { ...rechecks.find((r) => r.id === claim.schedule_id)!, progress: claim.progress };
     const replies = claim.kind === "reminder" ? checkinReminder(person, row) : checkinStart(person, row);
     await deliver(claim.chat_id, replies);
@@ -113,14 +118,14 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
   if (!org.demo_mode) return { error: "Demo mode is off" };
   const { data: rows, error: rowsError } = await db
     .from("checkin_schedule")
-    .select("id, person_id, touchpoint, status, people!inner(telegram_chat_id, language)")
+    .select("id, person_id, touchpoint, status, people!inner(telegram_chat_id, language, name, anonymous)")
     .eq("organisation_id", organisationId)
     .in("status", ["scheduled", "sent", "reminded"])
     .eq("people.state", "active")
     .eq("people.synthetic", false)
     .not("people.telegram_chat_id", "is", null)
     .order("touchpoint")
-    .returns<{ id: string; person_id: string; touchpoint: number; status: string; people: { telegram_chat_id: number; language: Language } }[]>();
+    .returns<{ id: string; person_id: string; touchpoint: number; status: string; people: { telegram_chat_id: number; language: Language; name: string | null; anonymous: boolean | null } }[]>();
   if (rowsError) throw rowsError;
   const waiting = new Set(rows.filter((row) => row.status !== "scheduled").map((row) => row.person_id));
   const next = new Map<string, (typeof rows)[number]>();
@@ -141,7 +146,7 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
     if (claimError) throw claimError;
     if (claimed.length === 0) continue;
     const [questions] = await withQuestions([row.id]);
-    await deliver(row.people.telegram_chat_id, checkinStart({ language: row.people.language }, questions));
+    await deliver(row.people.telegram_chat_id, checkinStart(row.people, questions));
     sent += 1;
   }
   return { sent: sent + (await dispatch()) };

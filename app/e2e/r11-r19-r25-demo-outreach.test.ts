@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, liveInvite, chatPerson } from "./helpers.ts";
+import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, liveInvite, chatPerson, tapData } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -18,6 +18,7 @@ test("R19, R23: Outreach now sends the chosen check-in to a joined phone, not to
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   const before = (await sentTo(live)).length;
 
@@ -26,7 +27,7 @@ test("R19, R23: Outreach now sends the chosen check-in to a joined phone, not to
   assert.deepEqual(await res.json(), { sent: 1 });
 
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
+  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
   assert.deepEqual(await sentTo(synthetic), []);
 });
 
@@ -84,7 +85,7 @@ test("R19: Outreach now sends the Day 30 check-in at once, whatever its due date
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { sent: 1 });
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [en.checkin.intro, question("ROLE_CLARITY")]);
+  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
 });
 
 test("R19: Outreach now sends the check-in to every joined phone", async () => {
@@ -95,6 +96,7 @@ test("R19: Outreach now sends the check-in to every joined phone", async () => {
     await link(chat, liveInvite);
     await tap(chat, "English");
     await tap(chat, en.agree);
+    await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
     await say(chat, "Test Hire");
   }
   const before = [(await sentTo(live)).length, (await sentTo(second)).length];
@@ -104,8 +106,8 @@ test("R19: Outreach now sends the check-in to every joined phone", async () => {
   assert.deepEqual(await res.json(), { sent: 2 });
 
   const texts = async (chat: number, from: number) => (await sentTo(chat)).map((m) => m.text).slice(from);
-  assert.deepEqual(await texts(live, before[0]), [en.checkin.intro, question("ROLE_CLARITY")]);
-  assert.deepEqual(await texts(second, before[1]), [en.checkin.intro, question("ROLE_CLARITY")]);
+  assert.deepEqual(await texts(live, before[0]), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual(await texts(second, before[1]), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
 });
 
 test("Bug fix: for a phone that just joined, Outreach now offers the Day 14 check-in that the home cards count", async () => {
@@ -114,6 +116,7 @@ test("Bug fix: for a phone that just joined, Outreach now offers the Day 14 chec
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
 
   const res = await fetch(`${appUrl}/api/hr/demo/status`, { headers: { authorization: `Bearer ${await hrToken("admin@contoh.test")}` } });
@@ -138,6 +141,7 @@ test("Bug fix: when the first phone that joined has stopped, the demo bar offers
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   await say(live, "/stop");
 

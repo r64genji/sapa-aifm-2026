@@ -13,6 +13,7 @@ import {
   recordConsent,
   redeemInvite,
   setFirstJob,
+  setAnonymous,
   setLanguage,
   setName,
   stopPerson,
@@ -74,6 +75,19 @@ async function prompt(person: Person, languages: Language[]): Promise<Reply[]> {
   return [];
 }
 
+const privacyReply = (language: Language, text: string): Reply => ({
+  text,
+  buttons: [
+    { label: packs[language].privacy.named, id: "privacy", value: "named" },
+    { label: packs[language].privacy.anonymous, id: "privacy", value: "anonymous" },
+  ],
+});
+
+const firstJobReply = (language: Language): Reply => {
+  const pack = packs[language];
+  return { text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] };
+};
+
 async function join(chatId: number, token: string): Promise<Outcome> {
   const person = (await joinIntake(token, chatId)) ?? (await redeemInvite(token, chatId));
   if (!person) return { replies: [{ text: packs.en.invalidInvite }] };
@@ -100,9 +114,17 @@ async function press(person: Person, id: string, value: string, languages: Langu
     if (value === "yes" && (await moveState(person, "consent_shown", "active"))) {
       await recordConsent(person, pack.consentVersion);
       await scheduleFor(person.id);
-      await askName(person);
-      return { replies: [{ text: pack.help }, { text: pack.yourName.question }] };
+      return { replies: [{ text: pack.help }, privacyReply(person.language, pack.privacy.question)] };
     }
+  }
+  if (id === "privacy" && person.state === "active" && value === "named") {
+    await askName(person);
+    return { replies: [{ text: pack.yourName.question }] };
+  }
+  if (id === "privacy" && person.state === "active" && value === "anonymous") {
+    await setAnonymous(person);
+    const done = { text: person.name ? pack.privacy.switchedAnonymous : pack.privacy.anonymousDone };
+    return { replies: person.first_job === null ? [done, firstJobReply(person.language)] : [done] };
   }
   if (id === "firstjob" && person.state === "active" && (value === "yes" || value === "no")) {
     await setFirstJob(person, value === "yes");
@@ -172,6 +194,10 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "declined") return none;
   if (input.kind === "button") return press(person, input.id, input.value, languages);
   if (command === "myanswers") return { replies: await myAnswers(person) };
+  if (person.state === "active" && command === "privacy") {
+    const pack = packs[person.language];
+    return { replies: [privacyReply(person.language, person.anonymous ? pack.privacy.nowAnonymous : pack.privacy.nowNamed)] };
+  }
   if (person.state === "active" && command === "skip") {
     return { replies: (await skipCheckin(person)) ? [{ text: packs[person.language].skipped }] : await prompt(person, languages) };
   }
@@ -187,9 +213,8 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
     if (!command) {
       const name = input.text.trim().replace(/\s+/g, " ");
       if (person.awaiting_name && /^[^?!@\d]{2,60}$/u.test(name) && name.split(" ").length <= 8) {
-        const pack = packs[person.language];
         await setName(person, name);
-        return { replies: [{ text: pack.firstJob.question, buttons: [{ label: pack.firstJob.yes, id: "firstjob", value: "yes" }, { label: pack.firstJob.no, id: "firstjob", value: "no" }] }] };
+        return { replies: [person.first_job === null ? firstJobReply(person.language) : { text: packs[person.language].privacy.namedDone }] };
       }
       const replies = await checkinText(person, input.text);
       if (replies) return { replies };

@@ -15,6 +15,7 @@ import {
   scriptModel,
   tap,
   tapScore,
+  tapData,
 } from "./helpers.ts";
 
 type Person = { id: string; code_name: string; team: string; start_date: string; role: string; agency?: string };
@@ -197,6 +198,7 @@ test("R47: the export holds counts with their base, topics asked by 5 or more, a
     await link(chat, token);
     await tap(chat, "Bahasa Malaysia");
     await tap(chat, ms.agree);
+    await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
     await say(chat, "Test Hire");
   }
   for (const chat of askers.slice(0, 5)) await ask(chat, overtime.id);

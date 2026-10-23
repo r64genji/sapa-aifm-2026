@@ -149,7 +149,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
   if (!found) return { error: "Not found", code: 404 };
   const { data, error } = await db
     .from("escalations")
-    .select("closure_sent_at, contact_phone_encrypted, responses!inner(text_encrypted, language, person_id, people!inner(team, role, name))")
+    .select("closure_sent_at, contact_phone_encrypted, responses!inner(text_encrypted, language, person_id, anonymous, people!inner(team, role, name))")
     .eq("id", id)
     .single();
   if (error) throw error;
@@ -157,6 +157,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     text_encrypted: string | null;
     language: Language;
     person_id: string;
+    anonymous: boolean;
     people: { team: string; role: string; name: string | null };
   };
   await audit(actor, "read_reply_text", found.response_id);
@@ -184,7 +185,7 @@ export async function getEscalation(organisationId: string, id: string, actor: s
     ...found,
     closure_sent_at: data.closure_sent_at,
     team: reply.people.team,
-    name: reply.people.name,
+    name: reply.anonymous ? null : reply.people.name,
     role: reply.people.role,
     phone: data.contact_phone_encrypted ? decrypt(data.contact_phone_encrypted) : null,
     text: reply.text_encrypted ? mask(decrypt(reply.text_encrypted)) : null,

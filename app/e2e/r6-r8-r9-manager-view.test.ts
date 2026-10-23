@@ -22,6 +22,7 @@ import {
   tap,
   tapScore,
   update,
+  tapData,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -71,6 +72,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   await joined(shared, "2026-10-02");
   await joined(hrOnly, "2026-10-02");

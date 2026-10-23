@@ -17,6 +17,7 @@ import {
   tap,
   telegramCalls,
   update,
+  tapData,
 } from "./helpers.ts";
 
 const pack = (language: string) =>
@@ -35,6 +36,7 @@ async function activeHire(chat: number, language: "English" | "Bahasa Malaysia",
   await link(chat, token);
   await tap(chat, language);
   await tap(chat, agree);
+  await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
   await say(chat, "Test Hire");
 }
 

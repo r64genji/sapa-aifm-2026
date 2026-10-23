@@ -18,6 +18,7 @@ import {
   scriptModel,
   tap,
   tapScore,
+  tapData,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -54,6 +55,7 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   await tapScore(live, 4);

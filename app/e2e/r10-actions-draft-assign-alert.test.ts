@@ -98,7 +98,7 @@ before(async () => {
   const other = await (await hrRequest("/api/hr/managers", "POST", { display_name: "Budi", email: "budi-r10@contoh.test" })).json();
   budi = other.manager_id;
   await hrRequest(`/api/hr/managers/${aisha}/hires`, "POST", {
-    code_names: ["Deepa R.", "Zhi Hao R.", "Najwa R."],
+    code_names: ["Deepa R.", "Zhi Hao R.", "Najwa R.", "Vinod R.", "Danish R."],
   });
   await hrRequest(`/api/hr/managers/${budi}/hires`, "POST", { code_names: ["Kalai R.", "Anitha R."] });
 });
@@ -154,7 +154,7 @@ test("R10: in demo mode the alert goes at once, says it normally waits until Mon
   assert.equal(body.alert_label, "In real use this alert waits until Monday");
 
   const [message] = await alertTo(aishaChat, "Workload check");
-  assert.match(String(message.text), /Fewer than 3 new hires in Accounts Payable Asia named workload in the last weekly snapshot\./);
+  assert.match(String(message.text), /Fewer than 5 new hires in Accounts Payable Asia named workload in the last weekly snapshot\./);
   assert.doesNotMatch(String(message.text), /several/i);
   assert.doesNotMatch(String(message.text), /\b2\b/);
   assert.deepEqual(
@@ -163,7 +163,7 @@ test("R10: in demo mode the alert goes at once, says it normally waits until Mon
   );
 });
 
-test("R10: with demo mode off an action from the theme card waits for the snapshot day, goes only to a manager with 3 or more in-scope hires, and quotes the snapshot count only", async () => {
+test("R10: with demo mode off an action from the theme card waits for the snapshot day, goes only to a manager with 5 or more in-scope hires, and quotes the snapshot count only", async () => {
   await db.from("organisations").update({ demo_mode: false }).neq("id", "00000000-0000-0000-0000-000000000000");
   const made = await draft("Weekly priorities talk", "ROLE_CLARITY", 1);
   const id = made.body.id as string;
@@ -171,7 +171,7 @@ test("R10: with demo mode off an action from the theme card waits for the snapsh
 
   const tooFew = await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: { manager_id: budi } });
   assert.equal(tooFew.status, 422);
-  assert.match((await tooFew.json()).error, /fewer than 3/);
+  assert.match((await tooFew.json()).error, /fewer than 5/);
 
   const res = await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: { manager_id: aisha }, due_in_days: 7 });
   assert.equal(res.status, 200);

@@ -54,7 +54,7 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
   const menu = (await telegramCalls("setMyCommands")).find((m: any) => m.scope.chat_id === chat) as any;
   assert.deepEqual(
     menu.commands.map((c: any) => c.command),
-    ["start", "ask", "say", "skip", "language", "stop", "delete", "myanswers", "help"],
+    ["start", "ask", "say", "skip", "language", "stop", "delete", "myanswers", "privacy", "help"],
   );
   assert.deepEqual(
     menu.commands.map((c: any) => c.description),
@@ -64,7 +64,9 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
 
   await tap(chat, zh.agree);
   assert.equal((await texts()).at(-2), `你选了“${zh.agree}”。 ${zh.help}`);
-  assert.equal((await texts()).at(-1), zh.yourName.question);
+  assert.equal((await texts()).at(-1), zh.privacy.question);
+  await tap(chat, zh.privacy.named);
+  assert.equal((await texts()).at(-1), `你选了“${zh.privacy.named}”。 ${zh.yourName.question}`);
   await say(chat, "王小明");
 });
 

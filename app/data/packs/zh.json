@@ -5,10 +5,11 @@
   "alreadyJoined": "你已经在这部手机上加入了 Sapa。Sapa 会在下一次问候时联系你。",
   "languagePrompt": "请选择你的语言。",
   "typeInstead": "Sapa 暂时无法处理语音、图片或文件。请直接打字发送你的消息。",
-  "consentVersion": "zh-2026-10-21b",
-  "consent": "Sapa 会在你入职的前六个月里问你几个简短的问题。参与完全自愿。只有 HR 能看到你的回答，你的主管看不到。你也可以随时输入 停止 来结束一切。HR 会看到你的名字和你的回答。只有当 HR 就你的情况给你的主管发送改进措施时，主管才会看到你的名字，永远看不到你的回答。Sapa 只保存你的聊天 ID，用来给你发送问题；Telegram 也能看到这个对话。你同意参与吗？",
-  "yourName": { "question": "你叫什么名字？HR 会看到你的名字和回答。只有当 HR 就你的情况给你的主管发送改进措施时，主管才会看到你的名字。" },
+  "consentVersion": "zh-2026-10-23",
+  "consent": "Sapa 会在你入职的前六个月里问你几个简短的问题。参与完全自愿。你的主管永远看不到你的回答。你可以随时输入 停止 来结束。Sapa 只保存你的聊天 ID，用来给你发消息。HR 和你的主管都看不到它。你同意吗？",
+  "yourName": { "question": "你叫什么名字？" },
   "firstJob": { "question": "这是你的第一份全职工作吗？", "yes": "是", "no": "不是", "thanks": "谢谢。Sapa 会在下次签到时联系你。" },
+  "privacy": {"question": "要让 HR 看到你的名字吗？\n公开我的名字：HR 可以请你的主管直接帮助你。\n保持匿名：只有当你团队里有 5 人或以上提出同样的问题时，HR 才会看到你的回答。\n随时可用 /privacy 更改。", "named": "公开我的名字", "anonymous": "保持匿名", "nowNamed": "HR 能看到你的名字。要更改吗？", "nowAnonymous": "HR 看不到你的名字。要更改吗？", "anonymousDone": "好了。HR 不会看到你的名字。", "switchedAnonymous": "好了。HR 不会在新回答上看到你的名字。", "namedDone": "好了。HR 会看到你的名字。"},
   "agree": "我同意",
   "decline": "不，谢谢",
   "declined": "没问题。你不会再收到 Sapa 的消息。",
@@ -16,7 +17,7 @@
   "tapped": "你选了“{label}”。",
   "skipped": "已跳过。本次问候已关闭。Sapa 会在下一次问候时联系你。",
   "stopped": "你已停止。Sapa 不会再给你发送消息。",
-  "help": "你可以随时输入 /help、/stop 或 停止。Sapa 会在下一次问候时联系你。",
+  "help": "你可以随时输入 /help、/privacy、/stop 或 停止。",
   "commands": {
     "start": { "name": "start", "description": "开始使用 Sapa" },
     "ask": { "name": "ask", "description": "询问有关公司的问题" },
@@ -26,6 +27,7 @@
     "stop": { "name": "stop", "description": "停止所有消息" },
     "delete": { "name": "delete", "description": "删除你的回答" },
     "myanswers": { "name": "myanswers", "description": "查看你自己的回答" },
+    "privacy": { "name": "privacy", "description": "更改 HR 是否能看到你的名字" },
     "help": { "name": "help", "description": "显示帮助" }
   },
   "typedStop": "停止",
@@ -40,7 +42,9 @@
     "fallback": "此回答使用{language}。如不清楚，请询问人事部。"
   },
   "checkin": {
-    "intro": "你好，该做 Sapa 问候了。\n你的 HR 团队能看到你的名字和你写的内容。只有当 HR 就你的情况给你的主管发送改进措施时，主管才会看到你的名字，永远看不到你写的内容。",
+    "intro": "你好，该做 Sapa 问候了。",
+    "introNamed": "{name}，你好，该做 Sapa 问候了。",
+    "introAnonymous": "你好，该做 Sapa 问候了。你是匿名的。",
     "reminder": "温馨提醒：你的 Sapa 问候还没完成。可以从上次中断的地方继续，也可以忽略，它会自动关闭。",
     "thanks": "谢谢，你的回答已保存。",
     "questions": [

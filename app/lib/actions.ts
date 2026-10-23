@@ -10,6 +10,7 @@ import { jobMatchCards } from "@/lib/jobmatch";
 import { libraryWithEvidence, members, pooled, queueResolution, scoreCard, scoreOf, verdict } from "@/lib/resolution";
 import { sendNotices } from "@/lib/scheduler";
 import { mask } from "@/lib/mask";
+import { heldAnonymous } from "@/lib/replies";
 import { themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
@@ -88,6 +89,7 @@ export async function draftAction(
 ): Promise<{ id: string } | Failure> {
   const db = createAdminClient();
   let personId: string | null = null;
+  let team: string | null = null;
   if (!DRIVERS.includes(body.driver)) return { error: "Unknown driver", code: 422 };
   if (body.response_id) {
     const { data: tag, error } = await db
@@ -101,12 +103,15 @@ export async function draftAction(
     if (!tag.drivers.includes(body.driver)) return { error: "The reply does not carry this driver", code: 422 };
     const { data: reply, error: replyError } = await db
       .from("responses")
-      .select("person_id")
+      .select("person_id, anonymous, people(team)")
       .eq("organisation_id", organisationId)
       .eq("id", body.response_id)
       .single();
     if (replyError) throw replyError;
-    personId = reply.person_id;
+    if (reply.anonymous) {
+      if ((await heldAnonymous(organisationId)).has(body.response_id)) return { error: "Not found", code: 404 };
+      team = (reply.people as unknown as { team: string }).team;
+    } else personId = reply.person_id;
   }
   const [entry] = await libraryWithEvidence(organisationId, body.driver);
   if (!entry) return { error: "The action library has no entry for this driver", code: 409 };
@@ -121,6 +126,7 @@ export async function draftAction(
       source: body.response_id ? "reply" : "theme",
       source_response_id: body.response_id ?? null,
       ...(personId && { scope_type: "person", scope_person_id: personId }),
+      ...(team && { scope_type: "team", scope_team: team }),
       title: entry.title,
       steps: entry.text,
       created_by: actor,
@@ -154,18 +160,18 @@ export async function sendLibraryFix(
   if (!notes?.en || !notes.ms || !notes.zh) return { error: "This fix has no note in every language. Open it in the editor.", code: 422 };
   const { data: reply, error: replyError } = await db
     .from("responses")
-    .select("people(manager_id, managers(display_name))")
+    .select("anonymous, people(team, manager_id, managers(display_name))")
     .eq("organisation_id", organisationId)
     .eq("id", body.response_id)
     .maybeSingle();
   if (replyError) throw replyError;
   if (!reply) return { error: "Not found", code: 404 };
-  const hire = reply.people as unknown as { manager_id: string | null; managers: { display_name: string } | null } | null;
+  const hire = reply.people as unknown as { team: string; manager_id: string | null; managers: { display_name: string } | null } | null;
   if (!hire?.manager_id || !hire.managers) return { error: "This new hire has no manager yet", code: 422 };
   const draft = await draftAction(organisationId, actor, { driver: body.driver, response_id: body.response_id });
   if ("error" in draft) return draft;
   for (const step of [
-    () => editAction(organisationId, actor, draft.id, { library_entry_id: entry.id, scope: { type: "person" } }),
+    () => editAction(organisationId, actor, draft.id, { library_entry_id: entry.id, scope: reply.anonymous ? { type: "team", team: hire.team } : { type: "person" } }),
     () => approveNotice(organisationId, actor, draft.id, { notes: { en: notes.en!, ms: notes.ms!, zh: notes.zh } }),
     () => assignAction(organisationId, actor, draft.id, hire.manager_id, 7),
   ]) {
@@ -244,7 +250,7 @@ export async function draftView(organisationId: string, id: string) {
     const row = snapshot(team);
     if (!row) return [];
     const n = row.counts?.[action.driver]?.n ?? 0;
-    return [(n >= 3 ? text.several : text.fewer).replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))];
+    return [(n >= 5 ? text.several : text.fewer).replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))];
   };
   const rows = people.data as unknown as { id: string; name: string | null; team: string; start_date: string; manager_id: string | null; managers: { display_name: string } | null }[];
   const group = (match: (row: (typeof rows)[number]) => boolean) => {
@@ -505,8 +511,8 @@ export async function assignAction(
       if (personError) throw personError;
       if (person.manager_id !== manager.id) return { error: "A fix for one new hire goes to their own manager", code: 422 };
     }
-    if (held && (await inScopeHires(action, manager.id)) < 3) {
-      return { error: "This manager has fewer than 3 in-scope new hires, so this action cannot go to them", code: 422 };
+    if (held && (await inScopeHires(action, manager.id)) < 5) {
+      return { error: "This manager has fewer than 5 in-scope new hires, so this action cannot go to them", code: 422 };
     }
     alertDue = held && !org.demo_mode ? nextSnapshotDay(today, org.snapshot_weekday) : today;
   }
@@ -677,7 +683,7 @@ async function context(action: Action, managerId: string) {
     const n = row.counts?.[action.driver]?.n ?? 0;
     const driver = text.drivers[action.driver as keyof typeof text.drivers];
     return [
-      n >= 3
+      n >= 5
         ? text.several.replace("{team}", team).replace("{driver}", driver).replace("{n}", String(n)).replace("{m}", String(row.respondents))
         : text.fewer.replace("{team}", team).replace("{driver}", driver),
     ];

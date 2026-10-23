@@ -237,5 +237,6 @@ export async function joined(chat: number, startDate: string) {
   await link(chat, token);
   await tap(chat, "English");
   await tap(chat, "I agree");
+  await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
   await say(chat, "Test Hire");
 }

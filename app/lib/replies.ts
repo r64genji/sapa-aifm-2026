@@ -12,6 +12,37 @@ import { fillTopic, type Schedule } from "@/lib/checkin";
 import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 
+const ANONYMOUS_MINIMUM = 5;
+
+export async function heldAnonymous(organisationId: string) {
+  const { data, error } = await createAdminClient()
+    .from("ai_tags")
+    .select("response_id, status, drivers, responses!inner(person_id, anonymous, people(team))")
+    .eq("organisation_id", organisationId);
+  if (error) throw error;
+  const rows = data as unknown as { response_id: string; status: string; drivers: string[]; responses: { person_id: string; anonymous: boolean; people: { team: string | null } | null } }[];
+  const people = new Map<string, Set<string>>();
+  for (const row of rows) {
+    if (row.status !== "ok" && row.status !== "reviewed") continue;
+    for (const driver of row.drivers) {
+      const key = `${row.responses.people?.team}|${driver}`;
+      people.set(key, (people.get(key) ?? new Set()).add(row.responses.person_id));
+    }
+  }
+  const shown = (row: (typeof rows)[number]) =>
+    (row.status === "ok" || row.status === "reviewed") &&
+    row.drivers.some((driver) => (people.get(`${row.responses.people?.team}|${driver}`)?.size ?? 0) >= ANONYMOUS_MINIMUM);
+  const held = new Set(rows.filter((row) => row.responses.anonymous && !shown(row)).map((row) => row.response_id));
+  const { data: untagged, error: untaggedError } = await createAdminClient()
+    .from("responses")
+    .select("id, ai_tags(response_id)")
+    .eq("organisation_id", organisationId)
+    .eq("anonymous", true);
+  if (untaggedError) throw untaggedError;
+  for (const row of untagged) if (!row.ai_tags) held.add(row.id);
+  return held;
+}
+
 const byline = (name: string | null | undefined, team: string | null | undefined, touchpoint: number | null | undefined) =>
   [name ?? "A new hire", team, touchpoint == null ? null : touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`].filter(Boolean).join(" · ");
 
@@ -59,14 +90,16 @@ export async function readReplies(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("responses")
     .select(
-      "id, question_id, schedule_id, text_encrypted, language, created_at, people(team, name), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
+      "id, question_id, schedule_id, text_encrypted, language, created_at, anonymous, people(team, name), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
     )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
     .order("created_at");
   if (error) throw error;
+  const held = await heldAnonymous(organisationId);
+  const shown = data.filter((row) => !held.has(row.id));
   type Joined = { people: { team: string | null; name: string | null } | null; checkin_schedule: (Pick<Schedule, "recheck_driver" | "chat"> & { touchpoint: number }) | null; ai_tags: { evidence_quote?: string | null } | null };
-  const schedules = [...new Set(data.map((row) => row.schedule_id).filter(Boolean))];
+  const schedules = [...new Set(shown.map((row) => row.schedule_id).filter(Boolean))];
   const { data: taps, error: tapsError } = await db
     .from("responses")
     .select("schedule_id, question_id, scale_value")
@@ -77,10 +110,10 @@ export async function readReplies(organisationId: string, actor: string) {
   const at = (await now()).toISOString();
   const { error: auditError } = await db
     .from("audit_log")
-    .insert(data.map((row) => ({ actor, action: "read_reply_text", target: row.id, at })));
+    .insert(shown.map((row) => ({ actor, action: "read_reply_text", target: row.id, at })));
   if (auditError) throw auditError;
   return Promise.all(
-    data.map(async (row) => {
+    shown.map(async (row) => {
       const joined = row as unknown as Joined;
       const text = mask(decrypt(row.text_encrypted!));
       return {
@@ -89,7 +122,7 @@ export async function readReplies(organisationId: string, actor: string) {
         text,
         language: row.language,
         created_at: row.created_at,
-        byline: byline(joined.people?.name, joined.people?.team, joined.checkin_schedule?.touchpoint),
+        byline: byline(row.anonymous ? null : joined.people?.name, joined.people?.team, joined.checkin_schedule?.touchpoint),
         status: null,
         drivers: [],
         context_tags: [],
@@ -151,7 +184,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, people(team, name), checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, anonymous, people(team, name), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -160,7 +193,8 @@ export async function readQueue(organisationId: string, actor: string) {
     .order("escalate", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; people: { team: string | null; name: string | null } | null; checkin_schedule: { touchpoint: number } | null } })[];
+  const anonymous = await heldAnonymous(organisationId);
+  const rows = (data as unknown as ((typeof data)[number] & { responses: { text_encrypted: string | null; language: string; anonymous: boolean; people: { team: string | null; name: string | null } | null; checkin_schedule: { touchpoint: number } | null } })[]).filter((row) => row.escalate || !anonymous.has(row.response_id));
   const { data: held, error: heldError } = await db
     .from("quality_holds")
     .select("driver, language, reason")
@@ -185,7 +219,7 @@ export async function readQueue(organisationId: string, actor: string) {
         summary: row.summary ? mask(row.summary) : null,
         text,
         language: responses.language,
-        byline: byline(responses.people?.name, responses.people?.team, responses.checkin_schedule?.touchpoint),
+        byline: byline(responses.anonymous ? null : responses.people?.name, responses.people?.team, responses.checkin_schedule?.touchpoint),
         note:
           challenged_at && !challenge_resolved_at
             ? challenged

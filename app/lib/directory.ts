@@ -17,10 +17,12 @@ export type Person = {
   team: string | null;
   name: string | null;
   awaiting_name: boolean | null;
+  anonymous: boolean | null;
+  first_job: boolean | null;
 };
 
 const personColumns =
-  "id, organisation_id, language, state, telegram_chat_id, intake_id, team, name, awaiting_name";
+  "id, organisation_id, language, state, telegram_chat_id, intake_id, team, name, awaiting_name, anonymous, first_job";
 
 export async function addHire(
   organisationId: string,
@@ -194,12 +196,17 @@ export async function setFirstJob(person: Person, firstJob: boolean) {
 }
 
 export async function setName(person: Person, name: string) {
-  const { error } = await createAdminClient().from("people").update({ name, awaiting_name: false }).eq("id", person.id).is("name", null);
+  const { error } = await createAdminClient().from("people").update({ name, awaiting_name: false }).eq("id", person.id).eq("awaiting_name", true);
   if (error) throw error;
 }
 
 export async function askName(person: Person) {
-  const { error } = await createAdminClient().from("people").update({ awaiting_name: true }).eq("id", person.id);
+  const { error } = await createAdminClient().from("people").update({ awaiting_name: true, anonymous: false }).eq("id", person.id);
+  if (error) throw error;
+}
+
+export async function setAnonymous(person: Person) {
+  const { error } = await createAdminClient().from("people").update({ anonymous: true, awaiting_name: false }).eq("id", person.id);
   if (error) throw error;
 }
 

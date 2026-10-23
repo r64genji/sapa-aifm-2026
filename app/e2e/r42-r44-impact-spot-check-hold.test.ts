@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, appUrl, classifierTag, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap, tapScore } from "./helpers.ts";
+import { addHire, appUrl, classifierTag, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, say, scriptModel, tap, tapScore, tapData } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const trend = "This shows a trend, not proof that Sapa caused it";
@@ -107,6 +107,7 @@ test("R44: each Monday the nightly job queues 3 AI-confident tags per driver and
   await link(hire, token);
   await tap(hire, "Bahasa Malaysia");
   await tap(hire, ms_.agree);
+  await tapData(hire, 'chat:{"a":"privacy","v":"named"}');
   await say(hire, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(hire, answer);

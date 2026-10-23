@@ -13,6 +13,7 @@ import {
   scriptModel,
   tap,
   tapScore,
+  tapData,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -52,6 +53,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Aisha Tan");
   await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   for (const score of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, score);

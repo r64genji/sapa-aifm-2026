@@ -4,7 +4,7 @@
   "invalidInvite": "This invite link can't be used. Please ask HR for a new link.",
   "alreadyJoined": "You have already joined Sapa on this phone. Sapa will message you for your next check-in.",
   "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you. Send /whatican to see what you can see in Sapa.",
-  "whatICanSee": "What I can see: a weekly count of what your team's new hires named, shown as fewer than 3 when the count is small. You never see what new hires write. Sapa never ranks teams or managers. HR sees your team's count only when a problem is more common there than in the company, so help reaches you. You never see other teams.",
+  "whatICanSee": "What I can see: a weekly count of what your team's new hires named. You never see what they write. If a new hire shares their name, HR may send you a fix about them. You never see other teams.",
   "action": {
     "alert": "New action from HR: {title}",
     "due": "Due {date}.",
@@ -13,7 +13,7 @@
     "several": "Several new hires in {team} named {driver} in the last weekly snapshot ({n} of {m} who answered).",
     "person": "This is about {name}, one of your new hires.",
     "personUnnamed": "This is about one of your new hires.",
-    "fewer": "Fewer than 3 new hires in {team} named {driver} in the last weekly snapshot.",
+    "fewer": "Fewer than 5 new hires in {team} named {driver} in the last weekly snapshot.",
     "noSnapshot": "There is no weekly snapshot with enough people to show a count yet.",
     "accepted": "Accepted. Tap Mark done when it is finished.",
     "unavailable": "This action is not open any more.",
@@ -41,10 +41,11 @@
   },
   "languagePrompt": "Please choose your language.",
   "typeInstead": "Sapa can't handle voice notes, pictures or files yet. Please type your message instead.",
-  "consentVersion": "en-2026-10-21b",
-  "consent": "Sapa asks you a few short questions during your first six months. Taking part is voluntary. Only HR can read your answers, never your manager. You can type STOP at any time to end everything. HR sees your name with your answers. Your manager sees your name only if HR sends them a fix about you, never your answers. Sapa keeps your chat ID only to send you questions, and Telegram can see this chat. Do you agree to take part?",
-  "yourName": { "question": "What is your name? HR will see it with your answers. Your manager will see it only if HR sends them a fix about you." },
+  "consentVersion": "en-2026-10-23",
+  "consent": "Sapa asks you a few short questions in your first six months. It is voluntary. Your manager never sees your answers. Type STOP at any time to end it. Sapa keeps your chat ID only to message you. HR and your manager never see it. Do you agree?",
+  "yourName": { "question": "What is your name?" },
   "firstJob": { "question": "Is this your first full-time job?", "yes": "Yes", "no": "No", "thanks": "Thanks. Sapa will message you for your next check-in." },
+  "privacy": {"question": "Should HR see your name?\nShare my name: HR can ask your manager to help you directly.\nStay anonymous: HR sees your answer only when 5 or more people in your team raise the same problem.\nChange this any time with /privacy.", "named": "Share my name", "anonymous": "Stay anonymous", "nowNamed": "HR sees your name. Change it?", "nowAnonymous": "HR does not see your name. Change it?", "anonymousDone": "Done. HR will not see your name.", "switchedAnonymous": "Done. HR will not see your name on new answers.", "namedDone": "Done. HR will see your name."},
   "agree": "I agree",
   "decline": "No thanks",
   "declined": "No problem. You won't get any more messages from Sapa.",
@@ -52,7 +53,7 @@
   "tapped": "You tapped \"{label}\".",
   "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
-  "help": "You can type /help, /stop, or STOP at any time. Sapa will message you for your next check-in.",
+  "help": "You can type /help, /privacy, /stop, or STOP at any time.",
   "commands": {
     "start": { "name": "start", "description": "Start Sapa" },
     "ask": { "name": "ask", "description": "Ask a question about the company" },
@@ -62,6 +63,7 @@
     "stop": { "name": "stop", "description": "Stop all messages" },
     "delete": { "name": "delete", "description": "Delete your answers" },
     "myanswers": { "name": "myanswers", "description": "See your own answers" },
+    "privacy": { "name": "privacy", "description": "Change if HR sees your name" },
     "help": { "name": "help", "description": "Show help" }
   },
   "typedStop": "stop",
@@ -76,7 +78,9 @@
     "fallback": "This answer is in {language}. Ask HR if it is not clear."
   },
   "checkin": {
-    "intro": "Hi, it's time for your Sapa check-in.\nYour HR team sees your name and what you write. Your manager sees your name only if HR sends them a fix about you, never what you write.",
+    "intro": "Hi, it's time for your Sapa check-in.",
+    "introNamed": "Hi {name}, it's time for your Sapa check-in.",
+    "introAnonymous": "Hi, it's time for your Sapa check-in. You are anonymous.",
     "reminder": "A gentle reminder: your Sapa check-in is still open. Pick up where you left off, or ignore this and it will close.",
     "thanks": "Thank you, your answers are saved.",
     "questions": [

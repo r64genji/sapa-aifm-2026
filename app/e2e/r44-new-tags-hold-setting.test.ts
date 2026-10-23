@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, tap, tapScore } from "./helpers.ts";
+import { addHire, appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, link, resetDemo, say, scriptModel, tap, tapScore, tapData } from "./helpers.ts";
 
 const ms = JSON.parse(readFileSync(new URL("../data/packs/ms.json", import.meta.url), "utf8"));
 const reply = "Kerja terlalu banyak minggu ini";
@@ -12,6 +12,7 @@ async function onboard(chat: number) {
   await link(chat, token);
   await tap(chat, "Bahasa Malaysia");
   await tap(chat, ms.agree);
+  await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
   await say(chat, "Test Hire");
 }
 

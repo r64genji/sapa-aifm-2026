@@ -60,14 +60,9 @@ before(async () => {
   assert.equal((await res.json()).sent, 6);
 });
 
-test("R55, R11: the check-in starts with the intro and privacy line and shows word buttons, one per row, with no numbers", async () => {
+test("R55, R11: the check-in starts with the intro by name and shows word buttons, one per row, with no numbers", async () => {
   const [intro, first] = (await sentTo(low)).slice(-2) as Message[];
-  assert.equal(intro.text, en.checkin.intro);
-  assert.ok(
-    intro.text.includes(
-      "Your HR team sees your name and what you write. Your manager sees your name only if HR sends them a fix about you, never what you write.",
-    ),
-  );
+  assert.equal(intro.text, en.checkin.introNamed.replace("{name}", "Test Hire"));
   assert.equal(first.text, "How clear are you on what is expected of you this week?");
   assert.deepEqual(labels(first), [["Not clear at all"], ["A bit unclear"], ["Somewhat clear"], ["Mostly clear"], ["Very clear"]]);
 });

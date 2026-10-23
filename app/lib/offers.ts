@@ -23,7 +23,7 @@ export async function createOffer(organisationId: string, actor: string, respons
   const db = createAdminClient();
   const { data: tag, error } = await db
     .from("ai_tags")
-    .select("concern_level, responses!inner(person_id)")
+    .select("concern_level, responses!inner(person_id, anonymous)")
     .eq("organisation_id", organisationId)
     .eq("response_id", responseId)
     .maybeSingle();
@@ -35,6 +35,7 @@ export async function createOffer(organisationId: string, actor: string, respons
     .eq("response_id", responseId);
   if (escalatedError) throw escalatedError;
   if (escalated.length > 0) return { error: "An escalation is handled by HR directly", code: 409 };
+  if ((tag as unknown as { responses: { anonymous: boolean } }).responses.anonymous) return { error: "This new hire is anonymous, so HR cannot contact them", code: 409 };
   if (tag.concern_level !== "needs_follow_up") return { error: "The reply is not marked as needing follow-up", code: 409 };
   const personId = (tag as unknown as { responses: { person_id: string } }).responses.person_id;
   if (!(await reachable(personId))) return { error: notReceiving, code: 409 };

@@ -16,6 +16,7 @@ import {
   sentTo,
   tap,
   tapScore,
+  tapData,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -73,6 +74,7 @@ before(async () => {
   await link(live, liveInvite);
   await tap(live, "English");
   await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   await Promise.all([wrongTwice, wrongOnce, badJson, down, fallback, capped, spender].map((chat) => joined(chat, "2026-10-02")));
   const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });

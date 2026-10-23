@@ -30,7 +30,7 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
 
   await tap(chat, "English");
   await tap(chat, en.agree);
-  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.yourName.question]);
+  assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.privacy.question]);
   const livePerson = (await chatPerson(chat)).id;
   const { data: person } = await db.from("people").select("team, manager_id, state").eq("id", livePerson).single();
   assert.deepEqual(person, { team: "Accounts Payable Asia", manager_id: "6f1c2a3e-0000-4000-8000-000000000101", state: "active" });
@@ -38,6 +38,8 @@ test("R5, R36, R1, R27: a hire joins on a team link in English, consents, is nev
   const { data: consents } = await db.from("consents").select("text_version, scope, withdrawn_at").eq("person_id", livePerson);
   assert.deepEqual(consents, [{ text_version: en.consentVersion, scope: "hr_only", withdrawn_at: null }]);
 
+  await tap(chat, en.privacy.named);
+  assert.equal((await texts(chat)).at(-1), `You tapped "${en.privacy.named}". ${en.yourName.question}`);
   await say(chat, "Aina Rahman");
   assert.equal((await texts(chat)).at(-1), en.firstJob.question);
   const { data: named } = await db.from("people").select("name").eq("id", livePerson).single();
@@ -83,7 +85,7 @@ test("R27: each team link puts the joiner in that team with its manager and asks
     await link(chat, teamInvites[team]);
     await tap(chat, "English");
     await tap(chat, en.agree);
-    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.yourName.question]);
+    assert.deepEqual((await texts(chat)).slice(1), [`You tapped "English". ${en.consent}`, `You tapped "${en.agree}". ${en.help}`, en.privacy.question]);
     const { data } = await db.from("people").select("team, manager_id, state, start_date").eq("id", (await chatPerson(chat)).id).single();
     assert.deepEqual(data, { team, manager_id: manager, state: "active", start_date: "2026-10-02" });
   }
@@ -139,6 +141,7 @@ test("Bug fix: a one-letter name is asked again, and a six-word Malay name is ta
   await link(chat, liveInvite);
   await tap(chat, "English");
   await tap(chat, en.agree);
+  await tap(chat, en.privacy.named);
   await say(chat, "A");
   assert.equal((await texts(chat)).at(-1), en.yourName.question);
   await say(chat, "Siti Nurhaliza Binti Abdul Rahman Ismail");

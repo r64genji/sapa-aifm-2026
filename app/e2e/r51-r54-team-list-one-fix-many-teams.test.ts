@@ -64,9 +64,9 @@ test("R51: a team under 5 never appears alone, and a manager gets a refusal on t
   assert.equal((await teams("MANAGER_SUPPORT", await hrToken("raj@contoh.test"))).status, 401);
 });
 
-test("R54: one fix goes to three teams as one action per team in one batch; a lead with fewer than 3 in-scope hires on a held fix is not sent", async () => {
-  const aisha = await manager("Aisha", aishaChat, ["Syafiq R.", "Ravi R.", "Amir R."]);
-  const budi = await manager("Budi", budiChat, ["Kavin R.", "Aisyah R.", "Daniel R."]);
+test("R54: one fix goes to three teams as one action per team in one batch; a lead with fewer than 5 in-scope hires on a held fix is not sent", async () => {
+  const aisha = await manager("Aisha", aishaChat, ["Syafiq R.", "Ravi R.", "Amir R.", "Muthu R.", "Zi Yang R."]);
+  const budi = await manager("Budi", budiChat, ["Kavin R.", "Aisyah R.", "Daniel R.", "Mun Yee R.", "Kok Wai R."]);
   const chen = await manager("Chen", chenChat, ["Logesh R.", "Yasmin R."]);
 
   const draft = await hrRequest("/api/hr/actions", "POST", { driver: "MANAGER_SUPPORT" });
@@ -88,7 +88,7 @@ test("R54: one fix goes to three teams as one action per team in one batch; a le
   assert.ok(byTeam["Japanese Desk"].id);
   assert.ok(byTeam["IT Service Desk"].id);
   assert.equal(byTeam["Record-to-Report"].id, undefined);
-  assert.match(byTeam["Record-to-Report"].error, /fewer than 3 in-scope new hires/);
+  assert.match(byTeam["Record-to-Report"].error, /fewer than 5 in-scope new hires/);
 
   const board = (await (await hrRequest("/api/hr/actions", "GET")).json()) as Record<string, unknown>[];
   const batch = board.filter((row) => row.batch_id === body.batch_id);

@@ -27,18 +27,20 @@ A chat bot that checks in with new employees during their first six months, and 
 
 ## Privacy: HR knows who, managers never do
 
-Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after three HR professionals (docs/16, 17, 18) said a new hire cannot hide from HR. Managers never see a name, except in a fix HR sends from one hire's reply (R10).
+Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after three HR professionals (docs/16, 17, 18) said a new hire cannot hide from HR. Managers never see a name, except in a fix HR sends from one hire's reply (R10). On 23 Oct 2026 each new hire got the choice at join, after Gary Teh (docs/19) said some will only speak up if anonymous (R62).
 
 - HR gives one join link (QR code) per team in each intake. There is no personal invite link. The team QR sets the new hire's team.
-- After consent, Sapa asks the new hire for their name once. HR sees that name with every reply, for example "Aina Rahman · AP Asia · Day 14".
+- After consent, the new hire picks "Share my name" or "Stay anonymous" and can change it with /privacy (R62).
+- Named: Sapa asks the name once. HR sees it with every reply, for example "Aina Rahman · AP Asia · Day 14", and can send a fix about that hire, by name, to their manager.
+- Anonymous: HR sees a reply only when 5 or more people in that team (named and anonymous) raised the same problem area. A fix from it never names the hire. HR cannot send an anonymous hire a private-chat offer, because HR could not contact them. Counts include anonymous hires.
 - A manager never sees a name, a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives carries a new hire's words. A manager receives a hire's name only in a fix HR sends from that hire's reply, so the manager can act for that person.
-- There is no minimum group size. HR sees every count, even for one person.
+- There is no minimum group size for counts. HR sees every count, even for one person. A team count can therefore show that a lone anonymous hire named a problem area; the promise to them covers their words and name, not counts.
 - HR can send a fix from one reply to that hire's own manager (R10). HR can still send a fix to a team, several teams or an intake.
 - Phone numbers, emails and ID numbers in a reply are masked in what HR sees, not only in what the AI sees.
 - The AI never sees a name.
 - Serious concerns still go to the company's speak-up channel, which is a separate and anonymous system.
 - Sapa keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
-- The consent text and each check-in start say that HR sees the new hire's name and words and that the manager sees the name only if HR sends a fix about that hire, and never the words.
+- The consent text says the manager never sees answers and HR and the manager never see the chat ID. It does not say that Telegram can read bot chats: the owner chose to leave that out (23 Oct 2026). Do not add it back without the owner.
 
 ## Show-off list
 
