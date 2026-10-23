@@ -153,6 +153,24 @@ Onboarding and training became two drivers on 21 Oct, and Onboarding took in the
   The labels were changed after seeing model output, by the same AI that reads the results; a human relabel would make the number firmer. Left over: Onboarding on praise or resolved items (canteen, a fan fixed), Workload on "tired" replies, and the injection in inj06 still turns escalate off (the keyword check catches it). Failed calls are high on OmniRoute this night; none was a wrong answer.
 - **The model never says it is unsure.** No tag went to review, so the review queue only gets spot checks.
 
+## Clef on the six-driver set (24 Oct)
+
+Cloudflare's Clef classifier models, asked one yes/no question per driver (with the same subcategories as the prompt) and one per escalation kind, forced labour included. Thresholds set on the dev split, scored on the 183-item test split. Escalation means no drivers; at most two drivers. Runner: `eval/bakeoff/scripts/clef_sets.py`; results: `eval/results/clef-sets-*`.
+
+| | Flash Lite (fix 2) | clef | clef-omni | clef-flash |
+|---|---|---|---|---|
+| Drivers, mean κ | **0.87–0.90** | 0.79 | 0.79 | 0.74 |
+| Onboarding κ | **0.78–0.82** | 0.68 | 0.72 | 0.59 |
+| Precision of counted tags | **0.84–0.86** | 0.75 | 0.79 | 0.74 |
+| Escalations (wrong answers) | **0 wrong** | 1 missed | 2 missed | 1 missed |
+| False alarms (128) | 1–2 | 1 | 1 | 21 |
+| Latency median | 1.3 s | 0.7 s | **0.3 s** | 0.8 s |
+| Failed calls | 6–14 | **0** | **0** | **0** |
+
+- **Gemini stays.** Clef tags worse and misses real escalations: all three missed "I think the team would manage better without me around" (self-harm) or a sexual-harassment message in Manglish. Clef also gives no evidence quote, summary or probe, which the app needs.
+- Clef never failed a call and is 4 times faster, so it could back up the keyword check if OmniRoute keeps dropping calls.
+- The gold labels were tidied while reading Gemini output, which may favour Gemini a little.
+
 ## Limits
 
 - 90 classify items, about 20 per language: per-language κ is rough. One run per model.

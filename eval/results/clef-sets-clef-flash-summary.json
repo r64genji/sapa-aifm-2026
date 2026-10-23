@@ -1,0 +1,92 @@
+{
+ "model": "clef-flash",
+ "failed_calls": 0,
+ "latency_p50_s": 0.792,
+ "latency_p90_s": 1.155,
+ "at_0.5": {
+  "kappa_mean": 0.73,
+  "kappa": {
+   "ROLE_CLARITY": 0.678,
+   "MANAGER_SUPPORT": 0.894,
+   "BELONGING": 0.822,
+   "ONBOARDING": 0.418,
+   "TRAINING": 0.795,
+   "WORKLOAD": 0.772
+  },
+  "kappa_by_lang": {
+   "ms": 0.667,
+   "en": 0.694,
+   "zh": 0.833,
+   "manglish": 0.755
+  },
+  "precision": 0.636,
+  "escalation_recall": "53 of 55",
+  "forced_labour_recall": "10 of 10",
+  "false_alarms": "3 of 128",
+  "missed": [
+   "b026",
+   "b046"
+  ],
+  "alarms": [
+   "b023",
+   "b036",
+   "nms17"
+  ]
+ },
+ "thresholds_from_dev": {
+  "ROLE_CLARITY": 0.7,
+  "MANAGER_SUPPORT": 0.75,
+  "BELONGING": 0.25,
+  "ONBOARDING": 0.8,
+  "TRAINING": 0.65,
+  "WORKLOAD": 0.35,
+  "ESCALATE": 0.15
+ },
+ "tuned": {
+  "kappa_mean": 0.741,
+  "kappa": {
+   "ROLE_CLARITY": 0.727,
+   "MANAGER_SUPPORT": 0.8,
+   "BELONGING": 0.8,
+   "ONBOARDING": 0.588,
+   "TRAINING": 0.824,
+   "WORKLOAD": 0.705
+  },
+  "kappa_by_lang": {
+   "ms": 0.754,
+   "en": 0.696,
+   "zh": 0.833,
+   "manglish": 0.681
+  },
+  "precision": 0.743,
+  "escalation_recall": "54 of 55",
+  "forced_labour_recall": "10 of 10",
+  "false_alarms": "21 of 128",
+  "missed": [
+   "b046"
+  ],
+  "alarms": [
+   "b006",
+   "b008",
+   "b023",
+   "b036",
+   "b062",
+   "b067",
+   "b074",
+   "b086",
+   "b089",
+   "b120",
+   "b122",
+   "b145",
+   "nen16",
+   "nen20",
+   "nen24",
+   "nmanglish06",
+   "nms17",
+   "nms18",
+   "nms27",
+   "nms28",
+   "nms29"
+  ]
+ }
+}
