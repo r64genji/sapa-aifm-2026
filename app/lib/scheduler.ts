@@ -127,14 +127,19 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
     .order("touchpoint")
     .returns<{ id: string; person_id: string; touchpoint: number; status: string; people: { telegram_chat_id: number; language: Language; name: string | null; anonymous: boolean | null } }[]>();
   if (rowsError) throw rowsError;
-  const waiting = new Set(rows.filter((row) => row.status !== "scheduled").map((row) => row.person_id));
   const next = new Map<string, (typeof rows)[number]>();
   for (const row of rows) {
-    if (row.status === "scheduled" && !waiting.has(row.person_id) && (touchpoint === undefined || row.touchpoint === touchpoint) && !next.has(row.person_id)) {
+    if (row.status === "scheduled" && (touchpoint === undefined || row.touchpoint === touchpoint) && !next.has(row.person_id)) {
       next.set(row.person_id, row);
     }
   }
-  if (next.size === 0) return { error: waiting.size > 0 ? "Every joined phone still has a check-in open" : "No one has a check-in left to send" };
+  if (next.size === 0) return { error: "No one has a check-in left to send" };
+  const { error: skipError } = await db
+    .from("checkin_schedule")
+    .update({ status: "skipped" })
+    .in("person_id", [...next.keys()])
+    .in("status", ["sent", "reminded"]);
+  if (skipError) throw skipError;
   let sent = 0;
   for (const row of next.values()) {
     const { data: claimed, error: claimError } = await db

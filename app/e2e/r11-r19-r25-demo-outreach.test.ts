@@ -135,6 +135,26 @@ test("Bug fix: tapping the same word twice sends the next question once", async 
   assert.deepEqual(texts, [`You tapped "${label}". ${question("MANAGER_SUPPORT")}`]);
 });
 
+test("R19: Outreach now skips a check-in the phone left open and sends the next one", async () => {
+  await resetDemo();
+  await freezeClock("2026-10-15T15:00:00.000Z");
+  await link(live, liveInvite);
+  await tap(live, "English");
+  await tap(live, en.agree);
+  await tapData(live, 'chat:{"a":"privacy","v":"named"}');
+  await say(live, "Test Hire");
+  assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
+
+  const before = (await sentTo(live)).length;
+  const res = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 30 });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { sent: 1 });
+  const texts = (await sentTo(live)).map((m) => m.text).slice(before);
+  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  const { data: rows } = await db.from("checkin_schedule").select("touchpoint, status").in("touchpoint", [14, 30]).eq("person_id", (await chatPerson(live)).id).order("touchpoint");
+  assert.deepEqual(rows, [{ touchpoint: 14, status: "skipped" }, { touchpoint: 30, status: "sent" }]);
+});
+
 test("Bug fix: when the first phone that joined has stopped, the demo bar offers no check-in that no phone can get", async () => {
   await resetDemo();
   await freezeClock("2026-10-15T15:00:00.000Z");
