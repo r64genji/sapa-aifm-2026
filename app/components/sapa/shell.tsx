@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { CalendarClock, Home, MessagesSquare, QrCode, Shield } from "lucide-react";
-import { Suspense, type ReactNode } from "react";
+import { Suspense, useEffect, type ReactNode } from "react";
 import { ApiError, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
 import { LaneIcon, Loading } from "./ui";
@@ -18,13 +18,53 @@ function NavItem({ href, icon, label, short, count, serious }: { href: string; i
       {icon}
       <span className="flex-auto md:hidden">{short}</span>
       <span className="hidden flex-auto md:inline">{label}</span>
-      {count ? <span className={`sp-nav-count${serious ? " sp-lane-serious" : ""}`}>{count}</span> : null}
+      {count ? <span key={count} className={`sp-nav-count${serious ? " sp-lane-serious" : ""}`}>{count}</span> : null}
     </Link>
   );
 }
 
+const PRESSABLE = ".sp-btn, .sp-tab, .sp-nav-item, .sp-tile, .sp-area, .sp-qrow, .sp-case-row, .sp-select-opt, .sp-fixrow > summary, .sp-fold > summary, a.sp-card";
+
+function useMotion() {
+  useEffect(() => {
+    let timer = 0;
+    const down = (e: PointerEvent) => {
+      const el = (e.target as Element).closest<HTMLElement>(PRESSABLE);
+      if (!el || el.matches(":disabled")) return;
+      const box = el.getBoundingClientRect();
+      const size = Math.max(box.width, box.height) * 2;
+      const clip = document.createElement("span");
+      const dot = document.createElement("span");
+      clip.className = "sp-ripple";
+      dot.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - box.left - size / 2}px;top:${e.clientY - box.top - size / 2}px`;
+      dot.addEventListener("animationend", () => clip.remove());
+      clip.append(dot);
+      el.append(clip);
+    };
+    const click = (e: MouseEvent) => {
+      const a = (e.target as Element).closest("a");
+      if (!a || a.target || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || url.pathname + url.search === location.pathname + location.search) return;
+      document.documentElement.dataset.nav = "";
+      clearTimeout(timer);
+      timer = window.setTimeout(() => delete document.documentElement.dataset.nav, 10000);
+    };
+    document.addEventListener("pointerdown", down);
+    document.addEventListener("click", click, true);
+    return () => {
+      document.removeEventListener("pointerdown", down);
+      document.removeEventListener("click", click, true);
+    };
+  }, []);
+}
+
 function Main({ children }: { children: ReactNode }) {
   const path = usePathname();
+  const search = useSearchParams().toString();
+  useEffect(() => {
+    delete document.documentElement.dataset.nav;
+  }, [path, search]);
   return (
     <main id="main" tabIndex={-1} key={path.split("/")[1]} className="sp-enter mx-auto box-border flex max-w-[1180px] flex-col gap-6 px-4 pb-28 pt-5 md:px-8 md:pb-14 md:pt-8">
       {children}
@@ -34,6 +74,7 @@ function Main({ children }: { children: ReactNode }) {
 
 export function Shell({ children }: { children: ReactNode }) {
   useLiveRefresh();
+  useMotion();
   const me = useApi<Me>("/api/hr/me", 60000);
   const queue = useApi<{ escalate: boolean | null; status: string | null }[]>(me.data ? "/api/hr/queue" : null);
 
@@ -71,6 +112,7 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <a href="#main" className="sp-skip">Skip to content</a>
+      <div className="sp-activity" aria-hidden="true" />
       <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b py-1.5 pl-1.5 pr-3 md:hidden" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
         {logo}
         <span className="flex min-w-0 flex-auto items-center justify-end gap-2.5">{user}</span>

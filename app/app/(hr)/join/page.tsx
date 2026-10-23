@@ -70,7 +70,7 @@ export default function Page() {
           ? "Each team lead scans their own code once, on their own phone, to get fixes and mark them done in Telegram."
           : "Hand these out yourself, for example on each team's Day 1 welcome sheet. Do not ask team leads to hand them out."}
       </p>
-      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
+      <div key={who} className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
         {data.teams.map((row) => (
           <TeamCard key={row.team} row={row} leads={leads} />
         ))}

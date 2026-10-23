@@ -251,7 +251,7 @@ export function PageHeader({ title, sub, right }: { title: string; sub?: ReactNo
 
 export function Empty({ title, sub }: { title: string; sub?: string }) {
   return (
-    <div className="sp-card flex flex-col items-center gap-2 px-6 py-12 text-center">
+    <div className="sp-card sp-pop-in flex flex-col items-center gap-2 px-6 py-12 text-center">
       <span className="text-[17px] font-bold">{title}</span>
       {sub ? <span className="sp-muted">{sub}</span> : null}
     </div>

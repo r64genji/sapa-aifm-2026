@@ -354,7 +354,7 @@ export default function Page() {
                   {!done ? <span className="sp-caption">Sent when {owner} marks it done</span> : null}
                 </div>
                 <Tabs label="Language" value={shown} onChange={setLang} items={langs} />
-                <p className="sp-words">{a.notes[shown]}</p>
+                <p key={shown} className="sp-words sp-fade-in">{a.notes[shown]}</p>
                 {done ? (
                   <span className="sp-caption">
                     {a.notice.status === "sent" ? `Sent to ${plural(a.notice.sent_count, "new hire")}` : "Not sent yet"}

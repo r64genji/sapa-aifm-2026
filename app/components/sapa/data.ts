@@ -42,10 +42,42 @@ export function useApi<T>(path: string | null, refreshInterval = 60000) {
   return useSWR<T>(path, (p: string) => request(p), { refreshInterval, revalidateOnFocus: true });
 }
 
+let pressed: { el: Element; at: number } | null = null;
+let inflight = 0;
+if (typeof document !== "undefined") {
+  document.addEventListener("pointerdown", (e) => {
+    const el = (e.target as Element).closest(".sp-btn");
+    pressed = el ? { el, at: Date.now() } : null;
+  }, true);
+}
+
+function flash(el: Element | null, name: string) {
+  if (!el) return;
+  el.classList.remove("sp-done", "sp-fail");
+  void (el as HTMLElement).offsetWidth;
+  el.classList.add(name);
+  setTimeout(() => el.classList.remove(name), 700);
+}
+
 export async function apiSend<T = unknown>(path: string, method: "POST" | "PUT" | "PATCH" | "DELETE" = "POST", body?: unknown): Promise<T> {
-  const result = await request(path, { method, body: body === undefined ? undefined : JSON.stringify(body) });
-  void refreshAll();
-  return result as T;
+  const root = document.documentElement;
+  const button = pressed && Date.now() - pressed.at < 1500 ? pressed.el : document.activeElement?.closest(".sp-btn") ?? null;
+  pressed = null;
+  inflight++;
+  root.dataset.busy = "";
+  button?.classList.add("sp-busy");
+  try {
+    const result = await request(path, { method, body: body === undefined ? undefined : JSON.stringify(body) });
+    void refreshAll();
+    flash(button, "sp-done");
+    return result as T;
+  } catch (e) {
+    flash(button, "sp-fail");
+    throw e;
+  } finally {
+    if (--inflight === 0) delete root.dataset.busy;
+    button?.classList.remove("sp-busy");
+  }
 }
 
 export function refreshAll() {

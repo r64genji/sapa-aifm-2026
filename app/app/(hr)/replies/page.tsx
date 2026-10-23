@@ -131,7 +131,7 @@ function Replies() {
           sub={!filtered && view === "needs" ? "The AI was sure of every label. You can still change any in All." : undefined}
         />
       ) : (
-        <div className="flex flex-col gap-4">
+        <div key={[view, area, day, team, language].join()} className="sp-stagger flex flex-col gap-4">
           {shown.map((item) => (
             <ReplyRow
               key={item.id}
