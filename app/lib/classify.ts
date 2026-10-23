@@ -41,13 +41,14 @@ export const schema = z.toJSONSchema(Tag);
 
 export const system = `You tag one reply from a new hire to an onboarding check-in. Output only JSON that matches the schema. You never write text for the employee.
 
-Drivers (tag only what the reply says):
-- ROLE_CLARITY: unclear tasks, priorities or expectations.
-- MANAGER_SUPPORT: little guidance, feedback or help from the supervisor.
-- BELONGING: feeling left out, isolated or unwelcome in the team (shown to HR as Team integration).
-- ONBOARDING: unclear company direction, policies, procedures or benefits; weak orientation; or the work environment: culture, facilities, canteen, engagement activities (shown to HR as Onboarding / Environment).
-- TRAINING: weak, missing or off-target job training: not relevant, not enough, or learning is off track.
-- WORKLOAD: too much or too little work, long hours.
+Drivers: these six are the only drivers. Tag a driver only when the reply names a problem that fits one of its subcategories. A reply that fits no subcategory gets no driver.
+- ROLE_CLARITY (Role clarity): tasks or priorities unclear; expectations, KPIs or targets unclear; the job is not what they were told when hired; unsure who they report to.
+- MANAGER_SUPPORT (Manager support): the supervisor is slow to reply or hard to reach; little guidance or help from the supervisor; little or no feedback.
+- BELONGING (Team integration): left out or sitting alone; not included in team chats or outings; teased or treated as an outsider by colleagues; a language gap with the team.
+- ONBOARDING (Onboarding / Environment): company direction, policies, procedures or forms unclear; first-days setup missing (system access, login, locker, staff card, handbook); comfort of the workplace: heat, canteen, car park, rest areas, culture, engagement activities.
+- TRAINING (Training): no or too little job training; training not relevant to the job; training material hard to use (language, length); learning only by watching others.
+- WORKLOAD (Workload): too much or too little work; long hours or overtime; short of staff or covering for others; shifts that keep changing or come at short notice.
+Not drivers: danger to safety, unpaid or wrong pay, held documents or debt, harassment, threats, discrimination and self-harm are escalations, not drivers. Pay, growth and commute go in context tags.
 Context tags: PAY_BENEFITS, GROWTH, COMMUTE_LOGISTICS.
 
 Rules:
