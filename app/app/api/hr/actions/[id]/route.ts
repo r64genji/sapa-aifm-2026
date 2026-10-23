@@ -7,6 +7,7 @@ const Body = z.object({
   steps: z.string().min(1).optional(),
   library_entry_id: z.string().uuid().optional(),
   own_fix: z.literal(true).optional(),
+  notes: z.object({ en: z.string(), ms: z.string(), zh: z.string() }).optional(),
   scope: z
     .discriminatedUnion("type", [
       z.object({ type: z.literal("person") }),

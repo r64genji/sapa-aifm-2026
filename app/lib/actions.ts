@@ -396,7 +396,7 @@ export async function editAction(
   organisationId: string,
   actor: string,
   id: string,
-  change: { title?: string; steps?: string; scope?: Scope; library_entry_id?: string; own_fix?: true },
+  change: { title?: string; steps?: string; scope?: Scope; library_entry_id?: string; own_fix?: true; notes?: { en: string; ms: string; zh: string } },
 ): Promise<{ id: string } | Failure> {
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
@@ -418,7 +418,7 @@ export async function editAction(
     if (!entry) return { error: "No such library entry for this driver", code: 422 };
     Object.assign(fields, { library_entry_id: entry.id, own_fix: false });
   }
-  if (change.own_fix && !action.hiring_side) Object.assign(fields, { own_fix: true, library_entry_id: null });
+  if (change.own_fix && !action.hiring_side) Object.assign(fields, { own_fix: true, library_entry_id: null, ...(change.notes && { draft_notes: change.notes }) });
   const { error } = await createAdminClient()
     .from("actions")
     .update({ ...fields, ...(change.title && { title: change.title }), ...(change.steps && { steps: change.steps }) })

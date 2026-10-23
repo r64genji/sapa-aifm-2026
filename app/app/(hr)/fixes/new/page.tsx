@@ -96,16 +96,20 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   useEffect(() => {
     if (started.current === id) return;
     started.current = id;
-    const library = !view.notes;
+    const library = !view.notes || view.own_fix;
     setSuggestion(library ? null : { title: view.title, steps: view.steps, notes: { ...EMPTY, ...view.notes }, entryId: view.library_entry_id, reason: view.reason ?? "" });
     setMode(library ? "library" : "ai");
     setDecision("pending");
     setTitle(view.title);
     setSteps(view.steps);
-    setNotes(library ? EMPTY : { ...EMPTY, ...view.notes });
+    setNotes(library && !view.own_fix ? EMPTY : { ...EMPTY, ...view.notes });
     setEntryId(view.library_entry_id);
     setOwnFix(view.own_fix);
-    setBanner(library ? view.reason : null);
+    if (view.own_fix) {
+      setDrafts([{ id, title: view.title, steps: view.steps, notes: { ...EMPTY, ...view.notes }, suggestion: null, decision: "pending" }]);
+      setDraftId(id);
+    }
+    setBanner(library && !view.own_fix ? view.reason : null);
     setScopeId(view.scopes.find((s) => !s.why) ? scopeKey(view.scopes.find((s) => !s.why)!) : "");
   }, [id, view]);
 
@@ -282,6 +286,19 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   const tryAgain = () => draftWithAi();
 
   const pending = mode === "ai" && decision === "pending" && !drafting;
+
+  const saved = useRef(JSON.stringify([view.title, view.steps, view.own_fix, view.library_entry_id]));
+  useEffect(() => {
+    if (sent || batch || busy || drafting || pending || !title.trim()) return;
+    const change = { title: title.trim(), ...(steps.trim() && { steps: steps.trim() }), ...(ownFix ? { own_fix: true, notes } : entryId ? { library_entry_id: entryId } : {}) };
+    const key = JSON.stringify(ownFix ? [change.title, steps.trim(), true, null, notes] : [change.title, steps.trim(), false, entryId]);
+    if (key === saved.current) return;
+    const timer = setTimeout(() => {
+      apiSend(`/api/hr/actions/${id}`, "PATCH", change).then(() => (saved.current = key), (e) => setError(fail(e)));
+    }, 800);
+    return () => clearTimeout(timer);
+  });
+
   const noteOk = !!notes.en.trim() && !!notes.ms.trim();
   const tooLong = LANGS.find(([l]) => words(notes[l]) > 40);
   const why = drafting
