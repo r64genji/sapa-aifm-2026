@@ -238,7 +238,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
   const listed = rows.filter((r) => r.kind === "team").length;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 rounded-xl px-4 py-4 sm:px-5" style={{ border: "2px solid var(--problems)", background: "var(--surface-raised)" }}>
       {fixes.map((a) => (
         <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg px-3 py-2.5 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
           <span className="flex min-w-0 flex-[1_1_180px] flex-col">
@@ -253,7 +253,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
         </Link>
       ))}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="flex flex-col gap-5">
         <div className="flex min-w-0 flex-col gap-3">
           <Num n={1} title="Who gets it" />
           {!where ? (
@@ -491,14 +491,14 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
     },
   ];
   return (
-    <div className="flex min-w-0 flex-col gap-3 px-5 py-4 sm:px-6" style={{ background: "var(--problems-soft)" }}>
+    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
         <h3 className="m-0 text-[17px] font-bold" style={{ color: "var(--problems)" }}>
           Root cause
         </h3>
         <span className="sp-caption">Why new hires name {name.toLowerCase()}, from counts only</span>
       </div>
-      <dl className="m-0 grid gap-x-6 gap-y-3 text-[15px] md:grid-cols-3">
+      <dl className="m-0 grid gap-x-6 gap-y-3 text-[15px] md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
         {facts.map((f) => (
           <div key={f.label} className="flex min-w-0 flex-col gap-0.5">
             <dt className="sp-caption font-bold uppercase tracking-[0.06em]">{f.label}</dt>
@@ -537,9 +537,9 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const close = useCallback(() => setOpen(false), []);
 
   return (
-    <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-hidden">
-      <div key={driver} className="sp-enter">
-        <div className="flex flex-col gap-4 px-5 py-5 sm:px-6">
+    <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-clip">
+      <div key={driver} className="sp-enter grid items-start gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+        <div className="flex min-w-0 flex-col gap-5">
           <div className="flex flex-wrap items-center gap-2.5">
             <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
               {name}
@@ -555,10 +555,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </Link>
             ) : null}
           </div>
-          <div className="grid items-end gap-x-10 gap-y-5 md:grid-cols-[auto_auto_minmax(0,1fr)]">
+          <div className="grid items-end gap-x-8 gap-y-5 sm:grid-cols-[auto_minmax(0,1fr)]">
             {card.enough ? (
-              <>
-                <div className="flex flex-col self-start">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col">
                   <span className="sp-num text-[44px] font-bold leading-[46px]">
                     {card.n}
                     <span className="text-[20px] font-semibold sp-muted"> of {card.m}</span>
@@ -567,7 +567,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   {card.avg != null ? <span className="sp-meta">Company average {card.avg} of 5</span> : null}
                 </div>
                 <Waffle c={card} />
-              </>
+              </div>
             ) : (
               <CountBar notEnough />
             )}
@@ -588,30 +588,32 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </div>
             ) : null}
           </div>
-        </div>
 
-        <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
+          <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
 
-        <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
           <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (
-            <div className="sp-stagger grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-              <Panel title="What they mean">
-                {grouped.length ? (
-                  grouped.map((group) => {
-                    const sample = group.reply_ids.map((id) => byId.get(id)).find((r) => r?.text);
-                    return (
-                      <div key={group.title} className="flex flex-col gap-2">
-                        <HBar label={group.title} n={group.n} of={card.n ?? group.n} onClick={() => read(group.title)} />
-                        {sample ? <TranslatedQuote language={sample.language} text={sample.text!} evidence={sample.evidence_quote} /> : null}
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span className="sp-caption">No shared idea yet: each came from fewer than 5 people.</span>
-                )}
-                {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 && grouped.length ? <span className="sp-caption">+{g.not_grouped} not grouped</span> : null}
-              </Panel>
+            <div className="sp-stagger -mt-2 grid gap-3 sm:grid-cols-2">
+              <div className="grid min-w-0 sm:col-span-2">
+                <Panel title="What they mean">
+                  {grouped.length ? (
+                    <div className="gap-x-6 md:columns-2">
+                      {grouped.map((group) => {
+                        const sample = group.reply_ids.map((id) => byId.get(id)).find((r) => r?.text);
+                        return (
+                          <div key={group.title} className="mb-4 flex min-w-0 break-inside-avoid flex-col gap-2 last:mb-0">
+                            <HBar label={group.title} n={group.n} of={card.n ?? group.n} onClick={() => read(group.title)} />
+                            {sample ? <TranslatedQuote language={sample.language} text={sample.text!} evidence={sample.evidence_quote} /> : null}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <span className="sp-caption">No shared idea yet: each came from fewer than 5 people.</span>
+                  )}
+                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 && grouped.length ? <span className="sp-caption">+{g.not_grouped} not grouped</span> : null}
+                </Panel>
+              </div>
               {d.by_experience.length ? (
                 <Panel title="First job or experienced">
                   {d.by_experience.map((s) =>
@@ -642,7 +644,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
         </div>
 
-        <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+        <div className="flex min-w-0 flex-col gap-3 lg:sticky lg:top-4">
           <h3 className="m-0 text-[15px] font-bold">Send a fix</h3>
           <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
         </div>
