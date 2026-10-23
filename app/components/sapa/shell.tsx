@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { CalendarClock, Home, MessagesSquare, QrCode, Shield } from "lucide-react";
-import { Suspense, useEffect, type ReactNode } from "react";
+import { CalendarClock, Home, MessagesSquare, Moon, PanelLeftClose, PanelLeftOpen, QrCode, Shield, Sun } from "lucide-react";
+import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { ApiError, useApi, useLiveRefresh } from "./data";
 import { DemoBar } from "./demo-bar";
 import { LaneIcon, Loading } from "./ui";
@@ -20,6 +20,24 @@ function NavItem({ href, icon, label, short, count, serious }: { href: string; i
       <span className="hidden flex-auto md:inline">{label}</span>
       {count ? <span key={count} className={`sp-nav-count${serious ? " sp-lane-serious" : ""}`}>{count}</span> : null}
     </Link>
+  );
+}
+
+function ThemeToggle() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
+  const flip = () => {
+    const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("sp-theme", next ? "dark" : "light");
+    } catch {}
+    setDark(next);
+  };
+  return (
+    <button type="button" className="sp-nav-toggle" onClick={flip} aria-label={dark ? "Use light mode" : "Use dark mode"} title={dark ? "Light mode" : "Dark mode"}>
+      {dark ? <Sun size={17} aria-hidden="true" /> : <Moon size={17} aria-hidden="true" />}
+    </button>
   );
 }
 
@@ -76,6 +94,18 @@ export function Shell({ children }: { children: ReactNode }) {
   useLiveRefresh();
   useMotion();
   const me = useApi<Me>("/api/hr/me", 60000);
+  const [navOpen, setNavOpen] = useState(true);
+  useEffect(() => {
+    try {
+      setNavOpen(localStorage.getItem("sp-nav") !== "closed");
+    } catch {}
+  }, []);
+  const toggleNav = () => {
+    try {
+      localStorage.setItem("sp-nav", navOpen ? "closed" : "open");
+    } catch {}
+    setNavOpen(!navOpen);
+  };
   const queue = useApi<{ escalate: boolean | null; status: string | null }[]>(me.data ? "/api/hr/queue" : null);
 
   if (!me.data && me.error instanceof ApiError && me.error.status < 500 && me.error.status !== 401) {
@@ -116,16 +146,22 @@ export function Shell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b py-1.5 pl-1.5 pr-3 md:hidden" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
         {logo}
         <span className="flex min-w-0 flex-auto items-center justify-end gap-2.5">{user}</span>
+        <ThemeToggle />
         <Link href="/concerns" aria-label="Sent to Speak Up" className="flex h-11 w-11 flex-none items-center justify-center" style={{ color: "var(--ink-muted)" }}>
           <Shield size={18} strokeWidth={2} aria-hidden="true" />
         </Link>
       </header>
       <nav
         aria-label="Main"
-        className="sp-nav box-border md:sticky md:top-0 md:flex md:h-screen md:w-[232px] md:flex-none md:flex-col md:gap-0.5 md:overflow-y-auto md:border-r md:px-3 md:py-5"
+        className={`sp-nav box-border md:sticky md:top-0 ${navOpen ? "md:flex" : "md:hidden"} md:h-screen md:w-[232px] md:flex-none md:flex-col md:gap-0.5 md:overflow-y-auto md:border-r md:px-3 md:py-5`}
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
-        <div className="hidden pb-5 md:block">{logo}</div>
+        <div className="hidden items-center justify-between pb-5 md:flex">
+          {logo}
+          <button type="button" className="sp-nav-toggle" onClick={toggleNav} aria-label="Close sidebar" title="Close sidebar">
+            <PanelLeftClose size={17} aria-hidden="true" />
+          </button>
+        </div>
         <div className="grid auto-cols-fr grid-flow-col md:flex md:flex-col md:gap-0.5">
           <NavItem href="/" icon={<Home size={17} aria-hidden="true" />} label="Home" short="Home" />
           <NavItem href="/replies" icon={<MessagesSquare size={17} aria-hidden="true" />} label="Replies" short="Replies" count={toCheck} />
@@ -141,9 +177,20 @@ export function Shell({ children }: { children: ReactNode }) {
         </Link>
         <div className="mt-2 hidden items-center gap-2.5 border-t px-2.5 pt-3 md:flex" style={{ borderColor: "var(--line-soft)" }}>
           {user}
+          <ThemeToggle />
         </div>
       </nav>
       <div className="min-w-0 flex-1">
+        {navOpen ? null : (
+          <div className="sticky top-0 z-30 hidden items-center gap-1 border-b px-3 py-1.5 md:flex" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
+            <button type="button" className="sp-nav-toggle" onClick={toggleNav} aria-label="Open sidebar" title="Open sidebar">
+              <PanelLeftOpen size={17} aria-hidden="true" />
+            </button>
+            {logo}
+            <span className="flex-auto" />
+            <ThemeToggle />
+          </div>
+        )}
         {me.data.role === "hr_admin" && me.data.demo_mode ? <DemoBar /> : null}
         <Suspense fallback={<Loading />}>
           <Main>{children}</Main>
