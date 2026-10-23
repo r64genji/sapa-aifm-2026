@@ -44,9 +44,11 @@ test("Demo beat 2: the reply adds one AI label to the Role clarity card, and Con
   await say(live, reply);
 
   await page.goto(`${appUrl}/`);
-  await page.getByText("16 checked by HR, 8 labelled by the AI").waitFor();
+  await page.getByText("16 you checked").waitFor();
+  await page.getByText("8 AI labelled").waitFor();
   await page.locator(".sp-row", { hasText: reply }).getByRole("button", { name: "Confirm label" }).click();
-  await page.getByText("17 checked by HR, 7 labelled by the AI").waitFor();
+  await page.getByText("17 you checked").waitFor();
+  await page.getByText("7 AI labelled").waitFor();
 });
 
 test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and send it", async () => {

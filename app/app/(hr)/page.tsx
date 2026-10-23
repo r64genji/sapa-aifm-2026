@@ -24,7 +24,6 @@ type Questions = { groups: { id: string; askers: number; unknown: number; handbo
 const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
-const typedLine = (c: Card) => `${c.reviewed} checked by HR${c.ai_confident ? `, ${c.ai_confident} labelled by the AI` : ""}${c.score_only ? `, ${c.score_only} from the 1–5 score only` : ""}`;
 
 function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, undo: () => Promise<unknown>) => void }) {
   const [picking, setPicking] = useState(false);
@@ -170,7 +169,6 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
           </span>
           <h2 className="m-0 text-[26px] font-bold leading-8">{driverName(top.driver)}</h2>
           <CountBar count={top.n} of={top.m} label={`who answered at ${dayLabel(14)}`} />
-          <span className="sp-meta">{typedLine(top)}</span>
           {top.held?.map((h) => (
             <span key={h.language} className="sp-meta">{h.reason}</span>
           ))}
