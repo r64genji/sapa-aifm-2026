@@ -1,6 +1,6 @@
 # 20 HR interview: Ammirul Iskandar Azman
 
-Business Development Executive at Gem-Asia Sdn Bhd. His own words: he holds an HR management degree and consults for companies, but does not work inside an HR department. He also says his firm builds a similar HR platform. Call on 2026-10-23. Full text: [transcript](reference/interviews/2026-10-23-ammirul-iskandar-azman-hr-consultant.txt). The transcript labels swap between speakers in places. He agreed to be named and quoted in the pitch. One person's opinion, not data.
+Business Development Executive at Gem-Asia Sdn Bhd. His own words: he holds an HR management degree and consults for companies, but does not work inside an HR department. He also says his firm builds a similar HR platform. Call on 2026-10-23. The full transcript is kept private. The transcript labels swap between speakers in places. He agreed to be named and quoted in the pitch. One person's opinion, not data.
 
 ## What he told us
 

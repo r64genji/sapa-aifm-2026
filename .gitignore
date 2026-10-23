@@ -38,3 +38,5 @@ npm-debug.log*
 # python
 __pycache__/
 .vercel
+
+docs/reference/interviews/

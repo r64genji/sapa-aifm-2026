@@ -1,6 +1,6 @@
 # 17 HR interview: Muhammad Danial
 
-HR consultant at IHR Consulting, 61, advises SMEs and MNCs, 200+ engagement surveys. Call on 2026-10-21. Full text: [transcript](reference/interviews/2026-10-21-muhammad-danial-hr-consultant.txt). One person's opinion, not data. He gave his name and role for the pitch. Cite as "Muhammad Danial, HR Consultant, IHR Consulting".
+HR consultant at IHR Consulting, 61, advises SMEs and MNCs, 200+ engagement surveys. Call on 2026-10-21. The full transcript is kept private. One person's opinion, not data. He gave his name and role for the pitch. Cite as "Muhammad Danial, HR Consultant, IHR Consulting".
 
 ## What he told us
 

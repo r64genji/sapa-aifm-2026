@@ -1,6 +1,6 @@
 # 18 HR interview: Stephen Yau Kah Yoon
 
-Transformation & Change Management Officer, Setia Awan Land Sdn Bhd. Call on 2026-10-21. Full text: [transcript](reference/interviews/2026-10-21-stephen-yau-transformation-officer.txt). He agreed to be named and quoted in the pitch. One person's opinion, not data.
+Transformation & Change Management Officer, Setia Awan Land Sdn Bhd. Call on 2026-10-21. The full transcript is kept private. He agreed to be named and quoted in the pitch. One person's opinion, not data.
 
 ## What he told us
 
