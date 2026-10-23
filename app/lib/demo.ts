@@ -93,6 +93,11 @@ export async function liveHire(organisationId: string) {
 
 export async function demoStatus(organisationId: string) {
   const db = createAdminClient();
+  const aiCheck = models();
+  const tgCheck = telegram();
+  const liveCheck = liveHire(organisationId);
+  const spendCheck = Promise.resolve(db.from("ai_usage").select("cost").eq("provider", "deepseek"));
+  for (const check of [aiCheck, tgCheck, liveCheck, spendCheck]) check.catch(() => {});
   const { data: org, error } = await db
     .from("organisations")
     .select("demo_mode")
@@ -100,7 +105,7 @@ export async function demoStatus(organisationId: string) {
     .single();
   if (error) throw error;
   if (!org.demo_mode) return { error: "Demo mode is off" };
-  const live = await liveHire(organisationId);
+  const live = await liveCheck;
   const { data: next, error: nextError } = live
     ? await db
         .from("checkin_schedule")
@@ -111,10 +116,10 @@ export async function demoStatus(organisationId: string) {
     : { data: [], error: null };
   if (nextError) throw nextError;
   const stage = next.find((row) => row.touchpoint >= 14) ?? next[0];
-  const { data: spend, error: spendError } = await db.from("ai_usage").select("cost").eq("provider", "deepseek");
+  const { data: spend, error: spendError } = await spendCheck;
   if (spendError) throw spendError;
   const manager = live?.managers as unknown as { telegram_chat_id: number | null; revoked_at: string | null } | null;
-  const [ai, tg] = await Promise.all([models(), telegram()]);
+  const [ai, tg] = await Promise.all([aiCheck, tgCheck]);
   return {
     live_hire: {
       next_check_in: stage

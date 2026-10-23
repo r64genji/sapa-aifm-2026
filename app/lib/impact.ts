@@ -71,32 +71,51 @@ export async function retention(organisationId: string, agency: string | null = 
 
 export async function impact(organisationId: string) {
   const db = createAdminClient();
-  const at = await now();
-  const { data: org, error } = await db
-    .from("organisations")
-    .select("min_group_size, retention_baseline_kept, retention_baseline_of")
-    .eq("id", organisationId)
-    .single();
+  const atNow = now();
+  const [
+    { data: org, error },
+    { data: sent, error: sentError },
+    { data: done, error: doneError },
+    { data: outcomes, error: outcomesError },
+    library,
+    retentionNow,
+    milestones,
+    milestoneStepList,
+    { data: exits, error: exitError },
+  ] = await Promise.all([
+    db.from("organisations").select("min_group_size, retention_baseline_kept, retention_baseline_of").eq("id", organisationId).single(),
+    db
+      .from("checkin_schedule")
+      .select("person_id, touchpoint, status, people!inner(start_date)")
+      .eq("organisation_id", organisationId)
+      .in("status", ["sent", "reminded", "answered", "skipped"]),
+    db
+      .from("actions")
+      .select("*, responses!actions_source_response_id_fkey(created_at, people(start_date))")
+      .eq("organisation_id", organisationId)
+      .eq("status", "done")
+      .eq("hiring_side", false)
+      .not("scope_type", "is", null),
+    db.from("intake_outcomes").select("intake, hired, employed").eq("organisation_id", organisationId),
+    libraryWithEvidence(organisationId),
+    retention(organisationId),
+    milestoneShare(organisationId),
+    milestoneSteps(organisationId),
+    atNow.then((time) =>
+      db
+        .from("responses")
+        .select("question_id")
+        .eq("organisation_id", organisationId)
+        .eq("kind", "exit")
+        .like("question_id", "exit.%")
+        .gte("created_at", new Date(time.getTime() - 365 * DAY_MS).toISOString()),
+    ),
+  ]);
   if (error) throw error;
-  const { data: sent, error: sentError } = await db
-    .from("checkin_schedule")
-    .select("person_id, touchpoint, status, people!inner(start_date)")
-    .eq("organisation_id", organisationId)
-    .in("status", ["sent", "reminded", "answered", "skipped"]);
   if (sentError) throw sentError;
-  const { data: done, error: doneError } = await db
-    .from("actions")
-    .select("*, responses!actions_source_response_id_fkey(created_at, people(start_date))")
-    .eq("organisation_id", organisationId)
-    .eq("status", "done")
-    .eq("hiring_side", false)
-    .not("scope_type", "is", null);
   if (doneError) throw doneError;
-  const { data: outcomes, error: outcomesError } = await db
-    .from("intake_outcomes")
-    .select("intake, hired, employed")
-    .eq("organisation_id", organisationId);
   if (outcomesError) throw outcomesError;
+  if (exitError) throw exitError;
   const kept = new Map<string, { hired: number; employed: number }>();
   for (const row of outcomes) {
     const entry = kept.get(row.intake) ?? { hired: 0, employed: 0 };
@@ -119,17 +138,27 @@ export async function impact(organisationId: string) {
     entry.sent += 1;
     if (row.status === "answered") entry.answered += 1;
   }
-  for (const row of done as unknown as (Resolvable & {
+  const doneRows = done as unknown as (Resolvable & {
     created_at: string;
     responses: { created_at: string; people: { start_date: string } } | null;
-  })[]) {
-    const reply = row.responses?.people ? row.responses : null;
-    const started = reply?.created_at ?? row.created_at;
-    const days = (new Date(row.done_at!).getTime() - new Date(started).getTime()) / DAY_MS;
-    const score = await scoreOf(row);
-    const intakeMonths = reply
-      ? [reply.people.start_date.slice(0, 7)]
-      : [...new Set((await members(row, false)).filter((person) => person.start_date <= row.done_at!.slice(0, 10)).map((person) => person.start_date.slice(0, 7)))];
+  })[];
+  const resolved = await Promise.all(
+    doneRows.map(async (row) => {
+      const reply = row.responses?.people ? row.responses : null;
+      const started = reply?.created_at ?? row.created_at;
+      const days = (new Date(row.done_at!).getTime() - new Date(started).getTime()) / DAY_MS;
+      const [score, intakeMonths] = await Promise.all([
+        scoreOf(row),
+        reply
+          ? [reply.people.start_date.slice(0, 7)]
+          : members(row, false).then((people) => [
+              ...new Set(people.filter((person) => person.start_date <= row.done_at!.slice(0, 10)).map((person) => person.start_date.slice(0, 7))),
+            ]),
+      ]);
+      return { days, score, intakeMonths };
+    }),
+  );
+  for (const { days, score, intakeMonths } of resolved) {
     for (const intake of intakeMonths) {
       const entry = group(intake);
       entry.days.push(days);
@@ -162,7 +191,7 @@ export async function impact(organisationId: string) {
       }
     : null;
 
-  const fixes = (await libraryWithEvidence(organisationId))
+  const fixes = library
     .filter((entry) => entry.used > 0)
     .map(({ id, driver, title, used, difference, evidence, scope, other }) => ({
       id,
@@ -176,14 +205,6 @@ export async function impact(organisationId: string) {
       others: { n: other.n, before: other.before, after: other.after },
     }));
 
-  const { data: exits, error: exitError } = await db
-    .from("responses")
-    .select("question_id")
-    .eq("organisation_id", organisationId)
-    .eq("kind", "exit")
-    .like("question_id", "exit.%")
-    .gte("created_at", new Date(at.getTime() - 365 * DAY_MS).toISOString());
-  if (exitError) throw exitError;
   const reasons = new Map<string, number>();
   for (const row of exits) {
     const driver = row.question_id.slice("exit.".length);
@@ -202,7 +223,7 @@ export async function impact(organisationId: string) {
         };
 
   return {
-    retention: await retention(organisationId),
+    retention: retentionNow,
     baseline: org.retention_baseline_of === null ? null : { kept: org.retention_baseline_kept, of: org.retention_baseline_of },
     target: TARGET,
     typical_days_reply_to_done: allDays.length ? Math.round(median(allDays)) : null,
@@ -216,8 +237,8 @@ export async function impact(organisationId: string) {
     fixes,
     fixes_note: TREND,
     fixes_line: packs.en.action.scoreNote,
-    milestones: await milestoneShare(organisationId),
-    milestone_steps: await milestoneSteps(organisationId),
+    milestones,
+    milestone_steps: milestoneStepList,
     leavers,
   };
 }

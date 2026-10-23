@@ -18,8 +18,12 @@ export function themeTeam(request: Request) {
 }
 
 export async function themeDetail(organisationId: string, driver: string, touchpoint: number, team: string | null) {
+  return (await themeDetails(organisationId, touchpoint, team))[driver];
+}
+
+export async function themeDetails(organisationId: string, touchpoint: number, team: string | null) {
   const db = createAdminClient();
-  const [people, schedule, snapshots, cards] = await Promise.all([
+  const [people, schedule, snapshots, cards, base] = await Promise.all([
     db.from("people").select("role, start_date").eq("organisation_id", organisationId),
     db.from("checkin_schedule").select("touchpoint").eq("organisation_id", organisationId),
     db
@@ -30,20 +34,11 @@ export async function themeDetail(organisationId: string, driver: string, touchp
       .match(team === null ? {} : { team })
       .order("week", { ascending: false }),
     themeCards(organisationId, touchpoint, null, null, team),
+    counts(organisationId, touchpoint, null, null, team),
   ]);
   for (const result of [people, schedule, snapshots]) if (result.error) throw result.error;
-  const base = await counts(organisationId, touchpoint, null, null, team);
-  const found = cards.cards.find((candidate) => candidate.driver === driver)!;
-  const card = base.enough ? found : { ...found, have: base.respondents, need: base.min_group_size };
   const minimum = base.min_group_size;
-
   const weeks = [...new Set(snapshots.data!.map((row) => row.week as string))].slice(0, WEEKS).sort();
-  const weekly = weeks.map((week) => {
-    const rows = snapshots.data!.filter((row) => row.week === week && !row.suppressed);
-    const m = rows.reduce((sum, row) => sum + row.respondents, 0);
-    if (m < minimum) return { week, enough: false, have: m, need: minimum };
-    return { week, enough: true, n: rows.reduce((sum, row) => sum + (row.counts?.[driver]?.n ?? 0), 0), m };
-  });
 
   const touchpoints = [...new Set(schedule.data!.map((row) => row.touchpoint as number))].sort((a, b) => a - b);
   const intakes = team ? [] : [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
@@ -55,16 +50,27 @@ export async function themeDetail(organisationId: string, driver: string, touchp
     team ? [] : Promise.all([true, false].map(async (firstJob) => ({ group: firstJob ? "First job" : "Experienced", c: await counts(organisationId, touchpoint, null, null, team, null, firstJob) }))),
   ]);
 
-  return {
-    touchpoint,
-    driver,
-    team,
-    as_of: (await now()).toISOString(),
-    card,
-    weekly,
-    by_day: days.map(({ day, c }) => ({ touchpoint: day, ...share(c, driver) })),
-    by_intake: byIntake.filter(({ c }) => c.respondents > 0).map(({ intake, c }) => ({ intake, ...share(c, driver) })),
-    by_role: byRole.filter(({ c }) => c.respondents > 0).map(({ role, c }) => ({ role, ...share(c, driver) })),
-    by_experience: byExperience.filter(({ c }) => c.respondents > 0).map(({ group, c }) => ({ group, ...share(c, driver) })),
-  };
+  const asOf = (await now()).toISOString();
+  return Object.fromEntries(DRIVERS.map((driver) => {
+    const found = cards.cards.find((candidate) => candidate.driver === driver)!;
+    const card = base.enough ? found : { ...found, have: base.respondents, need: base.min_group_size };
+    const weekly = weeks.map((week) => {
+      const rows = snapshots.data!.filter((row) => row.week === week && !row.suppressed);
+      const m = rows.reduce((sum, row) => sum + row.respondents, 0);
+      if (m < minimum) return { week, enough: false, have: m, need: minimum };
+      return { week, enough: true, n: rows.reduce((sum, row) => sum + (row.counts?.[driver]?.n ?? 0), 0), m };
+    });
+    return [driver, {
+      touchpoint,
+      driver,
+      team,
+      as_of: asOf,
+      card,
+      weekly,
+      by_day: days.map(({ day, c }) => ({ touchpoint: day, ...share(c, driver) })),
+      by_intake: byIntake.filter(({ c }) => c.respondents > 0).map(({ intake, c }) => ({ intake, ...share(c, driver) })),
+      by_role: byRole.filter(({ c }) => c.respondents > 0).map(({ role, c }) => ({ role, ...share(c, driver) })),
+      by_experience: byExperience.filter(({ c }) => c.respondents > 0).map(({ group, c }) => ({ group, ...share(c, driver) })),
+    }];
+  }));
 }

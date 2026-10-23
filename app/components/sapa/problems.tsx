@@ -23,6 +23,7 @@ type Entry = { id: string; title: string; text: string; used: number; difference
 type Lead = { id: string; name: string };
 type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[]; times?: number };
 type Teams = { enough: false } | { enough: true; week: string; company: { n: number; m: number; avg: number | null }; verdict: "none" | "some" | "most"; rows: TeamRow[]; eligible: number; small: number; safety: number };
+type Overview = { details: Record<string, Detail>; teams: Record<string, Teams> };
 type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
 type Point = { label: string; n: number; m: number };
@@ -59,9 +60,9 @@ export function Spark({ points, label }: { points: Point[]; label: string }) {
 }
 
 function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boolean; start: boolean; fix: boolean; waiting: number; onPick: () => void }) {
-  const detail = useApi<Detail>(`/api/hr/themes/${c.driver}?touchpoint=14`);
-  const where = useApi<Teams>(`/api/hr/themes/${c.driver}/teams`).data;
-  const points = intakePoints(detail.data);
+  const overview = useApi<Overview>("/api/hr/themes/overview").data;
+  const where = overview?.teams[c.driver];
+  const points = intakePoints(overview?.details[c.driver]);
   const name = driverName(c.driver);
   const stands = where?.enough ? where.rows.length : 0;
   const status = fix
@@ -101,7 +102,7 @@ function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boo
           </span>
         </div>
       ) : (
-        <div className={detail.data ? "h-[66px]" : "sp-skel h-[66px]"} />
+        <div className={overview ? "h-[66px]" : "sp-skel h-[66px]"} />
       )}
       <span className="mt-auto flex min-h-5 items-center gap-1.5 text-xs font-semibold" style={{ color: status?.color }}>
         {status?.icon}
@@ -667,14 +668,7 @@ function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
 }
 
 function TeamGrid({ drivers }: { drivers: string[] }) {
-  const lists: Record<string, Teams | undefined> = {
-    ROLE_CLARITY: useApi<Teams>("/api/hr/themes/ROLE_CLARITY/teams", 60000).data,
-    ONBOARDING: useApi<Teams>("/api/hr/themes/ONBOARDING/teams", 60000).data,
-    TRAINING: useApi<Teams>("/api/hr/themes/TRAINING/teams", 60000).data,
-    MANAGER_SUPPORT: useApi<Teams>("/api/hr/themes/MANAGER_SUPPORT/teams", 60000).data,
-    BELONGING: useApi<Teams>("/api/hr/themes/BELONGING/teams", 60000).data,
-    WORKLOAD: useApi<Teams>("/api/hr/themes/WORKLOAD/teams", 60000).data,
-  };
+  const lists: Record<string, Teams | undefined> = useApi<Overview>("/api/hr/themes/overview").data?.teams ?? {};
   const ready = drivers.every((d) => lists[d]);
   const cell = new Map<string, TeamRow>();
   for (const d of drivers) {
