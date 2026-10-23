@@ -238,7 +238,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
   const listed = rows.filter((r) => r.kind === "team").length;
 
   return (
-    <div className="flex flex-col gap-5 rounded-xl px-4 py-4 sm:px-5" style={{ border: "2px solid var(--problems)", background: "var(--surface-raised)" }}>
+    <div className="flex flex-col gap-5">
       {fixes.map((a) => (
         <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg px-3 py-2.5 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
           <span className="flex min-w-0 flex-[1_1_180px] flex-col">
@@ -253,77 +253,79 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
         </Link>
       ))}
 
-      <div className="flex flex-col gap-3">
-        <Num n={1} title="Who gets it" />
-        {!where ? (
-          <div className="sp-skel h-16" />
-        ) : !where.enough ? (
-          <span className="sp-meta">Teams show once 5 people answer Day 14.</span>
-        ) : rows.length === 0 ? (
-          <div className="flex items-center gap-3 rounded-lg px-3 py-3" style={{ background: "var(--surface-sunken)" }}>
-            <Building2 size={20} aria-hidden="true" style={{ color: "var(--problems)" }} />
-            <span className="flex flex-col">
-              <span className="font-semibold">Everyone</span>
-              <span className="sp-caption">No team is above the company rate ({Math.round(company * 100)}%).</span>
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {rows.map((r) => (
-              <label key={r.name} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-3" style={{ background: off.includes(r.name) ? "transparent" : "var(--problems-soft)" }}>
-                <input type="checkbox" className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={!off.includes(r.name)} onChange={() => setOff((o) => (o.includes(r.name) ? o.filter((x) => x !== r.name) : [...o, r.name]))} />
-                <span className="flex min-w-0 flex-1 flex-col gap-1.5">
-                  <span className="flex flex-wrap items-baseline justify-between gap-x-3">
-                    <span className="font-semibold">{r.kind === "tower" ? `${r.name} tower` : r.name}</span>
-                    <span className="sp-num text-[13px] font-bold">
-                      {r.n} of {r.m}
-                      <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} more in every 100 than the company overall</span>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="flex min-w-0 flex-col gap-3">
+          <Num n={1} title="Who gets it" />
+          {!where ? (
+            <div className="sp-skel h-16" />
+          ) : !where.enough ? (
+            <span className="sp-meta">Teams show once 5 people answer Day 14.</span>
+          ) : rows.length === 0 ? (
+            <div className="flex items-center gap-3 rounded-lg px-3 py-3" style={{ background: "var(--surface-sunken)" }}>
+              <Building2 size={20} aria-hidden="true" style={{ color: "var(--problems)" }} />
+              <span className="flex flex-col">
+                <span className="font-semibold">Everyone</span>
+                <span className="sp-caption">No team is above the company rate ({Math.round(company * 100)}%).</span>
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {rows.map((r) => (
+                <label key={r.name} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-3" style={{ background: off.includes(r.name) ? "transparent" : "var(--problems-soft)" }}>
+                  <input type="checkbox" className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={!off.includes(r.name)} onChange={() => setOff((o) => (o.includes(r.name) ? o.filter((x) => x !== r.name) : [...o, r.name]))} />
+                  <span className="flex min-w-0 flex-1 flex-col gap-1.5">
+                    <span className="flex flex-wrap items-baseline justify-between gap-x-3">
+                      <span className="font-semibold">{r.kind === "tower" ? `${r.name} tower` : r.name}</span>
+                      <span className="sp-num text-[13px] font-bold">
+                        {r.n} of {r.m}
+                        <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} more in every 100 than the company overall</span>
+                      </span>
                     </span>
-                  </span>
-                  <span className="sp-caption">
-                    {r.leads.map((l) => l.name).join(", ") || "No team lead"}
-                    {r.avg !== null ? ` · avg ${r.avg} (company ${where.company.avg ?? "–"})` : ""}
-                  </span>
-                  <RateBar row={r} company={company} />
-                </span>
-              </label>
-            ))}
-            {where.verdict === "most" ? <span className="sp-caption">In most teams. Untick all for one company-wide fix.</span> : null}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <Num n={2} title="Which fix" />
-        {!entries ? (
-          <div className="sp-skel h-16" />
-        ) : (
-          <div role="radiogroup" aria-label="Which fix" className="flex flex-col gap-2">
-            {[...shown, null].map((f) => {
-              const id = f?.id ?? "own";
-              const on = chosen === id;
-              const good = (f?.difference ?? 0) > 0;
-              const best = good && id === shown[0].id;
-              return (
-                <label key={id} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5" style={{ border: `1px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "transparent" }}>
-                  <input type="radio" name={`fix-${driver}`} className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={on} onChange={() => setPick(id)} />
-                  <span className="flex min-w-0 flex-1 flex-col gap-1">
-                    <span className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="font-semibold">{f ? f.title : "Write my own"}</span>
-                      {f ? (
-                        <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
-                          {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
-                        </span>
-                      ) : null}
+                    <span className="sp-caption">
+                      {r.leads.map((l) => l.name).join(", ") || "No team lead"}
+                      {r.avg !== null ? ` · avg ${r.avg} (company ${where.company.avg ?? "–"})` : ""}
                     </span>
-                    {best && f ? <span className="sp-meta">Why: {f.evidence}</span> : null}
-                    {on && f ? <span className="sp-meta">{f.text}</span> : null}
+                    <RateBar row={r} company={company} />
                   </span>
                 </label>
-              );
-            })}
+              ))}
+              {where.verdict === "most" ? <span className="sp-caption">In most teams. Untick all for one company-wide fix.</span> : null}
+            </div>
+          )}
+        </div>
+
+        <div className="flex min-w-0 flex-col gap-3">
+          <Num n={2} title="Which fix" />
+          {!entries ? (
+            <div className="sp-skel h-16" />
+          ) : (
+            <div role="radiogroup" aria-label="Which fix" className="flex flex-col gap-2">
+              {[...shown, null].map((f) => {
+                const id = f?.id ?? "own";
+                const on = chosen === id;
+                const good = (f?.difference ?? 0) > 0;
+                const best = good && id === shown[0].id;
+                return (
+                  <label key={id} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5" style={{ border: `1px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "transparent" }}>
+                    <input type="radio" name={`fix-${driver}`} className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={on} onChange={() => setPick(id)} />
+                    <span className="flex min-w-0 flex-1 flex-col gap-1">
+                      <span className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="font-semibold">{f ? f.title : "Write my own"}</span>
+                        {f ? (
+                          <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
+                            {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
+                          </span>
+                        ) : null}
+                      </span>
+                      {best && f ? <span className="sp-meta">Why: {f.evidence}</span> : null}
+                      {on && f ? <span className="sp-meta">{f.text}</span> : null}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          )}
           </div>
-        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -489,17 +491,17 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
     },
   ];
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
-      <div className="flex flex-col gap-0.5">
+    <div className="flex min-w-0 flex-col gap-3 px-5 py-4 sm:px-6" style={{ background: "var(--problems-soft)" }}>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
         <h3 className="m-0 text-[17px] font-bold" style={{ color: "var(--problems)" }}>
           Root cause
         </h3>
         <span className="sp-caption">Why new hires name {name.toLowerCase()}, from counts only</span>
       </div>
-      <dl className="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2.5 text-[15px]">
+      <dl className="m-0 grid gap-x-6 gap-y-3 text-[15px] md:grid-cols-3">
         {facts.map((f) => (
-          <div key={f.label} className="contents">
-            <dt className="sp-meta font-bold">{f.label}</dt>
+          <div key={f.label} className="flex min-w-0 flex-col gap-0.5">
+            <dt className="sp-caption font-bold uppercase tracking-[0.06em]">{f.label}</dt>
             <dd className="m-0 font-semibold">{f.value}</dd>
           </div>
         ))}
@@ -537,19 +539,26 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-hidden">
       <div key={driver} className="sp-enter">
-        <div className="grid gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <div className="flex min-w-0 flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
-                {name}
-              </h2>
-              <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
-                {fixes.length ? "Fix in progress" : "Needs a fix"}
-              </span>
-            </div>
+        <div className="flex flex-col gap-4 px-5 py-5 sm:px-6">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
+              {name}
+            </h2>
+            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
+              {fixes.length ? "Fix in progress" : "Needs a fix"}
+            </span>
+            {waiting > 0 ? (
+              <Link href={`/replies?area=${driver}`} className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+                <MessageSquare size={14} aria-hidden="true" />
+                {waiting} new {waiting === 1 ? "reply" : "replies"} to check
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            ) : null}
+          </div>
+          <div className="grid items-end gap-x-10 gap-y-5 md:grid-cols-[auto_auto_minmax(0,1fr)]">
             {card.enough ? (
               <>
-                <div className="flex flex-col">
+                <div className="flex flex-col self-start">
                   <span className="sp-num text-[44px] font-bold leading-[46px]">
                     {card.n}
                     <span className="text-[20px] font-semibold sp-muted"> of {card.m}</span>
@@ -563,7 +572,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               <CountBar notEnough />
             )}
             {intakes.length ? (
-              <div className="flex flex-col gap-2 pt-1">
+              <div className="flex min-w-0 flex-col gap-2">
                 <div className="flex items-center gap-0.5">
                   <h3 className="m-0 text-[13px] font-bold">Share of hires, by start month</h3>
                   <span className="sp-tip sp-tip-below">
@@ -578,19 +587,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 <Columns points={intakes} />
               </div>
             ) : null}
-            {waiting > 0 ? (
-              <Link href={`/replies?area=${driver}`} className="inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
-                <MessageSquare size={14} aria-hidden="true" />
-                {waiting} new {waiting === 1 ? "reply" : "replies"} to check
-                <ArrowRight size={14} aria-hidden="true" />
-              </Link>
-            ) : null}
-          </div>
-          <div className="flex min-w-0 flex-col gap-4">
-            <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
-            <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
           </div>
         </div>
+
+        <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
 
         <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
           <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
@@ -640,6 +640,11 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             Review the {mine.length} replies in full
           </button>
           {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
+        </div>
+
+        <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
+          <h3 className="m-0 text-[15px] font-bold">Send a fix</h3>
+          <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
         </div>
       </div>
     </section>
