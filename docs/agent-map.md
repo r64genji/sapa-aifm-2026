@@ -15,5 +15,6 @@ Pick the one doc for your task. Read only that doc.
 | What an HR consultant told us, decisions from it, and the root cause TODO | [17 HR interview](17-interview-muhammad-danial.md) |
 | What a change-management officer told us, and why he said drop anonymity | [18 interview](18-interview-stephen-yau.md) |
 | What an HR director told us: add Environment, let hires choose anonymity | [19 interview](19-interview-gary-teh.md) |
+| What an HR consultant told us: 90% quit for a better offer, keep dashboard uncrowded | [20 interview](20-interview-ammirul-iskandar-azman.md) |
 | The organisers' guide (the only official requirements) | [reference/](reference/AIFM_2026_Student_Challenge_Guide_All_Challenges.pdf) |
 

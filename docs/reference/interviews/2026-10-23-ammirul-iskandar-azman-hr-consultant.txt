@@ -1,0 +1,377 @@
+AMMIRUL ISKANDAR AZMAN: Try your best to, to also talk to other professionals.
+Speaker 2:  Yes.
+AMMIRUL ISKANDAR AZMAN:  All right, okay. So, uh, before—before you ask me any kind of question, I just want to— I just, uh, want to ask you a little bit, uh, in terms of your project. Is it a digi— is it a digital platform?
+Speaker 2:  Yes, it's a digital solution. So it's two parts: one is a Telegram chatbot, and another is a website for a dashboard.
+AMMIRUL ISKANDAR AZMAN:  All right, okay. Okay, good, good. Uh, uh, yeah, okay.
+AMMIRUL ISKANDAR AZMAN:  All right. Okay.
+Speaker 2:  Okay.
+AMMIRUL ISKANDAR AZMAN:  Is this— is this happen— happen to coincidentally, um, coincidentally cross-path with, as in right now, we are also developing the same kind of—
+Speaker 2:  Oh.
+AMMIRUL ISKANDAR AZMAN:  Kind of platform, huh? Is this that— whatever that you are— as in right now, right now, the need for that is very high, huh?
+Speaker 2:  Oh, to retain a new hire.
+AMMIRUL ISKANDAR AZMAN:  The need for any kind of, yes, digi— digi, uh, digitalization of whatever that— we were talking about HR, right? Whatever, uh, work processes flows, they want to digitalize it. And they want to minimize the— what do you call it?
+AMMIRUL ISKANDAR AZMAN:  The, the, the— they try to— they want to automate it. They want to, uh, in a way, want to pass down towards all these digital engines, or— or we call it AI, lah.
+AMMIRUL ISKANDAR AZMAN:  Uh, all the, the, the, the nitty part, which is, for example, like, uh, preparing offer letters and, um, giving the, the, the, the blasting of the offer letters, or the blasting of the job advertisement, or things like that, or, um, drafting the, the JD or the, uh, JS, job specification, job description, or doing the, the job analysis prior towards, uh, recruitment. All is AI.
+AMMIRUL ISKANDAR AZMAN:  It's all, all automated. And it's not just— it's not— the word is not autum— it's not automated anymore, though.
+AMMIRUL ISKANDAR AZMAN:  It's auto- auto- autonomous. Autonomic.
+AMMIRUL ISKANDAR AZMAN:  There's a— there's a diff— uh, I don't know if you know or not, if you— if you, uh, you know, have in your vocabulary or not, in terms of technically— technical vocabulary, in terms of, uh, automatic and autonomic. Auto- automatic means that things that are— it's automatic.
+Speaker 2:  It happens by itself.
+AMMIRUL ISKANDAR AZMAN:  But if it's— yeah, it happen by itself, but if something that needs to be adjusted, it's not— it cannot adjust by itself.
+Speaker 2:  It's not dynamic.
+AMMIRUL ISKANDAR AZMAN:  Yes, it's not dynamic. If it's— if it's autonomic, uh, yes, we're going to— we as human, we are— we as a decision maker, we're going to put a prompt, a— I call it, uh, uh, uh, um, I call it a level of prompts, lah. You know, uh, the prompt is that you have to work within this limit.
+AMMIRUL ISKANDAR AZMAN:  There's a limit, right? So the best— the, the, the, the, the, um, the ideal is, of course, it's at the middle, lah.
+AMMIRUL ISKANDAR AZMAN:  But if something that is— that happened that needs to be changed from that middle limit, uh, then it needs to change, lah, but as long as it doesn't overgo overboard, either below limit or above limit, uh, so you can play at that limit based on whatever is needed at that time. It's called autonomic.
+AMMIRUL ISKANDAR AZMAN:  Autono— uh, it's actually— it's a biological word, actually. It's like— it's like our body, right?
+AMMIRUL ISKANDAR AZMAN:  Uh, you don't— you don't think about blinking your eyes, right? You just blink when you need to blink.
+AMMIRUL ISKANDAR AZMAN:  But if you start to think about blinking, it's like, oh, am I— should I blink now, or should I blink another 2 minutes, or, you know? It's like, you want— you always want to try to, you know.
+AMMIRUL ISKANDAR AZMAN:  But if you don't think about it, the blinking is— is something that we don't control. The same as our, like, body temperature, our heart rate, you know.
+AMMIRUL ISKANDAR AZMAN:  It happened— it adjusted based on whatever context or what is happening right now, right? So there's autonomic.
+AMMIRUL ISKANDAR AZMAN:  So maybe in your project, if you can, like, uh, uh, you know, if you— if you want to, uh, use that word and, and, and put it into your project in terms of that autonomic type of switching or whatever it is, uh, maybe that's— that's the current, that's the now. So because you're asking me right now, because I'm, uh, I'm working right now, right, as a professional, right?
+AMMIRUL ISKANDAR AZMAN:  So as in right now, what they are selecting in terms of proposal, not just the proposal of digitalization, AI, automatic, but they are looking towards the, the, the, the, the, as in right now, the most modern take of digitalization, AI-assimilated platform is autonomic. Something that is, uh, we just put in the prompt, put in the, the level, the, the, the limit of it, the below limit and the upper limit.
+AMMIRUL ISKANDAR AZMAN:  I think you— you— if you're talking about, uh, if you talk towards, uh, AI engineers or developers, software, they know what— what is it.
+Speaker 2:  I myself, I'm a technical person as well. I'm a one-person team.
+AMMIRUL ISKANDAR AZMAN:  Ah. I see, I see. Okay.
+AMMIRUL ISKANDAR AZMAN:  All right. So yeah, um, okay.
+AMMIRUL ISKANDAR AZMAN:  So I'm going to stop talking, uh, talking right now. So I'm just going to answer whatever that I can answer based on your— based on your needs and questions, lah.
+Speaker 2:  Okay.
+AMMIRUL ISKANDAR AZMAN:  All right. Okay. Okay, go on.
+Speaker 2:  Uh, okay, I'll ask the question. So first of all, um, so you are consulting companies, right? SMEs and so on.
+Speaker 2:  Your company. Right.
+Speaker 2:  How do they typically handle the new hires within the first 6 months?
+AMMIRUL ISKANDAR AZMAN:  The first 6 months. Okay. The first 6 months for a new, new, uh, uh, employees, you know, the newly employed, they're going to go through a probation, uh, a probation period.
+AMMIRUL ISKANDAR AZMAN:  So for, uh, exempt, exempt, they're— they're usually— they're— they're going to be, uh, put into two categories, lah. One is, uh, exempt and non-exempt.
+AMMIRUL ISKANDAR AZMAN:  Exempt and E-X-E-M-P-T, not exam, not, not ujian, not, not peperiksaan, example. But exempt, E-X-E-M-P-T.
+AMMIRUL ISKANDAR AZMAN:  So the exempt is, uh, first of all, uh, is the people that are, uh, uh, not contract, is permanent staff, right? And, uh, second is, uh, usually a junior exec and above, right?
+AMMIRUL ISKANDAR AZMAN:  Uh, so usually 6 months, the exempt period. The, the, or the pro— sorry, the, the probation period for exempt, uh, uh, employees.
+AMMIRUL ISKANDAR AZMAN:  And usually, uh, 1 to 3 months, lah, for the non-exempt. The non-exempt is usually contract, contractors, and, uh, and, uh, like, uh, supporting staff, like, uh, uh, uh, skilled hired workers, right?
+AMMIRUL ISKANDAR AZMAN:  Like, for example, like, I'll give you an example, like, example, if there are— there are companies that are also put into, uh, in a way, um, um, uh, put into contracts, lah, like people that are, uh, like, uh, cleaners, right? Uh, these, these, these are people that are non-exempt.
+AMMIRUL ISKANDAR AZMAN:  Cleaners, drivers, lorry drivers, crane drivers, things like that. They are not permanent staff.
+AMMIRUL ISKANDAR AZMAN:  They are con— they are contract. And, uh, these, uh, supporting staff are, uh, around 3 to 2 months, lah.
+AMMIRUL ISKANDAR AZMAN:  So if they, uh, survive the probation period, then they're going to give them a much more longer contract rather than just, like, uh, 2 to 3 months. So, uh, the 6 months is, uh, in 6 months is the probation period.
+AMMIRUL ISKANDAR AZMAN:  Inside the probation period, there's, there's, uh, onboarding programs. Onboarding.
+AMMIRUL ISKANDAR AZMAN:  Right? Okay.
+AMMIRUL ISKANDAR AZMAN:  So, uh, usually the onboarding, uh, will, yeah, will spread across this within that 6 months, lah.
+Speaker 2:  Mm. Uh, so typically, does anyone check in on the new hire or something like that?
+AMMIRUL ISKANDAR AZMAN:  You mean the people that have been— they've been officially hired and, and put into that 6 months?
+Speaker 2:  Ah, yeah.
+AMMIRUL ISKANDAR AZMAN:  Yes, of course. Of course, ma'am. Of course, they're going to— they're going to, uh.
+Speaker 2:  Uh, how exactly does the check-in process work? Like, is it Google Form right now, or is there some system or something like that? Or, uh, someone else I talked to mentioned a buddy system as well.
+Speaker 2:  Uh, so how, how exactly?
+AMMIRUL ISKANDAR AZMAN:  Okay. Okay. So if you— if you— if you talk about the, the, the current need that, that, that they want, which is, uh, before this, yes, buddy system, lah.
+AMMIRUL ISKANDAR AZMAN:  Buddy system. But now, uh, they, they— because buddy is, is one, is people to people, right?
+AMMIRUL ISKANDAR AZMAN:  So you need more people. You need more people.
+AMMIRUL ISKANDAR AZMAN:  You need new hiring, you know, you know. So it's, it's people.
+AMMIRUL ISKANDAR AZMAN:  So what they want to try to contain is try to get the best, uh, best-managed people, you know. They want to have a— based on their job analysis, for example, they only need 10 people within HR, for example, lah.
+AMMIRUL ISKANDAR AZMAN:  And they want to utilize these 10 people the best they can, uh, without any kind of miscommunication, without misdocumentation, things like that, right? So that's why they need your platform.
+AMMIRUL ISKANDAR AZMAN:  So, uh, whatever checklist is, is, is, is being based inside the platform. So, so the progress for, for example, these newly 10 people that have been appointed, lah, for example, and within the in-house, uh, HR, let's say that 10, lah, 10 people in HR department, including HODs.
+AMMIRUL ISKANDAR AZMAN:  HODs one, and another nine is either exec or junior exec, lah. For example, for within these 10, uh, there are 3 people that in the, uh, talent recruitment department, lah, for example.
+AMMIRUL ISKANDAR AZMAN:  All right. So these 3 people, they're going to, um, checklist the people, the new, the newly employed.
+AMMIRUL ISKANDAR AZMAN:  For example, these another 10 people that have been newly employed. Uh, the way that they track their progress within that 6 months is within the.
+Speaker 2:  Hello?
+Speaker 2:  Hello?
+AMMIRUL ISKANDAR AZMAN:  Hi. All right. Okay.
+AMMIRUL ISKANDAR AZMAN:  Sorry, sorry.
+Speaker 2:  It's okay.
+AMMIRUL ISKANDAR AZMAN:  Hello. Okay. All right.
+AMMIRUL ISKANDAR AZMAN:  Okay. So the, the, the checklist is, is from the platform.
+AMMIRUL ISKANDAR AZMAN:  Okay. So, for example, like, you're the HR, uh, talent recruitment PIC.
+AMMIRUL ISKANDAR AZMAN:  And then, um, just let's say that, uh, this 10% that's been approved by, uh, your, uh, hiring, uh, that, uh, going to approve, make the approve of the hiring, which is the head of department for their particular department. For example, these 10 people is, is in the, uh, just let's say, uh, uh, uh, for example, like, um, uh, how to make it easier, uh, uh, factory worker.
+AMMIRUL ISKANDAR AZMAN:  They are factory worker. Factory, factory-based worker, lah.
+AMMIRUL ISKANDAR AZMAN:  So their, their job is, uh, to, uh, maintain the factory, the cleanliness of the factory. These 10, 10 people, right?
+AMMIRUL ISKANDAR AZMAN:  So the, the, the head of factory is, uh, usually, um, it's a factory manager, lah, or head, uh, uh, head of, uh, head, head of factory, uh, HOD for the factory. And of course, the HOD of HR, lah.
+AMMIRUL ISKANDAR AZMAN:  So just let's say they, they, they, uh, been hired, been approved, and then these 10 people will start, for example, um, will start today, for example, right? So before they start today, uh, maybe, uh, based on the SOP, in-house SOP for that particular company, usually within, uh, uh, 10 to 5, uh, sorry, usually 5 to 3 working days, they need to prepare the entire journey for these particular 10 people, right, uh, for their onboarding program within the probation period.
+AMMIRUL ISKANDAR AZMAN:  So, for example, the probation period is, uh, 6 months, and the onboarding program, uh, is within, uh, 4 months, right? So the pro-pro the, the, the first month is, is maybe, uh, they need to do, uh, or maybe, maybe the, the, the, the onboarding program started, like, the first day of the probation until the last day of the probation.
+AMMIRUL ISKANDAR AZMAN:  The whole pro the whole probation is their onboarding program. It's just a it's just a HR terms, lah, onboarding program.
+AMMIRUL ISKANDAR AZMAN:  Uh, onboarding. So within that 6 months from all these 10 people, based on their, uh, uh, JDs, right, based on the JD, so the AI will come up with each person within that 10, 10, 10, 10 people, each people have their, uh, have their own journey.
+AMMIRUL ISKANDAR AZMAN:  They have this, like, a lifebuff, their journey, right? So the journey, what makes their, their journey move closer and closer and closer and closer is, one, is the, uh, uh, uh, actually, is, is the journey, and they have kind of like a clock.
+AMMIRUL ISKANDAR AZMAN:  The, the duration of, of, uh, how many time left within their, their probation, probation period or, or onboarding program. So, for example, they start the first day, and the, the clock, the, the, the timer is set, uh, you have another 5 months and 30, 30 days, for example, right?
+AMMIRUL ISKANDAR AZMAN:  5 months, 30 days, and how many hours? Tick, tock, tick, tick, tick.
+AMMIRUL ISKANDAR AZMAN:  And the progress is based on the, uh, the, uh, uh, the, the, what is it? Um, the, the, the, the, the, the training videos, which is the induction program, lah.
+AMMIRUL ISKANDAR AZMAN:  You have, you have training videos within the LMS. LMS means it's Learning Management System.
+AMMIRUL ISKANDAR AZMAN:  It's a digitalized, uh, training, training programs for, for, for employees, right? Okay.
+AMMIRUL ISKANDAR AZMAN:  So the videos is, uh, it's a self-recorded videos. So they need to watch everything in terms of, you know, what's the company's about, you know, the safety, safety part, the safety and health, uh, based on OSHA punya, uh, uh, standard, and then, uh, the corporate governance or whatever it is, lah.
+AMMIRUL ISKANDAR AZMAN:  Okay. So they need to watch all the videos.
+AMMIRUL ISKANDAR AZMAN:  Okay. So if they watch all the videos, and then the, the, the, the, the bar is going to shorter, shorter, shorter, you know.
+AMMIRUL ISKANDAR AZMAN:  And then they have assignments. From these video assignments pun, they're going to affect their bar.
+AMMIRUL ISKANDAR AZMAN:  So they need to complete everything. So the, the, the, the curriculum or the, the, what do you call it?
+AMMIRUL ISKANDAR AZMAN:  The, the, um, the flow of whatever they need to finish is also being provided by the AI, lah. Okay.
+AMMIRUL ISKANDAR AZMAN:  So the checklist too is, is in, uh, double time or, or is in current time with, for the HR person to, to, uh, uh, to track down their journey of, of, of, of their, of the probation period, lah. So that, for example, like, if you, if you're the HR PIC and I'm one of the employees, so you can know real-time at any time, in real-time, what's my progress.
+AMMIRUL ISKANDAR AZMAN:  So if let's say that my miles, my, my KPI should be, if let's say for the next 3 months, I should have finished 50% of my, my, my, my, my whole progress, but I, I just, I, my, my progress is just 90%, then you will know, lah, that I'm not, uh, doing my, my, my assignment and assessments and things like that. So you can, you can, you can come to me, uh, and you can come to my, my, uh, call me to your office to do the
+AMMIRUL ISKANDAR AZMAN:  HR, which is the thing, the thing that employee hated the most is being called by HR. It's like if you're in school, lah. If you, if you're in school, you know, being called by discipline teacher, it's like that, right?
+AMMIRUL ISKANDAR AZMAN:  But actually, it's not. It's actually, HR is, is, well, maybe I'm saying this maybe because I'm biased.
+AMMIRUL ISKANDAR AZMAN:  I'm a HR person, lah. But it's actually, it's, it's good to come and visit HR office sebenarnya, actually, you know.
+AMMIRUL ISKANDAR AZMAN:  So, but all these, like, these, especially the factory workers, you know, all these, like, the people that gets their hands dirty and all, you know, technical people, all these, or they, they, they feel that HR is, oh, like, it's like, it's like, you know, it's like our enemy, lah, in a way, you know. But yeah, it's like that.
+AMMIRUL ISKANDAR AZMAN:  So you can, uh, the HR people, the recruitment people, or the people that, that, uh, PIC person in charge in terms of the, um, the onboarding, the pro for that 6 months, they will know real-time because of that platform.
+Abraham Tan:  So it's like, it's like, for my school curriculum, it's like a course system, right? So they show all the course, all the assignment, and they need to complete everything. Is there anything that links back to their work, like, their work KPIs, like for factory workers, like how, uh, production?
+Abraham Tan:  Is there anything like that?
+AMMIRUL ISKANDAR AZMAN:  That's, uh, that's what we call assessment. That's a work assessment. But usually, uh, yes.
+AMMIRUL ISKANDAR AZMAN:  But usually, we don't put it in terms of, uh, something that is, uh, annual. Because if you say that the KPI is, is like, uh, certain, um, it's, for example, like, I don't know, KPI, because KPI usually can a bigger, uh, uh, a big KPI is usually annually, right?
+AMMIRUL ISKANDAR AZMAN:  But we are talking about just, like, 6 months. So usually, the KPIs are, are much, are much, uh, uh, much smaller, lah.
+AMMIRUL ISKANDAR AZMAN:  Uh, so, uh, so what is the KPI, uh, is up to that, is up to that company. But yeah, as, as, like you said, it's totally must be, uh, uh, uh, direct, have a direct correlation with what, in whatever they, the, in their JD, in their job description.
+AMMIRUL ISKANDAR AZMAN:  So that's it. So that's why I said, that's why it needs an AI, because this is something that is routine now.
+AMMIRUL ISKANDAR AZMAN:  It's something that is, uh, as humans, huh, humans sometimes, this, all this, uh, in, in Malay, we call it renyah, lah. I don't know if you know the word renyah.
+AMMIRUL ISKANDAR AZMAN:  In Malay, it's like something that, uh, macam, uh, I can, I can buat, ah, macam tu. So all this AI is automated in the tool.
+AMMIRUL ISKANDAR AZMAN:  So based on the JD, bam, in just seconds, AI tool akan bagi a suggestion, tahu. Okay.
+AMMIRUL ISKANDAR AZMAN:  For these people, JD ni, based on whatever they dah buat sebelum ni, okay, this is my, uh, my, my suggestion. So it's up to the people that HR that have this, the brain to decide, lah, based on their, based on human decision, lah.
+AMMIRUL ISKANDAR AZMAN:  Based the decision of the HR people, the HR practitioners, is based on the weighted suggestion of the AI, which is the, the, the, the keyword is weighted suggestion. Not just suggestion, tahu, it's weighted.
+AMMIRUL ISKANDAR AZMAN:  Yeah. Uh, so in, in technical terms, in professional technical terms, in whatever, whatever things that we in corporate want to decide, tak kisahlah apa, doesn't matter what, lah.
+AMMIRUL ISKANDAR AZMAN:  It doesn't matter, you know. As big as board directors of decision punya decision, or as small as, uh, exec, junior exec, or ni untuk make any decision, kan, it must be, kalau in terms of technical terms, must be have the, the why.
+AMMIRUL ISKANDAR AZMAN:  Uh, the why is the weighted suggestion, tahu. So whatever that the suggestion comes in, uh, it's not everything is the same.
+AMMIRUL ISKANDAR AZMAN:  Every suggestion tu, dia ada weighted dia. Dia ada, okay, this is I, uh, I strongly suggest this.
+AMMIRUL ISKANDAR AZMAN:  Ah, macam kita when we discuss, we say that, okay, we have, for example, like, we have three suggestions, but my personal, my, my personal, personal point of view is I, I heavily suggesting this if comparing to this, and this is my least, my least, uh, uh, recommended suggestion. So the AI is constantly doing that.
+AMMIRUL ISKANDAR AZMAN:  That's the, that's the key of a good AI or not, prompting. Uh, I don't know the technical part you guys buat, lah, tapi from the user punya point of view, AI ni actually sebenarnya the, the, as in 2026, right, sekarang ni, is how the AI suggest to, is it weighted ataupun tidak, and how much weight does it give to you.
+AMMIRUL ISKANDAR AZMAN:  They can give what, uh, whatever suggestion they can give, right? But the, the weighted suggestion tu is based on what?
+AMMIRUL ISKANDAR AZMAN:  Ah, tu, tu, tu, ah, it must be based on something that is not something that is out of thin air. Because the issue right now, AI is, uh, right now, and I'm, I'm, I'm pretty sure it's, it's getting, it's getting, uh, you know, being, uh, the gap is being closed, lah.
+AMMIRUL ISKANDAR AZMAN:  It's being mitigated, lah. It's sometime, some, some issues, especially if you are a student, lah, if you, if you're a, especially if you're a postgrad student, masters or, uh, doctors, uh, uh, prof, uh, doctorates, PhDs, um, the, uh, the issue with AI, with their, with their research ni, kadang-kadang tu, the, the, the AI create themselves.
+AMMIRUL ISKANDAR AZMAN:  They don't create the.
+Abraham Tan:  Hallucination.
+AMMIRUL ISKANDAR AZMAN:  The, ya, betul. Uh, it's not based on, okay, based on, uh, uh, research that been done, like, before, or sometimes they create, they, they said that they based on this, but if you do the actual research, tak, tak wujud pun. It doesn't exist, macam tu.
+AMMIRUL ISKANDAR AZMAN:  Uh, macam tu. So it's, it's, dia kata, okay, this is weighted, tapi it's based on a created punya, uh, uh, it's, it's based on their own creation of weightages, macam tu.
+Abraham Tan:  Okay. Um, so what do the main, what are the main reasons the new hires leave? Like, uh, main, main reasons the new hires want to leave the company during the probation period?
+AMMIRUL ISKANDAR AZMAN:  Oh, during the probation period, you mean? Um, the, the, it's usually, it's something is personal, lah. Usually, I'm, I'm, I'm going to tell you the truth, it's actually sebenarnya, actually, it's not, uh, because of the company pun.
+AMMIRUL ISKANDAR AZMAN:  Actually, it's, it's, it's personal reason, you know. And, uh, uh, for HR people, because you are designing this for HR, right?
+AMMIRUL ISKANDAR AZMAN:  This is point, HR punya point of view, uh, there are, there are things, and usually, usually, they are, usually there are things that is not within professional control. It's not within the HR punya control.
+AMMIRUL ISKANDAR AZMAN:  It's not with, it's not because of the company or things like that. Because probation is, is, it's, it's, it's the, the, the, you know, uh, the time is so short, right?
+AMMIRUL ISKANDAR AZMAN:  So whatever value, it's, it's a test water, tahu. So whatever value that, that person give or don't give, or whatever value that the company give to the employee or don't give, it should not be, it's, it's, if it's something that is very, um, it means, uh, if it's very, uh, something that is, uh, non-negotiable, it's going to happen at that 6 month.
+AMMIRUL ISKANDAR AZMAN:  It means that if it's not, if the people leave the company, not, not, not, not if the company kind of, like, based on the probation or within the probation to, uh, reject this person, there must, there's a clause, there's a reason why, right? And it's very hard, actually, to, to, to dismiss a person within that probation.
+AMMIRUL ISKANDAR AZMAN:  It's usually, uh, it's after the probation period finish. And usually, if, uh, if the person is being kicked out from that probation period, it's usually it's a major problem, lah.
+AMMIRUL ISKANDAR AZMAN:  If, for example, like, the person, you know, doesn't come to work for, uh, 12 straight days without any reason or commit a crime, right? There's a black and white.
+AMMIRUL ISKANDAR AZMAN:  But for the people, eh, for the people that quit, it's, it's personal, tahu. So I cannot, I cannot say you as, as, uh, the, the real reason why, lah, kenapa the person to quit.
+AMMIRUL ISKANDAR AZMAN:  It can be any reason. Maybe you have a better option ke, or whatever it is.
+AMMIRUL ISKANDAR AZMAN:  But I'm trying to say that as a company, to, to reject them, to, to, to fire them within that probation, or the company is, I'm not, I, I, I cannot remember the word, the technical word of, yeah, of, um, of, of, um, giving or, or, or, or adding their job description until they quit.
+Abraham Tan:  Oh, okay. So it's like.
+AMMIRUL ISKANDAR AZMAN:  You know, trying to force, in a way, uh, make them quit.
+Abraham Tan:  Want to quit. Like, uh, in, uh, South Korea or Japan, they, they give you a lot of work to make you, like, "Ah, tak mahu lah," then you quit.
+AMMIRUL ISKANDAR AZMAN:  Yes, you know. Or sometimes, or that's one, or sometimes they're going to transfer you somewhere very far away, and that person, and the company HR knows that you already, like, uh, bermau startin, or you already, already living, uh, with your family and your kids are schooling at this place, right? That means that it's, it's, it's, and it makes you want to relocate.
+AMMIRUL ISKANDAR AZMAN:  And, and it's kind of like make you, and the ultimatum is either you relocate to this place, or you, or you kind of be terminated, lah. So if that person really wants to be with the company, they're going to relocate, lah.
+AMMIRUL ISKANDAR AZMAN:  But if not, they're going to quit. And if the person, uh, and actually the company is kind of, like, hoping that the person, uh, rather than take the job and, and, and relocate, they are hoping that the person, "Okay, okay lah, I quit," lah.
+AMMIRUL ISKANDAR AZMAN:  You know? So it's very hard.
+AMMIRUL ISKANDAR AZMAN:  It's very hard for, for a company to assert, uh, these things to, to, to a newly employed, especially if in their probation. So as, uh, uh, answering your question, it's actually, it's a personal thing.
+AMMIRUL ISKANDAR AZMAN:  Uh, if something happened between the company and the newly employed within that 6 month tu, probation tu, it's usually, like, 90% is because of the newly employed. It's, it's a personal.
+Abraham Tan:  So, so the, the personal, like, I, I want to go deeper into that. Personal meaning, like, they don't feel they can communicate well, or, uh, they don't think the job match what they want?
+AMMIRUL ISKANDAR AZMAN:  Okay. You, uh, uh, uh, answering your, your question, based on what, uh, what you said, is all of it are true, but usually, usually there, uh, based on case study that, that, that, uh, that we've encountered, lah, usually for the first, first 6 month ni, it's usually is because they have, they, they, they got a better.
+Abraham Tan:  Oh, wow. Okay.
+AMMIRUL ISKANDAR AZMAN:  Yes. Just because they got a better offer.
+Abraham Tan:  Within the first 6 months?
+AMMIRUL ISKANDAR AZMAN:  You know? Or, or, yes, ya, yes, betul. Tu, I, I, tu tu I cakap kat you, lah.
+AMMIRUL ISKANDAR AZMAN:  I cakap you based on case study, it's because they are, in the first 6 month, they quit, you know. Like I said, the first 6 month tu, that company sus sangat susah, very, very hard to, to, to, to, uh, you know, to fire or to exit the, the, the, you know, the work, the JD until the, the person quit.
+AMMIRUL ISKANDAR AZMAN:  I'm not sure that what, what's the term, lah. Ada term tu, I lupa.
+AMMIRUL ISKANDAR AZMAN:  I forgot. You know?
+AMMIRUL ISKANDAR AZMAN:  For the first 6 month, eh, tak, tak, the company won't do anything to put that person, unless that, that person really done a crime or something that is very, you know, untolerable, you know, something that's within the contract. That's the contract.
+AMMIRUL ISKANDAR AZMAN:  There's always, there's always black and white, you know. If you, if you do this, or you don't do this, uh, you will get fired within the, the 6 month probation ni.
+AMMIRUL ISKANDAR AZMAN:  But usually, if some, if, if it's, uh, if the contract ended within that 6 month tu, it's because of, of, or personal issue, and usually it's because the person have a better, better offer.
+Abraham Tan:  Oh, okay. I see. Understood.
+AMMIRUL ISKANDAR AZMAN:  And other things, other reason, yes, you can put it into context, but, like, yeah, lah, you know, you can, there's, um, everything, anything could happen, right? You fall sick, uh, fell ill ke, sick ke, accident ke, or, or whatever, or whatever, personal punya issue, ataupun that person can also but rare, lah. Usually that person, that, that person within that, uh, applied for a job and get into the probation punya period, and then just because of the company, uh, I don't, I don't like the way the company
+AMMIRUL ISKANDAR AZMAN:  talk to me ke, the boss talk to me ke, I don't like, unless if it's something is very serious, lah. Usually if it's something that's very serious, they're going to, they're going to, they're going to, uh, if the person is professional, lah, it's, it's a person that have, uh, high integrity, they're going to, they're going to report it, uh, uh, at the proper channel, lah. Kan, if, if, for example, that, uh, uh, person, that, that, that woman got sexually harassed within that 6 month, dia akan, they
+AMMIRUL ISKANDAR AZMAN:  will, they will, uh, talk to a pro, they're going to make a, um, a case, lah, within the HR, and the case will put into record. But, uh, based on the companies that we consulted, kan, like I said, based on case study, 90% of, uh, people that, uh, uh, you know, personally, uh, quit within that, uh, 6 month probation tu, it's because they got a better, better, better offer. That's it.
+Abraham Tan:  Oh, okay.
+AMMIRUL ISKANDAR AZMAN:  Really.
+Abraham Tan:  I see. Uh, okay. So I'll show you, can I show you my prototype right now?
+Abraham Tan:  Uh, so you can give some feedback on it.
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Abraham Tan:  Uh, can you see my screen?
+AMMIRUL ISKANDAR AZMAN:  Yes, yes.
+Abraham Tan:  Okay. So this is the dashboard. So basically, uh, they can see, um, how many people check in, how many people answered the questions, what's the main problem right now, and what people have said.
+Abraham Tan:  Okay. So, uh, I'll show you something.
+Abraham Tan:  So, so basically, the check-in is, like, routine, lah. Like, on the 3rd day, on the 7th day, on the 30th day.
+Abraham Tan:  And it will show, it will send the new hire messages like this. So it will ask it, uh, okay, how clear are you on what is expected this week?
+Abraham Tan:  So the new hire will answer all the questions, um, and then they will write, the AI will write the last question based on what they said.
+Abraham Tan:  Uh, so it asks, what has made it hard to connect with the team during work this week? So I can type whatever answer I want, uh, say, uh, I don't speak Malay.
+Abraham Tan:  Something like this. And then it will record it, uh, and then it will show up in the dashboard right here.
+Abraham Tan:  Like this. I don't speak Malay.
+Abraham Tan:  So then it will categorize, it will, it will, uh, the HR can choose what type of problem is this. So this is team integration problem.
+Abraham Tan:  And then, uh, yeah, so they can go to this problems page. Uh, they can see all these.
+Abraham Tan:  These are the main problems that I design, lah. I'm not really sure whether, uh, what do you think about this?
+Abraham Tan:  Is this okay enough?
+AMMIRUL ISKANDAR AZMAN:  Um, this is, um, okay. First of all, I want to ask, this is the point of view from HR? The point of view, the point of view of the HR, right?
+AMMIRUL ISKANDAR AZMAN:  Okay, all right. So, uh, this is the, the problems from, uh, from the people that's been employed?
+Abraham Tan:  New hire, yeah.
+AMMIRUL ISKANDAR AZMAN:  Right.
+Abraham Tan:  Okay. Do you feel this is enough? Do you feel there needs to be more or better wording?
+AMMIRUL ISKANDAR AZMAN:  No, no, no, no, no.
+Abraham Tan:  Okay.
+AMMIRUL ISKANDAR AZMAN:  The, the, uh, one thing that if you want to design this, this platform, kan, uh, is this context, in terms of the context is the, the problems that, uh, it's like the, uh, you know, the, the.
+Abraham Tan:  Root cause.
+AMMIRUL ISKANDAR AZMAN:  Uh, yeah, the, the, the, the, the root cause, or the, the based on the, the employees, uh, complaints, right?
+Abraham Tan:  Yeah. Uh, yeah, we do have something like this, like here, right? Uh, you can see here what they mean.
+Abraham Tan:  So it shows what the problems and the exact quote as well, so they can review.
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Abraham Tan:  Uh, so the, the, the, it's good, that's good. But it's just that the category above, like you said, that, that, the, the, the categories, right? The manager training.
+Abraham Tan:  I think this, this is, this is good enough. Don't be too, don't, don't, don't be too specific.
+Abraham Tan:  Don't, uh, the, the, the, the complaint, yes, it's, it's a specific complaint, right? But you have to just put it in a group that quite, uh, uh, don't too, doesn't, uh, don't make it too crowded, lah.
+Abraham Tan:  That's what I'm trying to say. In the dashboard, don't make it very crowded.
+AMMIRUL ISKANDAR AZMAN:  Understood.
+Abraham Tan:  Do you, do you feel right now?
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Abraham Tan:  So this is good? Yes?
+Abraham Tan:  Uh, what, what were you about to say?
+AMMIRUL ISKANDAR AZMAN:  No, no, no, tak. I, I, I didn't, uh, I, I just, I just want to say, don't, don't make it too crowded. So based on this dashboard, it's good enough, lah.
+Abraham Tan:  Okay. Uh, do you feel the dashboard is easy to understand?
+AMMIRUL ISKANDAR AZMAN:  Yeah, yeah. Okay. Okay ni.
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Abraham Tan:  Okay.
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Abraham Tan:  Um, so, so right now, how the HR takes action is they write up the message to the team manager. Uh, so, so like for this team, um, they have this problem, so I write a fix for them. Uh, so it will send this message to the manager, this one right here, to hold a 10-minute priority chat.
+Abraham Tan:  And then the manager will confirm and take action, and then we'll check in on the new hire again to confirm whether they take action or not. Do you feel it's okay?
+AMMIRUL ISKANDAR AZMAN:  Okay. Uh, but the, the communication is, is, is, uh, it's been, uh, is it been, uh, the, uh, the, uh, admitted by, by AI ke?
+Abraham Tan:  Uh, it can, yeah. So right here, you can add your own fix. So let's say I want to add a weekly one-on-one, and I can ask AI to draft as well.
+Abraham Tan:  So AI will write the message, uh, and then, yeah, please schedule one-on-one, like this.
+AMMIRUL ISKANDAR AZMAN:  And then it's going to blast, it's going to blast within the, the, the platform, right?
+Abraham Tan:  Uh, blast to the team lead, to the manager of the team that has the problem.
+AMMIRUL ISKANDAR AZMAN:  Okay. Uh, uh, how, how, how, uh, the platform, they're going to blast it through what? Email, or WhatsApp, or Telegram?
+Abraham Tan:  Telegram, yeah.
+AMMIRUL ISKANDAR AZMAN:  Ah, okay. Okay lah. If you say Telegram or WhatsApp, okay.
+AMMIRUL ISKANDAR AZMAN:  Because this is sometimes WhatsApp, uh, uh, in, email, eh. Uh, and now, currently, uh, uh, if you want to have a much more effective communication, it's, uh, through, uh, instant messaging, lah, like WhatsApp and Telegram.
+AMMIRUL ISKANDAR AZMAN:  Because email, for, for people that are, for office people, lah, for office people, uh, maybe they have a routine in checking their email, tak apa, it's okay. But some people, they don't have that routine, tau.
+Abraham Tan:  So they will miss.
+AMMIRUL ISKANDAR AZMAN:  So if the things that, uh, yeah, yeah, yes. So something that needs to have a, like, a, uh, uh, faster punya response, uh, through, uh, uh, this instant messaging, lah. Like I said, because, because some people, they don't have the routine.
+AMMIRUL ISKANDAR AZMAN:  Because sometimes, lah, sometimes email ni boleh, uh, uh, kind of like, uh, you know, uh, uh, get straight towards, like, uh, spam ke, things like that. Sometimes, sometimes it is what it is, kan.
+AMMIRUL ISKANDAR AZMAN:  Uh, so it's better at the instant messaging punya platforms ni.
+Abraham Tan:  Okay. Uh, so, like, you said just, you said previously that, uh, you are also working towards a similar, uh, something similar, is it? Uh, is it similar to what I'm making now, or is it more like what you said before, like the cost and the onboarding?
+AMMIRUL ISKANDAR AZMAN:  Like this, lah. It's like this.
+Abraham Tan:  Okay. Uh, will you be interested in testing it out in the future?
+AMMIRUL ISKANDAR AZMAN:  It's like it's, it's at the end of the day, at the end of the day, we are talking, if we're talking about dashboard, dashboard is, is, is something's like, something like this. You know? It's just the difference is maybe the layout, the, the, the font colour, or whatever it is, lah.
+AMMIRUL ISKANDAR AZMAN:  But at the end of the day, as long as it serves the purpose. That's, that's why it's important for you to have this kind of conversation with professionals.
+AMMIRUL ISKANDAR AZMAN:  So you can ask my opinion, and you can ask other people, uh, other HR punya personal punya opinion. I'm pretty sure that it's, uh, uh, uh, it's quite same as mine, lah.
+AMMIRUL ISKANDAR AZMAN:  Because at the end of the day, it's just, everything is there. Uh, as long as, uh, the, the platform, the AI within the platform can make my work, uh, much more effect, uh, effective and efficient.
+AMMIRUL ISKANDAR AZMAN:  When you say about effective, uh, effect, uh, effective is always about time.
+Abraham Tan:  Hmm, yeah.
+AMMIRUL ISKANDAR AZMAN:  Time. It's about fast, something that is, uh, the, the, the, the, the much, much more work has been done in a, a much more shorter time period, something is much more effective. Right?
+AMMIRUL ISKANDAR AZMAN:  Efficient is, we always talk about cost, money.
+Abraham Tan:  Yeah.
+AMMIRUL ISKANDAR AZMAN:  Cost. So much more, uh, work has been done within a much more lower cost, right? In, in, in, and correlate, correlate with also the effective part within the time period, uh, then it serves, it serves a, uh, you can, you can sell that.
+AMMIRUL ISKANDAR AZMAN:  If you can solve, I'm, I'm going to, I'm going to tell you the, the secret ingredient, lah, in selling whatever that you're going to sell, you as a, in particular context, uh, this platform, HR platform ni, kan.
+AMMIRUL ISKANDAR AZMAN:  Okay? So of course, uh, at the end of the day, once you dah habis belajar nanti, you want to make money, right?
+AMMIRUL ISKANDAR AZMAN:  Uh, so hopefully, uh, uh, hopefully you can make money out of things that, out of this, lah, kan, rather than just working for other people. If you want to sell whatever, but in this context, this lah, in, in, in industrial context, lah, in industrial context, just whatever industry that they, they are and, uh, uh, in the industry, or whatever, whatever product, or whatever service, whatever, whatever do you want to sell, as long as you can tackle these two things, effectiveness and efficiency, you can sell.
+AMMIRUL ISKANDAR AZMAN:  Or boleh jual. Okay?
+AMMIRUL ISKANDAR AZMAN:  Because dua, dua ni, these two things is going to affect.
+Abraham Tan:  Hello? Uh, hello?
+AMMIRUL ISKANDAR AZMAN:  Tak apa.
+Abraham Tan:  Sekarang itu断线 lah. Sekarang interview orang, oh, tak, itu断线.
+AMMIRUL ISKANDAR AZMAN:  Oh, I thought you mean it's断线.
+Abraham Tan:  没有, tak, tak, Wi-Fi itu断掉.
+AMMIRUL ISKANDAR AZMAN:  Hello?
+Speaker 2:  Hello, hello, Emran, sorry. Uh, I think I have an issue with my, my, uh, connection, lah.
+AMMIRUL ISKANDAR AZMAN:  Ah, okay. No problem.
+Speaker 2:  Uh, but it's okay. But I think, um, uh, I also have, I have to make a move.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Um, um, uh, okay. So, uh, if you have any more, because I've, I've, I've, I've, I've, uh, I, I, uh, I've seen your, your project, and I think I know what you're doing.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  Uh, I think, uh, I think quite similar as mine.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  So in a way, if you start, uh, uh, uh, it's okay, you know? Uh, it's okay. But if you are trying to sell it right now, then you're going to be my competitor, lah, actually, sebenarnya.
+Abraham Tan:  Oh, no, no. I'm, I'm not going to sell it. Uh, actually.
+Speaker 2:  No, no, it's okay.
+Abraham Tan:  Uh, actually, if you are interested, I'm very much willing to share you everything.
+Speaker 2:  Yeah, yeah, yeah. Okay. Thank you.
+Speaker 2:  Thank you. But, um, in, uh, this is your, your, your uni, you're a degree, right?
+Speaker 2:  Degree, right?
+Abraham Tan:  Yes.
+Speaker 2:  Okay. Um, okay. Kalau degree, okay lah.
+Speaker 2:  But, um, at the end of the day, the project, kan, project punya marking rubrics, actually, if you put the rubric that, uh, uh, in, in, in, in your, uh, initial punya punya rubric, kan, if you want to score a good mark.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  In terms of this, uh, industrial punya, uh, punya, uh, upgrading punya project.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  Actually, sebenarnya you put atas sekali, at the top, is, is it going to sell? If the, if, if it's going to sell, then it's going to, it's going to cascade from the top to the bottom, and you're going to get good marks. Because at the end of the day, if the rubric is, say, okay, you have to do this, uh, actually, at the end of the day, it's just about, is it usable or not?
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  Right?
+Abraham Tan:  Yeah.
+Speaker 2:  If it's usable, of course it's going to sell, lah.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Right. Okay. So, uh, uh, another advice, uh, I, I think, uh, that, uh, that I can give you is, start to look at the point of view of the project.
+Speaker 2:  Of course, I think, I think you're already in your mind, it's just that you realize or not, lah. Is it sellable or not je?
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  Agak-agak boleh jual ke tak?
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  So kalau if, if you're, um, um, um, doing this project, in the mind of, is it, is it usable? Is it easy to use? Is it bringing any value?
+Speaker 2:  At the end of the day, actually, it's going to translate towards monetary value, lah. You can sell, lah, this thing.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Uh, that's what I'm trying to say. So as even right now pun, if it's your project, then you can have sekarang, is it sellable ataupun tidak? Sellable ke tidak?
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Abraham Tan:  Do you feel it is practical, easy to use? For, for, for what, eh, you see? Yeah.
+Speaker 2:  Because I saw the, the, the, the, the, this like, uh, that, that you shared with me, eh, is, um, the dashboard is quite similar with mine, lah.
+AMMIRUL ISKANDAR AZMAN:  Oh.
+Speaker 2:  Uh, so good, lah. Good job, lah.
+AMMIRUL ISKANDAR AZMAN:  Okay.
+Speaker 2:  Uh, good, uh, good job. Uh, but I think, like I said, at the end of the day, dashboard, if we ask AI to develop the dashboard, uh, usually it's going to look like that, lah. At the end of the day, uh, the hard layout, the, the font colour, the, the, the, the font that you use, or whatever it is.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Kan, here with that.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  But as long as the dashboard is what, uh, is usable, you know, as the, you have to, that's why you have to ask, uh, HR practitioner, kan.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Uh, a real, I'm a consultant, but I'm not a, I'm someone that, I'm not someone that's working as a HR consultant. But I, I HR personnel, but, um, I, you know, I, I learned HR, lah. I have a degree in HR management, things like that.
+Speaker 2:  But I, I'm not in, in, in, in working, lah, kan. But I'm, I'm just, I'm a, I'm a consultant.
+Speaker 2:  Okay? So, uh, but from, but based on the, the dashboard that, that you created, that you made, it's quite similar with my, my, my, my dashboard that I'm trying to sell, lah.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  So okay lah. If you ask me, okay. But please, uh, try to, to, to set a, a, a similar type of discussion like, like we have right now with other HR practitioners also.
+Speaker 2:  Let's see their opinion.
+AMMIRUL ISKANDAR AZMAN:  Sure.
+Speaker 2:  Especially, try to, try to find someone that is currently working in a company in, in a, in a, uh, kalau boleh, uh, medium-sized enterprise, medium-sized companies, lah, that have, uh, HR that's a proper HR, like have a, you know?
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Uh, if, for example, that company only have 5 people, and sometimes they don't have, sometimes they don't, don't have HR department pun.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  Find someone that's really working inside the, the HR, Human Resource Department, or Human Capital, uh, Human Capital, uh, Department.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  And, uh, uh, really, uh, ask their opinion in terms of the, uh, ni, usability. But if you ask me, you are, you're in the right track, lah. Good for you, lah.
+Abraham Tan:  Uh, okay. So just one, one final question. Sorry, I'm taking up so much of your time.
+Speaker 2:  It's okay. It's okay. It's okay.
+Abraham Tan:  Uh, okay. One question is, would you be interested in getting the information of my project, like the code and the interviews I've done? Would you be interested in that?
+Speaker 2:  It's, it's just very interesting in what?
+Abraham Tan:  Would you be interested in, uh, so, so by the end of the, my project, I would open source it, post it on GitHub. Would you be interested in looking into it and my interviews and so on that I've done?
+Speaker 2:  Uh, yeah, sure. Of course.
+Abraham Tan:  Okay.
+Speaker 2:  Why not?
+Abraham Tan:  Sure.
+Speaker 2:  Just, just share it to me, lah, a-after you finish, after whatever, whatever you want to share, just, just continue to share, lah. If something that it, uh, that, yeah? Okay?
+Speaker 2:  So just, just keep on, uh, uh, keep in touch, lah.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  In terms of, uh, you know, whatever, uh, you know, the progress of the project or whatever, you know?
+Abraham Tan:  No problem.
+Speaker 2:  And all, and, and all the best.
+Abraham Tan:  Okay. Uh, so I have your consent to put your name and, uh, your title inside my presentation, right? And your code.
+Speaker 2:  Uh, you mean as the reference ke?
+Abraham Tan:  Uh, like some, I, I might quote you directly, like what you said, and put your name and your title. Is that okay?
+Speaker 2:  Yeah, sure.
+Abraham Tan:  Okay.
+Speaker 2:  I mean, uh, um.
+Abraham Tan:  Hello?
+Speaker 2:  Hello? Yeah.
+Abraham Tan:  Hello?
+Speaker 2:  Okay, okay.
+Abraham Tan:  Hello?
+Abraham Tan:  Sorry, I couldn't hear you just now.
+Abraham Tan:  Hello?
+Speaker 2:  Oh, sorry, sorry, sorry.
+Abraham Tan:  Yeah. No problem.
+Speaker 2:  Okay. Sure, sure.
+Abraham Tan:  Okay.
+Speaker 2:  Yeah, yeah. You can, you can, you can, you can, uh, you can put, put my, my name, uh, on the presentation, lah.
+Abraham Tan:  Uh, can, can I get that right now? Uh, I'm not really sure. Yeah, I think I have your name, but, um, your title and.
+Speaker 2:  Uh, I can, I can, I can text you. I'm going to text you my full name and my, my company, my company, and my, uh, my role in the company, lah.
+Abraham Tan:  Okay. Sure. Yeah.
+Abraham Tan:  Uh, I think that should be all. Thank you very much for your time.
+Abraham Tan:  It was very valuable advice. Uh, yeah.
+Speaker 2:  Welcome. Thank, thank you. Thank, thank you, uh, to you too, uh, for sharing with me.
+Speaker 2:  And at least I know that this, that this is something that is, well, we, we had a, we, we, me, uh, we, as, as we, it means that me and my, my, my technical team, my company's technical team, lah, we have a, a strong feeling that we, this is something that is, especially we're talking about, like I said, digital and AI-assimilated, uh, platforms, right?
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  It's something that is very, it's booming right now, lah.
+AMMIRUL ISKANDAR AZMAN:  Yeah.
+Speaker 2:  We are not the only ones that, that are thinking, or even designing the, the, the dashboard, uh, uh, like that. I'm, I'm pretty sure someone else is also currently doing. And it, and it turns out very true, and it turns out it's, uh, you know, uh, uh, a university student that are developing this.
+Speaker 2:  Just imagine if someone that is, is, is, is doing business, uh, the same kind of, uh, niche business as ours, lah, also they are also doing the same thing, of course. So it's, it's, it's a good outlook, lah, in terms of, uh, in a way, like, uh, what is happening outside, lah.
+Speaker 2:  Because we, I, I, I don't, I don't, don't, don't, don't yet, uh, encounter with other competitors, with other companies, uh, that are, uh, you know, also, uh, selling these kind of, uh, solutions, lah.
+AMMIRUL ISKANDAR AZMAN:  Mm-hmm.
+Speaker 2:  Uh, we don't yet, not yet encountered, but like, likely this, this, this today or yesterday, uh, um, encountered you, and it shows that even university students are also thinking about this.
+Abraham Tan:  Oh, no. It's, uh, it's from a hackathon, like a competition to build the prototype. Uh, and they suggested to build this.
+Abraham Tan:  So I think it shows it's, there's really a lot of demand for this system.
+Speaker 2:  Yeah. You're right. So that, like, like I said, you can, you can keep this, uh, you can keep this, you can trademark it yours in whatever this, this, and you can continue to sell it, lah.
+Speaker 2:  Like really, you know?
+Abraham Tan:  Yeah.
+Speaker 2:  And hopefully you, you, uh, hopefully you didn't, you didn't sell it to my, my, my, my professional clients, lah. Okay. All right, Ibrahim.
+Speaker 2:  Okay. Thank you very much.
+Abraham Tan:  Thank you.
+Speaker 2:  Bye-bye.
+Abraham Tan:  Good luck.
+Speaker 2:  All the best.
+Abraham Tan:  For your platform as well. Okay.
+Speaker 2:  All right. You too. You too.
+Abraham Tan:  Bye-bye.
