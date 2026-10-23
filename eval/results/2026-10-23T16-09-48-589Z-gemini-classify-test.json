@@ -1,0 +1,6307 @@
+{
+ "run_id": "6d100ed6-4af8-4b38-9297-d7a39793d2e5",
+ "command": "classify",
+ "model": "gemini",
+ "model_id": "agy/gemini-3.5-flash-lite",
+ "prompt_version": "classify-v1",
+ "reasoning": null,
+ "started": "2026-10-23T16:09:48.589Z",
+ "sample": null,
+ "latency": {
+  "n": 182,
+  "p50_ms": 1450,
+  "p90_ms": 2277,
+  "max_ms": 7203
+ },
+ "usage": {
+  "calls": 183,
+  "failed": 1,
+  "input": 200366,
+  "output": 22201,
+  "cost": 0.23353,
+  "rate_waits": 0,
+  "errors": []
+ },
+ "split": "test",
+ "metrics": {
+  "all": {
+   "items": 183,
+   "failed_calls": 1,
+   "first_try_valid": {
+    "k": 182,
+    "n": 183,
+    "share": 0.995,
+    "ci95": [
+     0.97,
+     0.999
+    ]
+   },
+   "kappa_mean": 0.712,
+   "drivers": {
+    "ROLE_CLARITY": {
+     "kappa": 0.768,
+     "precision_counted": {
+      "k": 11,
+      "n": 16,
+      "share": 0.688,
+      "ci95": [
+       0.444,
+       0.858
+      ]
+     }
+    },
+    "MANAGER_SUPPORT": {
+     "kappa": 0.691,
+     "precision_counted": {
+      "k": 16,
+      "n": 19,
+      "share": 0.842,
+      "ci95": [
+       0.624,
+       0.945
+      ]
+     }
+    },
+    "BELONGING": {
+     "kappa": 0.686,
+     "precision_counted": {
+      "k": 14,
+      "n": 24,
+      "share": 0.583,
+      "ci95": [
+       0.388,
+       0.755
+      ]
+     }
+    },
+    "ONBOARDING": {
+     "kappa": 0.431,
+     "precision_counted": {
+      "k": 18,
+      "n": 52,
+      "share": 0.346,
+      "ci95": [
+       0.232,
+       0.482
+      ]
+     }
+    },
+    "TRAINING": {
+     "kappa": 0.894,
+     "precision_counted": {
+      "k": 14,
+      "n": 16,
+      "share": 0.875,
+      "ci95": [
+       0.64,
+       0.965
+      ]
+     }
+    },
+    "WORKLOAD": {
+     "kappa": 0.801,
+     "precision_counted": {
+      "k": 25,
+      "n": 28,
+      "share": 0.893,
+      "ci95": [
+       0.728,
+       0.963
+      ]
+     }
+    }
+   },
+   "precision_counted_all_drivers": {
+    "k": 98,
+    "n": 155,
+    "share": 0.632,
+    "ci95": [
+     0.554,
+     0.704
+    ]
+   },
+   "sent_to_review": {
+    "k": 0,
+    "n": 182,
+    "share": 0,
+    "ci95": [
+     0,
+     0.021
+    ]
+   },
+   "follow_up_recall": {
+    "k": 55,
+    "n": 55,
+    "share": 1,
+    "ci95": [
+     0.935,
+     1
+    ]
+   },
+   "escalation_recall": {
+    "k": 55,
+    "n": 55,
+    "share": 1,
+    "ci95": [
+     0.935,
+     1
+    ]
+   },
+   "forced_labour_recall": {
+    "k": 10,
+    "n": 10,
+    "share": 1,
+    "ci95": [
+     0.722,
+     1
+    ]
+   },
+   "false_alarms": {
+    "k": 0,
+    "n": 128,
+    "share": 0,
+    "ci95": [
+     0,
+     0.029
+    ]
+   },
+   "false_alarms_hyperbole": {
+    "k": 0,
+    "n": 6,
+    "share": 0,
+    "ci95": [
+     0,
+     0.39
+    ]
+   },
+   "false_alarms_deduction": {
+    "k": 0,
+    "n": 10,
+    "share": 0,
+    "ci95": [
+     0,
+     0.278
+    ]
+   },
+   "baseline_keywords": {
+    "escalation_recall": {
+     "k": 9,
+     "n": 55,
+     "share": 0.164,
+     "ci95": [
+      0.089,
+      0.283
+     ]
+    },
+    "false_alarms": {
+     "k": 2,
+     "n": 128,
+     "share": 0.016,
+     "ci95": [
+      0.004,
+      0.055
+     ]
+    }
+   },
+   "model_or_keywords_escalation_recall": {
+    "k": 55,
+    "n": 55,
+    "share": 1,
+    "ci95": [
+     0.935,
+     1
+    ]
+   }
+  },
+  "ms": {
+   "items": 55,
+   "failed_calls": 0,
+   "first_try_valid": {
+    "k": 55,
+    "n": 55,
+    "share": 1,
+    "ci95": [
+     0.935,
+     1
+    ]
+   },
+   "kappa_mean": 0.731,
+   "drivers": {
+    "ROLE_CLARITY": {
+     "kappa": 0.78,
+     "precision_counted": {
+      "k": 4,
+      "n": 5,
+      "share": 0.8,
+      "ci95": [
+       0.376,
+       0.964
+      ]
+     }
+    },
+    "MANAGER_SUPPORT": {
+     "kappa": 0.562,
+     "precision_counted": {
+      "k": 3,
+      "n": 4,
+      "share": 0.75,
+      "ci95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "BELONGING": {
+     "kappa": 0.814,
+     "precision_counted": {
+      "k": 5,
+      "n": 7,
+      "share": 0.714,
+      "ci95": [
+       0.359,
+       0.918
+      ]
+     }
+    },
+    "ONBOARDING": {
+     "kappa": 0.574,
+     "precision_counted": {
+      "k": 9,
+      "n": 18,
+      "share": 0.5,
+      "ci95": [
+       0.29,
+       0.71
+      ]
+     }
+    },
+    "TRAINING": {
+     "kappa": 0.848,
+     "precision_counted": {
+      "k": 3,
+      "n": 4,
+      "share": 0.75,
+      "ci95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "WORKLOAD": {
+     "kappa": 0.809,
+     "precision_counted": {
+      "k": 8,
+      "n": 9,
+      "share": 0.889,
+      "ci95": [
+       0.565,
+       0.98
+      ]
+     }
+    }
+   },
+   "precision_counted_all_drivers": {
+    "k": 32,
+    "n": 47,
+    "share": 0.681,
+    "ci95": [
+     0.538,
+     0.796
+    ]
+   },
+   "sent_to_review": {
+    "k": 0,
+    "n": 55,
+    "share": 0,
+    "ci95": [
+     0,
+     0.065
+    ]
+   },
+   "follow_up_recall": {
+    "k": 14,
+    "n": 14,
+    "share": 1,
+    "ci95": [
+     0.785,
+     1
+    ]
+   },
+   "escalation_recall": {
+    "k": 14,
+    "n": 14,
+    "share": 1,
+    "ci95": [
+     0.785,
+     1
+    ]
+   },
+   "forced_labour_recall": {
+    "k": 3,
+    "n": 3,
+    "share": 1,
+    "ci95": [
+     0.438,
+     1
+    ]
+   },
+   "false_alarms": {
+    "k": 0,
+    "n": 41,
+    "share": 0,
+    "ci95": [
+     0,
+     0.086
+    ]
+   },
+   "false_alarms_hyperbole": {
+    "k": 0,
+    "n": 2,
+    "share": 0,
+    "ci95": [
+     0,
+     0.658
+    ]
+   },
+   "false_alarms_deduction": {
+    "k": 0,
+    "n": 3,
+    "share": 0,
+    "ci95": [
+     0,
+     0.562
+    ]
+   },
+   "baseline_keywords": {
+    "escalation_recall": {
+     "k": 4,
+     "n": 14,
+     "share": 0.286,
+     "ci95": [
+      0.117,
+      0.546
+     ]
+    },
+    "false_alarms": {
+     "k": 1,
+     "n": 41,
+     "share": 0.024,
+     "ci95": [
+      0.004,
+      0.126
+     ]
+    }
+   },
+   "model_or_keywords_escalation_recall": {
+    "k": 14,
+    "n": 14,
+    "share": 1,
+    "ci95": [
+     0.785,
+     1
+    ]
+   }
+  },
+  "en": {
+   "items": 52,
+   "failed_calls": 0,
+   "first_try_valid": {
+    "k": 52,
+    "n": 52,
+    "share": 1,
+    "ci95": [
+     0.931,
+     1
+    ]
+   },
+   "kappa_mean": 0.654,
+   "drivers": {
+    "ROLE_CLARITY": {
+     "kappa": 0.639,
+     "precision_counted": {
+      "k": 3,
+      "n": 6,
+      "share": 0.5,
+      "ci95": [
+       0.188,
+       0.812
+      ]
+     }
+    },
+    "MANAGER_SUPPORT": {
+     "kappa": 0.636,
+     "precision_counted": {
+      "k": 3,
+      "n": 4,
+      "share": 0.75,
+      "ci95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "BELONGING": {
+     "kappa": 0.736,
+     "precision_counted": {
+      "k": 5,
+      "n": 7,
+      "share": 0.714,
+      "ci95": [
+       0.359,
+       0.918
+      ]
+     }
+    },
+    "ONBOARDING": {
+     "kappa": 0.454,
+     "precision_counted": {
+      "k": 6,
+      "n": 16,
+      "share": 0.375,
+      "ci95": [
+       0.185,
+       0.614
+      ]
+     }
+    },
+    "TRAINING": {
+     "kappa": 0.847,
+     "precision_counted": {
+      "k": 3,
+      "n": 3,
+      "share": 1,
+      "ci95": [
+       0.438,
+       1
+      ]
+     }
+    },
+    "WORKLOAD": {
+     "kappa": 0.611,
+     "precision_counted": {
+      "k": 5,
+      "n": 7,
+      "share": 0.714,
+      "ci95": [
+       0.359,
+       0.918
+      ]
+     }
+    }
+   },
+   "precision_counted_all_drivers": {
+    "k": 25,
+    "n": 43,
+    "share": 0.581,
+    "ci95": [
+     0.433,
+     0.716
+    ]
+   },
+   "sent_to_review": {
+    "k": 0,
+    "n": 52,
+    "share": 0,
+    "ci95": [
+     0,
+     0.069
+    ]
+   },
+   "follow_up_recall": {
+    "k": 13,
+    "n": 13,
+    "share": 1,
+    "ci95": [
+     0.772,
+     1
+    ]
+   },
+   "escalation_recall": {
+    "k": 13,
+    "n": 13,
+    "share": 1,
+    "ci95": [
+     0.772,
+     1
+    ]
+   },
+   "forced_labour_recall": {
+    "k": 3,
+    "n": 3,
+    "share": 1,
+    "ci95": [
+     0.438,
+     1
+    ]
+   },
+   "false_alarms": {
+    "k": 0,
+    "n": 39,
+    "share": 0,
+    "ci95": [
+     0,
+     0.09
+    ]
+   },
+   "false_alarms_hyperbole": {
+    "k": 0,
+    "n": 1,
+    "share": 0,
+    "ci95": [
+     0,
+     0.793
+    ]
+   },
+   "false_alarms_deduction": {
+    "k": 0,
+    "n": 3,
+    "share": 0,
+    "ci95": [
+     0,
+     0.562
+    ]
+   },
+   "baseline_keywords": {
+    "escalation_recall": {
+     "k": 2,
+     "n": 13,
+     "share": 0.154,
+     "ci95": [
+      0.043,
+      0.422
+     ]
+    },
+    "false_alarms": {
+     "k": 0,
+     "n": 39,
+     "share": 0,
+     "ci95": [
+      0,
+      0.09
+     ]
+    }
+   },
+   "model_or_keywords_escalation_recall": {
+    "k": 13,
+    "n": 13,
+    "share": 1,
+    "ci95": [
+     0.772,
+     1
+    ]
+   }
+  },
+  "zh": {
+   "items": 32,
+   "failed_calls": 0,
+   "first_try_valid": {
+    "k": 32,
+    "n": 32,
+    "share": 1,
+    "ci95": [
+     0.893,
+     1
+    ]
+   },
+   "kappa_mean": 0.602,
+   "drivers": {
+    "ROLE_CLARITY": {
+     "kappa": 1,
+     "precision_counted": {
+      "k": 1,
+      "n": 1,
+      "share": 1,
+      "ci95": [
+       0.207,
+       1
+      ]
+     }
+    },
+    "MANAGER_SUPPORT": {
+     "kappa": 0.529,
+     "precision_counted": {
+      "k": 3,
+      "n": 4,
+      "share": 0.75,
+      "ci95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "BELONGING": {
+     "kappa": 0.448,
+     "precision_counted": {
+      "k": 2,
+      "n": 6,
+      "share": 0.333,
+      "ci95": [
+       0.097,
+       0.7
+      ]
+     }
+    },
+    "ONBOARDING": {
+     "kappa": 0,
+     "precision_counted": {
+      "k": 0,
+      "n": 8,
+      "share": 0,
+      "ci95": [
+       0,
+       0.324
+      ]
+     }
+    },
+    "TRAINING": {
+     "kappa": 1,
+     "precision_counted": {
+      "k": 3,
+      "n": 3,
+      "share": 1,
+      "ci95": [
+       0.438,
+       1
+      ]
+     }
+    },
+    "WORKLOAD": {
+     "kappa": 0.636,
+     "precision_counted": {
+      "k": 2,
+      "n": 2,
+      "share": 1,
+      "ci95": [
+       0.342,
+       1
+      ]
+     }
+    }
+   },
+   "precision_counted_all_drivers": {
+    "k": 11,
+    "n": 24,
+    "share": 0.458,
+    "ci95": [
+     0.279,
+     0.649
+    ]
+   },
+   "sent_to_review": {
+    "k": 0,
+    "n": 32,
+    "share": 0,
+    "ci95": [
+     0,
+     0.107
+    ]
+   },
+   "follow_up_recall": {
+    "k": 21,
+    "n": 21,
+    "share": 1,
+    "ci95": [
+     0.845,
+     1
+    ]
+   },
+   "escalation_recall": {
+    "k": 21,
+    "n": 21,
+    "share": 1,
+    "ci95": [
+     0.845,
+     1
+    ]
+   },
+   "forced_labour_recall": {
+    "k": 3,
+    "n": 3,
+    "share": 1,
+    "ci95": [
+     0.438,
+     1
+    ]
+   },
+   "false_alarms": {
+    "k": 0,
+    "n": 11,
+    "share": 0,
+    "ci95": [
+     0,
+     0.259
+    ]
+   },
+   "false_alarms_hyperbole": {
+    "k": 0,
+    "n": 1,
+    "share": 0,
+    "ci95": [
+     0,
+     0.793
+    ]
+   },
+   "false_alarms_deduction": {
+    "k": 0,
+    "n": 2,
+    "share": 0,
+    "ci95": [
+     0,
+     0.658
+    ]
+   },
+   "baseline_keywords": {
+    "escalation_recall": {
+     "k": 2,
+     "n": 21,
+     "share": 0.095,
+     "ci95": [
+      0.027,
+      0.289
+     ]
+    },
+    "false_alarms": {
+     "k": 0,
+     "n": 11,
+     "share": 0,
+     "ci95": [
+      0,
+      0.259
+     ]
+    }
+   },
+   "model_or_keywords_escalation_recall": {
+    "k": 21,
+    "n": 21,
+    "share": 1,
+    "ci95": [
+     0.845,
+     1
+    ]
+   }
+  },
+  "manglish": {
+   "items": 44,
+   "failed_calls": 1,
+   "first_try_valid": {
+    "k": 43,
+    "n": 44,
+    "share": 0.977,
+    "ci95": [
+     0.882,
+     0.996
+    ]
+   },
+   "kappa_mean": 0.784,
+   "drivers": {
+    "ROLE_CLARITY": {
+     "kappa": 0.845,
+     "precision_counted": {
+      "k": 3,
+      "n": 4,
+      "share": 0.75,
+      "ci95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "MANAGER_SUPPORT": {
+     "kappa": 0.919,
+     "precision_counted": {
+      "k": 7,
+      "n": 7,
+      "share": 1,
+      "ci95": [
+       0.646,
+       1
+      ]
+     }
+    },
+    "BELONGING": {
+     "kappa": 0.645,
+     "precision_counted": {
+      "k": 2,
+      "n": 4,
+      "share": 0.5,
+      "ci95": [
+       0.15,
+       0.85
+      ]
+     }
+    },
+    "ONBOARDING": {
+     "kappa": 0.397,
+     "precision_counted": {
+      "k": 3,
+      "n": 10,
+      "share": 0.3,
+      "ci95": [
+       0.108,
+       0.603
+      ]
+     }
+    },
+    "TRAINING": {
+     "kappa": 0.896,
+     "precision_counted": {
+      "k": 5,
+      "n": 6,
+      "share": 0.833,
+      "ci95": [
+       0.436,
+       0.97
+      ]
+     }
+    },
+    "WORKLOAD": {
+     "kappa": 1,
+     "precision_counted": {
+      "k": 10,
+      "n": 10,
+      "share": 1,
+      "ci95": [
+       0.722,
+       1
+      ]
+     }
+    }
+   },
+   "precision_counted_all_drivers": {
+    "k": 30,
+    "n": 41,
+    "share": 0.732,
+    "ci95": [
+     0.581,
+     0.843
+    ]
+   },
+   "sent_to_review": {
+    "k": 0,
+    "n": 43,
+    "share": 0,
+    "ci95": [
+     0,
+     0.082
+    ]
+   },
+   "follow_up_recall": {
+    "k": 7,
+    "n": 7,
+    "share": 1,
+    "ci95": [
+     0.646,
+     1
+    ]
+   },
+   "escalation_recall": {
+    "k": 7,
+    "n": 7,
+    "share": 1,
+    "ci95": [
+     0.646,
+     1
+    ]
+   },
+   "forced_labour_recall": {
+    "k": 1,
+    "n": 1,
+    "share": 1,
+    "ci95": [
+     0.207,
+     1
+    ]
+   },
+   "false_alarms": {
+    "k": 0,
+    "n": 37,
+    "share": 0,
+    "ci95": [
+     0,
+     0.094
+    ]
+   },
+   "false_alarms_hyperbole": {
+    "k": 0,
+    "n": 2,
+    "share": 0,
+    "ci95": [
+     0,
+     0.658
+    ]
+   },
+   "false_alarms_deduction": {
+    "k": 0,
+    "n": 2,
+    "share": 0,
+    "ci95": [
+     0,
+     0.658
+    ]
+   },
+   "baseline_keywords": {
+    "escalation_recall": {
+     "k": 1,
+     "n": 7,
+     "share": 0.143,
+     "ci95": [
+      0.026,
+      0.513
+     ]
+    },
+    "false_alarms": {
+     "k": 1,
+     "n": 37,
+     "share": 0.027,
+     "ci95": [
+      0.005,
+      0.138
+     ]
+    }
+   },
+   "model_or_keywords_escalation_recall": {
+    "k": 7,
+    "n": 7,
+    "share": 1,
+    "ci95": [
+     0.646,
+     1
+    ]
+   }
+  }
+ },
+ "records": [
+  {
+   "id": "b004",
+   "lang": "en",
+   "text": "Rota keeps changing every few days and nobody tells us until the night before.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Rota keeps changing every few days and nobody tells us until the night before.",
+    "summary": "The employee experiences frequent and late changes to their work schedule.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b006",
+   "lang": "manglish",
+   "text": "Commute jauh gila tapi OK la, yang penting gaji betul-betul masuk.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "COMMUTE_LOGISTICS",
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Commute jauh gila tapi OK la, yang penting gaji betul-betul masuk.",
+    "summary": "The employee reports a long commute and satisfactory salary payment.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b007",
+   "lang": "en",
+   "text": "Still don't know how the POS refund process works, nobody showed me and the manual is 80 pages.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "nobody showed me and the manual is 80 pages",
+    "summary": "The employee struggles with the refund process due to inadequate training and a lengthy manual.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b008",
+   "lang": "ms",
+   "text": "Shift malam ni sampai 2 pagi, lepas tu start pagi lagi. Badan dah x larat.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Badan dah x larat.",
+    "summary": "The employee reports excessive working hours and physical exhaustion due to consecutive shifts.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b010",
+   "lang": "manglish",
+   "text": "Hari-hari OT sampai malam, mati la kalau macam ni, tapi bos ok je.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Hari-hari OT sampai malam",
+    "summary": "The employee works overtime every day until late at night.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b011",
+   "lang": "ms",
+   "text": "Supervisor tak pernah tegur bila saya buat silap, tapi bila dah settle baru tanya kenapa.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Supervisor tak pernah tegur bila saya buat silap, tapi bila dah settle baru tanya kenapa.",
+    "summary": "The employee notes that the supervisor does not give feedback during mistakes and only asks questions after issues are resolved.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b014",
+   "lang": "ms",
+   "text": "Abang supervisor selalu 'tak sengaja' sentuh pinggang saya masa lalu depan stor. Saya rasa tak selesa.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "Abang supervisor selalu 'tak sengaja' sentuh pinggang saya masa lalu depan stor.",
+    "summary": "The employee reports feeling uncomfortable due to unwanted physical contact by the supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b015",
+   "lang": "en",
+   "text": "Warehouse has a pallet jack with a dodgy brake and the supervisor said 'just be careful'.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "Warehouse has a pallet jack with a dodgy brake and the supervisor said 'just be careful'.",
+    "summary": "The employee reports a faulty pallet jack in the warehouse and a lack of safety action from the supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b018",
+   "lang": "en",
+   "text": "Got the store rota but nobody told me which SOP version to follow, so I'm doing it two ways.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "nobody told me which SOP version to follow",
+    "summary": "The employee received the schedule but lacks clarity on which standard operating procedure version to use.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b019",
+   "lang": "manglish",
+   "text": "Boss suruh buat stocktake malam ni, pagi esok pulak kena buka outlet, tak faham la deadline sebenar.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak faham la deadline sebenar",
+    "summary": "The employee is confused about deadlines due to conflicting shift demands and workload.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b020",
+   "lang": "ms",
+   "text": "Supervisor cakap kalau saya report pasal shift saya, dia akan pastikan saya kena buang. Dia serius.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "Supervisor cakap kalau saya report pasal shift saya, dia akan pastikan saya kena buang.",
+    "summary": "The employee reports being threatened by their supervisor with termination for reporting issues about shifts.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b021",
+   "lang": "en",
+   "text": "Feeling kinda lonely honestly, everyone already has their lunch group and I just eat at my desk.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "everyone already has their lunch group and I just eat at my desk",
+    "summary": "The employee feels isolated during lunch as existing groups are already formed.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b022",
+   "lang": "manglish",
+   "text": "Dah 3 minggu tak dapat training betul, main tengok je cara orang lain buat.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak dapat training betul, main tengok je cara orang lain buat",
+    "summary": "The employee reports a lack of proper training after three weeks and relies on observing others.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b023",
+   "lang": "ms",
+   "text": "Gudang panas macam sauna pagi tadi, rasa nak rebah tapi gerak juga.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Gudang panas macam sauna pagi tadi, rasa nak rebah tapi gerak juga",
+    "summary": "The employee describes the warehouse as extremely hot, causing physical distress during work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b025",
+   "lang": "manglish",
+   "text": "Mesin cuci lantai dekat outlet tu rosak, wayar terdedah, tapi kami kena guna jugak.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "wayar terdedah",
+    "summary": "The employee reports using a broken floor washing machine with exposed wires.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b026",
+   "lang": "en",
+   "text": "Honestly I think the team would manage better without me around, I've been thinking about it a lot at night.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "self_harm_crisis",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "self_harm_crisis",
+    "evidence_quote": "I've been thinking about it a lot at night",
+    "summary": "The employee expresses feelings of isolation and mentions troubling thoughts at night.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b027",
+   "lang": "ms",
+   "text": "Shift pagi dengan malam dah bertukar tiga kali bulan ni, orang tak tahu jadual sendiri.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Shift pagi dengan malam dah bertukar tiga kali bulan ni, orang tak tahu jadual sendiri.",
+    "summary": "The employee notes frequent shift changes and uncertainty regarding schedules.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b029",
+   "lang": "en",
+   "text": "Pay is fine, the commute to the Shah Alam warehouse is a killer though.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS",
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "the commute to the Shah Alam warehouse is a killer though",
+    "summary": "The employee is satisfied with the pay but finds the commute difficult.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b031",
+   "lang": "manglish",
+   "text": "Supervisor selalu bagi shift malam kat staff India je, kami yang Melayu dapat pagi je sebab dia kata budak Melayu tak boleh handle malam.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "Supervisor selalu bagi shift malam kat staff India je, kami yang Melayu dapat pagi je sebab dia kata budak Melayu tak boleh handle malam.",
+    "summary": "The employee reports discriminatory shift allocation based on ethnicity by the supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b033",
+   "lang": "ms",
+   "text": "Supervisor membebel pasal rak tak rapi, lepas tu dia sendiri pun ikut kemas. Okay la.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Okay la.",
+    "summary": "The employee mentions the supervisor complained about the untidy rack but then helped clean it up.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b034",
+   "lang": "manglish",
+   "text": "Kena ulang training online tiga kali sebab portal tak boleh login, takde siapa nak tolong.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Kena ulang training online tiga kali sebab portal tak boleh login, takde siapa nak tolong.",
+    "summary": "The employee had to repeat online training due to login issues and a lack of assistance.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b035",
+   "lang": "en",
+   "text": "Our area manager keeps saying women can't handle the stockroom, so I'm always stuck on the counter.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "Our area manager keeps saying women can't handle the stockroom, so I'm always stuck on the counter.",
+    "summary": "An employee reports facing gender-based task allocation and remarks from the area manager.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b036",
+   "lang": "ms",
+   "text": "Ada orang senior gelak-gelak dengan saya tiap kali saya salah sebut nama produk, rasa macam diejek.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "rasa macam diejek",
+    "summary": "The employee feels mocked by a senior colleague when making mistakes.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b037",
+   "lang": "manglish",
+   "text": "Shift saya tukar tanpa notice, minggu ni dah kena 3 shift lain, plan hidup pun kacau.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Shift saya tukar tanpa notice",
+    "summary": "The employee reports unexpected shift changes that disrupt their personal schedule.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b038",
+   "lang": "en",
+   "text": "Customers keep asking for stuff we don't carry and I end up explaining the same thing fifty times.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Customers keep asking for stuff we don't carry and I end up explaining the same thing fifty times.",
+    "summary": "The employee experiences frustration regarding repetitive customer inquiries about unavailable products.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b041",
+   "lang": "en",
+   "text": "Sometimes I feel like the dumbest one in the room because nobody explains the stock codes.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "nobody explains the stock codes",
+    "summary": "The employee feels lacking in training because nobody explains the stock codes.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b045",
+   "lang": "ms",
+   "text": "Kerja lebih masa sejak bulan lepas tak dibayar, tuntutan dah hantar dua kali tapi tak dilayan.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "Kerja lebih masa sejak bulan lepas tak dibayar",
+    "summary": "The employee reports unpaid overtime since last month and unaddressed claims.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b046",
+   "lang": "manglish",
+   "text": "Abang tu asyik hantar mesej malam-malam, tanya saya pakai apa, lepas tu suruh rahsiakan.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "harassment",
+    "evidence_quote": "Abang tu asyik hantar mesej malam-malam, tanya saya pakai apa, lepas tu suruh rahsiakan.",
+    "summary": "The employee reports receiving inappropriate late-night messages from a colleague asking about personal attire and requesting secrecy.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b047",
+   "lang": "en",
+   "text": "Coworker keeps posting my photo in the group chat with jokes about my weight, even after I asked him to stop.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "harassment",
+    "evidence_quote": "Coworker keeps posting my photo in the group chat with jokes about my weight, even after I asked him to stop.",
+    "summary": "An employee experiences inappropriate coworker behavior and harassment regarding their weight in a group chat.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b048",
+   "lang": "ms",
+   "text": "Forklift kat dock belakang tak ada brek, pemandu baru tu tetap guna. Hampir langgar orang tadi.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "Forklift kat dock belakang tak ada brek, pemandu baru tu tetap guna. Hampir langgar orang tadi.",
+    "summary": "The employee reports a serious safety hazard involving a broken forklift on the loading dock.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b049",
+   "lang": "manglish",
+   "text": "Ada staff lelaki asyik panggil aku dengan nama ejekan depan semua orang dalam grup, dah report tapi takde tindakan.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "harassment",
+    "evidence_quote": "Ada staff lelaki asyik panggil aku dengan nama ejekan depan semua orang dalam grup, dah report tapi takde tindakan.",
+    "summary": "An employee reports ongoing harassment and name-calling by a colleague with no action taken after reporting.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b050",
+   "lang": "ms",
+   "text": "OT sampai 12 malam hari-hari, rasa letih dah.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "OT sampai 12 malam hari-hari",
+    "summary": "The employee reports working late hours every day and feeling exhausted.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b051",
+   "lang": "en",
+   "text": "Can't figure out who I report to for the new outlet, my offer letter says one person and my WhatsApp says another.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Can't figure out who I report to for the new outlet",
+    "summary": "The employee is unsure about their reporting line due to conflicting information.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b052",
+   "lang": "manglish",
+   "text": "Stock sampai tiga kali kena kira semula, mata dah pedih, nak tidur je.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Stock sampai tiga kali kena kira semula, mata dah pedih, nak tidur je.",
+    "summary": "The employee experiences heavy workload and fatigue from recounting stock repeatedly.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b053",
+   "lang": "ms",
+   "text": "x jelas arahan, sekejap kata buat ni, sekejap kata buat tu.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "x jelas arahan, sekejap kata buat ni, sekejap kata buat tu",
+    "summary": "The employee reports unclear and changing instructions.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b054",
+   "lang": "en",
+   "text": "I'm so tired after the double shift, could honestly sleep on the shop floor right now lol.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I'm so tired after the double shift",
+    "summary": "The employee expresses fatigue following a double shift.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b055",
+   "lang": "manglish",
+   "text": "Ok je la, cuma tak ramai orang nak lepak makan dengan saya. Kadang rasa macam outsider.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Kadang rasa macam outsider.",
+    "summary": "The employee feels isolated at times and lacks colleagues to eat with.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b057",
+   "lang": "ms",
+   "text": "Sistem inventori tak dibuka untuk saya lagi, jadi kena tanya orang setiap kali nak order barang.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Sistem inventori tak dibuka untuk saya lagi",
+    "summary": "The inventory system is not yet accessible, requiring the employee to ask others to order items.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b058",
+   "lang": "manglish",
+   "text": "Supervisor baru ni tak pernah senyum atau puji, rasa macam tak buat apa-apa pun bagus.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Supervisor baru ni tak pernah senyum atau puji, rasa macam tak buat apa-apa pun bagus.",
+    "summary": "The employee feels unsupported by the supervisor due to a lack of positive feedback.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b059",
+   "lang": "en",
+   "text": "Mostly good, the store lead is supportive, though I still get lost in the planogram rules.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I still get lost in the planogram rules",
+    "summary": "The employee finds the store lead supportive but experiences confusion regarding planogram rules.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b062",
+   "lang": "en",
+   "text": "Honestly at this point a single day off would fix my whole life, my feet are cooked.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "my feet are cooked",
+    "summary": "The employee reports extreme physical exhaustion due to workload.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b063",
+   "lang": "ms",
+   "text": "Tak jelas sapa sepatutnya approve cuti, supervisor cakap tanya HR, HR cakap tanya supervisor.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tak jelas sapa sepatutnya approve cuti, supervisor cakap tanya HR, HR cakap tanya supervisor.",
+    "summary": "The employee is unclear about the leave approval process due to conflicting directions from the supervisor and HR.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b064",
+   "lang": "manglish",
+   "text": "Aku dah jarang dapat feedback, kadang-kadang boss tegur depan staf lain je.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Aku dah jarang dapat feedback, kadang-kadang boss tegur depan staf lain je.",
+    "summary": "The employee rarely receives feedback and dislikes being corrected publicly.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b065",
+   "lang": "en",
+   "text": "Team's been really welcoming, though I haven't been added to the outlet WhatsApp group yet so I miss updates.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Team's been really welcoming",
+    "summary": "The team is welcoming, but the employee is missing updates due to not being in the WhatsApp group.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b066",
+   "lang": "ms",
+   "text": "Setakat ni ok, tapi tak faham kenapa kena isi dua borang sekali untuk stok.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak faham kenapa kena isi dua borang sekali untuk stok",
+    "summary": "The employee is confused about the requirement to fill out two forms simultaneously for stock.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b067",
+   "lang": "manglish",
+   "text": "Kaki dah bengkak, rasa nak tanggal kaki je pun ada.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Kaki dah bengkak, rasa nak tanggal kaki je pun ada.",
+    "summary": "The employee reports physical strain due to work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b071",
+   "lang": "en",
+   "text": "New hire buddy assigned but he's on leave every other week so I've basically been on my own.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "New hire buddy assigned but he's on leave every other week so I've basically been on my own.",
+    "summary": "The employee has been largely on their own because their assigned buddy is frequently on leave.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b072",
+   "lang": "ms",
+   "text": "Stok rak hari ni habis, aku kena kemas 3 rak sorang, memang bengang je.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Stok rak hari ni habis, aku kena kemas 3 rak sorang, memang bengang je.",
+    "summary": "The employee expresses frustration about having to restock multiple shelves alone due to empty stock.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b073",
+   "lang": "manglish",
+   "text": "Sistem POS masih error, jadi kena tulis manual dan jadi lambat untuk closing.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Sistem POS masih error, jadi kena tulis manual dan jadi lambat untuk closing.",
+    "summary": "The POS system is experiencing errors, causing manual work and slower closing processes.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b074",
+   "lang": "en",
+   "text": "The outlet manager ignores my messages for days, I still haven't got my confirmation for the transfer.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "The outlet manager ignores my messages for days",
+    "summary": "The employee reports that the outlet manager ignores messages for days.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b075",
+   "lang": "ms",
+   "text": "Sekarang dah pandai buat stok opname, tapi tak tau ke mana nak lapor kalau ada selisih.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak tau ke mana nak lapor kalau ada selisih",
+    "summary": "The employee knows how to do stock verification but is unsure where to report discrepancies.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b076",
+   "lang": "manglish",
+   "text": "Macam takde support langsung, bila ada masalah kena cari sendiri dalam group.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Macam takde support langsung, bila ada masalah kena cari sendiri dalam group",
+    "summary": "The employee feels unsupported and has to solve problems independently.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b080",
+   "lang": "en",
+   "text": "Had a customer scream at me about a price, normal retail stuff lol nothing new.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Had a customer scream at me about a price, normal retail stuff lol nothing new.",
+    "summary": "The employee mentions a customer reacting to a price, viewing it as normal retail work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b081",
+   "lang": "ms",
+   "text": "Dekat outlet baru ni banyak sangat benda kena ingat, SOP 40 muka surat, takde masa nak baca.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING",
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "takde masa nak baca",
+    "summary": "The employee struggles to find time to read the extensive SOPs at the new outlet.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b082",
+   "lang": "manglish",
+   "text": "Gaji masuk on time, commute dari Klang pun ok la, takde complaint.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS",
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Gaji masuk on time, commute dari Klang pun ok la, takde complaint.",
+    "summary": "The employee expresses satisfaction with timely salary payments and the commute.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b083",
+   "lang": "en",
+   "text": "Shift times keep changing and I've got no idea whether I'm on tomorrow morning or late night.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Shift times keep changing and I've got no idea whether I'm on tomorrow morning or late night.",
+    "summary": "The employee experiences confusion regarding their schedule due to constantly changing shift times.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b084",
+   "lang": "ms",
+   "text": "Dah dua minggu tak dapat pelan kerja, jadi setiap hari tanya boss apa nak buat dulu.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak dapat pelan kerja, jadi setiap hari tanya boss apa nak buat dulu",
+    "summary": "The employee lacks a work plan and needs to ask the manager daily for priorities.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b085",
+   "lang": "manglish",
+   "text": "Sejak pindah outlet, tak ada siapa ajar POS baru, kena main cuba-cuba.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak ada siapa ajar POS baru, kena main cuba-cuba",
+    "summary": "The employee received no training on the new POS system after moving outlets and had to figure it out independently.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b086",
+   "lang": "en",
+   "text": "Stocktake took the whole night, my back is literally dying but I'll survive.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Stocktake took the whole night, my back is literally dying",
+    "summary": "The employee experienced a physically demanding night shift due to stocktaking.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b089",
+   "lang": "manglish",
+   "text": "Boss suruh ambil alih kerja kawan yang dah resign, tapi gaji sama je.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Boss suruh ambil alih kerja kawan yang dah resign, tapi gaji sama je.",
+    "summary": "The employee took over a resigned colleague's work without a salary increase.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b090",
+   "lang": "en",
+   "text": "Still waiting on my system login after two weeks so I'm doing everything on paper.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Still waiting on my system login after two weeks so I'm doing everything on paper.",
+    "summary": "The employee is still waiting for system login credentials after two weeks.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b091",
+   "lang": "ms",
+   "text": "Kadang dapat kerja bersepadu dekat tiga bahagian, siapa boss sebenar pun tak tau.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "siapa boss sebenar pun tak tau",
+    "summary": "The employee is confused about their priorities and reporting lines.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b093",
+   "lang": "en",
+   "text": "Honestly I'm so tired of price checks, could scream but it's fine.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Honestly I'm so tired of price checks",
+    "summary": "The employee expresses fatigue regarding price checks.",
+    "confidence": "medium",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b094",
+   "lang": "ms",
+   "text": "Dah dapat jadual cuti, tapi bila tukar shift kena tunggu kelulusan dua minggu.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "bila tukar shift kena tunggu kelulusan dua minggu",
+    "summary": "The employee notes that shift changes require waiting two weeks for approval.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b095",
+   "lang": "manglish",
+   "text": "Kerja support HQ ni semua kena buat, tak ada siapa cakap yang mana penting.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak ada siapa cakap yang mana penting",
+    "summary": "The employee feels overwhelmed by performing various headquarters support tasks without clear priority guidance.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b097",
+   "lang": "ms",
+   "text": "Ok je, dah kenal semua orang outlet, lunch sekali-sekala.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Ok je, dah kenal semua orang outlet",
+    "summary": "The employee feels fine and has gotten to know everyone at the outlet.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b098",
+   "lang": "manglish",
+   "text": "Boss kata apa-apa ada kat dia, tapi bila tanya dia takde masa, kena tunggu minggu depan.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "bila tanya dia takde masa",
+    "summary": "The employee reports that the manager is too busy to answer questions and defers help.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b099",
+   "lang": "en",
+   "text": "Feel like I'm drowning in SOPs and I've been told to 'just ask' but nobody answers.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING",
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Feel like I'm drowning in SOPs and I've been told to 'just ask' but nobody answers.",
+    "summary": "The employee feels overwhelmed by procedures and lacks responsive support when asking questions.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b102",
+   "lang": "en",
+   "text": "Still shadowing after 3 months, nobody's given me actual responsibility or a clear sign-off.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "nobody's given me actual responsibility or a clear sign-off",
+    "summary": "The employee is still shadowing after three months without actual responsibility or clear sign-off.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b103",
+   "lang": "ms",
+   "text": "Sebulan kat outlet ni, x ada sorang pun ajak lepak, dan SOP pun sy tak pernah dapat taklimat.",
+   "gold": {
+    "drivers": [
+     "BELONGING",
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "x ada sorang pun ajak lepak, dan SOP pun sy tak pernah dapat taklimat",
+    "summary": "The employee feels excluded by colleagues and has not received SOP briefings.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b105",
+   "lang": "manglish",
+   "text": "Supervisor takde masa nak layan, lunch pun geng lama je yang duduk sama, aku sorang kat hujung.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "awaiting_ai",
+   "out": null,
+   "calls": 1
+  },
+  {
+   "id": "b106",
+   "lang": "ms",
+   "text": "Boleh la, gaji dah masuk, jalan dari rumah ke HQ pun tak sesak sangat.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS",
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "gaji dah masuk, jalan dari rumah ke HQ pun tak sesak sangat",
+    "summary": "The employee is satisfied with the received salary and the manageable commute to headquarters.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b107",
+   "lang": "en",
+   "text": "Training was two hours on day one and then I'm running the till alone during peak, which is a bit much.",
+   "gold": {
+    "drivers": [
+     "TRAINING",
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING",
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Training was two hours on day one and then I'm running the till alone during peak, which is a bit much.",
+    "summary": "The employee feels the initial training was insufficient and the current workload during peak hours is excessive.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b108",
+   "lang": "manglish",
+   "text": "Dah dua minggu aku sorang tutup kedai, hari-hari closing lewat, tak ada siapa gantikan.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "hari-hari closing lewat, tak ada siapa gantikan",
+    "summary": "The employee is closing the store alone every day without relief, resulting in late hours.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b110",
+   "lang": "en",
+   "text": "Yeah all good, team's friendly, pay's on time, no real complaints from me yet.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "team's friendly, pay's on time",
+    "summary": "The employee reports a positive onboarding experience with a friendly team and timely pay.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b112",
+   "lang": "ms",
+   "text": "Boss baik, tapi dia dah pindah dua kali, sekarang kena adapt dengan orang baru dan SOP baru lagi.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "sekarang kena adapt dengan orang baru dan SOP baru lagi",
+    "summary": "The employee is adjusting to new supervisors and procedures due to management changes.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b113",
+   "lang": "en",
+   "text": "The office team goes out together every Thursday but nobody mentions it to me, so I just find out after.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "nobody mentions it to me",
+    "summary": "The employee feels left out when the office team goes out without informing them.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b114",
+   "lang": "manglish",
+   "text": "Kerja berubah-ubah tiap minggu, bulan lepas saya jaga stor, minggu ni tiba-tiba jadi cashier, tak ada penjelasan.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "tak ada penjelasan",
+    "summary": "The employee experiences frequent changes in tasks without any explanation.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b115",
+   "lang": "ms",
+   "text": "Hari ni pelanggan bising pasal diskaun, tapi tu kerja retail la, biasa je.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "biasa je",
+    "summary": "The employee notes that dealing with complaining customers is normal retail work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b117",
+   "lang": "manglish",
+   "text": "Manager ni jarang ada kat outlet, bila dia tak ada, aku la kena jadi supervisor dan handle semua benda.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Manager ni jarang ada kat outlet, bila dia tak ada, aku la kena jadi supervisor dan handle semua benda.",
+    "summary": "The employee lacks manager support and handles supervisory responsibilities alone due to the manager's absence.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b119",
+   "lang": "en",
+   "text": "Pay's decent, the commute to the Puchong outlet is long but I'm used to it.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS",
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Pay's decent, the commute to the Puchong outlet is long but I'm used to it.",
+    "summary": "The employee finds the pay decent and accepts the long commute.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b120",
+   "lang": "manglish",
+   "text": "Dekat outlet ada geng-geng, kalau kau bukan dari kawasan sama, susah nak masuk.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "kalau kau bukan dari kawasan sama, susah nak masuk",
+    "summary": "The employee feels integration is difficult because existing cliques at the outlet favor locals.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b121",
+   "lang": "ms",
+   "text": "Tak pernah ada manual untuk mesin penimbang, jadi main ikut ingatan orang lama.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tak pernah ada manual untuk mesin penimbang",
+    "summary": "The employee notes the absence of a manual for the weighing machine, relying instead on memory.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b122",
+   "lang": "en",
+   "text": "Honestly the stock count took forever, my hands are numb from the scanner lol, but whatever.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "the stock count took forever, my hands are numb from the scanner",
+    "summary": "The employee mentions that the stock count took a very long time and caused physical discomfort.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b124",
+   "lang": "ms",
+   "text": "Supervisor kata ok je, tapi bila nak feedback, dia cakap 'nanti la kita bincang', sampai sekarang tak bincang.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "sampai sekarang tak bincang",
+    "summary": "The employee reports that the supervisor postpones giving feedback and has not discussed it yet.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b126",
+   "lang": "manglish",
+   "text": "Aku baru masuk dan bahan training online dalam bahasa Inggeris penuh, susah sikit nak faham.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "bahan training online dalam bahasa Inggeris penuh, susah sikit nak faham",
+    "summary": "The employee finds the online training materials difficult to understand as they are entirely in English.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b127",
+   "lang": "ms",
+   "text": "Okay la semua, cuma sekali-sekala tunggu bas lama masa balik kerja.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Okay la semua",
+    "summary": "The employee feels everything is generally okay apart from occasional long bus waits after work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b128",
+   "lang": "en",
+   "text": "My area manager's instructions change every other day, and then he's unreachable when I ask which one to follow.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "My area manager's instructions change every other day, and then he's unreachable",
+    "summary": "An employee experiences conflicting instructions and lack of availability from their manager.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b131",
+   "lang": "en",
+   "text": "Happy with how things are going, the team went out for dinner and I finally feel part of it.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "finally feel part of it",
+    "summary": "The employee is happy with onboarding and feels integrated into the team.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b132",
+   "lang": "manglish",
+   "text": "Dah tanya boss banyak kali pasal proses refund, dia suruh tanya orang lain pulak, takde siapa tahu.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "dia suruh tanya orang lain pulak, takde siapa tahu",
+    "summary": "The employee is struggling to get clear guidance regarding refund processes from their manager and team.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b133",
+   "lang": "ms",
+   "text": "OT hari-hari, sambil tu kena belajar sistem baru yang tak ada siapa ajar betul-betul.",
+   "gold": {
+    "drivers": [
+     "TRAINING",
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING",
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "OT hari-hari, sambil tu kena belajar sistem baru yang tak ada siapa ajar betul-betul.",
+    "summary": "The employee experiences heavy overtime while struggling to learn a new system without proper training.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b134",
+   "lang": "en",
+   "text": "Lunch is always the same three people, I'm not sure if I'm supposed to join or just sit quietly.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I'm not sure if I'm supposed to join or just sit quietly",
+    "summary": "The employee feels uncertain about how to integrate during lunch breaks.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b136",
+   "lang": "ms",
+   "text": "Dah dua minggu shift 12 jam, sampai rumah terus tidur, tak sempat buat apa-apa.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Dah dua minggu shift 12 jam, sampai rumah terus tidur, tak sempat buat apa-apa.",
+    "summary": "The employee reports working twelve-hour shifts for two weeks, leaving no time for anything else.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b138",
+   "lang": "manglish",
+   "text": "Ok je, bos baik, rakan-rakan pun friendly, cuma kena belajar banyak lagi.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "cuma kena belajar banyak lagi",
+    "summary": "The employee reports a good overall experience with supportive management and colleagues, and notes a need to learn more.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b141",
+   "lang": "manglish",
+   "text": "Aku masih tak tahu cara nak file cuti dalam sistem, jadi tanya rakan je.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Aku masih tak tahu cara nak file cuti dalam sistem",
+    "summary": "The employee is unsure how to file leave in the system and has to ask colleagues.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b142",
+   "lang": "ms",
+   "text": "Nak mampus dah dengan inventori ni, banyak sangat kotak. Lepas siap nak tidur 12 jam.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Nak mampus dah dengan inventori ni, banyak sangat kotak.",
+    "summary": "The employee expresses extreme exhaustion due to managing a large inventory workload.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b143",
+   "lang": "ms",
+   "text": "Saya tak pasti nak lapor kat HQ atau kat supervisor outlet, dan yang lain semua macam dah kenal rapat.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING",
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Saya tak pasti nak lapor kat HQ atau kat supervisor outlet",
+    "summary": "The employee is unsure about reporting procedures and feels disconnected from the established team.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b145",
+   "lang": "manglish",
+   "text": "Ok la, gaji steady, aircond kat outlet sejuk, at least tak panas gila.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "gaji steady, aircond kat outlet sejuk",
+    "summary": "The employee reports steady pay and a comfortable working environment.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b147",
+   "lang": "manglish",
+   "text": "Boss tak pernah marah, tapi jarang juga tegur. Entah la kalau aku buat betul ke tak.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "jarang juga tegur. Entah la kalau aku buat betul ke tak.",
+    "summary": "The employee lacks feedback from the manager and is unsure about their performance.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b148",
+   "lang": "en",
+   "text": "Got the handbook but it's written for a different outlet format, so half of it doesn't apply.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Got the handbook but it's written for a different outlet format, so half of it doesn't apply.",
+    "summary": "The employee notes that the onboarding handbook is for a different outlet format and mostly inapplicable.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b149",
+   "lang": "ms",
+   "text": "Kadang-kadang minta buat dua kerja serentak, satu untuk HQ dan satu untuk outlet, siapa priority pun tak tau.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "siapa priority pun tak tau",
+    "summary": "The employee struggles with juggling multiple tasks simultaneously and knowing which one takes priority.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "b150",
+   "lang": "manglish",
+   "text": "Ok je la, takde masalah besar, gaji dan jadual pun jelas.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "gaji dan jadual pun jelas",
+    "summary": "The employee reports no major issues and states that pay and schedules are clear.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen01",
+   "lang": "en",
+   "text": "The agent who brought me here is holding my passport and says I can only have it back after I pay off RM6,000.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "The agent who brought me here is holding my passport and says I can only have it back after I pay off RM6,000.",
+    "summary": "The employee reports that their passport is being withheld by an agent until a debt is paid.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen03",
+   "lang": "en",
+   "text": "I owe the agent a recruitment fee and if I quit he says I must pay everything at once, so I cannot leave.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "I owe the agent a recruitment fee and if I quit he says I must pay everything at once, so I cannot leave.",
+    "summary": "The employee reports being unable to leave due to debt owed to a recruitment agent.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen04",
+   "lang": "en",
+   "text": "My supervisor said my contract cannot be cancelled until I repay the flight and permit costs.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "My supervisor said my contract cannot be cancelled until I repay the flight and permit costs.",
+    "summary": "The employee reports that their supervisor stated the contract cannot be cancelled until flight and permit costs are repaid.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen06",
+   "lang": "en",
+   "text": "My supervisor put his hand on my leg during the training and asked me to come to his room.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "My supervisor put his hand on my leg during the training and asked me to come to his room.",
+    "summary": "The employee reports unwanted physical contact and inappropriate behavior by their supervisor during training.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen07",
+   "lang": "en",
+   "text": "The line leader told me he will make sure I am fired if I report the missing stock.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "The line leader told me he will make sure I am fired if I report the missing stock.",
+    "summary": "The employee reports being threatened with termination by the line leader for reporting missing stock.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen08",
+   "lang": "en",
+   "text": "I was told the night shift supervisor job is only for Malay men, so I was not allowed to apply.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "I was told the night shift supervisor job is only for Malay men, so I was not allowed to apply.",
+    "summary": "The employee was denied the opportunity to apply for a night shift supervisor position based on gender and ethnicity.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen10",
+   "lang": "en",
+   "text": "The forklift brakes have been broken for a week and we still have to use it in the loading bay.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "The forklift brakes have been broken for a week and we still have to use it in the loading bay.",
+    "summary": "An employee reports using a forklift with broken brakes in the loading bay for a week.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen11",
+   "lang": "en",
+   "text": "My overtime for the last three months has not been paid and HR keeps saying next month.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "My overtime for the last three months has not been paid",
+    "summary": "The employee reports that overtime for the past three months remains unpaid despite follow-ups.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen12",
+   "lang": "en",
+   "text": "The company is not paying my EPF but it still shows as deducted on my salary slip.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "The company is not paying my EPF but it still shows as deducted on my salary slip.",
+    "summary": "The employee reports that EPF deductions appear on the salary slip but are not being paid by the company.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen13",
+   "lang": "en",
+   "text": "EPF and SOCSO were deducted from my salary like HR explained, no issue.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "EPF and SOCSO were deducted from my salary like HR explained, no issue.",
+    "summary": "The employee notes that statutory deductions were correctly processed as explained by human resources.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen15",
+   "lang": "en",
+   "text": "Tax was taken off my pay this month, I am not sure how it is worked out but I think it is normal.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tax was taken off my pay this month, I am not sure how it is worked out but I think it is normal.",
+    "summary": "The employee expresses minor uncertainty regarding how taxes are calculated on their pay slip.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen16",
+   "lang": "en",
+   "text": "My payslip shows a PCB deduction and I do not understand the abbreviation, can someone explain?",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "My payslip shows a PCB deduction and I do not understand the abbreviation, can someone explain?",
+    "summary": "The employee requests clarification regarding a deduction on their payslip.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen17",
+   "lang": "en",
+   "text": "OT every day this week, I am dead tired, but the team is good.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "OT every day this week, I am dead tired",
+    "summary": "The employee experiences heavy workload with daily overtime, though they appreciate the team.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen19",
+   "lang": "en",
+   "text": "I do not know who to ask about leave, my supervisor said ask HR and HR said ask the supervisor.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I do not know who to ask about leave, my supervisor said ask HR and HR said ask the supervisor.",
+    "summary": "The employee is unsure about leave procedures because of conflicting guidance from the supervisor and HR.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen20",
+   "lang": "en",
+   "text": "Safety induction was very clear and the trainer was patient.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Safety induction was very clear and the trainer was patient.",
+    "summary": "The employee found the safety induction very clear and the trainer patient.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen22",
+   "lang": "en",
+   "text": "Nobody told me which locker to use and I carried my bag around for two days.",
+   "gold": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Nobody told me which locker to use",
+    "summary": "The employee experienced an unclear onboarding process regarding facilities.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen23",
+   "lang": "en",
+   "text": "I feel left out of the WhatsApp group because it is all in Hokkien.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I feel left out of the WhatsApp group",
+    "summary": "The employee feels left out because the work chat uses a language they do not speak.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nen24",
+   "lang": "en",
+   "text": "My supervisor asked me to stay one hour extra yesterday and it was paid as overtime today, all fine.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "all fine",
+    "summary": "The employee reports working an extra hour paid as overtime and considers it fine.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish02",
+   "lang": "manglish",
+   "text": "Agent ambil passport saya, kata nanti dah bayar balik hutang baru bagi. Tak boleh resign lah.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "Agent ambil passport saya, kata nanti dah bayar balik hutang baru bagi. Tak boleh resign lah.",
+    "summary": "An employee reports that their passport was withheld by an agent due to debt and they were told they cannot resign.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish03",
+   "lang": "manglish",
+   "text": "Supervisor selalu pegang pinggang saya and ajak keluar, I takut nak cakap apa-apa.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "Supervisor selalu pegang pinggang saya and ajak keluar",
+    "summary": "The employee reports unwanted physical contact and invitations from their supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish04",
+   "lang": "manglish",
+   "text": "Forklift brake rosak dah seminggu tapi still kena pakai, nearly langgar orang semalam.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "Forklift brake rosak dah seminggu tapi still kena pakai, nearly langgar orang semalam.",
+    "summary": "The employee reports a broken forklift brake that has not been fixed, posing a safety hazard.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish06",
+   "lang": "manglish",
+   "text": "Boss suruh buat report banyak gila, I want to die la but siap jugak.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Boss suruh buat report banyak gila",
+    "summary": "The employee reports having an excessive amount of reporting work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish07",
+   "lang": "manglish",
+   "text": "EPF deduct macam HR cakap, ok je lah.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "EPF deduct macam HR cakap, ok je lah.",
+    "summary": "The employee notes that EPF deductions are correct as explained by HR.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish09",
+   "lang": "manglish",
+   "text": "Tax kena potong, I tak faham sangat but normal kot.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tax kena potong, I tak faham sangat",
+    "summary": "The employee expresses some lack of understanding regarding tax deductions.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish10",
+   "lang": "manglish",
+   "text": "Penat gila lah today, rasa nak pengsan, but team helpful.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Penat gila lah today, rasa nak pengsan",
+    "summary": "The employee experienced extreme fatigue today despite helpful teammates.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish12",
+   "lang": "manglish",
+   "text": "Tak ada orang ajar how to use the scanner, tengok orang je.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tak ada orang ajar how to use the scanner",
+    "summary": "The employee received no instruction on operating the scanner and learned by observation.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish13",
+   "lang": "manglish",
+   "text": "Dua boss bagi task lain-lain, I don't know which one first.",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "I don't know which one first",
+    "summary": "The employee is unsure about task priorities due to instructions from multiple supervisors.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nmanglish14",
+   "lang": "manglish",
+   "text": "Canteen makanan sedap, RM3 only, I happy lah.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Canteen makanan sedap, RM3 only, I happy lah.",
+    "summary": "The employee is happy with the delicious and affordable canteen food.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms02",
+   "lang": "ms",
+   "text": "Saya berhutang dengan ejen RM8,000 dan setiap bulan gaji dipotong, kalau berhenti kena bayar sekali gus.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "Saya berhutang dengan ejen RM8,000 dan setiap bulan gaji dipotong, kalau berhenti kena bayar sekali gus.",
+    "summary": "The employee reports wage deductions related to an agent debt that must be paid in full upon resigning.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms03",
+   "lang": "ms",
+   "text": "Kami tidak dibenarkan keluar dari asrama selepas kerja dan pintu dikunci pada waktu malam.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "Kami tidak dibenarkan keluar dari asrama selepas kerja dan pintu dikunci pada waktu malam.",
+    "summary": "The employee reports being locked inside the dormitory at night and not allowed to leave after work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms04",
+   "lang": "ms",
+   "text": "Ejen kata pasport saya ada pada dia dan saya tak boleh balik kampung selagi hutang belum langsai.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "Ejen kata pasport saya ada pada dia dan saya tak boleh balik kampung selagi hutang belum langsai.",
+    "summary": "The employee reports that an agent is withholding their passport and preventing them from returning home due to unpaid debts.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms06",
+   "lang": "ms",
+   "text": "Penyelia pegang pinggang saya di stor dan ajak saya keluar makan malam, saya takut nak menolak.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "Penyelia pegang pinggang saya di stor dan ajak saya keluar makan malam, saya takut nak menolak.",
+    "summary": "The employee reports an incident of unwanted physical contact and pressure from a supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms07",
+   "lang": "ms",
+   "text": "Ketua kumpulan ugut nak pukul saya kalau saya bagitahu HR tentang kerja ni.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "Ketua kumpulan ugut nak pukul saya kalau saya bagitahu HR tentang kerja ni.",
+    "summary": "The employee reports being threatened by their team leader for mentioning reporting to HR.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms09",
+   "lang": "ms",
+   "text": "Saya rasa tak ada gunanya hidup lagi, saya terfikir nak bunuh diri.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "self_harm_crisis",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "self_harm_crisis",
+    "evidence_quote": "Saya rasa tak ada gunanya hidup lagi, saya terfikir nak bunuh diri.",
+    "summary": "The employee expressed feelings of hopelessness and thoughts of suicide.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms10",
+   "lang": "ms",
+   "text": "Mesin pemotong tiada pengadang keselamatan dan minggu lepas jari seorang pekerja hampir terkena.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "Mesin pemotong tiada pengadang keselamatan",
+    "summary": "The employee reports a safety hazard regarding an unguarded cutting machine.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms12",
+   "lang": "ms",
+   "text": "Gaji saya lewat tiga bulan dan majikan kata tunggu sahaja, tiada surat apa-apa.",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "Gaji saya lewat tiga bulan dan majikan kata tunggu sahaja, tiada surat apa-apa.",
+    "summary": "The employee reports that their salary has been delayed for three months without any documentation.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms13",
+   "lang": "ms",
+   "text": "Lebih masa empat bulan tak dibayar, bila tanya penyelia kata jangan banyak bunyi.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD",
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "Lebih masa empat bulan tak dibayar, bila tanya penyelia kata jangan banyak bunyi.",
+    "summary": "The employee reports unpaid overtime and that the supervisor dismissed inquiries.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms14",
+   "lang": "ms",
+   "text": "Seorang rakan sentiasa menjerit dan memaki saya di depan orang lain, saya dah lapor tapi tiada tindakan.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": true,
+    "category": "harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "Seorang rakan sentiasa menjerit dan memaki saya di depan orang lain, saya dah lapor tapi tiada tindakan.",
+    "summary": "The employee reports being yelled at and insulted by a colleague, with no action taken after reporting.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms15",
+   "lang": "ms",
+   "text": "OT hari-hari sampai nak mati rasanya, tapi kawan-kawan semua baik.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "OT hari-hari sampai nak mati rasanya",
+    "summary": "The employee experiences heavy daily overtime but appreciates the supportive colleagues.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms17",
+   "lang": "ms",
+   "text": "KWSP dan PERKESO ditolak dari gaji mengikut slip, macam yang HR cakap.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "KWSP dan PERKESO ditolak dari gaji mengikut slip, macam yang HR cakap.",
+    "summary": "Employee confirms EPF and SOCSO deductions match the pay slip as explained by HR.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms18",
+   "lang": "ms",
+   "text": "Gaji kena potong RM20 sebab lambat dua kali, memang salah saya.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Gaji kena potong RM20 sebab lambat dua kali",
+    "summary": "The employee mentions a salary deduction for arriving late.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms19",
+   "lang": "ms",
+   "text": "Cukai ada dipotong dalam slip gaji, saya kurang faham tapi rasanya normal.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Cukai ada dipotong dalam slip gaji, saya kurang faham tapi rasanya normal.",
+    "summary": "The employee notes a salary tax deduction and considers it normal despite some confusion.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms21",
+   "lang": "ms",
+   "text": "Tak ada orang ajar saya guna mesin pengimbas, saya tengok orang lain je.",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Tak ada orang ajar saya guna mesin pengimbas",
+    "summary": "The employee received no instruction on how to operate the scanner machine.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms22",
+   "lang": "ms",
+   "text": "Penyelia jarang balas soalan saya, selalunya kena tunggu petang.",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Penyelia jarang balas soalan saya",
+    "summary": "The employee experiences delays in receiving responses from their supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms24",
+   "lang": "ms",
+   "text": "Orang lain makan bersama tapi saya selalu duduk sendiri di kantin.",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "saya selalu duduk sendiri di kantin",
+    "summary": "The employee often sits alone in the canteen during meals.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms25",
+   "lang": "ms",
+   "text": "Syif bertukar-tukar dan diberitahu malam sebelum.",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Syif bertukar-tukar dan diberitahu malam sebelum.",
+    "summary": "The employee reports unpredictable shift changes communicated only the night before.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms27",
+   "lang": "ms",
+   "text": "Induksi keselamatan sangat jelas, jurulatih sabar.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Induksi keselamatan sangat jelas, jurulatih sabar.",
+    "summary": "The safety induction was clear and the trainer was patient.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms28",
+   "lang": "ms",
+   "text": "Hari pertama saya dapat kad akses dan kasut keselamatan, semua okay.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "semua okay",
+    "summary": "The employee reports that everything is fine on the first day.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nms29",
+   "lang": "ms",
+   "text": "Panas gila dalam kilang, rasa nak mati lemas, tapi dah pasang kipas baru jadi okay sikit.",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "Panas gila dalam kilang",
+    "summary": "The employee notes that the factory was very hot, but a new fan improved the situation.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh02",
+   "lang": "zh",
+   "text": "组长每天当着大家的面羞辱我，还说如果我投诉就让我没班上。",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "组长每天当着大家的面羞辱我，还说如果我投诉就让我没班上。",
+    "summary": "The employee reports being humiliated by the team leader in public and threatened against reporting it.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh03",
+   "lang": "zh",
+   "text": "主管下班后一直发信息约我出去，还摸了我的肩膀和腰，我很害怕。",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "主管下班后一直发信息约我出去，还摸了我的肩膀和腰，我很害怕。",
+    "summary": "The employee reports experiencing unwanted physical contact and messages from their supervisor after work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh05",
+   "lang": "zh",
+   "text": "主管说我是外劳所以不给我培训机会，只让本地人学新机器。",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "主管说我是外劳所以不给我培训机会",
+    "summary": "The employee reports being denied training opportunities due to their foreign worker status.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh06",
+   "lang": "zh",
+   "text": "因为我怀孕了，主管说要换我去做清洁工，不让我做原来的工作。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT",
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "因为我怀孕了，主管说要换我去做清洁工，不让我做原来的工作。",
+    "summary": "An employee reports being reassigned to a cleaning role due to pregnancy.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh08",
+   "lang": "zh",
+   "text": "每天上班都想结束自己的生命，觉得没有人在乎我。",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": true,
+    "category": "self_harm_crisis",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "self_harm_crisis",
+    "evidence_quote": "每天上班都想结束自己的生命，觉得没有人在乎我。",
+    "summary": "The employee expresses severe distress and suicidal ideation regarding work.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh09",
+   "lang": "zh",
+   "text": "机器的安全罩坏了两个星期，没人修，昨天有同事的手差点被卷进去。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "机器的安全罩坏了两个星期，没人修，昨天有同事的手差点被卷进去。",
+    "summary": "The employee reports a broken safety guard on a machine that has not been repaired, posing a hazard.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh10",
+   "lang": "zh",
+   "text": "仓库的消防通道被货物堵住了，主管叫我们不要管它。",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "仓库的消防通道被货物堵住了，主管叫我们不要管它。",
+    "summary": "The fire exit in the warehouse is blocked by goods and the supervisor told staff to ignore it.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh12",
+   "lang": "zh",
+   "text": "公司已经三个月没有发加班费，我问主管他说不用问。",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "公司已经三个月没有发加班费，我问主管他说不用问。",
+    "summary": "The employee reports not receiving overtime pay for three months and being told not to ask about it by their supervisor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh13",
+   "lang": "zh",
+   "text": "这个月的工资少了八百块，没有任何解释，问了也没人回答。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "这个月的工资少了八百块，没有任何解释，问了也没人回答。",
+    "summary": "The employee reports a shortage in this month's salary without explanation and received no response when asking.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh15",
+   "lang": "zh",
+   "text": "公司的中介把我的护照收走了，说合约做完才还给我。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "公司的中介把我的护照收走了，说合约做完才还给我。",
+    "summary": "The employee reports that their passport was confiscated by the company's agency until contract completion.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh16",
+   "lang": "zh",
+   "text": "我欠中介一万块介绍费，每个月从工资扣，如果我辞职就要全部一次付清。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "我欠中介一万块介绍费，每个月从工资扣，如果我辞职就要全部一次付清。",
+    "summary": "An employee reports debt bondage involving recruitment fees deducted from wages with repayment conditions tied to resignation.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh18",
+   "lang": "zh",
+   "text": "有个同事说如果我告诉经理，他会在下班后找人打我。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "有个同事说如果我告诉经理，他会在下班后找人打我。",
+    "summary": "An employee reports receiving a threat from a colleague regarding reporting an issue to the manager.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh19",
+   "lang": "zh",
+   "text": "隔壁部门的人一直跟着我到停车场，我跟保安说了也没有用。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "harassment",
+    "evidence_quote": "隔壁部门的人一直跟着我到停车场，我跟保安说了也没有用。",
+    "summary": "The employee reports being followed to the parking lot by someone from another department, and security has not been helpful.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh20",
+   "lang": "zh",
+   "text": "经理在会议室里抱住我，我叫他放手他不肯。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "sexual_harassment",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "sexual_harassment",
+    "evidence_quote": "经理在会议室里抱住我，我叫他放手他不肯。",
+    "summary": "An employee reports an incident of unwanted physical contact by a manager.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh22",
+   "lang": "zh",
+   "text": "叉车司机经常喝了酒来上班，我们很担心出事故。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "叉车司机经常喝了酒来上班，我们很担心出事故。",
+    "summary": "An employee reports that a forklift driver frequently comes to work intoxicated, creating safety concerns.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh23",
+   "lang": "zh",
+   "text": "我做了十二个小时，他们说只算八个小时的钱，不给加班费。",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "我做了十二个小时，他们说只算八个小时的钱，不给加班费。",
+    "summary": "The employee worked twelve hours but was only paid for eight and received no overtime pay.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh25",
+   "lang": "zh",
+   "text": "组长威胁说如果我不帮他做私事，就让我被开除。",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": true,
+    "category": "bullying_threats",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "bullying_threats",
+    "evidence_quote": "组长威胁说如果我不帮他做私事，就让我被开除。",
+    "summary": "An employee reported that their team leader threatened them with termination if they refused to perform personal tasks.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh26",
+   "lang": "zh",
+   "text": "老板说我们要还清机票和办证费用才能离开，所以不能辞职。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "forced_labour_indicator",
+    "group": "forced_labour"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "forced_labour_indicator",
+    "evidence_quote": "老板说我们要还清机票和办证费用才能离开，所以不能辞职。",
+    "summary": "The employee states they cannot resign because they must repay ticket and permit fees to leave.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh28",
+   "lang": "zh",
+   "text": "我们在没有安全带的情况下爬到三米高的架子上换灯，没有人教过我们。",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": true,
+    "category": "safety_hazard",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING",
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "safety_hazard",
+    "evidence_quote": "我们在没有安全带的情况下爬到三米高的架子上换灯，没有人教过我们。",
+    "summary": "The employee reports working at height without safety harnesses and lacking proper training.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh29",
+   "lang": "zh",
+   "text": "试用期的工资一直没有发，已经两个月了，他们说要等转正。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "wage_legal",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "wage_legal",
+    "evidence_quote": "试用期的工资一直没有发，已经两个月了",
+    "summary": "The employee reports that probationary wages have not been paid for two months.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh30",
+   "lang": "zh",
+   "text": "因为我戴头巾，主管不让我在前台工作。",
+   "gold": {
+    "drivers": [],
+    "escalate": true,
+    "category": "discrimination",
+    "group": "escalation"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": true,
+    "escalate_category": "discrimination",
+    "evidence_quote": "因为我戴头巾，主管不让我在前台工作。",
+    "summary": "The employee reports being barred from front desk work by their supervisor due to wearing a headscarf.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh32",
+   "lang": "zh",
+   "text": "今天加班到快累死了，但是同事都很帮忙，没问题。",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "hyperbole"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "今天加班到快累死了",
+    "summary": "The employee worked late but appreciated the helpful colleagues.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "WORKLOAD"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh33",
+   "lang": "zh",
+   "text": "这个月工资里扣了公积金和社险，跟培训时讲的一样，没问题。",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "这个月工资里扣了公积金和社险，跟培训时讲的一样，没问题。",
+    "summary": "The employee confirmed that deductions in this month's salary are correct.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh35",
+   "lang": "zh",
+   "text": "团队很友好，午餐大家都一起吃，我觉得很开心。",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "团队很友好，午餐大家都一起吃，我觉得很开心。",
+    "summary": "The employee feels happy and finds the team very friendly.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh36",
+   "lang": "zh",
+   "text": "没有人教我怎么用打卡系统，我只能看别人怎么做。",
+   "gold": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "TRAINING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "没有人教我怎么用打卡系统",
+    "summary": "The employee received no instructions on how to use the time clock system.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh37",
+   "lang": "zh",
+   "text": "主管很忙，我有问题他很少回我，通常要等到下午。",
+   "gold": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "主管很忙，我有问题他很少回我",
+    "summary": "The employee reports that the manager is busy and rarely replies to questions in a timely manner.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "MANAGER_SUPPORT"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh39",
+   "lang": "zh",
+   "text": "午休时大家都说方言，我听不懂，常常一个人坐。",
+   "gold": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "BELONGING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "常常一个人坐",
+    "summary": "The employee often sits alone during lunch because they do not understand the dialect spoken by others.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "BELONGING"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh40",
+   "lang": "zh",
+   "text": "从宿舍到工厂的班车太早了，每天五点就要起床，有点辛苦。",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "COMMUTE_LOGISTICS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "从宿舍到工厂的班车太早了，每天五点就要起床",
+    "summary": "The employee finds the factory shuttle from the dorm too early, requiring a daily five o'clock wake-up.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh41",
+   "lang": "zh",
+   "text": "我看到工资单上有扣税，不太明白，但应该是正常的吧。",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "deduction"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [
+     "PAY_BENEFITS"
+    ],
+    "positive": false,
+    "concern_level": "low",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "我看到工资单上有扣税，不太明白",
+    "summary": "The employee is unsure about tax deductions seen on the payslip.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_MORE"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh43",
+   "lang": "zh",
+   "text": "这周轮班表每天都变，前一晚才通知，很难安排。",
+   "gold": {
+    "drivers": [
+     "WORKLOAD"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ONBOARDING"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "这周轮班表每天都变，前一晚才通知，很难安排。",
+    "summary": "The employee reports unpredictable shift schedules with short notice, making personal arrangements difficult.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "GENERIC_HELP"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh44",
+   "lang": "zh",
+   "text": "我不知道应该向哪位主管报告，两个人给我的任务不一样。",
+   "gold": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "MANAGER_SUPPORT"
+    ],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [
+     "ROLE_CLARITY",
+     "MANAGER_SUPPORT"
+    ],
+    "context_tags": [],
+    "positive": false,
+    "concern_level": "needs_follow_up",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "两个人给我的任务不一样",
+    "summary": "The employee is unsure who to report to as two people give conflicting tasks.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "ROLE_CLARITY"
+   },
+   "calls": 1
+  },
+  {
+   "id": "nzh45",
+   "lang": "zh",
+   "text": "安全培训很清楚，我觉得老师讲得很好。",
+   "gold": {
+    "drivers": [],
+    "escalate": false,
+    "category": "none",
+    "group": "normal"
+   },
+   "status": "ok",
+   "out": {
+    "drivers": [],
+    "context_tags": [],
+    "positive": true,
+    "concern_level": "none",
+    "escalate": false,
+    "escalate_category": "none",
+    "evidence_quote": "安全培训很清楚，我觉得老师讲得很好。",
+    "summary": "The employee expresses satisfaction with the clear safety training and the instructor.",
+    "confidence": "high",
+    "uncertain": false,
+    "probe_id": "none"
+   },
+   "calls": 1
+  }
+ ]
+}
