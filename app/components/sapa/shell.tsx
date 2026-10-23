@@ -94,12 +94,13 @@ export function Shell({ children }: { children: ReactNode }) {
   useLiveRefresh();
   useMotion();
   const me = useApi<Me>("/api/hr/me", 60000);
-  const [navOpen, setNavOpen] = useState(true);
-  useEffect(() => {
+  const [navOpen, setNavOpen] = useState(() => {
     try {
-      setNavOpen(localStorage.getItem("sp-nav") !== "closed");
-    } catch {}
-  }, []);
+      return localStorage.getItem("sp-nav") !== "closed";
+    } catch {
+      return true;
+    }
+  });
   const toggleNav = () => {
     try {
       localStorage.setItem("sp-nav", navOpen ? "closed" : "open");
@@ -153,7 +154,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </header>
       <nav
         aria-label="Main"
-        className={`sp-nav box-border md:sticky md:top-0 ${navOpen ? "md:flex" : "md:hidden"} md:h-screen md:w-[232px] md:flex-none md:flex-col md:gap-0.5 md:overflow-y-auto md:border-r md:px-3 md:py-5`}
+        className={`sp-nav box-border md:sticky md:top-0 md:flex${navOpen ? "" : " is-closed"} md:h-screen md:w-[232px] md:flex-none md:flex-col md:gap-0.5 md:overflow-y-auto md:border-r md:px-3 md:py-5`}
         style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}
       >
         <div className="hidden items-center justify-between pb-5 md:flex">
@@ -182,7 +183,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </nav>
       <div className="min-w-0 flex-1">
         {navOpen ? null : (
-          <div className="sticky top-0 z-30 hidden items-center gap-1 border-b px-3 py-1.5 md:flex" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
+          <div className="sp-navbar sticky top-0 z-30 hidden items-center gap-1 border-b px-3 py-1.5 md:flex" style={{ background: "var(--surface-raised)", borderColor: "var(--line)" }}>
             <button type="button" className="sp-nav-toggle" onClick={toggleNav} aria-label="Open sidebar" title="Open sidebar">
               <PanelLeftOpen size={17} aria-hidden="true" />
             </button>

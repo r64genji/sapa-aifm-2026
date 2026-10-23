@@ -539,3 +539,9 @@ input[type="checkbox"]:checked, input[type="radio"]:checked { animation: sp-pres
 .dark .sp-tab:not([aria-pressed="true"]):hover { background: var(--surface-raised); }
 .sp-nav-toggle { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-control); border: 0; background: transparent; color: var(--ink-muted); cursor: pointer; }
 .sp-nav-toggle:hover { background: var(--surface-sunken); color: var(--ink); }
+@media (min-width: 768px) {
+  .sp-nav { transition: margin-left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0.3s; }
+  .sp-nav.is-closed { margin-left: -232px; visibility: hidden; }
+  .sp-navbar { animation: sp-fade 0.3s ease both; }
+}
+@media (prefers-reduced-motion: reduce) { .sp-nav { transition: none; } .sp-navbar { animation: none; } }
