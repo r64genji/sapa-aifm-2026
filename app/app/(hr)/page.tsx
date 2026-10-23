@@ -139,7 +139,7 @@ function ComingUp({ today, checkins, actions }: { today: string | undefined; che
           ...dated.slice(0, 5).map((item) => ({ ...item, when: when(item.date), late: item.date < now })),
           ...pending.map((a) => ({ key: a.id, title: `Result for ${a.title}`, meta: "Shows once enough people answer the recheck", href: `/fixes/${a.id}`, when: "Waiting", late: false })),
         ].map((item, i) => (
-          <li key={item.key} className="flex gap-3 px-[18px] py-2.5" style={i ? { borderTop: "1px solid var(--line-soft)" } : undefined}>
+          <li key={item.key} className="flex gap-3 py-2.5" style={i ? { borderTop: "1px solid var(--line-soft)" } : undefined}>
             <span className="sp-caption w-[76px] shrink-0 pt-0.5 font-semibold" style={item.late ? { color: "var(--waiting-ink)" } : undefined}>
               {item.when}
             </span>
