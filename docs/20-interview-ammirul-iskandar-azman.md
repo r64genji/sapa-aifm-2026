@@ -19,7 +19,7 @@ HR consultant. His own words: he holds an HR management degree and consults for 
 
 | Advice | Decision |
 | --- | --- |
-| "Better offer" is the top reason | Do not claim it on a slide. It conflicts with [16](16-interview-deanna-tung.md) and [19](19-interview-gary-teh.md) (job not as told, manager, environment). Say "one consultant's case studies" if used. Feeds the root cause TODO in [17](17-interview-muhammad-danial.md) |
+| "Better offer" is the top reason | Owner decided 2026-10-23: keep it off the slides. It conflicts with [16](16-interview-deanna-tung.md) and [19](19-interview-gary-teh.md) (job not as told, manager, environment). Feeds the root cause TODO in [17](17-interview-muhammad-danial.md) |
 | Group problems broadly, keep dashboard uncrowded | Check the Problems page against the six areas. No change decided |
 | Weighted AI suggestion with a reason | Open. Check against [14](14-ai-use-contract.md) before any change |
 | Telegram over email | Confirms the current design. Pitch point |
