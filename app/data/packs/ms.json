@@ -27,7 +27,6 @@
     "language": { "name": "bahasa", "description": "Tukar bahasa anda" },
     "stop": { "name": "berhenti", "description": "Hentikan semua mesej" },
     "delete": { "name": "padam", "description": "Padam jawapan anda" },
-    "myanswers": { "name": "jawapansaya", "description": "Lihat jawapan anda sendiri" },
     "privacy": { "name": "privasi", "description": "Tukar sama ada HR melihat nama anda" },
     "help": { "name": "bantuan", "description": "Tunjuk bantuan" }
   },
@@ -133,18 +132,6 @@
         "text": "Adakah apa-apa tentang minggu-minggu pertama anda yang anda mahu HR tahu? Sila taip jawapan anda."
       },
       {
-        "id": "JOB_MATCH",
-        "type": "scale",
-        "text": "Sejauh mana kerja ini sepadan dengan apa yang diberitahu kepada anda semasa diambil bekerja?",
-        "labels": [
-          "Langsung tidak",
-          "Sedikit",
-          "Sebahagian",
-          "Kebanyakannya",
-          "Sepenuhnya"
-        ]
-      },
-      {
         "id": "FIX_CHANGE",
         "type": "scale",
         "text": "Sejak Kemas kini daripada HR yang lepas tentang {topic}, bagaimana keadaannya berubah untuk anda?",
@@ -217,7 +204,6 @@
       "remarks": "Soalan terakhir: ada apa-apa lagi tentang kerja yang anda mahu HR tahu? Boleh tentang apa sahaja. Taip di sini, atau tekan Langkau."
     },
     "probe": {
-      "skip": "Langkau",
       "example": "Boleh beri satu contoh daripada minggu ini?",
       "effect": "Bagaimana perkara itu menjejaskan kerja anda?",
       "help": "Apakah yang boleh menjadikannya lebih mudah?",
@@ -372,13 +358,6 @@
       ]
     }
   },
-  "offer": {
-    "text": "HR ingin membantu berkenaan perkara yang anda kongsikan. Adakah anda mahu berbual secara peribadi dengan HR?",
-    "yes": "Ya",
-    "noThanks": "Tidak, terima kasih",
-    "accepted": "Terima kasih. HR akan menghubungi anda dalam masa 2 hari bekerja.",
-    "declined": "Tidak mengapa. Terima kasih kerana memberitahu kami."
-  },
   "milestone": {
     "nudges": {
       "1": "Hari 1 untuk {name}: Tetapkan seorang buddy.",
@@ -442,15 +421,11 @@
     "kept": "Tiada apa-apa yang dipadam."
   },
   "myAnswers": {
-    "none": "Tiada jawapan anda yang disimpan.",
     "aiReading": "Bacaan AI",
     "changedByHr": "Diubah oleh HR",
     "labels": "Bidang masalah",
     "noLabels": "tiada",
-    "pending": "AI belum membaca jawapan ini.",
-    "wrong": "Ini salah",
-    "challenged": "Terima kasih. HR akan menyemak label ini. Ia tidak dikira sehingga HR selesai menyemaknya.",
-    "resolved": "HR telah menyemak nota anda. Label kini berbunyi:"
+    "pending": "AI belum membaca jawapan ini."
   },
   "labels": {
     "ROLE_CLARITY": "Kejelasan tugas",

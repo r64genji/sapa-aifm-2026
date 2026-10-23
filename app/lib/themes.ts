@@ -18,26 +18,25 @@ export function counts(
   organisationId: string,
   touchpoint: number,
   month: string | null,
-  agency: string | null = null,
   team: string | null = null,
   role: string | null = null,
   firstJob: boolean | null = null,
 ) {
-  const key = JSON.stringify([organisationId, touchpoint, month, agency, team, role, firstJob]);
+  const key = JSON.stringify([organisationId, touchpoint, month, team, role, firstJob]);
   const found = running.get(key);
   if (found) return found;
-  const result = fetchCounts(organisationId, touchpoint, month, agency, team, role, firstJob).finally(() => running.delete(key));
+  const result = fetchCounts(organisationId, touchpoint, month, team, role, firstJob).finally(() => running.delete(key));
   running.set(key, result);
   return result;
 }
 
-async function fetchCounts(organisationId: string, touchpoint: number, month: string | null, agency: string | null, team: string | null, role: string | null, firstJob: boolean | null) {
+async function fetchCounts(organisationId: string, touchpoint: number, month: string | null, team: string | null, role: string | null, firstJob: boolean | null) {
   const { data, error } = await createAdminClient().rpc("theme_counts", {
     org: organisationId,
     touch: touchpoint,
     month,
     at: (await now()).toISOString(),
-    agency,
+    agency: null,
     team,
     person_role: role,
     first_job: firstJob,
@@ -46,8 +45,8 @@ async function fetchCounts(organisationId: string, touchpoint: number, month: st
   return data as Counts;
 }
 
-export async function themeCards(organisationId: string, touchpoint: number, month: string | null, agency: string | null = null, team: string | null = null) {
-  const c = await counts(organisationId, touchpoint, month, agency, team);
+export async function themeCards(organisationId: string, touchpoint: number, month: string | null, team: string | null = null) {
+  const c = await counts(organisationId, touchpoint, month, team);
   if (!c.enough) {
     const message = `Not enough people yet (${c.respondents} of ${c.min_group_size} needed)`;
     return {

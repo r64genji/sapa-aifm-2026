@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./live.css";
-import { Check, Loader2, Send, Shield } from "lucide-react";
+import { Loader2, Send, Shield } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
@@ -322,7 +322,9 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
       setBusy(null);
     }
   };
-  useEffect(() => setLocal(null), [item.status, item.changed_by_hr, item.serious, item.drivers.join(), item.context_tags.join()]);
+  const drivers = item.drivers.join();
+  const contextTags = item.context_tags.join();
+  useEffect(() => setLocal(null), [item.status, item.changed_by_hr, item.serious, drivers, contextTags]);
   const tagged = item.status !== null;
   const reviewed = item.status === "reviewed";
   const awaiting = item.status === "awaiting_ai";

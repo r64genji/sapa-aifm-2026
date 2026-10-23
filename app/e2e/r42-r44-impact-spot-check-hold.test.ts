@@ -13,7 +13,7 @@ const seedResponses: { id: string; kind: string; language: string }[] = read("..
 const escalated = new Set(read("../data/seed/escalations.json").map((e: { response_id: string }) => e.response_id));
 const seededIds = (language: string) =>
   seedResponses.filter((r) => r.kind === "unprompted" && r.language === language && !escalated.has(r.id)).map((r) => r.id);
-const outcomes: { intake: string; agency: string | null; hired: number; employed: number }[] = read("../data/seed/intake_outcomes.json");
+const outcomes: { intake: string; hired: number; employed: number }[] = read("../data/seed/intake_outcomes.json");
 const [organisation] = read("../data/seed/organisations.json");
 const sum = (rows: typeof outcomes, key: "hired" | "employed") => rows.reduce((total, row) => total + row[key], 0);
 const hire = 5550004202;
@@ -31,7 +31,6 @@ type Panel = {
   spot_checks: number;
   changed: number;
   changed_share: number | null;
-  challenges: number;
 };
 const panel = async (driver: string, language: string) =>
   ((await (await hrRequest("/api/hr/quality", "GET")).json()) as Panel[]).find(
@@ -93,7 +92,7 @@ test("R42: a pool under 30 says Too few to tell yet, and HR can only enter an in
   assert.ok(pooled < 30);
   assert.deepEqual(await impact(), { enough: false, message: `Too few to tell yet (${pooled} of 30)`, note: trend });
   assert.equal(
-    (await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-03", agency: "Maju Staffing", hired: 9, employed: 9 })).status,
+    (await hrRequest("/api/hr/intake-outcomes", "PUT", { intake: "2026-03", hired: 10, employed: 9 })).status,
     200,
   );
   assert.equal((await impact()).enough, true);
@@ -110,7 +109,7 @@ test("R44: each Monday the nightly job queues 3 AI-confident tags per driver and
   await tapData(hire, 'chat:{"a":"privacy","v":"named"}');
   await say(hire, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
-  for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(hire, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(hire, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["WORKLOAD"], evidence_quote: "Kerja terlalu banyak" }) }]);
   await say(hire, "Kerja terlalu banyak minggu ini");
   await freezeClock(`${mondays[0]}T03:00:00.000Z`);
@@ -163,11 +162,6 @@ test("R44: HR changing 3 of 10 ROLE_CLARITY spot checks in one language holds th
   const queue = await (await hrRequest("/api/hr/queue", "GET")).json();
   const heldEntry = queue.find((entry: { id: string }) => ms.includes(entry.id) && !reviewed.includes(entry.id));
   assert.equal(heldEntry.note, "HR changed 3 of 10 spot checks, more than 20%");
-
-  await say(hire, "/jawapansaya");
-  await tap(hire, ms_.myAnswers.wrong);
-  assert.equal((await panel("WORKLOAD", "ms")).challenges, 1);
-  assert.equal((await panel("ROLE_CLARITY", "zh")).challenges, 0);
 });
 
 test("R42: an intake of 5 shows its response rate with lapsed check-ins counted, and its score change against other teams from the seeded fix", async () => {

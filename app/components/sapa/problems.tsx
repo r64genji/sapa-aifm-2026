@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
-import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, driverName, shortDate } from "./ui";
+import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
@@ -30,7 +30,6 @@ type Point = { label: string; n: number; m: number };
 
 const STEP: Record<string, number> = { draft: 1, assigned: 2, accepted: 3 };
 const live = (a: Action) => a.status === "draft" || a.status === "assigned" || a.status === "accepted";
-const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
 const counted = (r: ReplyItem) => r.status === "reviewed" || (r.status === "ok" && r.counted !== false);
 const noArea = (r: ReplyItem) => !!r.text && !r.escalate && !r.drivers?.length && counted(r);
 const inHandbook = (g: Questions["groups"][number]) => !!g.handbook_path && g.unknown === 0;
@@ -39,7 +38,6 @@ const fixHref = (driver: string, entry: string | undefined, teams: string[]) =>
 const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10 < 4 ? n % 10 : 0]}`;
 const rate = (p: { n: number; m: number }) => (p.m ? p.n / p.m : 0);
 const pct = (p: { n: number; m: number }) => `${Math.round(rate(p) * 100)}%`;
-const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 const average = (points: Point[]) => rate({ n: points.reduce((t, p) => t + p.n, 0), m: points.reduce((t, p) => t + p.m, 0) });
 const intakePoints = (d: Detail | undefined): Point[] => (d?.by_intake ?? []).flatMap((s) => (s.enough ? [{ label: month(s.intake), n: s.n, m: s.m }] : []));
 
@@ -519,7 +517,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                       <Info size={16} strokeWidth={2} aria-hidden="true" />
                     </button>
                     <span role="tooltip" className="sp-tip-bubble">
-                      Each bar is the share of that month's new hires who named this problem at Day 14. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
+                      Each bar is the share of that month&apos;s new hires who named this problem at Day 14. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
                     </span>
                   </span>
                 </div>

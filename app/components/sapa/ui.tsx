@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Check, ChevronDown, Clock, MessageSquare, Shield, SquareCheck, Users } from "lucide-react";
 import { createPortal } from "react-dom";
-import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from "react";
 
 export type Lane = "serious" | "problems" | "ai" | "fixes";
 
@@ -292,6 +292,9 @@ export const DRIVERS: Record<string, string> = {
 
 export const driverName = (d: string) => DRIVERS[d] ?? d.replace(/_/g, " ").toLowerCase().replace(/^./, (c) => c.toUpperCase());
 
+export const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
+export const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
+export const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 export const dayLabel = (touchpoint: number) => (touchpoint >= 180 ? "Month 6" : `Day ${touchpoint}`);
 
 export function shortDate(iso: string | null | undefined) {
@@ -299,8 +302,7 @@ export function shortDate(iso: string | null | undefined) {
   return new Date(iso).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Asia/Kuala_Lumpur" });
 }
 
-export function fixScope(a: { hiring_side: boolean; scope_type: string | null; scope_team: string | null; scope_intake: string | null; scope_name?: string | null }) {
-  if (a.hiring_side) return "Hiring";
+export function fixScope(a: { scope_type: string | null; scope_team: string | null; scope_intake: string | null; scope_name?: string | null }) {
   if (a.scope_type === "person") return a.scope_name ?? "One new hire";
   if (a.scope_type === "team") return `${a.scope_team} team`;
   if (a.scope_type === "intake") return `${new Date(a.scope_intake!).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })} starters`;

@@ -11,7 +11,6 @@ type Side = { n: number; before: number; after: number };
 type Detail = {
   id: string;
   driver: string;
-  hiring_side: boolean;
   library_entry_id: string | null;
   title: string;
   steps: string;
@@ -225,7 +224,7 @@ export default function Page() {
     shortDate(a.assigned_at),
     a.accepted_at ? shortDate(a.accepted_at) : a.alert_sent_at || hr ? "Waiting" : a.alert_due_on ? `Goes out ${shortDate(a.alert_due_on)}` : "",
     a.done_at ? shortDate(a.done_at) : a.due_on ? `Due ${shortDate(a.due_on)}` : "",
-    a.notice.sent_at ? shortDate(a.notice.sent_at) : a.hiring_side || !a.notes ? "No note" : "Automatic",
+    a.notice.sent_at ? shortDate(a.notice.sent_at) : !a.notes ? "No note" : "Automatic",
   ];
   const langs = LANGUAGES.filter(([key]) => a.notes?.[key]);
   const shown = a.notes?.[lang] ? lang : "en";
@@ -262,7 +261,7 @@ export default function Page() {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="flex flex-wrap gap-2 text-[14px] font-semibold">
               <span className="rounded px-3 py-1" style={{ background: "var(--problems-soft)", color: "var(--problems)" }}>
-                {a.hiring_side ? "Hiring" : driverName(a.driver)}
+                {driverName(a.driver)}
               </span>
               <span className="rounded px-3 py-1" style={{ background: "var(--surface-sunken)" }}>
                 {fixScope(a)}
@@ -348,9 +347,7 @@ export default function Page() {
                 <Quote text={a.outcome_note} />
               </div>
             ) : null}
-            {a.hiring_side ? (
-              <div className="sp-caption">No note, no recheck. A hiring fix stays with HR.</div>
-            ) : a.notes ? (
+            {a.notes ? (
               <div className="sp-panel">
                 <div className="sp-panel-head">
                   <h3 className="m-0 text-[15px] font-bold">{done ? "Note new hires got" : "Note to new hires"}</h3>
@@ -380,8 +377,8 @@ export default function Page() {
               </div>
             )}
           </Card>
-          {done && !a.hiring_side ? <Result a={a} /> : null}
-          {done && !a.hiring_side && a.notes ? <FollowUp a={a} /> : null}
+          {done ? <Result a={a} /> : null}
+          {done && a.notes ? <FollowUp a={a} /> : null}
           <Card title="Activity">
             <ol className="m-0 flex list-none flex-col gap-2 p-0">
               {activity.map(([what, date]) => (
@@ -405,7 +402,7 @@ export default function Page() {
               </span>
             </Card>
           ) : null}
-          {done && !a.hiring_side ? (
+          {done ? (
             <Button lane="fixes" href={`/fixes/new?driver=${a.driver}${a.library_entry_id ? `&entry=${a.library_entry_id}` : ""}`}>
               Use this fix again
             </Button>

@@ -26,7 +26,6 @@
     "language": { "name": "language", "description": "更改语言" },
     "stop": { "name": "stop", "description": "停止所有消息" },
     "delete": { "name": "delete", "description": "删除你的回答" },
-    "myanswers": { "name": "myanswers", "description": "查看你自己的回答" },
     "privacy": { "name": "privacy", "description": "更改 HR 是否能看到你的名字" },
     "help": { "name": "help", "description": "显示帮助" }
   },
@@ -132,18 +131,6 @@
         "text": "关于你入职头几周，有没有什么想让 HR 知道的？请打字回答。"
       },
       {
-        "id": "JOB_MATCH",
-        "type": "scale",
-        "text": "你现在的工作与入职时被告知的内容有多相符？",
-        "labels": [
-          "完全不符",
-          "有一点相符",
-          "部分相符",
-          "大部分相符",
-          "完全相符"
-        ]
-      },
-      {
         "id": "FIX_CHANGE",
         "type": "scale",
         "text": "自从上次 HR 关于{topic}的最新消息以来，情况对你来说有什么变化？",
@@ -216,7 +203,6 @@
       "remarks": "最后一个问题：关于工作，还有什么想让 HR 知道的吗？什么都可以。请直接输入，或点“跳过”。"
     },
     "probe": {
-      "skip": "跳过",
       "example": "能举一个本周的例子吗？",
       "effect": "这对你的工作有什么影响？",
       "help": "怎样做会让这件事更容易？",
@@ -354,13 +340,6 @@
       ]
     }
   },
-  "offer": {
-    "text": "HR 想帮助你处理你分享的事情。你愿意和 HR 私下聊一聊吗？",
-    "yes": "愿意",
-    "noThanks": "不用了，谢谢",
-    "accepted": "谢谢你。HR 会在 2 个工作日内联系你。",
-    "declined": "没关系。谢谢你告诉我们。"
-  },
   "milestone": {
     "nudges": {
       "1": "{name} 的第 1 天：安排一位伙伴（buddy）。",
@@ -420,15 +399,11 @@
     "kept": "没有删除任何内容。"
   },
   "myAnswers": {
-    "none": "没有保存你的回答。",
     "aiReading": "AI 解读",
     "changedByHr": "已由 HR 修改",
     "labels": "问题方面",
     "noLabels": "无",
-    "pending": "AI 还没有读过这条回答。",
-    "wrong": "这不对",
-    "challenged": "谢谢。HR 会检查这个标签。在 HR 检查之前，它不会被计入。",
-    "resolved": "HR 已查看你的反馈。标签现在是："
+    "pending": "AI 还没有读过这条回答。"
   },
   "labels": {
     "ROLE_CLARITY": "工作职责是否清楚",

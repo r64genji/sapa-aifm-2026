@@ -23,21 +23,21 @@ export async function saveBaseline(organisationId: string, actor: string, kept: 
 export async function saveOutcome(
   organisationId: string,
   actor: string,
-  input: { intake: string; agency: string | null; hired: number; employed: number },
+  input: { intake: string; hired: number; employed: number },
 ) {
   const at = await now();
   const [year, month] = input.intake.split("-").map(Number);
   if (at < new Date(Date.UTC(year, month + 6, 1))) return { error: "This intake has not passed Month 6 yet", code: 409 };
   const db = createAdminClient();
   const lookup = db.from("intake_outcomes").select("id").eq("organisation_id", organisationId).eq("intake", input.intake);
-  const { data: existing, error } = await (input.agency ? lookup.eq("agency", input.agency) : lookup.is("agency", null)).maybeSingle();
+  const { data: existing, error } = await lookup.is("agency", null).maybeSingle();
   if (error) throw error;
   const figures = { hired: input.hired, employed: input.employed, entered_by: actor, entered_at: at.toISOString() };
   const { error: writeError } = existing
     ? await db.from("intake_outcomes").update(figures).eq("id", existing.id)
-    : await db.from("intake_outcomes").insert({ organisation_id: organisationId, intake: input.intake, agency: input.agency, ...figures });
+    : await db.from("intake_outcomes").insert({ organisation_id: organisationId, intake: input.intake, ...figures });
   if (writeError) throw writeError;
-  await audit(actor, "enter_intake_outcome", `${input.intake}${input.agency ? `/${input.agency}` : ""}`);
+  await audit(actor, "enter_intake_outcome", input.intake);
   return { saved: true };
 }
 
@@ -47,7 +47,7 @@ const median = (values: number[]) => {
   return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 };
 
-export async function retention(organisationId: string, agency: string | null = null) {
+export async function retention(organisationId: string) {
   const db = createAdminClient();
   const { data: org, error } = await db
     .from("organisations")
@@ -56,12 +56,12 @@ export async function retention(organisationId: string, agency: string | null = 
     .single();
   if (error) throw error;
   const query = db.from("intake_outcomes").select("hired, employed").eq("organisation_id", organisationId);
-  const { data: outcomes, error: outcomesError } = await (agency ? query.eq("agency", agency) : query);
+  const { data: outcomes, error: outcomesError } = await query;
   if (outcomesError) throw outcomesError;
   const n = outcomes.reduce((sum, row) => sum + row.hired, 0);
   const k = outcomes.reduce((sum, row) => sum + row.employed, 0);
   const against =
-    agency || org.retention_baseline_of === null
+    org.retention_baseline_of === null
       ? ""
       : `, compared with a usual ${org.retention_baseline_kept} of ${org.retention_baseline_of}`;
   return n >= POOL
@@ -94,7 +94,6 @@ export async function impact(organisationId: string) {
       .select("*, responses!actions_source_response_id_fkey(created_at, people(start_date))")
       .eq("organisation_id", organisationId)
       .eq("status", "done")
-      .eq("hiring_side", false)
       .not("scope_type", "is", null),
     db.from("intake_outcomes").select("intake, hired, employed").eq("organisation_id", organisationId),
     libraryWithEvidence(organisationId),

@@ -26,28 +26,22 @@ type Entry = {
   reason: string | null;
   spot_checks: number;
   changed: number;
-  challenges: number;
 };
 
 export async function qualityPanel(organisationId: string) {
   const db = createAdminClient();
   const since = new Date((await now()).getTime() - WINDOW_DAYS * 86400000).toISOString();
-  const [checks, challenges, holds, tested] = await Promise.all([
+  const [checks, holds, tested] = await Promise.all([
     db.from("spot_checks").select("driver, language, changed").eq("organisation_id", organisationId).gte("at", since),
-    db
-      .from("ai_tags")
-      .select("drivers, responses!inner(language)")
-      .eq("organisation_id", organisationId)
-      .gte("challenged_at", since),
     db.from("quality_holds").select("driver, language, state, reason").eq("organisation_id", organisationId),
     db.from("language_packs").select("language").eq("organisation_id", organisationId).not("test_passed_on", "is", null),
   ]);
-  for (const result of [checks, challenges, holds, tested]) if (result.error) throw result.error;
+  for (const result of [checks, holds, tested]) if (result.error) throw result.error;
   const passed = new Set(tested.data!.map((pack) => pack.language));
   const rows = new Map<string, Entry>();
   const row = (driver: string | null, language: string) => {
     const key = `${driver}|${language}`;
-    if (!rows.has(key)) rows.set(key, { driver, language, state: null, evaluated: passed.has(language), reason: null, spot_checks: 0, changed: 0, challenges: 0 });
+    if (!rows.has(key)) rows.set(key, { driver, language, state: null, evaluated: passed.has(language), reason: null, spot_checks: 0, changed: 0 });
     return rows.get(key)!;
   };
   for (const language of Object.keys(packs)) if (!passed.has(language)) row(null, language);
@@ -56,9 +50,6 @@ export async function qualityPanel(organisationId: string) {
     const entry = row(check.driver, check.language);
     entry.spot_checks += 1;
     if (check.changed) entry.changed += 1;
-  }
-  for (const tag of challenges.data as unknown as { drivers: string[]; responses: { language: string } }[]) {
-    for (const driver of tag.drivers) row(driver, tag.responses.language).challenges += 1;
   }
   return [...rows.values()]
     .sort((a, b) => (a.driver ?? "").localeCompare(b.driver ?? "") || a.language.localeCompare(b.language))

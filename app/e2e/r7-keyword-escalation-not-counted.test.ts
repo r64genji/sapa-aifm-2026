@@ -11,7 +11,6 @@ import {
   resetDemo,
   say,
   scriptModel,
-  tap,
   tapScore,
 } from "./helpers.ts";
 
@@ -28,7 +27,6 @@ before(async () => {
   await tapScore(chat, 4);
   await tapScore(chat, 3);
   await tapScore(chat, 5);
-  await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);

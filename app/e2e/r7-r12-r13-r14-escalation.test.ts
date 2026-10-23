@@ -15,7 +15,6 @@ import {
   scriptModel,
   sentTo,
   sessionClient,
-  tap,
   tapScore,
 } from "./helpers.ts";
 
@@ -32,7 +31,6 @@ async function reachOpenQuestion(chat: number) {
   await tapScore(chat, 4);
   await tapScore(chat, 3);
   await tapScore(chat, 5);
-  await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);

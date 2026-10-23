@@ -37,22 +37,12 @@ async function seedUsers() {
   const password = process.env.SEED_USER_PASSWORD!;
   const { data, error } = await admin.listUsers({ perPage: 1000 });
   if (error) throw error;
-  for (const { email, app_metadata, agency } of users) {
+  for (const { email, app_metadata } of users) {
     const existing = data.users.find((user) => user.email === email);
-    const { data: saved, error } = existing
+    const { error } = existing
       ? await admin.updateUserById(existing.id, { app_metadata })
       : await admin.createUser({ email, password, email_confirm: true, app_metadata });
     if (error) throw error;
-    if (agency) {
-      const { error: grantError } = await createAdminClient().from("agency_grants").upsert({
-        user_id: saved.user.id,
-        organisation_id: app_metadata.organisation_id,
-        agency,
-        granted_by: "seed",
-        granted_at: "2026-10-01T01:00:00Z",
-      });
-      if (grantError) throw grantError;
-    }
   }
 }
 

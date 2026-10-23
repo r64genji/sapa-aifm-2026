@@ -4,7 +4,6 @@ import { decrypt } from "@/lib/crypto";
 import { mask } from "@/lib/mask";
 import { reachable, type Person } from "@/lib/directory";
 import { escalate } from "@/lib/escalations";
-import { resolveChallenge } from "@/lib/privacy";
 import { audit, signal } from "@/lib/signal";
 import { send } from "@/lib/telegram";
 import { translation } from "@/lib/translate";
@@ -180,7 +179,6 @@ export async function retryReply(organisationId: string, responseId: string) {
 }
 
 const waiting = "New labels wait for HR";
-const challenged = "Challenged by new hire";
 const spotCheck = "Spot check";
 
 export async function readQueue(organisationId: string, actor: string) {
@@ -188,7 +186,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, challenged_at, challenge_resolved_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, anonymous, people(team, name), checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, anonymous, people(team, name), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(
@@ -214,7 +212,7 @@ export async function readQueue(organisationId: string, actor: string) {
     if (auditError) throw auditError;
   }
   return Promise.all(
-    rows.map(async ({ responses, spot_check_at, response_id, challenged_at, challenge_resolved_at, ...row }) => {
+    rows.map(async ({ responses, spot_check_at, response_id, ...row }) => {
       const text = responses.text_encrypted ? mask(decrypt(responses.text_encrypted)) : null;
       return {
         id: response_id,
@@ -225,13 +223,11 @@ export async function readQueue(organisationId: string, actor: string) {
         language: responses.language,
         byline: byline(responses.anonymous ? null : responses.people?.name, responses.people?.team, responses.checkin_schedule?.touchpoint),
         note:
-          challenged_at && !challenge_resolved_at
-            ? challenged
-            : row.status === "ok" && !row.counted
-              ? (held.find((hold) => hold.language === responses.language && row.drivers.includes(hold.driver))?.reason ?? waiting)
-              : row.status === "ok" && spot_check_at
-                ? spotCheck
-                : null,
+          row.status === "ok" && !row.counted
+            ? (held.find((hold) => hold.language === responses.language && row.drivers.includes(hold.driver))?.reason ?? waiting)
+            : row.status === "ok" && spot_check_at
+              ? spotCheck
+              : null,
       };
     }),
   );
@@ -298,7 +294,6 @@ export async function reviewReply(
       if (person) await send(person.telegram_chat_id!, reply);
     }
   }
-  await resolveChallenge(responseId);
   await signal(organisationId, "cohort");
   await signal(organisationId, "queue");
   return { status: "reviewed" };

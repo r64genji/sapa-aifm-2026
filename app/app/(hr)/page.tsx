@@ -6,7 +6,7 @@ import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
 import { Loader2, Send } from "lucide-react";
 import { FixDialog, TranslatedQuote } from "@/components/sapa/reply";
-import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
+import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Row, Waiting, dayLabel, driverName, DRIVERS, month, pct, shortDate, type Lane } from "@/components/sapa/ui";
 
 const CONTEXT: Record<string, string> = { PAY_BENEFITS: "Pay and benefits", GROWTH: "Growth", COMMUTE_LOGISTICS: "Commute" };
 
@@ -17,13 +17,11 @@ type Themes = { cards: Card[]; context: Context[] };
 type Share = { enough: true; n: number; m: number } | { enough: false };
 type Detail = { by_intake: (Share & { intake: string })[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; byline: string };
-type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null; hiring_side: boolean };
+type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null };
 type Upcoming = { date: string; touchpoint: number; people: number }[];
 type Questions = { groups: { id: string; askers: number; unknown: number; handbook_path: string | null }[] };
 
-const pct = (part: number, whole: number) => Math.round((part / Math.max(whole, 1)) * 100);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
-const month = (intake: string) => new Date(`${intake}-01T00:00:00Z`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
 
 function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, undo: () => Promise<unknown>) => void }) {
   const [picking, setPicking] = useState(false);
@@ -134,7 +132,7 @@ function ComingUp({ today, checkins, actions }: { today: string | undefined; che
       .filter((a) => ["assigned", "accepted"].includes(a.status) && a.due_on)
       .map((a) => ({ key: a.id, date: a.due_on!, title: `${a.title} due`, meta: a.owner === "HR" ? "Your fix" : `${a.owner}${a.status === "assigned" ? " has not accepted yet" : " is on it"}`, href: `/fixes/${a.id}` })),
   ].sort((a, b) => a.date.localeCompare(b.date));
-  const pending = actions.filter((a) => a.status === "done" && !a.hiring_side && a.verdict === "too_early");
+  const pending = actions.filter((a) => a.status === "done" && a.verdict === "too_early");
   return (
     <Panel title="Coming up" meta="Next 3 weeks">
       <ul className="m-0 list-none p-0">
@@ -249,7 +247,7 @@ export default function Page() {
   const gaps = (questions.data?.groups ?? []).filter((g) => !g.handbook_path || g.unknown > 0);
   const asked = gaps.reduce((t, g) => t + g.askers, 0);
   const answered = cards.reduce((most, c) => Math.max(most, c.m ?? 0), 0);
-  const judged = (actions.data ?? []).filter((a) => a.status === "done" && !a.hiring_side && a.verdict && a.verdict !== "too_early");
+  const judged = (actions.data ?? []).filter((a) => a.status === "done" && a.verdict && a.verdict !== "too_early");
   const running = open.length - drafts;
 
   return (

@@ -1,8 +1,7 @@
 import { managerChat } from "@/lib/actions";
 import { checkinButton, checkinText, skipCheckin } from "@/lib/checkin";
 import { exitButton, exitText } from "@/lib/exit";
-import { answerOffer } from "@/lib/offers";
-import { challenge, confirmDelete, deletePrompt, myAnswers } from "@/lib/privacy";
+import { confirmDelete, deletePrompt } from "@/lib/privacy";
 import { ask } from "@/lib/qa";
 import { scheduleFor } from "@/lib/scheduler";
 import {
@@ -130,14 +129,6 @@ async function press(person: Person, id: string, value: string, languages: Langu
     await setFirstJob(person, value === "yes");
     return { replies: [{ text: pack.firstJob.thanks }] };
   }
-  if (id === "offer" && person.state === "active" && (value === "yes" || value === "no_thanks")) {
-    const replies = await answerOffer(person, value);
-    if (replies) return { replies };
-  }
-  if (id === "wrong" && person.state === "active") {
-    const replies = await challenge(person, value);
-    if (replies) return { replies };
-  }
   if (id === "ans" && person.state === "active") {
     const replies = await checkinButton(person, value);
     if (replies) return { replies };
@@ -193,7 +184,6 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   }
   if (person.state === "declined") return none;
   if (input.kind === "button") return press(person, input.id, input.value, languages);
-  if (command === "myanswers") return { replies: await myAnswers(person) };
   if (person.state === "active" && command === "privacy") {
     const pack = packs[person.language];
     return { replies: [privacyReply(person.language, person.anonymous ? pack.privacy.nowAnonymous : pack.privacy.nowNamed)] };

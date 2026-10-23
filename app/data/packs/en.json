@@ -62,7 +62,6 @@
     "language": { "name": "language", "description": "Change your language" },
     "stop": { "name": "stop", "description": "Stop all messages" },
     "delete": { "name": "delete", "description": "Delete your answers" },
-    "myanswers": { "name": "myanswers", "description": "See your own answers" },
     "privacy": { "name": "privacy", "description": "Change if HR sees your name" },
     "help": { "name": "help", "description": "Show help" }
   },
@@ -168,18 +167,6 @@
         "text": "Is there anything about your first weeks that you would like HR to know? Please type your answer."
       },
       {
-        "id": "JOB_MATCH",
-        "type": "scale",
-        "text": "How much does the job match what you were told when you were hired?",
-        "labels": [
-          "Not at all",
-          "A little",
-          "Partly",
-          "Mostly",
-          "Completely"
-        ]
-      },
-      {
         "id": "FIX_CHANGE",
         "type": "scale",
         "text": "Since the last Update from HR about {topic}, how has it changed for you?",
@@ -252,7 +239,6 @@
       "remarks": "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip."
     },
     "probe": {
-      "skip": "Skip",
       "example": "Can you give one example from this week?",
       "effect": "How does that affect your work?",
       "help": "What would make it easier?",
@@ -416,13 +402,6 @@
       ]
     }
   },
-  "offer": {
-    "text": "HR would like to help with what you shared. Would you like a short private chat?",
-    "yes": "Yes",
-    "noThanks": "No thanks",
-    "accepted": "Thank you. HR will contact you within 2 working days.",
-    "declined": "No problem. Thank you for telling us."
-  },
   "milestone": {
     "nudges": {
       "1": "Day 1 for {name}: Assign a buddy.",
@@ -508,15 +487,11 @@
     "kept": "Nothing was deleted."
   },
   "myAnswers": {
-    "none": "You have no stored answers.",
     "aiReading": "AI reading",
     "changedByHr": "Changed by HR",
     "labels": "Problem areas",
     "noLabels": "none",
-    "pending": "The AI has not read this answer yet.",
-    "wrong": "This is wrong",
-    "challenged": "Thank you. HR will check this label. It is not counted until HR has checked it.",
-    "resolved": "HR checked your note. The label now reads:"
+    "pending": "The AI has not read this answer yet."
   },
   "labels": {
     "ROLE_CLARITY": "Role clarity",

@@ -14,7 +14,6 @@ import {
   say,
   scriptModel,
   sentTo,
-  tap,
   tapScore,
   tapData,
 } from "./helpers.ts";
@@ -40,7 +39,6 @@ async function reply(chat: number, text: string) {
   await tapScore(chat, 4);
   await tapScore(chat, 3);
   await tapScore(chat, 5);
-  await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);

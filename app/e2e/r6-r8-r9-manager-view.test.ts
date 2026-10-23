@@ -11,7 +11,6 @@ import {
   joined,
   link,
   liveInvite,
-  chatPerson,
   postUpdate,
   resetDemo,
   say,
@@ -40,7 +39,6 @@ async function reply(chat: number, text: string, tag: Record<string, unknown>) {
   await tapScore(chat, 4);
   await tapScore(chat, 3);
   await tapScore(chat, 5);
-  await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);

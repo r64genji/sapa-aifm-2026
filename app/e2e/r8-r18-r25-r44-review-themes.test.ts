@@ -11,7 +11,6 @@ import {
   hrToken,
   link,
   liveInvite,
-  modelCalls,
   resetDemo,
   resetSeed,
   say,
@@ -61,7 +60,6 @@ test("R44, R8, R25: the live reply counts as AI-confident at once, Confirm label
   await tapScore(live, 4);
   await tapScore(live, 3);
   await tapScore(live, 5);
-  await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);

@@ -60,7 +60,7 @@ let seed: { n: number; m: number; reviewed: number; ai_confident: number };
 
 test("R17, R22: the reply reaches the model masked, and the same update sent again changes nothing", async () => {
   seed = await roleClarity();
-  for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   const body = update("text", { chat_id: live, text: reply });
   assert.equal((await postUpdate(body)).status, 200);

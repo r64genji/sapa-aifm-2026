@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { before, test } from "node:test";
-import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, resetSeed, say, scriptModel, tap, tapScore } from "./helpers.ts";
+import { appUrl, classifierTag, db, freezeClock, hrRequest, hrToken, joined, resetSeed, say, scriptModel, tapScore } from "./helpers.ts";
 
 const [first, second] = [5550004601, 5550004602];
 
@@ -15,7 +15,6 @@ async function reply(chat: number) {
   await tapScore(chat, 4);
   await tapScore(chat, 3);
   await tapScore(chat, 5);
-  await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);
   await tapScore(chat, 3);

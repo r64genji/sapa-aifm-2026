@@ -26,7 +26,6 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta
 const en = read("../data/packs/en.json");
 const [organisation] = read("../data/seed/organisations.json");
 const live = 5550001401;
-const other = 5550001402;
 const exported = 5550001403;
 const reply = "Boss bagi 3 task semua urgent, tak tahu mana nak buat dulu";
 const summary = "The employee does not know which task to do first.";
@@ -79,7 +78,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R40: /myanswers shows own replies, escalated ones with date and text only, and This is wrong takes the tags out of counts until HR reviews", async () => {
+test("R18: a reply HR reviews counts in its problem area", async () => {
   seedWorkload = await card("WORKLOAD");
   seedRole = await card("ROLE_CLARITY");
   await link(live, liveInvite);
@@ -94,7 +93,6 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await tapScore(live, 3);
   await tapScore(live, 3);
   await tapScore(live, 3);
-  await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
   const [queued] = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
@@ -103,41 +101,6 @@ test("R40: /myanswers shows own replies, escalated ones with date and text only,
   await freezeClock("2026-10-15T15:01:00.000Z");
   await say(live, threat);
 
-  const shown = await newMessages(live, () => say(live, "/myanswers"));
-  assert.deepEqual(
-    shown.map((m) => [m.text, buttons(m)]),
-    [
-      [`2026-10-15\n${reply}\n${en.myAnswers.aiReading}: ${summary}\n${en.myAnswers.labels}: ${en.labels.ROLE_CLARITY}`, [en.myAnswers.wrong]],
-      [`2026-10-15\n${threat}`, []],
-    ],
-  );
-
-  await joined(other, "2026-10-14");
-  assert.deepEqual(await newMessages(other, () => say(other, "/jawapansaya")).then((m) => m.map((x) => x.text)), [en.myAnswers.none]);
-  const wrongButton = shown[0].reply_markup!.inline_keyboard.flat()[0];
-  await tapData(other, wrongButton.callback_data);
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n + 1, m: seedRole.m + 1 });
-
-  assert.deepEqual(
-    await newMessages(live, () => tapData(live, wrongButton.callback_data)).then((m) => m.map((x) => x.text)),
-    [`You tapped "This is wrong". ${en.myAnswers.challenged}`],
-  );
-  assert.deepEqual(await card("ROLE_CLARITY"), seedRole);
-  const { data: challengeAudit } = await db.from("audit_log").select("actor, target").eq("action", "challenge_tag");
-  assert.deepEqual(challengeAudit, [{ actor: "new_hire", target: queued.id }]);
-  const challenged = (await (await hrRequest("/api/hr/queue", "GET")).json()).find((r: { id: string }) => r.id === queued.id);
-  assert.equal(challenged.note, "Challenged by new hire");
-  assert.equal(challenged.status, "needs_review");
-
-  const resolved = await newMessages(live, async () => {
-    assert.equal((await hrRequest(`/api/hr/replies/${queued.id}/review`, "POST", { drivers: ["WORKLOAD"] })).status, 200);
-  });
-  assert.deepEqual(resolved.map((m) => m.text), [`${en.myAnswers.resolved} ${en.labels.WORKLOAD}`]);
-  assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n, m: seedRole.m + 1 });
-  assert.deepEqual(await card("WORKLOAD"), { n: seedWorkload.n + 1, m: seedWorkload.m + 1 });
-
-  const again = await newMessages(live, () => say(live, "/myanswers"));
-  assert.equal(again[0].text, `2026-10-15\n${reply}\n${en.myAnswers.changedByHr}: ${summary}\n${en.myAnswers.labels}: ${en.labels.WORKLOAD}`);
 });
 
 test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete removes the hire's rows and questions, drops live counts by one, leaves snapshots alone and writes one anonymous audit row", async () => {
@@ -161,7 +124,6 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
       checkin_schedule: await count("checkin_schedule", "person_id", [id]),
       asked_questions: await count("asked_questions", "person_id", [id]),
       consents: await count("consents", "person_id", [id]),
-      follow_up_offers: await count("follow_up_offers", "person_id", [id]),
     };
   };
   const held = await rows();
@@ -185,7 +147,6 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
     checkin_schedule: 0,
     asked_questions: 0,
     consents: 0,
-    follow_up_offers: 0,
   });
   const { data: person } = await db.from("people").select("telegram_chat_id").eq("id", id).single();
   assert.equal(person!.telegram_chat_id, null);
@@ -199,7 +160,7 @@ test("R4, R35: DELETE asks once, Keep deletes nothing, a confirmed delete remove
   assert.ok(![deletions[0].actor, deletions[0].target, deletions[0].reason].some((v) => String(v).includes(id)));
   assert.ok(!audits!.some((a) => a.target === id));
 
-  await say(live, "/myanswers");
+  await say(live, "/help");
   assert.equal((await texts(live)).at(-1), en.start);
 });
 
@@ -212,7 +173,6 @@ test("R41: only an HR admin can send a hire's data, only to that hire, only with
   await tapScore(exported, 4);
   await tapScore(exported, 3);
   await tapScore(exported, 5);
-  await tapScore(exported, 3);
   await tapScore(exported, 3);
   await tapScore(exported, 3);
   await tapScore(exported, 3);

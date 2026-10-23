@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { ChevronDown, Clock, LoaderCircle, Plus, Send, ShieldCheck, Sparkles, Trash2 } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "@/components/sapa/data";
-import type { Me } from "@/components/sapa/shell";
 import { AiMark, Button, CountBar, Empty, LaneIcon, Loading, PageHeader, Select, Tabs, driverName, shortDate } from "@/components/sapa/ui";
 
 type Notes = { en: string; ms: string; zh: string };
@@ -64,8 +63,6 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
 }
 
 function Editor({ id, view, entries, teams }: { id: string; view: View; entries: Entry[] | undefined; teams: string[] }) {
-  const me = useApi<Me>("/api/hr/me", 60000);
-  const hr = me.data?.name ?? "HR";
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
   const [mode, setMode] = useState<Mode>("none");
   const [decision, setDecision] = useState<Decision>("pending");
@@ -699,8 +696,8 @@ function Page() {
   useEffect(() => {
     if (resume || !driver || started.current) return;
     started.current = true;
-    apiGet<{ id: string; driver: string; status: string; hiring_side: boolean; source: string }[]>("/api/hr/actions")
-      .then((actions) => actions.find((a) => a.status === "draft" && a.driver === driver && !a.hiring_side && a.source !== "reply") ?? apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }))
+    apiGet<{ id: string; driver: string; status: string; source: string }[]>("/api/hr/actions")
+      .then((actions) => actions.find((a) => a.status === "draft" && a.driver === driver && a.source !== "reply") ?? apiSend<{ id: string }>("/api/hr/actions", "POST", { driver }))
       .then(({ id }) => setId(id), (e) => setError(fail(e)));
   }, [driver, resume]);
 

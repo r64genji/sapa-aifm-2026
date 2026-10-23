@@ -33,8 +33,8 @@ export async function themeDetails(organisationId: string, touchpoint: number, t
       .eq("touchpoint", touchpoint)
       .match(team === null ? {} : { team })
       .order("week", { ascending: false }),
-    themeCards(organisationId, touchpoint, null, null, team),
-    counts(organisationId, touchpoint, null, null, team),
+    themeCards(organisationId, touchpoint, null, team),
+    counts(organisationId, touchpoint, null, team),
   ]);
   for (const result of [people, schedule, snapshots]) if (result.error) throw result.error;
   const minimum = base.min_group_size;
@@ -44,10 +44,10 @@ export async function themeDetails(organisationId: string, touchpoint: number, t
   const intakes = team ? [] : [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
   const roles = team || !withRoles ? [] : [...new Set(people.data!.map((row) => row.role as string))].sort();
   const [days, byIntake, byRole, byExperience] = await Promise.all([
-    Promise.all(touchpoints.map(async (day) => ({ day, c: await counts(organisationId, day, null, null, team) }))),
+    Promise.all(touchpoints.map(async (day) => ({ day, c: await counts(organisationId, day, null, team) }))),
     Promise.all(intakes.map(async (intake) => ({ intake, c: await counts(organisationId, touchpoint, `${intake}-01`, null, team) }))),
-    Promise.all(roles.map(async (role) => ({ role, c: await counts(organisationId, touchpoint, null, null, team, role) }))),
-    team ? [] : Promise.all([true, false].map(async (firstJob) => ({ group: firstJob ? "First job" : "Experienced", c: await counts(organisationId, touchpoint, null, null, team, null, firstJob) }))),
+    Promise.all(roles.map(async (role) => ({ role, c: await counts(organisationId, touchpoint, null, team, role) }))),
+    team ? [] : Promise.all([true, false].map(async (firstJob) => ({ group: firstJob ? "First job" : "Experienced", c: await counts(organisationId, touchpoint, null, team, null, firstJob) }))),
   ]);
 
   const asOf = (await now()).toISOString();

@@ -1,7 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { now } from "@/lib/clock";
-import { decrypt } from "@/lib/crypto";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 

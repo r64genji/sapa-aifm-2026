@@ -37,7 +37,6 @@ const paths = [
   "/api/hr/actions",
   "/api/hr/hires",
   "/api/hr/questions",
-  "/api/hr/offers",
   "/api/hr/milestones",
   "/api/hr/managers",
   "/api/hr/themes?touchpoint=14",
@@ -56,7 +55,7 @@ before(async () => {
   await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Aisha Tan");
   await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
-  for (const score of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, score);
+  for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(live, score);
   await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote }) }]);
   await say(live, written);

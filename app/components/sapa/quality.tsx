@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import { useApi } from "./data";
-import { LaneIcon, Waiting, driverName } from "./ui";
+import { LaneIcon, Waiting, driverName, pct } from "./ui";
 
 type Quality = {
   driver: string | null;
@@ -16,7 +16,6 @@ type Quality = {
 };
 
 const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
-const pct = (part: number, whole: number) => Math.round((part / whole) * 100);
 
 export function QualityWatch() {
   const quality = useApi<Quality[]>("/api/hr/quality").data;

@@ -6,7 +6,6 @@ import { packs } from "@/lib/packs";
 import { audit, signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { send } from "@/lib/telegram";
-import { jobMatchCards } from "@/lib/jobmatch";
 import { libraryWithEvidence, members, pooled, queueResolution, scoreCard, scoreOf, verdict } from "@/lib/resolution";
 import { sendNotices } from "@/lib/scheduler";
 import { mask } from "@/lib/mask";
@@ -21,8 +20,7 @@ type Action = {
   id: string;
   organisation_id: string;
   driver: string;
-  source: "theme" | "reply" | "job_match";
-  hiring_side: boolean;
+  source: "theme" | "reply";
   own_fix: boolean;
   library_entry_id: string | null;
   source_response_id: string | null;
@@ -197,7 +195,7 @@ export async function draftOwnFix(
 ): Promise<{ id: string; title: string; steps: string; notes: z.infer<typeof Notes> | null } | Failure> {
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
-  if (action.status !== "draft" || action.hiring_side) return { error: "Only a draft can be edited", code: 409 };
+  if (action.status !== "draft") return { error: "Only a draft can be edited", code: 409 };
   const title = name.trim();
   let draft = { steps: "", notes: null as z.infer<typeof Notes> | null };
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -324,47 +322,6 @@ export async function restoreLibraryEntry(organisationId: string, actor: string,
   return { id };
 }
 
-export async function draftHiringAction(
-  organisationId: string,
-  actor: string,
-  role: string,
-): Promise<{ id: string } | Failure> {
-  const db = createAdminClient();
-  const card = (await jobMatchCards(organisationId)).find((candidate) => candidate.role === role);
-  if (!card) return { error: "Not found", code: 404 };
-  if (!card.enough) return { error: card.message, code: 422 };
-  const { data: entry, error: entryError } = await db
-    .from("action_library")
-    .select("id, title, text")
-    .eq("organisation_id", organisationId)
-    .eq("type", "hiring_side")
-    .order("id")
-    .limit(1)
-    .maybeSingle();
-  if (entryError) throw entryError;
-  if (!entry) return { error: "The action library has no hiring-side entry", code: 409 };
-  const { data, error } = await db
-    .from("actions")
-    .insert({
-      organisation_id: organisationId,
-      driver: "JOB_MATCH",
-      library_entry_id: entry.id,
-      draft_reason: card.label,
-      source: "job_match",
-      hiring_side: true,
-      title: `${entry.title} (${role})`,
-      steps: entry.text,
-      created_by: actor,
-      created_at: (await now()).toISOString(),
-    })
-    .select("id")
-    .single();
-  if (error) throw error;
-  await audit(actor, "draft_action", data.id);
-  await signal(organisationId, "action");
-  return { id: data.id };
-}
-
 type Scope =
   | { type: "person" }
   | { type: "team"; team: string }
@@ -401,11 +358,9 @@ export async function editAction(
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
   if (action.status !== "draft") return { error: "Only a draft can be edited", code: 409 };
-  if (action.hiring_side && change.scope) return { error: "A hiring-side action has no scope", code: 422 };
   const fields = change.scope ? await scopeFields(action, change.scope) : {};
   if ("error" in fields) return fields as Failure;
   if (change.library_entry_id) {
-    if (action.hiring_side) return { error: "A hiring-side action has no library pick", code: 422 };
     const { data: entry, error: entryError } = await createAdminClient()
       .from("action_library")
       .select("id")
@@ -418,7 +373,7 @@ export async function editAction(
     if (!entry) return { error: "No such library entry for this driver", code: 422 };
     Object.assign(fields, { library_entry_id: entry.id, own_fix: false });
   }
-  if (change.own_fix && !action.hiring_side) Object.assign(fields, { own_fix: true, library_entry_id: null, ...(change.notes && { draft_notes: change.notes }) });
+  if (change.own_fix) Object.assign(fields, { own_fix: true, library_entry_id: null, ...(change.notes && { draft_notes: change.notes }) });
   const { error } = await createAdminClient()
     .from("actions")
     .update({ ...fields, ...(change.title && { title: change.title }), ...(change.steps && { steps: change.steps }) })
@@ -486,12 +441,11 @@ export async function assignAction(
   const action = await loadAction(organisationId, id);
   if (!action) return { error: "Not found", code: 404 };
   if (action.status !== "draft") return { error: "Only a draft can be assigned", code: 409 };
-  if (action.hiring_side && managerId) return { error: "A hiring-side action stays with HR", code: 422 };
-  if (!action.scope_type && !action.hiring_side) return { error: "Choose a scope first", code: 422 };
-  if (!action.hiring_side && !action.notes && !action.no_notice_reason) {
+  if (!action.scope_type) return { error: "Choose a scope first", code: 422 };
+  if (!action.notes && !action.no_notice_reason) {
     return { error: "Approve a note in English and Bahasa Malaysia, or tick no notice with a reason", code: 422 };
   }
-  const held = !action.hiring_side && (await isHeld(action));
+  const held = await isHeld(action);
   const org = await organisation(organisationId);
   const at = await now();
   const today = localDate(at, org.time_zone);
@@ -568,7 +522,7 @@ export async function sendBatch(
   const { data: template, error } = await db.from("actions").select("*").eq("organisation_id", organisationId).eq("id", id).maybeSingle();
   if (error) throw error;
   if (!template) return { error: "Not found", code: 404 };
-  if (template.status !== "draft" || template.hiring_side) return { error: "Only a draft can be sent", code: 409 };
+  if (template.status !== "draft") return { error: "Only a draft can be sent", code: 409 };
   const batchId = crypto.randomUUID();
   const fields = { ...template };
   delete fields.id;
@@ -647,11 +601,8 @@ export async function stepAction(
   if (data.length === 0) return { error: "Not found or not open to you", code: 409 };
   await audit(actor, to === "accepted" ? "accept_action" : "complete_action", id);
   if (to === "done") {
-    const done = (await loadAction(organisationId, id))!;
-    if (!done.hiring_side) {
-      await queueResolution(done);
-      await sendNotices();
-    }
+    await queueResolution((await loadAction(organisationId, id))!);
+    await sendNotices();
   }
   await signal(organisationId, "action");
   return { status: to };
@@ -726,7 +677,7 @@ export async function listActions(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, batch_id, driver, source, hiring_side, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, people!actions_scope_person_id_fkey(name), status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, batch_id, driver, source, library_entry_id, draft_reason, title, steps, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, people!actions_scope_person_id_fkey(name), status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");
@@ -810,7 +761,7 @@ export async function actionDetail(organisationId: string, id: string) {
   return {
     ...row,
     library: library < 0 ? null : { title: entry.title, rank: library + 1, used: entry.used, difference: entry.difference },
-    hires: row.hiring_side || !row.scope_type ? null : row.scope_type === "person" ? 1 : (await members({ ...row, scope_person_id: null }, false)).length,
+    hires: !row.scope_type ? null : row.scope_type === "person" ? 1 : (await members({ ...row, scope_person_id: null }, false)).length,
     recheck: { asked: asked ?? 0, answered: linked.filter((response) => response.question_id === row.driver).length },
     follow_up: {
       answers: taps.length,

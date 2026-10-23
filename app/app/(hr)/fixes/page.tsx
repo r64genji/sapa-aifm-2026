@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useApi } from "@/components/sapa/data";
-import { Button, driverName, Empty, FixTrack, fixScope, LaneIcon, Loading, Row, shortDate, Tabs, Waiting } from "@/components/sapa/ui";
+import { Button, delay, driverName, Empty, FixTrack, fixScope, LaneIcon, Loading, month, pct, Row, shortDate, Tabs, Waiting } from "@/components/sapa/ui";
 
 type Retention = { enough: true; k: number; n: number; text: string; note: string } | { enough: false; message: string; note: string };
 type Intake =
@@ -28,7 +28,6 @@ type Action = {
   id: string;
   batch_id: string | null;
   driver: string;
-  hiring_side: boolean;
   title: string;
   created_at: string;
   status: string;
@@ -71,11 +70,8 @@ type Impact = {
 type Milestone = { intake: string; enough: boolean; share_done?: number };
 
 const monthYear = (intake: string) => new Date(`${intake}-01`).toLocaleString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
-const month = (intake: string) => new Date(`${intake}-01`).toLocaleString("en-GB", { month: "short", timeZone: "UTC" });
-const pct = (part: number, whole: number) => Math.round((part / whole) * 100);
 const ok = (n: number | null | undefined): n is number => typeof n === "number" && Number.isFinite(n);
 const at = (value: number) => ((Math.min(Math.max(value, 1), 5) - 1) / 4) * 100;
-const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 
 function useSeen<T extends Element>() {
   const ref = useRef<T>(null);
@@ -578,32 +574,31 @@ function waitingText(a: Action) {
 }
 
 function noteText(a: Action) {
-  if (a.hiring_side) return "No note, no recheck";
   if (a.notice.status === "sent") return `Note sent to ${a.notice.sent_count} new ${a.notice.sent_count === 1 ? "hire" : "hires"}`;
   return a.notice.status === "none" ? "No note" : "Note not sent yet";
 }
 
 function DoneRow({ a }: { a: Action }) {
   const r = a.result;
-  const measured = !a.hiring_side && r && a.verdict && a.verdict !== "too_early";
+  const measured = r && a.verdict && a.verdict !== "too_early";
   const diff = measured ? gain(r) : null;
   return (
     <Link href={`/fixes/${a.id}`} className="sp-fixrow flex flex-wrap items-center gap-4 px-[18px] py-3.5 hover:bg-[var(--surface-sunken)]" style={{ color: "inherit", textDecoration: "none" }}>
       <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-0.5">
         <span className="font-semibold">{a.title}</span>
         <span className="sp-caption">
-          {a.hiring_side ? "Hiring" : driverName(a.driver)} · {fixScope(a)} · {a.owner} · Done {shortDate(a.done_at)} · {noteText(a)}
+          {driverName(a.driver)} · {fixScope(a)} · {a.owner} · Done {shortDate(a.done_at)} · {noteText(a)}
         </span>
-        {!measured && !a.hiring_side && a.score?.headline ? <span className="sp-caption">{a.score.headline}</span> : null}
+        {!measured && a.score?.headline ? <span className="sp-caption">{a.score.headline}</span> : null}
       </div>
       <span className="flex flex-[0_0_96px] flex-col items-end">
-        <span className="sp-num text-[18px] font-bold leading-[22px]" style={{ color: a.verdict === "worked" && !a.hiring_side ? "var(--fixes)" : "var(--ink-muted)" }}>
+        <span className="sp-num text-[18px] font-bold leading-[22px]" style={{ color: a.verdict === "worked" ? "var(--fixes)" : "var(--ink-muted)" }}>
           {diff === null ? "–" : `${diff >= 0 ? "+" : "−"}${Math.abs(diff).toFixed(1)}`}
         </span>
         {diff === null ? null : <span className="sp-caption">{diff >= 0 ? "higher" : "lower"} than other teams</span>}
       </span>
       <span className="flex-[0_0_132px]">
-        {a.hiring_side || !a.verdict ? (
+        {!a.verdict ? (
           <span className="inline-flex items-center rounded border px-2 py-0.5 text-xs font-bold sp-muted" style={{ borderColor: "var(--line)" }}>
             Not measured
           </span>
@@ -626,9 +621,8 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
     .sort((a, b) => (a.due_on ?? "9999").localeCompare(b.due_on ?? "9999") || a.created_at.localeCompare(b.created_at));
   const done = actions.filter((a) => a.status === "done").sort((a, b) => (b.done_at ?? "").localeCompare(a.done_at ?? ""));
   const cancelled = actions.filter((a) => a.status === "dismissed").sort((a, b) => (b.dismissed_at ?? "").localeCompare(a.dismissed_at ?? ""));
-  const judged = done.filter((a) => !a.hiring_side);
-  const count = (v: Verdict) => judged.filter((a) => a.verdict === v).length;
-  const listed = filter === "all" ? done : judged.filter((a) => a.verdict === filter);
+  const count = (v: Verdict) => done.filter((a) => a.verdict === v).length;
+  const listed = filter === "all" ? done : done.filter((a) => a.verdict === filter);
   const stats: [number, string][] = [
     [open.filter((a) => a.status === "draft").length, "Drafts waiting for you"],
     [open.filter((a) => a.status === "assigned" && a.owner !== "HR").length, "Waiting for a manager to accept"],
@@ -738,7 +732,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
                         {a.title}
                       </Link>
                     }
-                    meta={`${a.hiring_side ? "Hiring" : driverName(a.driver)} · ${fixScope(a)}${a.alert_label ? ` · ${a.alert_label}` : ""}`}
+                    meta={`${driverName(a.driver)} · ${fixScope(a)}${a.alert_label ? ` · ${a.alert_label}` : ""}`}
                     metric={
                       <div className="flex flex-col gap-1.5">
                         <FixTrack step={stepOf(a)} />
@@ -767,7 +761,7 @@ function YourFixes({ actions, footer }: { actions: Action[]; footer: string }) {
                 key={a.id}
                 muted
                 title={a.title}
-                meta={`${a.hiring_side ? "Hiring" : driverName(a.driver)} · ${fixScope(a)} · Cancelled ${shortDate(a.dismissed_at)}`}
+                meta={`${driverName(a.driver)} · ${fixScope(a)} · Cancelled ${shortDate(a.dismissed_at)}`}
                 metric={<span className="text-[13px]">{a.dismiss_reason}</span>}
                 action={<Button href={`/fixes/${a.id}`}>Open</Button>}
               />
@@ -973,7 +967,7 @@ export default function Page() {
   const shareDone = new Map(milestones.data.map((m) => [m.intake, m.share_done]));
   const enough = intakes.filter((i): i is Extract<Intake, { enough: true }> => i.enough);
   const timed = enough.flatMap((i) => (i.median_days_reply_to_done !== null ? [{ intake: i.intake, days: i.median_days_reply_to_done }] : []));
-  const judged = actions.data.flatMap((a) => (a.status === "done" && !a.hiring_side && a.verdict ? [{ id: a.id, result: a.verdict }] : []));
+  const judged = actions.data.flatMap((a) => (a.status === "done" && a.verdict ? [{ id: a.id, result: a.verdict }] : []));
   const measured = judged.filter((f) => f.result !== "too_early");
   const worked = measured.filter((f) => f.result === "worked").length;
   const tooEarly = judged.length - measured.length;

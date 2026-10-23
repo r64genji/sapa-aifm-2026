@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { before, test } from "node:test";
 import { db, freezeClock, joined, modelCalls, resetDemo, say, scriptModel, sentTo } from "./helpers.ts";
 
-const [chat, ms, zh] = [5550005701, 5550005702, 5550005703];
+const [chat, ms] = [5550005701, 5550005702];
 const label = "AI suggestion. Check it before you send:";
 const sendLine = "Copy it and send it to your lead yourself. Sapa does not send or keep it.";
 const down = "Sorry, I cannot help with that right now. Please try again later.";

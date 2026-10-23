@@ -39,7 +39,7 @@ before(async () => {
   await db.from("people").update({ team: "IT Service Desk" }).eq("id", who!.id);
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const chat of [...team, other]) {
-    for (const score of [2, 3, 3, 3, 3, 3, 3]) await tapScore(chat, score);
+    for (const score of [2, 3, 3, 3, 3, 3]) await tapScore(chat, score);
     await tap(chat, "Skip");
   }
   main = await fix("ROLE_CLARITY", "Accounts Payable Asia", { notes });

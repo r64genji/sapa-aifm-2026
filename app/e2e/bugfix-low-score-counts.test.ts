@@ -28,7 +28,7 @@ test("Bug fix: a hire who scores workload 1 and types nothing about it counts fo
   await tapData(live, 'chat:{"a":"privacy","v":"named"}');
   await say(live, "Test Hire");
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
-  for (const score of [4, 3, 5, 3, 3, 1, 3]) await tapScore(live, score);
+  for (const score of [4, 3, 5, 3, 3, 1]) await tapScore(live, score);
   await scriptModel("omniroute", [
     { kind: "json", content: classifierTag({ drivers: [], positive: true, concern_level: "none", evidence_quote: "team baik", summary: "The employee says all is fine." }) },
   ]);

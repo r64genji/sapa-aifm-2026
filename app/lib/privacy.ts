@@ -4,12 +4,10 @@ import { decrypt } from "@/lib/crypto";
 import { notReceiving, reachable, type Person } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
 import { packs, type Language } from "@/lib/packs";
-import { audit, signal } from "@/lib/signal";
+import { signal } from "@/lib/signal";
 import { send } from "@/lib/telegram";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const MY_ANSWERS = 10;
 const MESSAGE_MAX = 4000;
 
 type Stored = {
@@ -94,62 +92,6 @@ function entry(language: Language, row: Stored, zone: string) {
   lines.push(`${tag.changed_by_hr ? myAnswers.changedByHr : myAnswers.aiReading}: ${tag.summary ?? ""}`.trim());
   lines.push(`${myAnswers.labels}: ${labels(language, [...tag.drivers, ...tag.context_tags])}`);
   return { text: lines.join("\n"), tagged: true };
-}
-
-export async function myAnswers(person: Person): Promise<Reply[]> {
-  const rows = await stored(person.id, MY_ANSWERS);
-  const { myAnswers: text } = packs[person.language];
-  if (rows.length === 0) return [{ text: text.none }];
-  const zone = await timeZone(person.organisation_id);
-  return rows.map((row) => {
-    const shown = entry(person.language, row, zone);
-    return shown.tagged
-      ? { text: shown.text, buttons: [{ label: text.wrong, id: "wrong", value: row.id }] }
-      : { text: shown.text };
-  });
-}
-
-export async function challenge(person: Person, responseId: string): Promise<Reply[] | null> {
-  if (!UUID.test(responseId)) return null;
-  const db = createAdminClient();
-  const { data, error } = await db
-    .from("responses")
-    .select("id, ai_tags(status), escalations(id)")
-    .eq("id", responseId)
-    .eq("person_id", person.id)
-    .maybeSingle();
-  if (error) throw error;
-  const row = data as unknown as Pick<Stored, "id" | "escalations"> & { ai_tags: { status: string } | null } | null;
-  if (!row?.ai_tags || row.escalations || row.ai_tags.status === "awaiting_ai") return null;
-  const { error: updateError } = await db
-    .from("ai_tags")
-    .update({ status: "needs_review", challenged_at: (await now()).toISOString(), challenge_resolved_at: null })
-    .eq("response_id", responseId);
-  if (updateError) throw updateError;
-  await audit("new_hire", "challenge_tag", responseId);
-  await signal(person.organisation_id, "cohort");
-  await signal(person.organisation_id, "queue");
-  return [{ text: packs[person.language].myAnswers.challenged }];
-}
-
-export async function resolveChallenge(responseId: string) {
-  const db = createAdminClient();
-  const { data, error } = await db
-    .from("ai_tags")
-    .update({ challenge_resolved_at: (await now()).toISOString() })
-    .eq("response_id", responseId)
-    .not("challenged_at", "is", null)
-    .is("challenge_resolved_at", null)
-    .select("drivers, context_tags, responses!inner(person_id)")
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) return;
-  const person = await reachable((data as unknown as { responses: { person_id: string } }).responses.person_id);
-  if (!person) return;
-  const { myAnswers: text } = packs[person.language];
-  await send(person.telegram_chat_id!, {
-    text: `${text.resolved} ${labels(person.language, [...data.drivers, ...data.context_tags])}`,
-  });
 }
 
 function chunks(parts: string[]) {

@@ -40,7 +40,7 @@ test("Demo beat 1: Outreach now sends the live hire the Day 14 check-in", async 
 });
 
 test("Demo beat 2: the reply adds one AI label to the Role clarity card, and Confirm label marks it reviewed", async () => {
-  for (const answer of [4, 3, 5, 3, 3, 3, 3]) await tapScore(live, answer);
+  for (const answer of [4, 3, 5, 3, 3, 3]) await tapScore(live, answer);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
 

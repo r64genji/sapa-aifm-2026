@@ -29,7 +29,7 @@ async function joinAnonymous(chat: number, token: string) {
 }
 
 async function answer(chat: number, text: string) {
-  for (const score of [4, 3, 5, 3, 3, 3, 3]) await tapScore(chat, score);
+  for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
   await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, text);

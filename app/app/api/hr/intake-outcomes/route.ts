@@ -5,7 +5,6 @@ import { saveOutcome } from "@/lib/impact";
 const Body = z
   .object({
     intake: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
-    agency: z.string().trim().min(1).nullable().default(null),
     hired: z.number().int().min(0),
     employed: z.number().int().min(0),
   })

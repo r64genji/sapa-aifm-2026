@@ -1,7 +1,6 @@
 import { checkinReminder, checkinStart, SCHEDULE, type Schedule } from "@/lib/checkin";
 import { now } from "@/lib/clock";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
-import { offerReply } from "@/lib/offers";
 import { exitQuestion } from "@/lib/exit";
 import { packs, type Language } from "@/lib/packs";
 import type { Reply } from "@/lib/engine";
@@ -59,13 +58,6 @@ export async function dispatch() {
     const replies = claim.kind === "reminder" ? checkinReminder(person, row) : checkinStart(person, row);
     await deliver(claim.chat_id, replies);
   }
-  const { data: offers, error: offersError } = await createAdminClient().rpc("offers_claim", {
-    at: (await now()).toISOString(),
-  });
-  if (offersError) throw offersError;
-  for (const offer of offers as { chat_id: number; language: Language }[]) {
-    await deliver(offer.chat_id, [offerReply(offer.language)]);
-  }
   const nudges = await claimMilestones();
   for (const nudge of nudges) {
     await deliver(nudge.chat_id, [milestoneReply(nudge.language, nudge.id, nudge.day, nudge.hire)]);
@@ -80,7 +72,7 @@ export async function dispatch() {
       ...(person.ask_exit ? [exitQuestion(person.language)] : []),
     ]);
   }
-  return claims.length + offers.length + left.length + nudges.length + (await sendNotices());
+  return claims.length + left.length + nudges.length + (await sendNotices());
 }
 
 export async function sendNotices() {
