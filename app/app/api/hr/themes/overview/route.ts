@@ -5,6 +5,6 @@ import { themeDetails } from "@/lib/theme-detail";
 export async function GET(request: Request) {
   const organisation = await hrOrganisation(request);
   if (!organisation) return new Response("Unauthorized", { status: 401 });
-  const [details, teams] = await Promise.all([themeDetails(organisation, 14, null), teamLists(organisation)]);
+  const [details, teams] = await Promise.all([themeDetails(organisation, 14, null, false), teamLists(organisation)]);
   return Response.json({ details, teams });
 }

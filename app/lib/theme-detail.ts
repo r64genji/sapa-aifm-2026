@@ -21,7 +21,7 @@ export async function themeDetail(organisationId: string, driver: string, touchp
   return (await themeDetails(organisationId, touchpoint, team))[driver];
 }
 
-export async function themeDetails(organisationId: string, touchpoint: number, team: string | null) {
+export async function themeDetails(organisationId: string, touchpoint: number, team: string | null, withRoles = true) {
   const db = createAdminClient();
   const [people, schedule, snapshots, cards, base] = await Promise.all([
     db.from("people").select("role, start_date").eq("organisation_id", organisationId),
@@ -42,7 +42,7 @@ export async function themeDetails(organisationId: string, touchpoint: number, t
 
   const touchpoints = [...new Set(schedule.data!.map((row) => row.touchpoint as number))].sort((a, b) => a - b);
   const intakes = team ? [] : [...new Set(people.data!.map((row) => String(row.start_date).slice(0, 7)))].sort();
-  const roles = team ? [] : [...new Set(people.data!.map((row) => row.role as string))].sort();
+  const roles = team || !withRoles ? [] : [...new Set(people.data!.map((row) => row.role as string))].sort();
   const [days, byIntake, byRole, byExperience] = await Promise.all([
     Promise.all(touchpoints.map(async (day) => ({ day, c: await counts(organisationId, day, null, null, team) }))),
     Promise.all(intakes.map(async (intake) => ({ intake, c: await counts(organisationId, touchpoint, `${intake}-01`, null, team) }))),
