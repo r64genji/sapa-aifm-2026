@@ -489,7 +489,7 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
     },
   ];
   return (
-    <div className="flex min-w-0 flex-col gap-3 self-start rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
+    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
       <div className="flex flex-col gap-0.5">
         <h3 className="m-0 text-[17px] font-bold" style={{ color: "var(--problems)" }}>
           Root cause
@@ -586,7 +586,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </Link>
             ) : null}
           </div>
-          <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
+          <div className="flex min-w-0 flex-col gap-4">
+            <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
+            <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
@@ -637,10 +640,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             Review the {mine.length} replies in full
           </button>
           {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
-        </div>
-
-        <div className="border-t px-5 py-5 sm:px-6" style={{ borderColor: "var(--line)" }}>
-          <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
         </div>
       </div>
     </section>
