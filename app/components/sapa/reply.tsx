@@ -66,8 +66,10 @@ function useTranslated(path: string | null) {
   return translated;
 }
 
-const textPath = (language: string | undefined, text: string) =>
-  language && language !== "en" && text ? `/api/hr/translate?language=${language}&text=${encodeURIComponent(text)}` : null;
+const textPath = (picked: string | undefined, text: string) => {
+  const language = /\p{Script=Han}/u.test(text) ? "zh" : picked;
+  return language && language !== "en" && text ? `/api/hr/translate?language=${language}&text=${encodeURIComponent(text)}` : null;
+};
 
 export function TranslatedQuote({ language, text, evidence, size }: { language?: string; text: string; evidence?: string | null; size?: "md" | "lg" }) {
   const [original, setOriginal] = useState(false);
