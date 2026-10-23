@@ -25,7 +25,7 @@ async function fix(driver: string, scopeTeam: string, notice: Record<string, unk
 }
 
 async function otherTaps(chat: number) {
-  for (let i = 0; i < 4; i++) await tapScore(chat, 3);
+  for (let i = 0; i < 5; i++) await tapScore(chat, 3);
 }
 
 let main: string;
@@ -39,8 +39,8 @@ before(async () => {
   await db.from("people").update({ team: "IT Service Desk" }).eq("id", who!.id);
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
   for (const chat of [...team, other]) {
-    for (const score of [2, 3, 3, 3, 3, 3]) await tapScore(chat, score);
-    await tap(chat, "Done");
+    for (const score of [2, 3, 3, 3, 3, 3, 3]) await tapScore(chat, score);
+    await tap(chat, "Skip");
   }
   main = await fix("ROLE_CLARITY", "Accounts Payable Asia", { notes });
   await fix("WORKLOAD", "IT Service Desk", { no_notice_reason: "The team already knows" });
@@ -66,12 +66,12 @@ test("R26, R56: the recheck comes first with no hint of the fix, and the fix que
 
   const from = (await sentTo(a)).length;
   await tap(a, "A bit better");
-  assert.deepEqual(await texts(a, from), ['You tapped "A bit better". What changed?']);
+  assert.deepEqual(await texts(a, from), ['What changed?']);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: [], positive: true, evidence_quote: quote }) }]);
   const asked = (await sentTo(a)).length;
   await say(a, `Now ${quote}, so I start on Malaysia`);
-  assert.deepEqual(await texts(a, asked), ["How does that affect your work?"]);
-  await tap(a, "Done");
+  assert.deepEqual(await texts(a, asked), ["Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip."]);
+  await tap(a, "Skip");
 
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", a).single();
   const { data: linked } = await db.from("responses").select("question_id, scale_value").eq("person_id", who!.id).eq("action_id", main).order("question_id");
@@ -87,8 +87,8 @@ test("R56: a low fix answer asks what is still not working", async () => {
   await otherTaps(b);
   const from = (await sentTo(b)).length;
   await tap(b, "No change");
-  assert.deepEqual(await texts(b, from), ['You tapped "No change". What is still not working?']);
-  await tap(b, "Done");
+  assert.deepEqual(await texts(b, from), ['What is still not working?']);
+  await tap(b, "Skip");
 });
 
 test("R56: a fix with no note to new hires asks no fix question", async () => {
@@ -96,13 +96,15 @@ test("R56: a fix with no note to new hires asks no fix question", async () => {
   const from = (await sentTo(other)).length;
   await tapScore(other, 4);
   await otherTaps(other);
-  assert.deepEqual((await texts(other, from)).map((text) => text.replace(/^You tapped "[^"]*"\. /, "")), [
+  const asked = (await texts(other, from)).map((text) => text.replace(/^You tapped "[^"]*"\. /, ""));
+  assert.deepEqual(asked.slice(0, 5), [
     "How clear are you on what is expected of you this week?",
     "How much support did you get from your manager this week?",
     "How connected are you with your team this week?",
-    "How well has your training prepared you for your work this week?",
-    "Anything that would make next week easier?",
+    "How clear are the company's direction, policies and procedures to you this week?",
+    "How well is your job training preparing you for your work this week?",
   ]);
+  assert.ok(!asked.some((text) => text.includes("Since the last Update from HR")));
 });
 
 test("R26, R56: HR sees the answer words only from 5 answers, quotes from the chat, and the recheck count", async () => {
@@ -110,7 +112,7 @@ test("R26, R56: HR sees the answer words only from 5 answers, quotes from the ch
     await tapScore(chat, 4);
     await otherTaps(chat);
     await tap(chat, word);
-    await tap(chat, "Done");
+    await tap(chat, "Skip");
   }
   const early = await detail(main);
   assert.deepEqual(early.follow_up, { answers: 4, counts: null, quotes: [{ text: quote, language: "en" }] });
@@ -118,7 +120,7 @@ test("R26, R56: HR sees the answer words only from 5 answers, quotes from the ch
   await tapScore(e, 3);
   await otherTaps(e);
   await tap(e, "A bit worse");
-  await tap(e, "Done");
+  await tap(e, "Skip");
   const full = await detail(main);
   assert.deepEqual(full.recheck, { asked: 5, answered: 5 });
   assert.deepEqual(full.follow_up, {
