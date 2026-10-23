@@ -3,7 +3,6 @@ import { now } from "@/lib/clock";
 import { type Language } from "@/lib/packs";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { allDays, tracksOf } from "@/lib/tracks";
 
 const INVITE_DAYS = 14;
 
@@ -249,32 +248,27 @@ export async function reachable(personId: string) {
 
 export async function upcomingCheckins(organisationId: string, days = 21) {
   const db = createAdminClient();
-  const { data: organisation, error: orgError } = await db.from("organisations").select("time_zone, holidays").eq("id", organisationId).single<{ time_zone: string; holidays: string[] }>();
+  const { data: organisation, error: orgError } = await db.from("organisations").select("time_zone").eq("id", organisationId).single<{ time_zone: string }>();
   if (orgError) throw orgError;
-  const { data: people, error } = await db
-    .from("people")
-    .select("start_date, joined_on")
+  const at = await now();
+  const { data: rows, error } = await db
+    .from("checkin_schedule")
+    .select("touchpoint, due_at, people!inner(id, consents!inner(id))")
     .eq("organisation_id", organisationId)
-    .neq("state", "left")
-    .is("stopped_at", null)
-    .is("deleted_at", null);
+    .eq("status", "scheduled")
+    .lt("due_at", new Date(at.getTime() + days * 86400000).toISOString())
+    .eq("people.state", "active")
+    .eq("people.synthetic", false)
+    .not("people.telegram_chat_id", "is", null)
+    .is("people.consents.withdrawn_at", null);
   if (error) throw error;
-  const today = (await now()).toLocaleDateString("en-CA", { timeZone: organisation.time_zone });
-  const last = new Date(Date.parse(`${today}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 10);
-  const working = (start: string, add: number) => {
-    const d = new Date(Date.parse(`${start}T00:00:00Z`) + add * 86400000);
-    while ([0, 6].includes(d.getUTCDay()) || organisation.holidays.includes(d.toISOString().slice(0, 10))) d.setUTCDate(d.getUTCDate() + 1);
-    return d.toISOString().slice(0, 10);
-  };
+  const today = at.toLocaleDateString("en-CA", { timeZone: organisation.time_zone });
   const due = new Map<string, { date: string; touchpoint: number; people: number }>();
-  const touchpoints = allDays(await tracksOf(organisationId));
-  for (const { start_date, joined_on } of people) {
-    for (const touchpoint of touchpoints) {
-      const date = working(joined_on ?? start_date, touchpoint);
-      if (date < today || date > last) continue;
-      const key = `${date}:${touchpoint}`;
-      due.set(key, { date, touchpoint, people: (due.get(key)?.people ?? 0) + 1 });
-    }
+  for (const { touchpoint, due_at } of rows) {
+    const date = new Date(due_at).toLocaleDateString("en-CA", { timeZone: organisation.time_zone });
+    if (date < today) continue;
+    const key = `${date}:${touchpoint}`;
+    due.set(key, { date, touchpoint, people: (due.get(key)?.people ?? 0) + 1 });
   }
   return [...due.values()].sort((a, b) => a.date.localeCompare(b.date) || a.touchpoint - b.touchpoint);
 }

@@ -17,7 +17,7 @@ type Themes = { cards: Card[]; context: Context[] };
 type Share = { enough: true; n: number; m: number } | { enough: false };
 type Detail = { by_intake: (Share & { intake: string })[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; byline: string };
-type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null };
+type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null; recheck_pending: boolean };
 type Upcoming = { date: string; touchpoint: number; people: number }[];
 type Questions = { groups: { id: string; askers: number; unknown: number; handbook_path: string | null }[] };
 
@@ -132,7 +132,7 @@ function ComingUp({ today, checkins, actions }: { today: string | undefined; che
       .filter((a) => ["assigned", "accepted"].includes(a.status) && a.due_on)
       .map((a) => ({ key: a.id, date: a.due_on!, title: `${a.title} due`, meta: a.owner === "HR" ? "Your fix" : `${a.owner}${a.status === "assigned" ? " has not accepted yet" : " is on it"}`, href: `/fixes/${a.id}` })),
   ].sort((a, b) => a.date.localeCompare(b.date));
-  const pending = actions.filter((a) => a.status === "done" && a.verdict === "too_early");
+  const pending = actions.filter((a) => a.status === "done" && a.verdict === "too_early" && a.recheck_pending);
   return (
     <Panel title="Coming up" meta="Next 3 weeks">
       <ul className="m-0 list-none p-0">

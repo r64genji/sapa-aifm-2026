@@ -691,6 +691,13 @@ export async function listActions(organisationId: string) {
     .select("action_id, sent_at")
     .eq("organisation_id", organisationId);
   if (noticesError) throw noticesError;
+  const { data: rechecks, error: rechecksError } = await createAdminClient()
+    .from("checkin_schedule")
+    .select("recheck_action_id")
+    .eq("organisation_id", organisationId)
+    .in("status", ["scheduled", "sent", "reminded"])
+    .not("recheck_action_id", "is", null);
+  if (rechecksError) throw rechecksError;
   return Promise.all(
     rows.map(async ({ managers, people, ...row }) => {
       const queued = notices.filter((notice) => notice.action_id === row.id);
@@ -703,6 +710,7 @@ export async function listActions(organisationId: string) {
         scope_name: people?.name ?? null,
         owner: managers?.display_name ?? (row.status === "draft" ? null : "HR"),
         overdue: ["assigned", "accepted"].includes(row.status) && row.due_on !== null && row.due_on < today,
+        recheck_pending: rechecks.some((recheck) => recheck.recheck_action_id === row.id),
         alert_label: demoLabel(org, row.held && managers !== null),
         notice: {
           status:
