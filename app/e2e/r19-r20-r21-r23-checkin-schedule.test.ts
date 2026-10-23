@@ -23,7 +23,7 @@ async function reset() {
 
 before(reset);
 
-test("R19: the schedule has seven touchpoints at 10:00 Kuala Lumpur, weekends moved to Monday", async () => {
+test("R19, R60: the schedule has the New hire and Employee touchpoints at 10:00 Kuala Lumpur, weekends moved to Monday", async () => {
   const chat = 5550000101;
   await freezeClock("2026-10-14T01:00:00.000Z");
   await joined(chat, "2026-10-14");
@@ -37,6 +37,10 @@ test("R19: the schedule has seven touchpoints at 10:00 Kuala Lumpur, weekends mo
       [60, "2026-12-14T02:00:00.000Z"],
       [90, "2027-01-12T02:00:00.000Z"],
       [182, "2027-04-14T02:00:00.000Z"],
+      [273, "2027-07-14T02:00:00.000Z"],
+      [365, "2027-10-14T02:00:00.000Z"],
+      [456, "2028-01-13T02:00:00.000Z"],
+      [547, "2028-04-13T02:00:00.000Z"],
     ],
   );
 });

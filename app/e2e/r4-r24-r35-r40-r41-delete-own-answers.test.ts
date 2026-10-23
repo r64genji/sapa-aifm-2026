@@ -95,6 +95,7 @@ test("R18: a reply HR reviews counts in its problem area", async () => {
   await tapScore(live, 3);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(live, reply);
+  await tap(live, "Skip");
   const [queued] = (await (await hrRequest("/api/hr/queue", "GET")).json()).filter((row: { escalate: boolean }) => !row.escalate);
   assert.equal((await hrRequest(`/api/hr/replies/${queued.id}/review`, "POST")).status, 200);
   assert.deepEqual(await card("ROLE_CLARITY"), { n: seedRole.n + 1, m: seedRole.m + 1 });

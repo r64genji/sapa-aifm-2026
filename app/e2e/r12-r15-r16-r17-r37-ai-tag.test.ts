@@ -82,8 +82,8 @@ before(async () => {
 
 test("R17, R16: the model gets masked text and extra fields are not stored", async () => {
   const seen = await usageIds();
-  await reachOpenQuestion(live);
   await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
+  await reachOpenQuestion(live);
   await scriptModel("omniroute", [
     { kind: "json", content: { ...classifierTag(), emotion: "angry", sentiment_score: -0.8 } },
   ]);
@@ -94,9 +94,9 @@ test("R17, R16: the model gets masked text and extra fields are not stored", asy
   for (const call of calls) {
     const sent = JSON.stringify(call.body);
     assert.ok(!sent.includes("012-345 6789") && !sent.includes("0123456789"));
-    assert.ok(sent.includes(`${quote}. Call me [PHONE]`));
   }
-  assert.equal(await lastText(live), en.checkin.thanks);
+  assert.ok(JSON.stringify(calls[1].body).includes(`${quote}. Call me [PHONE]`));
+  assert.equal(await lastText(live), en.checkin.chat.remarks);
 
   const { tag } = await storedTag(live);
   assert.equal(tag.status, "ok");
@@ -122,7 +122,7 @@ test("R15: a quote that is not in the reply is retried once, then stored as need
   await say(wrongTwice, reply);
   assert.equal((await modelCalls("omniroute")).length - before, 2);
   assert.equal((await storedTag(wrongTwice)).tag.status, "needs_review");
-  assert.equal(await lastText(wrongTwice), en.checkin.thanks);
+  assert.equal(await lastText(wrongTwice), en.checkin.chat.remarks);
 
   await reachOpenQuestion(wrongOnce);
   await scriptModel("omniroute", [
@@ -148,7 +148,7 @@ test("Invalid JSON is retried once", async () => {
 test("R2, R37: with both providers down commands work, the reply waits for AI, HR can retry", async () => {
   await reachOpenQuestion(down);
   await say(down, reply);
-  assert.equal(await lastText(down), en.checkin.gotIt);
+  assert.equal(await lastText(down), en.checkin.chat.remarks);
   const { responseId, tag } = await storedTag(down);
   assert.equal(tag.status, "awaiting_ai");
   await say(down, "/help");
@@ -162,9 +162,9 @@ test("R2, R37: with both providers down commands work, the reply waits for AI, H
 });
 
 test("DeepSeek answers when OmniRoute is down, and both calls are recorded", async () => {
+  const seen = await usageIds();
   await reachOpenQuestion(fallback);
   await scriptModel("deepseek", [{ kind: "json", content: classifierTag() }]);
-  const seen = await usageIds();
   await say(fallback, reply);
   const { tag } = await storedTag(fallback);
   assert.equal(tag.status, "ok");
@@ -174,7 +174,8 @@ test("DeepSeek answers when OmniRoute is down, and both calls are recorded", asy
     { provider: "gemini", ok: false, call_type: "classify" },
     { provider: "deepseek", ok: true, call_type: "classify" },
   ]);
-  assert.equal(usage.filter((row) => row.call_type === "chat").length, 2);
+  const chat = usage.filter((row) => row.call_type === "chat").map((row) => row.provider);
+  assert.ok(chat.includes("gemini") && chat.includes("deepseek"));
 });
 
 test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
@@ -187,6 +188,6 @@ test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
   const before = (await modelCalls("deepseek")).length;
   await say(capped, reply);
   assert.equal((await modelCalls("deepseek")).length, before);
-  assert.equal(await lastText(capped), en.checkin.gotIt);
+  assert.equal(await lastText(capped), en.checkin.chat.remarks);
   assert.equal((await storedTag(capped)).tag.status, "awaiting_ai");
 });
