@@ -29,6 +29,7 @@ The story and slide direction live in [storyboard.md](storyboard.md); it wins ov
 
 ## What goes in this folder
 
+- `deck.html` — the deck: open in a browser, arrows or space to step, F for fullscreen. Slots in `[BRACKETS]` wait for real data
 - `deck.pdf` — exported final deck (keep the editable source link in `links.md`)
 - `links.md` — link to the editable deck (Canva / Slides / Claude)
 - `speaker-notes.md` — who says what on each slide
