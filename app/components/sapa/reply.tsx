@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./live.css";
-import { Send, Shield } from "lucide-react";
+import { Check, Loader2, Send, Shield } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "./data";
 import { AiMark, Button, DRIVERS, Dialog, Quote, driverName, shortDate } from "./ui";
 
@@ -223,6 +223,19 @@ function ChangeDialog({ item, onPick, onClose }: { item: ReplyItem; onPick: (cha
 
 type LibraryFix = { id: string; title: string; text: string; result: string; difference: number | null };
 
+function Spin() {
+  return <Loader2 size={15} strokeWidth={2.2} className="sp-spin" aria-hidden="true" />;
+}
+
+function SuccessMark() {
+  return (
+    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="var(--fixes)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="sp-pop-in self-center">
+      <circle cx="28" cy="28" r="25" pathLength="1" className="sp-draw" style={{ animationDuration: "0.5s", animationDelay: "0s" }} />
+      <path d="M17 29l8 8 14-16" pathLength="1" className="sp-draw" style={{ animationDuration: "0.4s", animationDelay: "0.3s" }} />
+    </svg>
+  );
+}
+
 export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "drivers">; onClose: () => void }) {
   const router = useRouter();
   const driver = item.drivers[0];
@@ -245,12 +258,16 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
   return (
     <Dialog title={`Fix for ${driverName(driver)}`} onClose={onClose}>
       {sent ? (
-        <>
-          <p role="status">Sent to {sent}. They get it today.</p>
-          <Button className="ml-auto" onClick={onClose}>
-            Close
+        <div className="sp-rise flex flex-col gap-3">
+          <SuccessMark />
+          <p role="status" className="m-0 text-center text-[15px] font-semibold">
+            Fix sent to {sent}
+          </p>
+          <p className="sp-caption m-0 text-center">They get it today.</p>
+          <Button variant="primary" lane="fixes" className="self-center" onClick={onClose}>
+            Done
           </Button>
-        </>
+        </div>
       ) : (
         <>
           <p className="sp-caption">Pick a fix. It goes to this new hire&apos;s own manager.</p>
@@ -272,7 +289,8 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
           {error ? <p role="alert">{error}</p> : null}
           <div className="flex flex-wrap items-center gap-2 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
             <Button variant="primary" disabled={busy || !picked} why={picked ? null : "Pick a fix first"} onClick={() => go({ send_library_entry_id: picked! }, (r) => setSent(r.manager ?? "their manager"))}>
-              Send to their manager
+              {busy ? <Spin /> : <Send size={15} strokeWidth={2} aria-hidden="true" />}
+              {busy ? "Sending…" : "Send to their manager"}
             </Button>
             <Button disabled={busy} onClick={() => go({}, (r) => router.push(`/fixes/new?id=${r.id}`))}>
               Draft a different fix
@@ -289,24 +307,29 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
 
 export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fresh, whole: full }: ReplyRowProps) {
   const [open, setOpen] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<string | null>(null);
   const [fixing, setFixing] = useState(false);
   const [whole, setWhole] = useState(!!full || !item.text);
-  const run = async (action: () => Promise<unknown>) => {
-    setBusy(true);
+  const [local, setLocal] = useState<{ state: "confirmed" | "corrected"; label: string } | null>(null);
+  const [pulse, setPulse] = useState(0);
+  const run = async (key: string, action: () => Promise<unknown>, next?: { state: "confirmed" | "corrected"; label: string }) => {
+    setBusy(key);
     try {
       await action();
+      setLocal(next ?? null);
+      setPulse((n) => n + 1);
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
+  useEffect(() => setLocal(null), [item.status, item.changed_by_hr, item.serious, item.drivers.join(), item.context_tags.join()]);
   const tagged = item.status !== null;
   const reviewed = item.status === "reviewed";
   const awaiting = item.status === "awaiting_ai";
-  const pending = item.status === "needs_review" || (item.status === "ok" && (!!item.note || item.counted === false));
+  const pending = !local && (item.status === "needs_review" || (item.status === "ok" && (!!item.note || item.counted === false)));
   const caption = item.serious || reviewed ? "Your label" : awaiting || pending ? null : "Counted automatically";
   const confidence = reviewed || awaiting || item.serious || !tagged ? null : item.confidence ?? (item.status === "needs_review" ? "low" : null);
-  const state = reviewed ? (item.changed_by_hr ? "corrected" : "confirmed") : item.status === "needs_review" ? "unsure" : "suggested";
+  const state = local ? local.state : reviewed ? (item.changed_by_hr ? "corrected" : "confirmed") : item.status === "needs_review" ? "unsure" : "suggested";
 
   return (
     <article className={`sp-card flex flex-wrap overflow-hidden${fresh ? " sp-swipe-in" : ""}`}>
@@ -322,7 +345,8 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         ) : null}
       </div>
       <div
-        className="box-border flex min-w-0 flex-[1_1_300px] flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6"
+        key={pulse}
+        className={`box-border flex min-w-0 flex-[1_1_300px]${pulse ? " sp-ok" : ""} flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6`}
         style={{ background: "var(--surface-sunken)", borderColor: "var(--line-soft)" }}
       >
         <div className="flex flex-col gap-1.5">
@@ -334,7 +358,9 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           ) : awaiting ? (
             <span className="text-[15px] font-semibold">Awaiting AI</span>
           ) : (
-            <AiMark state={state} label={labelOf(item)} reviewer="HR" />
+            <div key={`${state}-${local?.label ?? labelOf(item)}`} className="sp-pop-in">
+              <AiMark state={state} label={local?.label ?? labelOf(item)} reviewer="HR" />
+            </div>
           )}
           {confidence ? (
             <span className={`sp-confidence sp-confidence-${confidence}`}>
@@ -351,35 +377,41 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         <div className="flex flex-col gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
           <div className="grid grid-cols-2 gap-2">
             {pending ? (
-              <Button variant="primary" disabled={busy} onClick={() => run(onConfirm)}>
-                Confirm
+              <Button variant="primary" disabled={!!busy} onClick={() => run("confirm", onConfirm, { state: "confirmed", label: labelOf(item) })}>
+                {busy === "confirm" ? <Spin /> : null}
+                {busy === "confirm" ? "Saving…" : "Confirm"}
               </Button>
             ) : null}
             {awaiting ? (
-              <Button variant="primary" disabled={busy} onClick={() => setOpen(true)}>
+              <Button variant="primary" disabled={!!busy} onClick={() => setOpen(true)}>
                 Pick label
               </Button>
             ) : tagged && !item.serious && !item.escalate ? (
-              <Button disabled={busy} onClick={() => setOpen(true)}>
-                Change label
+              <Button disabled={!!busy} onClick={() => setOpen(true)}>
+                {busy === "change" ? <Spin /> : null}
+                {busy === "change" ? "Saving…" : "Change label"}
               </Button>
             ) : null}
             {awaiting ? (
-              <Button disabled={busy} onClick={() => run(onRetry)}>
-                Try AI again
+              <Button disabled={!!busy} onClick={() => run("retry", onRetry)}>
+                {busy === "retry" ? <Spin /> : null}
+                {busy === "retry" ? "Asking…" : "Try AI again"}
               </Button>
             ) : null}
             {onUndo ? (
-              <Button disabled={busy || item.serious} why={item.serious ? "Already sent to Serious concerns" : null} onClick={() => run(onUndo)}>
-                Undo
+              <Button disabled={!!busy || item.serious} why={item.serious ? "Already sent to Serious concerns" : null} onClick={() => run("undo", onUndo)}>
+                {busy === "undo" ? <Spin /> : null}
+                {busy === "undo" ? "Undoing…" : "Undo"}
               </Button>
             ) : null}
           </div>
           {item.drivers.length && !item.serious && !item.escalate ? (
-            <Button disabled={busy} onClick={() => setFixing(true)}>
+            <Button disabled={!!busy} onClick={() => setFixing(true)}>
               <Send size={15} strokeWidth={2} aria-hidden="true" />
               Send fix to manager
             </Button>
+          ) : item.context_tags.length && !item.drivers.length && !item.serious ? (
+            <span className="sp-caption">Outside a manager&apos;s control, so there is no fix to send. HR only.</span>
           ) : null}
         </div>
       </div>
@@ -390,7 +422,8 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           onClose={() => setOpen(false)}
           onPick={(change) => {
             setOpen(false);
-            run(() => onChange(change));
+            const label = change.serious ? "Sent to serious concerns" : [...(change.drivers ?? []).map(driverName), ...(change.context_tags ?? []).map(driverName)].join(", ") || "Nothing to act on";
+            run("change", () => onChange(change), { state: "corrected", label });
           }}
         />
       ) : null}

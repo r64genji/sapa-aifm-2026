@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Spark, Waffle } from "@/components/sapa/problems";
-import { Send } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { FixDialog, TranslatedQuote } from "@/components/sapa/reply";
 import { AiMark, Button, CountUp, Card as Panel, CountBar, Dialog, LaneSection, LaneTile, PageHeader, Row, Waiting, dayLabel, driverName, DRIVERS, shortDate, type Lane } from "@/components/sapa/ui";
 
@@ -29,15 +29,18 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
   const [picking, setPicking] = useState(false);
   const [fixing, setFixing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
   const label = row.drivers.length ? row.drivers.map(driverName).join(" and ") : row.context_tags.length ? row.context_tags.map((t) => CONTEXT[t] ?? t).join(" and ") : "Nothing to act on";
   const send = async (body: object) => {
     setError(null);
+    setSaving(true);
     try {
       await apiSend(`/api/hr/replies/${row.id}/review`, "POST", body);
       onDone(row, () => apiSend(`/api/hr/replies/${row.id}/review`, "POST", { drivers: row.drivers, context_tags: row.context_tags }));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not save");
     }
+    setSaving(false);
     setPicking(false);
   };
   const waiting = row.status === "awaiting_ai";
@@ -49,8 +52,9 @@ function ReplyItem({ row, onDone }: { row: QueueRow; onDone: (row: QueueRow, und
         waiting ? null : (
           <div className="grid w-full grid-cols-2 gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
             {row.status === "ok" || row.status === "needs_review" ? (
-              <Button variant="primary" lane="ai" onClick={() => send({})}>
-                Confirm label
+              <Button variant="primary" lane="ai" disabled={saving} onClick={() => send({})}>
+                {saving ? <Loader2 size={15} strokeWidth={2.2} className="sp-spin" aria-hidden="true" /> : null}
+                {saving ? "Saving…" : "Confirm label"}
               </Button>
             ) : null}
             <Button variant="secondary" lane="ink" onClick={() => setPicking(true)}>
