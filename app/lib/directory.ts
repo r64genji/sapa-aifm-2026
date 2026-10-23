@@ -3,6 +3,7 @@ import { now } from "@/lib/clock";
 import { type Language } from "@/lib/packs";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { MANAGER_TOKEN_PREFIX } from "@/lib/managers";
 
 const INVITE_DAYS = 14;
 
@@ -159,6 +160,30 @@ export async function teamLinks(organisationId: string) {
       };
     }),
   };
+}
+
+export async function addTeam(organisationId: string, actor: string, team: string, lead: string) {
+  const db = createAdminClient();
+  const { data: intake, error } = await db
+    .from("intakes")
+    .select("id, teams")
+    .eq("organisation_id", organisationId)
+    .order("start_date", { ascending: false })
+    .limit(1)
+    .single<{ id: string; teams: IntakeTeam[] }>();
+  if (error) throw error;
+  if (intake.teams.some((row) => row.team.toLowerCase() === team.toLowerCase())) return { error: "That team already exists" };
+  const { data: manager, error: managerError } = await db
+    .from("managers")
+    .insert({ organisation_id: organisationId, display_name: lead, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") })
+    .select("id")
+    .single<{ id: string }>();
+  if (managerError) throw managerError;
+  const teams = [...intake.teams, { team, manager_id: manager.id, join_token: randomBytes(16).toString("base64url") }];
+  const { error: updateError } = await db.from("intakes").update({ teams }).eq("id", intake.id);
+  if (updateError) throw updateError;
+  await audit(actor, "add_team", manager.id);
+  return { team };
 }
 
 export async function moveState(person: Person, from: Person["state"], to: Person["state"]) {
