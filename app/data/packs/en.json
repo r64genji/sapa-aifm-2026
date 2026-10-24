@@ -34,7 +34,7 @@
       "ROLE_CLARITY": "role clarity",
       "MANAGER_SUPPORT": "manager support",
       "BELONGING": "team integration",
-      "ONBOARDING": "onboarding / environment",
+      "ONBOARDING": "workplace",
       "TRAINING": "training",
       "WORKLOAD": "workload"
     }
@@ -473,7 +473,7 @@
   "end": "Your check-ins have ended. Your answers are kept until {date}. Type DELETE to remove them now.",
   "exit": {
     "question": "One last question, if you are willing: what was the main reason you left?",
-    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Team integration", "ONBOARDING": "Onboarding / Environment", "TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
+    "drivers": { "ROLE_CLARITY": "Unclear tasks", "MANAGER_SUPPORT": "Manager support", "BELONGING": "Team integration", "ONBOARDING": "Workplace", "TRAINING": "Training", "WORKLOAD": "Workload", "OTHER": "Something else" },
     "open": "Is there anything you want to add? Please type it.",
     "thanks": "Thank you. Sapa will not message you again."
   },
@@ -495,7 +495,7 @@
     "ROLE_CLARITY": "Role clarity",
     "MANAGER_SUPPORT": "Support from your manager",
     "BELONGING": "Team integration",
-    "ONBOARDING": "Onboarding / Environment",
+    "ONBOARDING": "Workplace",
     "TRAINING": "Training",
     "WORKLOAD": "Workload",
     "PAY_BENEFITS": "Pay and benefits",

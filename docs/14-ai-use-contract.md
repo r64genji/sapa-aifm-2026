@@ -12,7 +12,7 @@ The AI reads new hires' check-in replies and questions. It helps HR find shared 
 
 | Action | Limit |
 | --- | --- |
-| Label a reply with a problem area (role clarity, manager support, team integration, onboarding / environment, training, workload) | It must quote the exact words it used. If the quote is not in the reply, the label waits for HR (R15). |
+| Label a reply with a problem area (role clarity, manager support, team integration, workplace, training, workload) | It must quote the exact words it used. If the quote is not in the reply, the label waits for HR (R15). |
 | Count a label it is sure about | Labels the AI is unsure about wait for HR and stay out of counts. Every count comes from SQL, not the AI (R18). |
 | Write a short summary of counts | It is rejected if it holds a number that is not in its input (R18). |
 | Draft a suggested fix | Nobody sees it until HR opens it, and nothing happens until HR approves it. |

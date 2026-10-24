@@ -407,7 +407,7 @@
   "end": "Semakan anda telah tamat. Jawapan anda disimpan sehingga {date}. Taip DELETE untuk memadamkannya sekarang.",
   "exit": {
     "question": "Satu soalan terakhir, jika anda sudi: apakah sebab utama anda berhenti?",
-    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Integrasi pasukan", "ONBOARDING": "Orientasi / Persekitaran", "TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
+    "drivers": { "ROLE_CLARITY": "Tugas tidak jelas", "MANAGER_SUPPORT": "Sokongan penyelia", "BELONGING": "Integrasi pasukan", "ONBOARDING": "Tempat kerja", "TRAINING": "Latihan", "WORKLOAD": "Beban kerja", "OTHER": "Sebab lain" },
     "open": "Adakah anda mahu menambah apa-apa? Sila taip.",
     "thanks": "Terima kasih. Sapa tidak akan menghantar mesej lagi."
   },
@@ -429,7 +429,7 @@
     "ROLE_CLARITY": "Kejelasan tugas",
     "MANAGER_SUPPORT": "Sokongan daripada pengurus",
     "BELONGING": "Integrasi pasukan",
-    "ONBOARDING": "Orientasi / Persekitaran",
+    "ONBOARDING": "Tempat kerja",
     "TRAINING": "Latihan",
     "WORKLOAD": "Beban kerja",
     "PAY_BENEFITS": "Gaji dan faedah",
