@@ -182,7 +182,12 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
     }
     return replies ? { replies } : none;
   }
-  if (person.state === "declined") return none;
+  if (person.state === "declined") {
+    if (command === "start" && (await moveState(person, "declined", "consent_shown"))) {
+      return { replies: await prompt({ ...person, state: "consent_shown" }, languages) };
+    }
+    return none;
+  }
   if (input.kind === "button") return press(person, input.id, input.value, languages);
   if (person.state === "active" && command === "privacy") {
     const pack = packs[person.language];
