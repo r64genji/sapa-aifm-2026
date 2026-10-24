@@ -13,7 +13,7 @@ before(async () => {
   await tap(chat, "English");
   await tap(chat, en.agree);
   await tap(chat, en.privacy.named);
-  await say(chat, "Judge 1");
+  await say(chat, "🙂🙂");
   assert.equal((await (await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).json()).sent, 1);
   for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }, { kind: "json", content: classifierTag() }]);

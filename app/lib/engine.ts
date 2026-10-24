@@ -207,7 +207,7 @@ async function route(chatId: number, input: Input): Promise<Outcome> {
   if (person.state === "active" && input.kind === "text" && (!command || command === "ask")) {
     if (!command) {
       const name = input.text.trim().replace(/\s+/g, " ");
-      if (person.awaiting_name && /^[^?!@\d]{2,60}$/u.test(name) && name.split(" ").length <= 8) {
+      if (person.awaiting_name && /^[^?!@]{2,60}$/u.test(name) && /\p{L}/u.test(name) && name.split(" ").length <= 8) {
         await setName(person, name);
         return { replies: [person.first_job === null ? firstJobReply(person.language) : { text: packs[person.language].privacy.namedDone }] };
       }
