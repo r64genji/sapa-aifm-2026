@@ -22,7 +22,7 @@ On screen: class photo of 17. Five fade out.
 
 - **"17 started. By Month 6, five were gone. That is 29%."**
 - Say once: **"Bayan GBS is a fictional company. The research is real."**
-- At Bayan GBS: 54 of 200 staff a year leave before Month 6. That costs about RM362,000 a year.
+- At Bayan GBS: 54 of 200 staff a year leave before Month 6. That costs about RM437,000 a year.
 - Real data: over 2 in 10 new hires, 23%, leave firms of 200–500 staff within 6 months (Employment Hero, 2023).
 - Malaysia attrition is 18.2% (Aon, Dec 2025).
 - Do not say "1 in 4".
@@ -114,7 +114,7 @@ On screen: two class photos. Before: 12 of 17. After: 15 of 17. Colour all aroun
 - For HR:
   - They hear the problem on Day 14, not Day 61.
   - They read every reply the same day.
-  - Sapa costs RM18,000 a year. One early leaver costs about RM6,700 (16% of a year's pay, our estimate). Three kept a year pays for it.
+  - Sapa costs RM18,000 a year. One early leaver costs about RM8,100 (19.3% of a year's pay, our estimate). Three kept a year pays for it.
 - The two we could not save:
   - Arif never joined, because he does not use Telegram. Next: WhatsApp.
   - Nurul's job was not the job the agency described. Next: job-match check and agency view.

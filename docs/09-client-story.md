@@ -97,29 +97,29 @@ Other October-intake hires named in the demo: Arif, Priya, Nurul and Kumar.
 
 ## Money (for slide 10)
 
-The cost per early leaver is **our estimate**, and it is one multiplication: 16% of a year's pay. A new hire earns about RM3,500 a month, so RM42,000 a year. 16% × RM42,000 = RM6,720, about **RM6,700**. The 16% is the typical cost of replacing a worker paid under US$30,000 a year, from the Center for American Progress review of turnover studies (Source, US, 2012). It covers recruiting, training and lost output.
+The cost per early leaver is **our estimate**, and it is one multiplication: 19.3% of a year's pay. A new hire earns about RM3,500 a month, so RM42,000 a year. 19.3% × RM42,000 = RM8,106, about **RM8,100**. The 19.3% is the cost of replacing a worker paid below the US average wage, from the Washington Center for Equitable Growth review of 31 turnover case studies (Source, US, 2020). It covers recruiting, training and lost output.
 
 | Item | Figure | Basis |
 | --- | --- | --- |
 | Average pay | RM3,500 a month, RM42,000 a year | Fictional; Penang customer-service jobs advertise about RM3,000–4,000 a month |
-| Cost of one early leaver | about RM6,700 | 16% × RM42,000 = RM6,720 |
+| Cost of one early leaver | about RM8,100 | 19.3% × RM42,000 = RM8,106 |
 | Early leavers a year | 54 | Fictional |
-| **All early leavers** | **about RM362,000 a year** | 54 × RM6,700 |
+| **All early leavers** | **about RM437,000 a year** | 54 × RM8,100 |
 
-**Cross-checks.** Newer US studies give higher rates: 19.3% of pay for below-average wages (Source, US, 2020), which is RM8,100 here, and 33% of base pay (Source, US, 2025), which is RM13,900 here. We use the lowest, 16%, so the figure is hard to attack. The Malaysian Employers Federation's RM25,000–30,000 per leaver (Source, 2012, old) is the high case.
+**Cross-checks.** The older Center for American Progress review gives 16% for jobs paid under US$30,000 (Source, US, 2012), which is RM6,700 here. A newer US study gives 33% of base pay (Source, US, 2025), which is RM13,900 here. We use 19.3% because it is recent, it is for lower-paid jobs, and it is near the low end of the range. The Malaysian Employers Federation's RM25,000–30,000 per leaver (Source, 2012, old) is the high case.
 
 | Item | Figure | Basis |
 | --- | --- | --- |
 | Sapa price | RM90 per new hire for six months | Proposed |
 | Sapa cost a year | RM18,000 | 200 × RM90 |
-| Break-even | about 3 prevented early exits a year, of 54 | RM18,000 ÷ RM6,700 = 2.7 |
+| Break-even | about 2 prevented early exits a year, of 54 | RM18,000 ÷ RM8,100 = 2.2 |
 
 | Scenario | Early exits prevented a year | Saving | Return on RM18,000 |
 | --- | --- | --- | --- |
-| Break-even | 2.7 of 54 | RM18,000 | 1× |
-| Conservative | 3 of 54 | RM20,100 | about 1.1× |
-| Base | 8 of 54 (15%) | RM53,600 | about 3.0× |
-| Optimistic | 14 of 54 (about a quarter) | RM93,800 | about 5.2× |
+| Break-even | 2.2 of 54 | RM18,000 | 1× |
+| Conservative | 3 of 54 | RM24,300 | about 1.4× |
+| Base | 8 of 54 (15%) | RM64,800 | about 3.6× |
+| Optimistic | 14 of 54 (about a quarter) | RM113,400 | about 6.3× |
 
 **"Even your base case misses the Group's 85%. Why buy?"** Reaching 85% means about 30 early leavers a year instead of 54. Sapa does not do that alone, and does not claim to. The fixes do the work: clear priorities, team lead training, honest job adverts, buddies on every shift. Sapa tells Kavitha which fix each team needs, weeks before the resignation, checks whether it worked, and gives her the evidence the Group asks for. Without it she has 54 spreadsheet rows and a guess. Nobody can prove one person stayed because of Sapa, so the pilot measures retention by intake, as a trend and not proof.
 
@@ -157,6 +157,7 @@ The demo is **not** a pilot result. It shows what Aishah would see one year into
 | "40–60% of BPO attrition happens in the first 90 days" | [HiveDesk blog](https://www.hivedesk.com/blog/how-to-manage-employee-attrition-in-bpos/) | No, summary | Low: no study behind it. Do not quote |
 | The first 90 days are the most critical retention period in Malaysian services; early attrition is "weakly tracked" | [SAYS, April 2026](https://says.com/my/news/malaysia-job-losses-early-attrition-90-days-service-sector-2026) | Yes | Medium, mostly one company |
 | The Employment Act says nothing on probation; 3 months is common | [DNH](https://dnh.com.my/probation-and-probationers-in-malaysia/) | No, summary | Medium-high |
+| Replacement cost about 19.3% of annual pay for workers paid below the 2019 US average wage (US$53,490), from 31 case studies | [Washington Center for Equitable Growth, Dec 2020](https://equitablegrowth.org/improving-u-s-labor-standards-and-the-quality-of-jobs-to-reduce-the-costs-of-employee-turnover-to-u-s-companies/) | No, summary | Medium, US. Used for the ROI |
 | Median replacement cost about 21% of annual salary across all jobs; about 16% for jobs paying under US$30,000 | [Center for American Progress, 2012](https://www.americanprogress.org/article/there-are-significant-business-costs-to-replacing-employees/) | See dossier B | Medium, US and old |
 | Replacing an employee costs RM25,000–30,000 (Malaysian Employers Federation) | [The Star, Feb 2012](https://www.thestar.com.my/news/nation/2012/02/19/costly-job-hopping) | Yes | Medium, old |
 | Contact centre agent turnover averaged 38% in 2022 (SQM Group) | [Outsource Accelerator](https://www.outsourceaccelerator.com/articles/reduce-agent-attrition-bpo/) | No, summary | Low-medium, not Malaysian. Backs language desks churning fastest |
