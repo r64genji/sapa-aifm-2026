@@ -151,8 +151,15 @@ export async function listQuestions(organisationId: string) {
       askers: new Set(rows.filter((r) => r.important_topic === topic).map((r) => r.person_id)).size,
     }))
     .filter((t) => t.askers >= THRESHOLD);
+  const all = groups
+    .filter((g) => rows.some((r) => r.group_id === g.id))
+    .map((g) => {
+      const askers = new Set(rows.filter((r) => r.group_id === g.id).map((r) => r.person_id)).size;
+      return { id: g.id, text: g.text, askers: askers >= THRESHOLD ? askers : null };
+    });
   return {
     groups: shown,
+    all,
     other: { questions: others, text: `${others} other question${others === 1 ? "" : "s"} from fewer than ${THRESHOLD} people` },
     topics,
   };

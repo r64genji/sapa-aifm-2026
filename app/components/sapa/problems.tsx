@@ -24,7 +24,11 @@ type Lead = { id: string; name: string };
 type TeamRow = { kind: "team" | "tower"; name: string; teams: string[]; n: number; m: number; avg: number | null; leads: Lead[]; times?: number };
 type Teams = { enough: false } | { enough: true; week: string; company: { n: number; m: number; avg: number | null }; verdict: "none" | "some" | "most"; rows: TeamRow[]; eligible: number; small: number; safety: number };
 type Overview = { details: Record<string, Detail>; teams: Record<string, Teams> };
-type Questions = { groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[]; other: { text: string } };
+type Questions = {
+  groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[];
+  all: { id: string; text: string; askers: number | null }[];
+  other: { text: string };
+};
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
 type Point = { label: string; n: number; m: number };
 
@@ -691,6 +695,30 @@ function QuestionPanel({ g }: { g: Questions["groups"][number] }) {
   );
 }
 
+function AllQuestionsPanel({ all }: { all: Questions["all"] }) {
+  return (
+    <section id="cur" aria-labelledby="cur-title" className="sp-card flex min-w-0 scroll-mt-4 flex-col gap-4 px-5 py-5 sm:px-6">
+      <div className="flex flex-col gap-1">
+        <span className="sp-caption font-semibold">Asked the bot · last 30 days</span>
+        <h2 id="cur-title" className="m-0 text-[26px] font-bold leading-[32px]">
+          All questions
+        </h2>
+        <span className="sp-muted">Every question, in neutral words. You never see who asked or their own words. Counts under 3 stay hidden.</span>
+      </div>
+      {all.length === 0 ? <span className="sp-muted">No questions yet.</span> : null}
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {all.map((q) => (
+          <li key={q.id} className="flex items-center gap-3 rounded-lg px-4 py-3" style={{ background: "var(--surface-sunken)" }}>
+            <MessageCircleQuestion size={16} aria-hidden="true" style={{ color: "var(--problems)" }} />
+            <span className="flex-1">{q.text}</span>
+            <span className="sp-caption sp-num">{q.askers === null ? "Fewer than 3" : `${q.askers} asked`}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const close = useCallback(() => setOpenId(null), []);
@@ -805,7 +833,7 @@ export function Problems({ driver }: { driver?: string }) {
   const groups = questions.data?.groups.toReversed() ?? [];
   const loose = (replies.data ?? []).filter(noArea).sort((a, b) => b.created_at.localeCompare(a.created_at));
   const question = driver?.startsWith("q-") ? groups.find((g) => `q-${g.id}` === driver) : undefined;
-  const current = question || driver === "no-area" ? undefined : (cards.find((c) => c.driver === driver) ?? cards[0]);
+  const current = question || driver === "no-area" || driver === "questions" ? undefined : (cards.find((c) => c.driver === driver) ?? cards[0]);
   const answered = cards.find((c) => c.enough)?.m;
   const fixed = (d: string) => actions.data!.some((a) => a.driver === d && live(a));
   const start = cards.find((c) => c.enough && !fixed(c.driver))?.driver;
@@ -837,6 +865,11 @@ export function Problems({ driver }: { driver?: string }) {
             </Link>
           ))}
           {questions.data && !questions.data.other.text.startsWith("0 ") ? <span className="sp-caption">{questions.data.other.text}</span> : null}
+          <Link href="/problems/questions" scroll={false} onClick={pick} className="sp-chip" aria-current={driver === "questions" ? "true" : undefined}>
+            <MessageCircleQuestion size={14} aria-hidden="true" />
+            All questions
+            <span className="sp-num font-bold">{questions.data?.all.length ?? 0}</span>
+          </Link>
           <span className="sp-caption ml-2 font-semibold">Fits no area</span>
           <Link href="/problems/no-area" scroll={false} onClick={pick} className="sp-chip" aria-current={driver === "no-area" ? "true" : undefined}>
             <Inbox size={14} aria-hidden="true" />
@@ -848,6 +881,8 @@ export function Problems({ driver }: { driver?: string }) {
 
       {question ? (
         <QuestionPanel g={question} />
+      ) : driver === "questions" ? (
+        <AllQuestionsPanel all={questions.data?.all ?? []} />
       ) : driver === "no-area" ? (
         <NoAreaPanel replies={loose} />
       ) : current ? (
