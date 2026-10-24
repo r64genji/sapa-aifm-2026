@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Inbox, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
-import { AiMark, Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
+import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
@@ -35,7 +35,6 @@ type Point = { label: string; n: number; m: number };
 const STEP: Record<string, number> = { draft: 1, assigned: 2, accepted: 3 };
 const live = (a: Action) => a.status === "draft" || a.status === "assigned" || a.status === "accepted";
 const counted = (r: ReplyItem) => r.status === "reviewed" || (r.status === "ok" && r.counted !== false);
-const noArea = (r: ReplyItem) => !!r.text && !r.escalate && !r.drivers?.length && counted(r);
 const inHandbook = (g: Questions["groups"][number]) => !!g.handbook_path && g.unknown === 0;
 const fixHref = (driver: string, entry: string | undefined, teams: string[]) =>
   `/fixes/new?driver=${driver}${entry ? `&entry=${entry}` : ""}${teams.map((t) => `&team=${encodeURIComponent(t)}`).join("")}`;
@@ -348,26 +347,6 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
         </span>
       ) : null}
     </div>
-  );
-}
-
-function ReplyCard({ r, label, onOpen }: { r: ReplyItem; label: string; onOpen?: () => void }) {
-  return (
-    <article className="sp-card flex flex-col gap-2 px-4 py-3.5">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="sp-caption">
-          {r.byline} · {shortDate(r.created_at)}
-        </span>
-        <AiMark state={r.status === "reviewed" ? (r.changed_by_hr ? "corrected" : "confirmed") : "suggested"} label={label} reviewer="HR" />
-      </div>
-      <TranslatedQuote language={r.language} text={r.text ?? ""} evidence={r.evidence_quote} />
-      {onOpen ? (
-        <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[13px]" aria-haspopup="dialog" onClick={onOpen}>
-          <MessageSquare size={14} aria-hidden="true" />
-          See the full check-in
-        </button>
-      ) : null}
-    </article>
   );
 }
 
@@ -719,35 +698,6 @@ function AllQuestionsPanel({ all }: { all: Questions["all"] }) {
   );
 }
 
-function NoAreaPanel({ replies }: { replies: ReplyItem[] }) {
-  const [openId, setOpenId] = useState<string | null>(null);
-  const close = useCallback(() => setOpenId(null), []);
-  const opened = replies.filter((r) => r.id === openId);
-  return (
-    <section id="cur" aria-labelledby="cur-title" className="sp-card flex min-w-0 scroll-mt-4 flex-col gap-4 px-5 py-5 sm:px-6">
-      <div className="flex flex-col gap-1">
-        <h2 id="cur-title" className="m-0 text-[26px] font-bold leading-[32px]">
-          Replies that fit no area
-        </h2>
-        <span className="sp-muted">
-          If one fits an area, relabel it in{" "}
-          <Link href="/replies?view=all&area=none" className="font-semibold">
-            Replies
-          </Link>{" "}
-          and it counts there.
-        </span>
-      </div>
-      {replies.length === 0 ? <span className="sp-muted">Every reply fits a problem area.</span> : null}
-      <div className="sp-stagger grid gap-3 lg:grid-cols-2">
-        {replies.map((r) => (
-          <ReplyCard key={r.id} r={r} label="No area" onOpen={() => setOpenId(r.id)} />
-        ))}
-      </div>
-      {opened.length ? <ReplySheet driver="none" replies={opened} groups={[]} filter={null} setFilter={() => {}} onClose={close} /> : null}
-    </section>
-  );
-}
-
 function TeamGrid({ drivers }: { drivers: string[] }) {
   const lists: Record<string, Teams | undefined> = useApi<Overview>("/api/hr/themes/overview").data?.teams ?? {};
   const ready = drivers.every((d) => lists[d]);
@@ -824,16 +774,14 @@ export function Problems({ driver }: { driver?: string }) {
   const actions = useApi<Action[]>("/api/hr/actions");
   const queue = useApi<ReplyItem[]>("/api/hr/queue");
   const questions = useApi<Questions>("/api/hr/questions");
-  const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
   useApi<Overview>("/api/hr/themes/overview");
   if (!themes.data || !actions.data) return <Loading />;
 
   const cards = [...themes.data.cards].sort((a, b) => Number(a.driver === "WORKLOAD") - Number(b.driver === "WORKLOAD") || (b.n ?? -1) - (a.n ?? -1));
   const waitingOf = (d: string) => (queue.data ?? []).filter((r) => !r.escalate && r.status !== "reviewed" && r.drivers?.includes(d)).length;
   const groups = questions.data?.groups.toReversed() ?? [];
-  const loose = (replies.data ?? []).filter(noArea).sort((a, b) => b.created_at.localeCompare(a.created_at));
   const question = driver?.startsWith("q-") ? groups.find((g) => `q-${g.id}` === driver) : undefined;
-  const current = question || driver === "no-area" || driver === "questions" ? undefined : (cards.find((c) => c.driver === driver) ?? cards[0]);
+  const current = question || driver === "questions" ? undefined : (cards.find((c) => c.driver === driver) ?? cards[0]);
   const answered = cards.find((c) => c.enough)?.m;
   const fixed = (d: string) => actions.data!.some((a) => a.driver === d && live(a));
   const start = cards.find((c) => c.enough && !fixed(c.driver))?.driver;
@@ -870,12 +818,6 @@ export function Problems({ driver }: { driver?: string }) {
             All questions
             <span className="sp-num font-bold">{questions.data?.all.length ?? 0}</span>
           </Link>
-          <span className="sp-caption ml-2 font-semibold">Fits no area</span>
-          <Link href="/problems/no-area" scroll={false} onClick={pick} className="sp-chip" aria-current={driver === "no-area" ? "true" : undefined}>
-            <Inbox size={14} aria-hidden="true" />
-            Replies
-            <span className="sp-num font-bold">{loose.length}</span>
-          </Link>
         </div>
       </nav>
 
@@ -883,8 +825,6 @@ export function Problems({ driver }: { driver?: string }) {
         <QuestionPanel g={question} />
       ) : driver === "questions" ? (
         <AllQuestionsPanel all={questions.data?.all ?? []} />
-      ) : driver === "no-area" ? (
-        <NoAreaPanel replies={loose} />
       ) : current ? (
         <Problem driver={current.driver} card={current} actions={actions.data} waiting={waitingOf(current.driver)} />
       ) : null}

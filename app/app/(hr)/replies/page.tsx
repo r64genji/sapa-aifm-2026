@@ -12,6 +12,7 @@ type Before = { status: string | null; drivers: string[]; context_tags: string[]
 
 const LANGUAGES: Record<string, string> = { ms: "Bahasa Malaysia", en: "English", zh: "Chinese" };
 const part = (item: ReplyItem, i: number) => item.byline.split(" · ")[i] ?? "";
+const noArea = (item: ReplyItem) => !!item.text && !item.escalate && !item.drivers?.length && (item.status === "reviewed" || (item.status === "ok" && item.counted !== false));
 const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
 
 function Filter({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: [string, string][] }) {
@@ -22,7 +23,7 @@ function Filter({ label, value, onChange, options }: { label: string; value: str
 
 function Replies() {
   const params = useSearchParams();
-  const [view, setView] = useState<"needs" | "all">(params.get("view") === "all" ? "all" : "needs");
+  const [view, setView] = useState<"needs" | "none" | "all">(params.get("view") === "all" ? "all" : params.get("view") === "none" ? "none" : "needs");
   const [area, setArea] = useState(params.get("area") ?? "all");
   const [day, setDay] = useState("all");
   const [team, setTeam] = useState("all");
@@ -50,7 +51,8 @@ function Replies() {
   const notes = new Map(queue.data.map((row) => [row.id, row.note]));
   const needs = new Set(queue.data.filter((row) => !row.escalate && row.status !== "reviewed").map((row) => row.id));
   const all = [...replies.data].sort((a, b) => b.created_at.localeCompare(a.created_at)).map((item) => ({ ...item, note: notes.get(item.id) ?? null }));
-  const listed = view === "needs" ? all.filter((item) => needs.has(item.id) || item.id in checked) : all;
+  const loose = all.filter(noArea);
+  const listed = view === "needs" ? all.filter((item) => needs.has(item.id) || item.id in checked) : view === "none" ? loose : all;
   const shown = listed.filter(
     (item) =>
       (area === "all" || (area === "none" ? !item.drivers.length : item.drivers.includes(area))) &&
@@ -98,6 +100,7 @@ function Replies() {
             onChange={setView}
             items={[
               ["needs", <>Needs you · <CountUp value={needs.size} /></>],
+              ["none", <>Fits no area · <CountUp value={loose.length} /></>],
               ["all", <>All · <CountUp value={all.length} /></>],
             ]}
           />
@@ -127,7 +130,7 @@ function Replies() {
       ) : null}
       {shown.length === 0 ? (
         <Empty
-          title={filtered ? "No reply matches these filters" : view === "needs" ? "Nothing to check" : "No replies yet"}
+          title={filtered ? "No reply matches these filters" : view === "needs" ? "Nothing to check" : view === "none" ? "Every reply fits a problem area" : "No replies yet"}
           sub={!filtered && view === "needs" ? "The AI was sure of every label. You can still change any in All." : undefined}
         />
       ) : (
