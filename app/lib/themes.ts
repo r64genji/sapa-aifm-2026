@@ -1,6 +1,7 @@
 import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
 
+export const ALL_DAYS = 0;
 export const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const CONTEXT = ["PAY_BENEFITS", "GROWTH", "COMMUTE_LOGISTICS"];
 

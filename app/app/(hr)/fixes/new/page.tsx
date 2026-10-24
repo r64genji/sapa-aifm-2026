@@ -649,7 +649,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
               {view.all_counts ? (
                 <div>
                   <CountBar count={view.all_counts.n} of={view.all_counts.m} label="all new hires" lane="problems" />
-                  <span className="sp-caption">At Day 14</span>
+                  <span className="sp-caption">Latest check-in of each hire</span>
                 </div>
               ) : (
                 <CountBar notEnough />

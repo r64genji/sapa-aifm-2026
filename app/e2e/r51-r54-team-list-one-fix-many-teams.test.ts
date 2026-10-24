@@ -27,7 +27,7 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
 });
 
-test("R51: the team list holds only teams with 5 or more answers at least 2 above expected, in A-Z order, from the latest snapshot", async () => {
+test("R51: the team list holds only teams with 5 or more answers at least 2 above expected, in A-Z order, from live counts", async () => {
   const res = await teams("MANAGER_SUPPORT");
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), {
@@ -36,8 +36,8 @@ test("R51: the team list holds only teams with 5 or more answers at least 2 abov
     company: { n: 13, m: 64, avg: 3.5 },
     verdict: "some",
     rows: [{ kind: "team", name: "Accounts Payable Europe", teams: ["Accounts Payable Europe"], n: 7, m: 22, avg: 3.3, leads: [{ id: huiLing, name: "Hui Ling" }] }],
-    eligible: 3,
-    small: 2,
+    eligible: 5,
+    small: 0,
     safety: 0,
   });
   const clarity = await (await teams("ROLE_CLARITY")).json();
@@ -52,14 +52,14 @@ test("R51: teams under 5 in one tower pool into one tower row, listed by the sam
   const belonging = await (await teams("BELONGING")).json();
   assert.deepEqual([belonging.company, belonging.rows], [
     { n: 7, m: 64, avg: 3.8 },
-    [{ kind: "tower", name: "Customer care language desks", teams: ["Japanese Desk", "Korean Desk", "Thai Desk"], n: 3, m: 8, avg: 3.3, leads: desks }],
+    [{ kind: "tower", name: "Customer care language desks", teams: ["Japanese Desk", "Korean Desk", "Thai Desk"], n: 3, m: 9, avg: 3.3, leads: desks }],
   ]);
 });
 
 test("R51: a team under 5 never appears alone, and a manager gets a refusal on the list", async () => {
   for (const driver of ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"]) {
     const body = await (await teams(driver)).json();
-    for (const row of body.rows) assert.ok(!(row.kind === "team" && ["Japanese Desk", "Korean Desk", "Thai Desk", "Order-to-Cash Asia", "Record-to-Report"].includes(row.name)), `${driver} lists ${row.name}`);
+    for (const row of body.rows) assert.ok(!(row.kind === "team" && ["Japanese Desk", "Korean Desk", "Thai Desk"].includes(row.name)), `${driver} lists ${row.name}`);
   }
   assert.equal((await teams("MANAGER_SUPPORT", await hrToken("raj@contoh.test"))).status, 401);
 });

@@ -170,7 +170,7 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
             </span>
           </span>
           <h2 className="m-0 text-[26px] font-bold leading-8">{driverName(top.driver)}</h2>
-          <CountBar count={top.n} of={top.m} label={`who answered at ${dayLabel(14)}`} />
+          <CountBar count={top.n} of={top.m} label="who answered" />
           {top.held?.map((h) => (
             <span key={h.language} className="sp-meta">{h.reason}</span>
           ))}
@@ -226,7 +226,7 @@ function Focus({ top, others, context }: { top: Card; others: Card[]; context: C
 export default function Page() {
   const [done, setDone] = useState<{ row: QueueRow; undo: () => Promise<unknown> }[]>([]);
   const me = useApi<Me>("/api/hr/me", 60000);
-  const themes = useApi<Themes>("/api/hr/themes?touchpoint=14", 2000);
+  const themes = useApi<Themes>("/api/hr/themes", 2000);
   const queue = useApi<QueueRow[]>("/api/hr/queue", 2000);
   const actions = useApi<Action[]>("/api/hr/actions");
   const questions = useApi<Questions>("/api/hr/questions");
@@ -257,14 +257,14 @@ export default function Page() {
         sub={
           <>
             {me.data ? `${new Date(me.data.today).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Asia/Kuala_Lumpur" })} · ` : ""}
-            {dayLabel(14)} check-in · new hires in their first six months
+            Latest check-in of each new hire in their first six months
           </>
         }
       />
 
       <Loop
         steps={[
-          { step: "Heard", lane: "ai", value: themes.data ? answered : undefined, label: `new hires answered at ${dayLabel(14)}`, href: "/replies?view=all" },
+          { step: "Heard", lane: "ai", value: themes.data ? answered : undefined, label: "new hires answered", href: "/replies?view=all" },
           { step: "Found", lane: "problems", value: themes.data ? enough.length : undefined, label: enough.length === 1 ? "shared problem" : "shared problems", href: "/problems" },
           { step: "Fixing", lane: "fixes", value: actions.data ? running : undefined, label: running === 1 ? "fix in progress" : "fixes in progress", href: "/fixes" },
           { step: "Worked", lane: "fixes", value: actions.data ? judged.filter((a) => a.verdict === "worked").length : undefined, label: `of ${judged.length} finished fixes worked`, href: "/fixes" },

@@ -1,7 +1,9 @@
+import { now } from "@/lib/clock";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { DRIVERS, themeCards } from "@/lib/themes";
+import { ALL_DAYS, counts, DRIVERS, themeCards, type Counts } from "@/lib/themes";
 
 const MARGIN = 2;
+const TEAM_MINIMUM = 5;
 
 type Snapshot = { respondents: number; suppressed: boolean; counts: Record<string, { n: number; avg?: number | null }> | null };
 type Lead = { id: string; name: string };
@@ -9,29 +11,43 @@ export type Row = { kind: "team" | "tower"; name: string; teams: string[]; n: nu
 
 const WEEK_MS = 7 * 86400000;
 
+const live = (c: Counts): Snapshot => ({ respondents: c.respondents, suppressed: c.respondents < TEAM_MINIMUM, counts: c.drivers ?? null });
+
 export async function teamList(organisationId: string, driver: string) {
   return (await teamLists(organisationId))[driver];
 }
 
 export async function teamLists(organisationId: string) {
   const db = createAdminClient();
-  const [cards, org, latest] = await Promise.all([
-    themeCards(organisationId, 14, null),
-    db.from("organisations").select("min_group_size").eq("id", organisationId).single(),
-    db.from("theme_snapshots").select("week").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }).limit(1),
+  const at = await now();
+  const [cards, org, towerOf, people] = await Promise.all([
+    themeCards(organisationId, ALL_DAYS, null),
+    db.from("organisations").select("time_zone, snapshot_weekday").eq("id", organisationId).single(),
+    db.from("team_towers").select("tower, team").eq("organisation_id", organisationId),
+    db.from("people").select("team, manager_id, managers(display_name, revoked_at)").eq("organisation_id", organisationId).not("team", "is", null),
   ]);
-  for (const { error } of [org, latest]) if (error) throw error;
-  const week = latest.data![0]?.week as string | undefined;
-  if (!cards.cards[0].enough || !week) return Object.fromEntries(DRIVERS.map((driver) => [driver, { enough: false as const }]));
+  for (const { error } of [org, towerOf, people]) if (error) throw error;
+  if (!cards.cards[0].enough) return Object.fromEntries(DRIVERS.map((driver) => [driver, { enough: false as const }]));
+  const today = at.toLocaleDateString("en-CA", { timeZone: org.data!.time_zone });
+  const back = ((new Date(Date.parse(today)).getUTCDay() || 7) - org.data!.snapshot_weekday + 7) % 7;
+  const week = new Date(Date.parse(today) - back * 86400000).toISOString().slice(0, 10);
   const since = new Date(week);
   since.setUTCMonth(since.getUTCMonth() - 6);
-  const [teams, towers, people, history] = await Promise.all([
-    db.from("theme_snapshots").select("team, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("week", week),
-    db.from("tower_snapshots").select("tower, teams, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("week", week),
-    db.from("people").select("team, manager_id, managers(display_name, revoked_at)").eq("organisation_id", organisationId).not("team", "is", null),
-    db.from("theme_snapshots").select("week, team, respondents, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).eq("suppressed", false).gte("week", since.toISOString().slice(0, 10)).lte("week", week),
+  const names = [...new Set((people.data as { team: string }[]).map((p) => p.team))].sort();
+  const teamRows = await Promise.all(names.map(async (team) => ({ team, ...live(await counts(organisationId, ALL_DAYS, null, team)) })));
+  const small = new Map<string, string[]>();
+  for (const { tower, team } of towerOf.data as { tower: string; team: string }[]) {
+    if (teamRows.some((s) => s.team === team && s.suppressed)) small.set(tower, [...(small.get(tower) ?? []), team].sort());
+  }
+  const [towerRows, history] = await Promise.all([
+    Promise.all([...small].filter(([, teams]) => teams.length >= 2).map(async ([tower, teams]) => {
+      const { data, error } = await db.rpc("theme_counts", { org: organisationId, touch: ALL_DAYS, month: null, at: at.toISOString(), teams });
+      if (error) throw error;
+      return { tower, teams, ...live(data as Counts) };
+    })),
+    db.from("theme_snapshots").select("week, team, respondents, counts").eq("organisation_id", organisationId).eq("touchpoint", ALL_DAYS).eq("suppressed", false).gte("week", since.toISOString().slice(0, 10)).lt("week", week),
   ]);
-  for (const { error } of [teams, towers, people, history]) if (error) throw error;
+  if (history.error) throw history.error;
 
   const leads = (names: string[]) => {
     const found = new Map<string, string>();
@@ -43,9 +59,8 @@ export async function teamLists(organisationId: string) {
   return Object.fromEntries(DRIVERS.map((driver) => {
     const row = (kind: Row["kind"], name: string, names: string[], s: Snapshot): Row => ({ kind, name, teams: names, n: s.counts?.[driver]?.n ?? 0, m: s.respondents, avg: s.counts?.[driver]?.avg ?? null, leads: leads(names) });
 
-    const teamRows = teams.data as (Snapshot & { team: string })[];
     const eligible = teamRows.filter((s) => !s.suppressed).map((s) => row("team", s.team, [s.team], s));
-    const pooled = (towers.data as (Snapshot & { tower: string; teams: string[] })[]).filter((s) => !s.suppressed).map((s) => row("tower", s.tower, s.teams, s));
+    const pooled = towerRows.filter((s) => !s.suppressed).map((s) => row("tower", s.tower, s.teams, s));
     const card = cards.cards.find((c) => c.driver === driver)! as { n: number; m: number; avg: number | null };
     const rate = card.n / card.m;
     const past = history.data as { week: string; team: string; respondents: number; counts: Snapshot["counts"] }[];
@@ -63,11 +78,10 @@ export async function teamLists(organisationId: string) {
     };
     const shown = [...eligible, ...pooled].filter((r) => r.n >= r.m * rate + MARGIN).map((r) => (r.kind === "team" && times(r.name) > 1 ? { ...r, times: times(r.name) } : r));
 
-    const minimum = org.data!.min_group_size as number;
     const total = teamRows.reduce((sum, s) => sum + s.respondents, 0);
     const outside = () => total - shown.reduce((sum, r) => sum + r.m, 0);
     let safety = 0;
-    while (shown.length && outside() > 0 && outside() < minimum) {
+    while (shown.length && outside() > 0 && outside() < TEAM_MINIMUM) {
       shown.splice(shown.indexOf(shown.reduce((a, b) => (b.m < a.m ? b : a))), 1);
       safety++;
     }

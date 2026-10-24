@@ -2,7 +2,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Asia",
     "respondents": 9,
     "suppressed": false,
@@ -30,7 +30,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Europe",
     "respondents": 22,
     "suppressed": false,
@@ -70,7 +70,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Japanese Desk",
     "respondents": 4,
     "suppressed": true,
@@ -79,7 +79,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Korean Desk",
     "respondents": 3,
     "suppressed": true,
@@ -88,7 +88,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Order-to-Cash Asia",
     "respondents": 4,
     "suppressed": true,
@@ -97,7 +97,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Record-to-Report",
     "respondents": 3,
     "suppressed": true,
@@ -106,7 +106,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Thai Desk",
     "respondents": 1,
     "suppressed": true,
@@ -115,7 +115,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-10-12",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "IT Service Desk",
     "respondents": 9,
     "suppressed": false,
@@ -155,7 +155,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-08-24",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Asia",
     "respondents": 7,
     "suppressed": false,
@@ -171,7 +171,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-08-24",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Europe",
     "respondents": 14,
     "suppressed": false,
@@ -187,7 +187,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-08-24",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "IT Service Desk",
     "respondents": 6,
     "suppressed": false,
@@ -203,7 +203,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-09-14",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Asia",
     "respondents": 8,
     "suppressed": false,
@@ -219,7 +219,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-09-14",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "Accounts Payable Europe",
     "respondents": 16,
     "suppressed": false,
@@ -235,7 +235,7 @@
   {
     "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
     "week": "2026-09-14",
-    "touchpoint": 14,
+    "touchpoint": 0,
     "team": "IT Service Desk",
     "respondents": 7,
     "suppressed": false,

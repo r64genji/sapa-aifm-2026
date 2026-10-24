@@ -4,7 +4,7 @@ import { packs } from "@/lib/packs";
 import { libraryWithEvidence, members, pooled, type Resolvable, scoreOf, verdict } from "@/lib/resolution";
 import { audit } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { themeCards } from "@/lib/themes";
+import { ALL_DAYS, themeCards } from "@/lib/themes";
 
 const POOL = 30;
 const TREND = "This shows a trend, not proof that Sapa caused it";
@@ -216,7 +216,7 @@ export async function impact(organisationId: string) {
           enough: true,
           total: exits.length,
           top_reasons: [...reasons.entries()].sort((a, b) => b[1] - a[1]).map(([driver, count]) => ({ driver, n: count })),
-          top_themes: (await themeCards(organisationId, 14, null)).cards
+          top_themes: (await themeCards(organisationId, ALL_DAYS, null)).cards
             .flatMap((card) => ("n" in card ? [{ driver: card.driver, n: card.n, m: card.m }] : []))
             .sort((a, b) => b.n - a.n),
         };

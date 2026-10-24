@@ -794,11 +794,11 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
   return (
     <Panel
       title="Did Sapa spot the real reasons early?"
-      tip={`Left: share of the ${day14Base} new hires who answered at Day 14 and raised each area. Right: reasons from the ${leavers.total} leavers who answered the exit question. Leavers' answers never count in the check-in problem areas.`}
+      tip={`Left: share of the ${day14Base} new hires who answered and raised each area in their latest check-in. Right: reasons from the ${leavers.total} leavers who answered the exit question. Leavers' answers never count in the check-in problem areas.`}
       badge={
         match ? (
           <Badge lane="problems" icon={<Check size={14} strokeWidth={3} aria-hidden="true" />}>
-            Top reason people left ({driverName(leavers.top_reasons[0].driver)}) was the top Day 14 signal
+            Top reason people left ({driverName(leavers.top_reasons[0].driver)}) was the top check-in signal
           </Badge>
         ) : null
       }
@@ -806,12 +806,12 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
       <div
         ref={ref}
         role="img"
-        aria-label={rows.map((row) => `${driverName(row.driver)}: ${row.left}% at Day 14, ${row.right}% of leavers`).join(". ")}
+        aria-label={rows.map((row) => `${driverName(row.driver)}: ${row.left}% in check-ins, ${row.right}% of leavers`).join(". ")}
         className={`sp-live grid items-center gap-x-3 gap-y-2.5${seen ? " is-in" : ""}`}
         style={{ gridTemplateColumns: "minmax(0,1fr) auto minmax(0,1fr)" }}
       >
         <span className="text-right text-xs font-semibold" style={{ color: "var(--problems)" }}>
-          Raised in the Day 14 check-in <span className="sp-num font-normal sp-muted">of {day14Base}</span>
+          Raised in check-ins <span className="sp-num font-normal sp-muted">of {day14Base}</span>
         </span>
         <span />
         <span className="text-xs font-semibold">
@@ -819,7 +819,7 @@ function Reasons({ leavers }: { leavers: Impact["leavers"] }) {
         </span>
         {rows.map((row, i) => (
           <Fragment key={row.driver}>
-            <div className="flex items-center justify-end gap-1.5" data-tip={row.t ? `${driverName(row.driver)}: ${row.t.n} of ${row.t.m} raised it at Day 14 (${row.left}%)` : undefined}>
+            <div className="flex items-center justify-end gap-1.5" data-tip={row.t ? `${driverName(row.driver)}: ${row.t.n} of ${row.t.m} raised it (${row.left}%)` : undefined}>
               <span className="sp-num text-xs font-bold">{row.t ? `${row.left}%` : "–"}</span>
               <span className="sp-grow-x-r h-[18px] rounded-l-[3px]" style={{ width: width(row.left), background: "var(--problems)", ...delay(i * 90) }} />
             </div>

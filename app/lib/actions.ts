@@ -10,7 +10,7 @@ import { libraryWithEvidence, members, pooled, queueResolution, scoreCard, score
 import { sendNotices } from "@/lib/scheduler";
 import { mask } from "@/lib/mask";
 import { heldAnonymous } from "@/lib/replies";
-import { themeCards } from "@/lib/themes";
+import { ALL_DAYS, themeCards } from "@/lib/themes";
 
 const DRIVERS = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD"];
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -238,8 +238,8 @@ export async function draftView(organisationId: string, id: string) {
   const held = await isHeld(action);
   const [people, snapshots, cards] = await Promise.all([
     db.from("people").select("id, name, team, start_date, manager_id, managers(display_name)").eq("organisation_id", organisationId).not("team", "is", null).order("start_date"),
-    db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", 14).order("week", { ascending: false }),
-    themeCards(organisationId, 14, null),
+    db.from("theme_snapshots").select("team, week, respondents, suppressed, counts").eq("organisation_id", organisationId).eq("touchpoint", ALL_DAYS).order("week", { ascending: false }),
+    themeCards(organisationId, ALL_DAYS, null),
   ]);
   for (const { error } of [people, snapshots]) if (error) throw error;
   const driver = text.drivers[action.driver as keyof typeof text.drivers];
@@ -624,7 +624,7 @@ async function context(action: Action, managerId: string) {
     .from("theme_snapshots")
     .select("team, week, respondents, suppressed, counts")
     .eq("organisation_id", action.organisation_id)
-    .eq("touchpoint", 14)
+    .eq("touchpoint", ALL_DAYS)
     .in("team", teams)
     .order("week", { ascending: false });
   if (rowsError) throw rowsError;

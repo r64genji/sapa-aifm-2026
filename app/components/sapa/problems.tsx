@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
-import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
+import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
@@ -132,7 +132,7 @@ export function Waffle({ c }: { c: Card }) {
     <figure className="m-0 flex flex-col gap-3">
       <div
         role="img"
-        aria-label={`${c.n} of ${m} who answered Day 14: ${parts.map((p) => `${p.n} ${p.label}`).join(", ")}`}
+        aria-label={`${c.n} of ${m} who answered: ${parts.map((p) => `${p.n} ${p.label}`).join(", ")}`}
         className="grid gap-[5px] self-start"
         style={{ gridTemplateColumns: `repeat(${cols}, 14px)` }}
       >
@@ -262,7 +262,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
           {!where ? (
             <div className="sp-skel h-16" />
           ) : !where.enough ? (
-            <span className="sp-meta">Teams show once 5 people answer Day 14.</span>
+            <span className="sp-meta">Teams show once 5 people answer a check-in.</span>
           ) : rows.length === 0 ? (
             <div className="flex items-center gap-3 rounded-lg px-3 py-3" style={{ background: "var(--surface-sunken)" }}>
               <Building2 size={20} aria-hidden="true" style={{ color: "var(--problems)" }} />
@@ -343,7 +343,7 @@ function SendFix({ driver, where, entries, fixes }: { driver: string; where: Tea
         <span className="border-t pt-3 sp-caption" style={{ borderColor: "var(--line-soft)" }}>
           {listed} of {where.eligible} teams with 5+ answers listed{rows.length > listed ? `, plus ${rows.length - listed} pooled ${rows.length - listed === 1 ? "tower" : "towers"}` : ""}. A to Z, never ranked.
           {where.small ? ` ${where.small} under 5: no number.` : ""}
-          {where.safety ? ` ${where.safety} more hidden so others cannot be worked out.` : ""} Week of {shortDate(where.week)}.
+          {where.safety ? ` ${where.safety} more hidden so others cannot be worked out.` : ""} Live count.
         </span>
       ) : null}
     </div>
@@ -390,7 +390,7 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
           </div>
           <div className="flex flex-col">
             <h2 className="m-0 text-[22px] font-bold leading-[28px]">{name}</h2>
-            <span className="sp-meta">{driver === "none" ? "The whole check-in" : "Day 14 replies counted here, with the whole check-in"}</span>
+            <span className="sp-meta">{driver === "none" ? "The whole check-in" : "Latest replies counted here, with the whole check-in"}</span>
           </div>
           {groups.length ? (
             <div role="group" aria-label="Show replies" className="sp-tabs self-start">
@@ -497,7 +497,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const overview = useApi<Overview>("/api/hr/themes/overview").data;
-  const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups?touchpoint=14`);
+  const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
   const where = { data: overview?.teams[driver] };
@@ -508,7 +508,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const g = groups.data;
   const grouped = g && g.status === "ok" && "groups" in g ? g.groups : [];
   const mine = (replies.data ?? [])
-    .filter((r) => r.byline.endsWith("Day 14") && !r.escalate && r.drivers?.includes(driver) && counted(r))
+    .filter((r) => !r.escalate && r.drivers?.includes(driver) && counted(r))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   const byId = new Map(mine.map((r) => [r.id, r]));
   const intakes = intakePoints(d);
@@ -546,7 +546,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                     {card.n}
                     <span className="text-[20px] font-semibold sp-muted"> of {card.m}</span>
                   </span>
-                  <span className="sp-meta">who answered Day 14</span>
+                  <span className="sp-meta">who answered</span>
                   {card.avg != null ? <span className="sp-meta">Company average {card.avg} of 5</span> : null}
                 </div>
                 <Waffle c={card} />
@@ -563,7 +563,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                       <Info size={16} strokeWidth={2} aria-hidden="true" />
                     </button>
                     <span role="tooltip" className="sp-tip-bubble">
-                      Each bar is the share of that month&apos;s new hires who named this problem at Day 14. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
+                      Each bar is the share of that month&apos;s new hires who named this problem in their latest check-in. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
                     </span>
                   </span>
                 </div>
@@ -761,7 +761,7 @@ function TeamGrid({ drivers }: { drivers: string[] }) {
             </tbody>
           </table>
           <p className="sp-caption m-0 mt-2">
-            A filled box means that team raised the problem at least 2 more times than the company rate predicts, in the latest weekly snapshot. Tap it to draft a fix for that team lead. Teams under 5 answers are pooled or hidden.
+            A filled box means that team raised the problem at least 2 more times than the company rate predicts, from each new hire&apos;s latest check-in. Tap it to draft a fix for that team lead. Teams under 5 answers are pooled or hidden.
           </p>
         </div>
       )}
@@ -770,7 +770,7 @@ function TeamGrid({ drivers }: { drivers: string[] }) {
 }
 
 export function Problems({ driver }: { driver?: string }) {
-  const themes = useApi<Themes>("/api/hr/themes?touchpoint=14");
+  const themes = useApi<Themes>("/api/hr/themes");
   const actions = useApi<Action[]>("/api/hr/actions");
   const queue = useApi<ReplyItem[]>("/api/hr/queue");
   const questions = useApi<Questions>("/api/hr/questions");
@@ -793,7 +793,7 @@ export function Problems({ driver }: { driver?: string }) {
     <>
       <header className="flex flex-col gap-1">
         <h1 className="sp-page-title">Shared problems</h1>
-        <span className="sp-muted">Day 14 check-in{answered ? ` · ${answered} new hires answered` : ""}</span>
+        <span className="sp-muted">Latest check-in of each new hire{answered ? ` · ${answered} new hires answered` : ""}</span>
       </header>
 
       <nav aria-label="Problem areas" className="flex flex-col gap-3">
