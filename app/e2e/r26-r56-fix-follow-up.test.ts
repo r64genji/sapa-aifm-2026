@@ -99,10 +99,10 @@ test("R56: a fix with no note to new hires asks no fix question", async () => {
   const asked = (await texts(other, from)).map((text) => text.replace(/^You tapped "[^"]*"\. /, ""));
   assert.deepEqual(asked.slice(0, 5), [
     "How clear are you on what is expected of you this week?",
-    "How much support did you get from your manager this week?",
-    "How connected are you with your team this week?",
-    "How clear are the company's direction, policies and procedures to you this week?",
-    "How well is your job training preparing you for your work this week?",
+    "How easy was it to get help from your manager when you needed it this week?",
+    "How easy is it to ask your teammates for help this week?",
+    "How easy was it this week to find out how things work here, like rules, claims or facilities?",
+    "How well did your training prepare you for the tasks you did this week?",
   ]);
   assert.ok(!asked.some((text) => text.includes("Since the last Update from HR")));
 });

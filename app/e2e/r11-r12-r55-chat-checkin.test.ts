@@ -12,9 +12,7 @@ const speakUp = [
 ].join("\n");
 const thanks = "Thank you, your answers are saved.";
 const remarks = "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip.";
-const wait = en.checkin.chat.wait;
 const optional = en.checkin.chat.optional;
-const fixedQuestion = (driver: string) => en.checkin.probe.topics[driver].open;
 const [low, unreachable, blocked, keyword, flagged, light] = [601, 602, 603, 604, 605, 606].map((n) => 5550000000 + n);
 
 type Message = { text: string; reply_markup?: { inline_keyboard: { text: string }[][] } };
@@ -49,10 +47,13 @@ async function lastTaps(chat: number, words: string[]) {
   return ((await sentTo(chat)).slice(before) as Message[]).map((m, i) => (i === 0 ? { ...m, text: m.text.replace(/^You tapped "[^"]*"\. /, "") } : m));
 }
 
-const lowRole = ["A bit unclear", "A lot", "Mostly", "Clear", "Well", "Manageable"];
-const lowManager = ["Mostly clear", "None", "Somewhat", "Clear", "Well", "Manageable"];
-const allHigh = ["Very clear", "A lot", "Very connected", "Very clear", "Very well", "Easy to manage"];
-const roleOpener = (question: string) => `You tapped "A bit unclear" for your role.\n\n${question}\n\n${optional}`;
+const lowRole = ["A bit unclear", "Very easy", "Quite easy", "Quite easy", "Well", "Manageable"];
+const lowManager = ["Mostly clear", "Very hard", "Okay", "Quite easy", "Well", "Manageable"];
+const tied = ["Mostly clear", "Quite hard", "Quite hard", "Quite easy", "Well", "Manageable"];
+const allHigh = ["Very clear", "Very easy", "Very easy", "Very easy", "Very well", "Easy to manage"];
+const roleOpener = `You tapped "A bit unclear" for your role.\n\nWhen you were not sure what to do this week, what did you do, and what happened?\n\n${optional}`;
+const managerOpener = (label: string) =>
+  `You tapped "${label}" for support from your manager.\n\nWhat did you need from your manager this week, and what happened?\n\n${optional}`;
 
 async function openReply(chat: number) {
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", chat).single();
@@ -75,14 +76,15 @@ test("R55, R11: the check-in starts with the intro by name and shows word button
   assert.deepEqual(labels(first), [["Not clear at all"], ["A bit unclear"], ["Somewhat clear"], ["Mostly clear"], ["Very clear"]]);
 });
 
-test("R12, R17: a low tap opens no probe, the AI writes one question under the lowest tap with Skip, and the reply ends the check-in with one masked reply for HR", async () => {
+test("R12, R17: a low tap opens no probe, the fixed question for the lowest tap comes at once with Skip and no AI call, and the reply ends the check-in with one masked reply for HR", async () => {
   await tap(low, "A bit unclear");
-  assert.equal((await sentTo(low)).at(-1)!.text, 'You tapped "A bit unclear". How much support did you get from your manager this week?');
+  assert.equal((await sentTo(low)).at(-1)!.text, 'You tapped "A bit unclear". How easy was it to get help from your manager when you needed it this week?');
 
-  await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ question: "Which task do you start with?" }) }]);
+  const calls = (await modelCalls("omniroute:chat")).length;
   const opened = await lastTaps(low, lowRole.slice(1));
-  assert.deepEqual(opened.map((m) => m.text), [wait, roleOpener("Which task do you start with?")]);
-  assert.deepEqual(labels(opened[1]), [["Skip"]]);
+  assert.deepEqual(opened.map((m) => m.text), [roleOpener]);
+  assert.deepEqual(labels(opened[0]), [["Skip"]]);
+  assert.equal((await modelCalls("omniroute:chat")).length, calls);
 
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: "Three seniors give me urgent invoices at once" }) }]);
   assert.deepEqual(await answer(low, "Three seniors give me urgent invoices at once, call me on 012-345 6789"), [remarks]);
@@ -105,25 +107,15 @@ test("R12, R17: a low tap opens no probe, the AI writes one question under the l
   assert.deepEqual(tag, { status: "ok", evidence_quote: "Three seniors give me urgent invoices at once" });
 });
 
-test("R12: when the AI is unreachable, the fixed question for the lowest tap is used, under the two lowest taps", async () => {
-  assert.deepEqual((await lastTaps(unreachable, lowManager)).map((m) => m.text), [
-    wait,
-    `You tapped "None" for support from your manager and "Somewhat" for your team.\n\n${fixedQuestion("MANAGER_SUPPORT")}\n\n${optional}`,
-  ]);
+test("R12: the question is for the lowest tap, and only that tap is shown above it", async () => {
+  assert.deepEqual((await lastTaps(unreachable, lowManager)).map((m) => m.text), [managerOpener("Very hard")]);
 });
 
-test("R12: a question with a feelings word is asked again once, and a second blocked question gives the fixed question", async () => {
-  const calls = (await modelCalls("omniroute:chat")).length;
-  await scriptModel("omniroute:chat", [
-    { kind: "json", content: turn({ question: "How do you feel about your tasks?" }) },
-    { kind: "json", content: turn({ question: "How did that make you feel?" }) },
-  ]);
-  assert.deepEqual((await lastTaps(blocked, lowRole)).map((m) => m.text), [wait, roleOpener(fixedQuestion("ROLE_CLARITY"))]);
-  assert.equal((await modelCalls("omniroute:chat")).length, calls + 2);
+test("R12: on a tie the first lowest tap in question order picks the question", async () => {
+  assert.deepEqual((await lastTaps(blocked, tied)).map((m) => m.text), [managerOpener("Quite hard")]);
 });
 
 test("R12, R13: a safety keyword in the answer sends the Speak Up message and no question", async () => {
-  await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ question: "Which task do you start with?" }) }]);
   await taps(keyword, lowRole);
   assert.deepEqual(await answer(keyword, "The agent holds my passport"), [speakUp]);
   const [reply] = await openReply(keyword);
@@ -133,7 +125,6 @@ test("R12, R13: a safety keyword in the answer sends the Speak Up message and no
 
 test("R12, R13: the AI's serious concern flag on the answer sends the Speak Up message and no question", async () => {
   await scriptModel("omniroute:chat", [
-    { kind: "json", content: turn({ question: "Which task do you start with?" }) },
     { kind: "json", content: turn({ action: "done", serious_concern: true, concern_category: "bullying_threats", stop_reason: "serious_concern" }) },
   ]);
   await taps(flagged, lowRole);
@@ -143,9 +134,8 @@ test("R12, R13: the AI's serious concern flag on the answer sends the Speak Up m
   assert.deepEqual(alert, { category: "bullying_threats", source: "model" });
 });
 
-test("R12: with no low tap the question comes under a good-taps line, and Skip ends the check-in", async () => {
-  await scriptModel("omniroute:chat", [{ kind: "json", content: turn({ question: "Which list would help most?" }) }]);
-  assert.deepEqual((await lastTaps(light, allHigh)).map((m) => m.text), [wait, `${en.checkin.chat.good}\n\nWhich list would help most?\n\n${optional}`]);
+test("R12: with no low tap the fixed light question comes under a good-taps line, and Skip ends the check-in", async () => {
+  assert.deepEqual((await lastTaps(light, allHigh)).map((m) => m.text), [`Your taps look good.\n\nWhat one thing would make next week easier for you?\n\n${optional}`]);
   const before = (await sentTo(light)).length;
   await tap(light, "Skip");
   assert.deepEqual(((await sentTo(light)).slice(before) as Message[]).map((m) => m.text), [remarks]);

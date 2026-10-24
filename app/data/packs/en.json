@@ -100,46 +100,46 @@
         "id": "MANAGER_SUPPORT",
         "driver": "MANAGER_SUPPORT",
         "type": "scale",
-        "text": "How much support did you get from your manager this week?",
+        "text": "How easy was it to get help from your manager when you needed it this week?",
         "labels": [
-          "None",
-          "Very little",
-          "Some",
-          "A good amount",
-          "A lot"
+          "Very hard",
+          "Quite hard",
+          "Okay",
+          "Quite easy",
+          "Very easy"
         ]
       },
       {
         "id": "BELONGING",
         "driver": "BELONGING",
         "type": "scale",
-        "text": "How connected are you with your team this week?",
+        "text": "How easy is it to ask your teammates for help this week?",
         "labels": [
-          "Not at all",
-          "A little",
-          "Somewhat",
-          "Mostly",
-          "Very connected"
+          "Very hard",
+          "Quite hard",
+          "Okay",
+          "Quite easy",
+          "Very easy"
         ]
       },
       {
         "id": "ONBOARDING",
         "driver": "ONBOARDING",
         "type": "scale",
-        "text": "How clear are the company's direction, policies and procedures to you this week?",
+        "text": "How easy was it this week to find out how things work here, like rules, claims or facilities?",
         "labels": [
-          "Not clear",
-          "A little clear",
-          "Somewhat clear",
-          "Clear",
-          "Very clear"
+          "Very hard",
+          "Quite hard",
+          "Okay",
+          "Quite easy",
+          "Very easy"
         ]
       },
       {
         "id": "TRAINING",
         "driver": "TRAINING",
         "type": "scale",
-        "text": "How well is your job training preparing you for your work this week?",
+        "text": "How well did your training prepare you for the tasks you did this week?",
         "labels": [
           "Not at all",
           "Poorly",
@@ -225,15 +225,13 @@
     ],
     "chat": {
       "opener": "What is happening?",
-      "light": "Anything that would make next week easier?",
+      "light": "What one thing would make next week easier for you?",
       "changed": "What changed?",
       "stillNot": "What is still not working?",
       "askHr": "I cannot give advice or answer questions about pay, probation, health or legal matters. Please ask HR directly.",
       "done": "Skip",
-      "wait": "Thanks. One moment while I write your last question…",
       "context": "You tapped {taps}.",
       "tap": "\"{label}\" for {topic}",
-      "and": " and ",
       "good": "Your taps look good.",
       "optional": "Optional. Tap Skip if you prefer not to answer.",
       "remarks": "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip."
@@ -244,7 +242,7 @@
       "help": "What would make it easier?",
       "topics": {
         "ROLE_CLARITY": {
-          "open": "What is not clear about what is expected of you?",
+          "open": "When you were not sure what to do this week, what did you do, and what happened?",
           "words": [
             "expect",
             "goal",
@@ -264,7 +262,7 @@
           ]
         },
         "MANAGER_SUPPORT": {
-          "open": "What did you need from your manager this week?",
+          "open": "What did you need from your manager this week, and what happened?",
           "words": [
             "manager",
             "boss",
@@ -284,7 +282,7 @@
           ]
         },
         "BELONGING": {
-          "open": "What made it hard to work with your team this week?",
+          "open": "When you needed something from a teammate this week, what happened?",
           "words": [
             "team",
             "colleague",
@@ -303,7 +301,7 @@
           ]
         },
         "ONBOARDING": {
-          "open": "Which company policy, procedure or benefit is still unclear to you?",
+          "open": "What did you try to find out this week, and what stopped you?",
           "words": [
             "policy",
             "policies",
@@ -321,7 +319,7 @@
           ]
         },
         "TRAINING": {
-          "open": "Which part of your work did the training not cover?",
+          "open": "Which task this week did your training not prepare you for, and what was missing?",
           "words": [
             "train",
             "course",
@@ -340,7 +338,7 @@
           ]
         },
         "WORKLOAD": {
-          "open": "What takes up most of your time this week?",
+          "open": "What made your work hard to finish this week?",
           "words": [
             "workload",
             "deadline",

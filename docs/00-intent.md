@@ -48,7 +48,7 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 
 **In**
 
-- Check-in on Telegram as a short chat (agreed 17 Oct 2026). Scale questions show words that fit each question, not numbers, and Sapa stores 1–5. After the taps, a fixed first question asks about the lowest tap, then the AI asks up to 2 follow-up questions and stops at a natural point. Then one fixed last question asks if there is anything else HR should know (agreed 23 Oct 2026, after Gary Teh, docs/19). The bot only thanks the hire for it; it never sums it up in the chat. There is no "what I will tell HR" step. The AI labels the reply and quotes the words it used.
+- Check-in on Telegram as a short chat (agreed 17 Oct 2026). Scale questions show words that fit each question, not numbers, and Sapa stores 1–5. After the taps, one fixed question asks what happened behind the lowest tap (no AI, agreed 24 Oct 2026). Then one fixed last question asks if there is anything else HR should know (agreed 23 Oct 2026, after Gary Teh, docs/19). The bot only thanks the hire for it; it never sums it up in the chat. There is no "what I will tell HR" step. The AI labels the reply and quotes the words it used.
 - HR confirms the AI label.
 - HR drafts a fix and assigns it to a manager. A fix can start from one reply and go to that hire's own manager.
 - The manager accepts the fix and marks it done in Telegram.

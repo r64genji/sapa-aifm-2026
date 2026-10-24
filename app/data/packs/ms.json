@@ -65,46 +65,46 @@
         "id": "MANAGER_SUPPORT",
         "driver": "MANAGER_SUPPORT",
         "type": "scale",
-        "text": "Berapa banyak sokongan yang anda dapat daripada pengurus anda minggu ini?",
+        "text": "Sejauh mana senang anda dapat bantuan daripada pengurus anda bila anda perlukannya minggu ini?",
         "labels": [
-          "Tiada",
-          "Sangat sedikit",
-          "Sederhana",
-          "Agak banyak",
-          "Banyak"
+          "Sangat susah",
+          "Agak susah",
+          "Biasa",
+          "Agak senang",
+          "Sangat senang"
         ]
       },
       {
         "id": "BELONGING",
         "driver": "BELONGING",
         "type": "scale",
-        "text": "Sejauh mana anda rapat dengan pasukan anda minggu ini?",
+        "text": "Sejauh mana senang anda minta bantuan rakan sepasukan minggu ini?",
         "labels": [
-          "Langsung tidak",
-          "Sedikit",
-          "Agak rapat",
-          "Kebanyakannya rapat",
-          "Sangat rapat"
+          "Sangat susah",
+          "Agak susah",
+          "Biasa",
+          "Agak senang",
+          "Sangat senang"
         ]
       },
       {
         "id": "ONBOARDING",
         "driver": "ONBOARDING",
         "type": "scale",
-        "text": "Sejauh mana arah tuju syarikat, polisi dan prosedur jelas kepada anda minggu ini?",
+        "text": "Sejauh mana senang anda tahu cara sesuatu berjalan di sini minggu ini, seperti peraturan, tuntutan atau kemudahan?",
         "labels": [
-          "Tidak jelas",
-          "Sedikit jelas",
-          "Agak jelas",
-          "Jelas",
-          "Sangat jelas"
+          "Sangat susah",
+          "Agak susah",
+          "Biasa",
+          "Agak senang",
+          "Sangat senang"
         ]
       },
       {
         "id": "TRAINING",
         "driver": "TRAINING",
         "type": "scale",
-        "text": "Sejauh mana latihan kerja anda menyediakan anda untuk kerja anda minggu ini?",
+        "text": "Sejauh mana latihan anda menyediakan anda untuk tugas yang anda buat minggu ini?",
         "labels": [
           "Langsung tidak",
           "Kurang baik",
@@ -190,15 +190,13 @@
     ],
     "chat": {
       "opener": "Apa yang berlaku?",
-      "light": "Ada apa-apa yang boleh buat minggu depan lebih senang?",
+      "light": "Satu perkara apa yang boleh buat minggu depan lebih senang untuk anda?",
       "changed": "Apa yang berubah?",
       "stillNot": "Apa yang masih tidak berjalan baik?",
       "askHr": "Saya tidak boleh memberi nasihat atau menjawab soalan tentang gaji, probation, kesihatan atau undang-undang. Sila tanya HR terus.",
       "done": "Langkau",
-      "wait": "Terima kasih. Sebentar, saya sedang tulis soalan terakhir anda…",
       "context": "Anda memilih {taps}.",
       "tap": "\"{label}\" untuk {topic}",
-      "and": " dan ",
       "good": "Pilihan anda nampak baik.",
       "optional": "Pilihan sahaja. Tekan Langkau jika tidak mahu menjawab.",
       "remarks": "Soalan terakhir: ada apa-apa lagi tentang kerja yang anda mahu HR tahu? Boleh tentang apa sahaja. Taip di sini, atau tekan Langkau."
@@ -209,7 +207,7 @@
       "help": "Apakah yang boleh menjadikannya lebih mudah?",
       "topics": {
         "ROLE_CLARITY": {
-          "open": "Apakah yang tidak jelas tentang apa yang diharapkan daripada anda?",
+          "open": "Bila anda tidak pasti apa yang perlu dibuat minggu ini, apa yang anda buat, dan apa yang berlaku?",
           "words": [
             "harap",
             "matlamat",
@@ -228,7 +226,7 @@
           ]
         },
         "MANAGER_SUPPORT": {
-          "open": "Apakah yang anda perlukan daripada pengurus anda minggu ini?",
+          "open": "Apa yang anda perlukan daripada pengurus anda minggu ini, dan apa yang berlaku?",
           "words": [
             "pengurus",
             "bos",
@@ -248,7 +246,7 @@
           ]
         },
         "BELONGING": {
-          "open": "Apakah yang menyukarkan anda bekerja dengan pasukan anda minggu ini?",
+          "open": "Bila anda perlukan sesuatu daripada rakan sepasukan minggu ini, apa yang berlaku?",
           "words": [
             "pasukan",
             "team",
@@ -265,7 +263,7 @@
           ]
         },
         "ONBOARDING": {
-          "open": "Polisi, prosedur atau faedah yang mana masih tidak jelas kepada anda?",
+          "open": "Apa yang anda cuba ketahui minggu ini, dan apa yang menghalang anda?",
           "words": [
             "polisi",
             "prosedur",
@@ -281,7 +279,7 @@
           ]
         },
         "TRAINING": {
-          "open": "Bahagian kerja yang mana tidak diliputi oleh latihan anda?",
+          "open": "Tugas mana minggu ini yang latihan anda tidak sediakan, dan apa yang kurang?",
           "words": [
             "latih",
             "kursus",
@@ -299,7 +297,7 @@
           ]
         },
         "WORKLOAD": {
-          "open": "Apakah yang memakan paling banyak masa anda minggu ini?",
+          "open": "Apa yang menyebabkan kerja anda susah disiapkan minggu ini?",
           "words": [
             "beban",
             "tarikh",
