@@ -223,7 +223,9 @@ export default function Page() {
       </div>
       <div className="sp-savebar">
         <span aria-live="polite" className="sp-meta flex min-w-0 flex-1 items-center gap-2 font-semibold">
-          {dirty ? (
+          {dirty && message ? (
+            <span role="alert" style={{ color: "var(--serious)" }}>{message}</span>
+          ) : dirty ? (
             <>
               <span className="sp-dot" aria-hidden="true" />
               You have changes that are not saved.
