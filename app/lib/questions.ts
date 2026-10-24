@@ -153,10 +153,7 @@ export async function listQuestions(organisationId: string) {
     .filter((t) => t.askers >= THRESHOLD);
   const all = groups
     .filter((g) => rows.some((r) => r.group_id === g.id))
-    .map((g) => {
-      const askers = new Set(rows.filter((r) => r.group_id === g.id).map((r) => r.person_id)).size;
-      return { id: g.id, text: g.text, askers: askers >= THRESHOLD ? askers : null };
-    });
+    .map((g) => ({ id: g.id, text: g.text, askers: new Set(rows.filter((r) => r.group_id === g.id).map((r) => r.person_id)).size }));
   return {
     groups: shown,
     all,

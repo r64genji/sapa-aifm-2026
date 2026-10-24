@@ -90,7 +90,7 @@ async function questions() {
   assert.equal(res.status, 200);
   return (await res.json()) as {
     groups: { id: string; text: string; askers: number; answered: number; unknown: number; handbook_path: string | null }[];
-    all: { id: string; text: string; askers: number | null }[];
+    all: { id: string; text: string; askers: number }[];
     other: { questions: number; text: string };
     topics: { topic: string; askers: number }[];
   };
@@ -206,7 +206,7 @@ test("R34: an unanswered question shows at once, an answered group below 3 asker
   assert.equal(before.other.questions, 1);
   assert.equal(before.other.text, "1 other question from fewer than 3 people");
   assert.equal(before.all.length, 6);
-  assert.deepEqual(before.all.find((g) => g.text === "When is my first payday?")!.askers, null);
+  assert.deepEqual(before.all.find((g) => g.text === "When is my first payday?")!.askers, 2);
   assert.deepEqual(before.all.find((g) => g.text === "Where can I park my motorbike?")!.askers, 7);
   assert.equal(before.groups.find((g) => g.text === "Where can I park my motorbike?")!.handbook_path, null);
   assert.equal(before.groups.find((g) => g.text === "How do I claim overtime?")!.handbook_path, "pay/overtime.md");

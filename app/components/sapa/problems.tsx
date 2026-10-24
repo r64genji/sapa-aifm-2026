@@ -26,7 +26,7 @@ type Teams = { enough: false } | { enough: true; week: string; company: { n: num
 type Overview = { details: Record<string, Detail>; teams: Record<string, Teams> };
 type Questions = {
   groups: { id: string; text: string; askers: number; unknown: number; handbook_path: string | null }[];
-  all: { id: string; text: string; askers: number | null }[];
+  all: { id: string; text: string; askers: number }[];
   other: { text: string };
 };
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
@@ -703,7 +703,7 @@ function AllQuestionsPanel({ all }: { all: Questions["all"] }) {
         <h2 id="cur-title" className="m-0 text-[26px] font-bold leading-[32px]">
           All questions
         </h2>
-        <span className="sp-muted">Every question, in neutral words. You never see who asked or their own words. Counts under 3 stay hidden.</span>
+        <span className="sp-muted">Every question, in neutral words. You never see who asked or their own words.</span>
       </div>
       {all.length === 0 ? <span className="sp-muted">No questions yet.</span> : null}
       <ul className="m-0 flex list-none flex-col gap-2 p-0">
@@ -711,7 +711,7 @@ function AllQuestionsPanel({ all }: { all: Questions["all"] }) {
           <li key={q.id} className="flex items-center gap-3 rounded-lg px-4 py-3" style={{ background: "var(--surface-sunken)" }}>
             <MessageCircleQuestion size={16} aria-hidden="true" style={{ color: "var(--problems)" }} />
             <span className="flex-1">{q.text}</span>
-            <span className="sp-caption sp-num">{q.askers === null ? "Fewer than 3" : `${q.askers} asked`}</span>
+            <span className="sp-caption sp-num">{q.askers} asked</span>
           </li>
         ))}
       </ul>
