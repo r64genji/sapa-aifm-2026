@@ -229,7 +229,7 @@ function Num({ n, title }: { n: number; title: string }) {
 function SendFix({ driver, where, entries, fixes }: { driver: string; where: Teams | undefined; entries: Entry[] | undefined; fixes: Action[] }) {
   const [off, setOff] = useState<string[]>([]);
   const [pick, setPick] = useState<string | null>(null);
-  const shown = (entries ?? []).filter((f) => !fixes.some((a) => a.library_entry_id === f.id));
+  const shown = (entries ?? []).filter((f) => !fixes.some((a) => a.status !== "draft" && a.library_entry_id === f.id));
   const chosen = pick ?? shown[0]?.id ?? "own";
   const entry = shown.find((f) => f.id === chosen);
   const rows = where?.enough ? where.rows : [];
