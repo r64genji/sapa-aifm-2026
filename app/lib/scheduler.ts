@@ -52,6 +52,9 @@ export async function dispatch() {
     .select("telegram_chat_id, name, anonymous")
     .in("telegram_chat_id", claims.map((claim) => claim.chat_id));
   if (peopleError) throw peopleError;
+  const starts = claims.filter((claim) => claim.kind !== "reminder").map((claim) => claim.chat_id);
+  const { error: nameError } = await createAdminClient().from("people").update({ awaiting_name: false }).in("telegram_chat_id", starts);
+  if (nameError) throw nameError;
   for (const claim of claims) {
     const person = { language: claim.language, name: null, anonymous: false, ...people.find((row) => row.telegram_chat_id === claim.chat_id) };
     const row = { ...rechecks.find((r) => r.id === claim.schedule_id)!, progress: claim.progress };
@@ -143,6 +146,8 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
     if (claimError) throw claimError;
     if (claimed.length === 0) continue;
     const [questions] = await withQuestions([row.id]);
+    const { error: nameError } = await db.from("people").update({ awaiting_name: false }).eq("id", row.person_id);
+    if (nameError) throw nameError;
     await deliver(row.people.telegram_chat_id, checkinStart(row.people, questions));
     sent += 1;
   }
