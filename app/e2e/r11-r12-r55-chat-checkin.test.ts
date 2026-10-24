@@ -76,7 +76,7 @@ test("R55, R11: the check-in starts with the intro by name and shows word button
   assert.deepEqual(labels(first), [["Not clear at all"], ["A bit unclear"], ["Somewhat clear"], ["Mostly clear"], ["Very clear"]]);
 });
 
-test("R12, R17: a low tap opens no probe, the fixed question for the lowest tap comes at once with Skip and no AI call, and the reply ends the check-in with one masked reply for HR", async () => {
+test("R12, R15, R17: a low tap opens no probe, the fixed question for the lowest tap comes at once with Skip and no AI call, and the reply ends the check-in with one masked reply for HR, tagged with the question but not the taps", async () => {
   await tap(low, "A bit unclear");
   assert.equal((await sentTo(low)).at(-1)!.text, 'You tapped "A bit unclear". How easy was it to get help from your manager when you needed it this week?');
 
@@ -91,6 +91,8 @@ test("R12, R17: a low tap opens no probe, the fixed question for the lowest tap 
   const classify = (await modelCalls("omniroute")).at(-1)!;
   assert.ok(JSON.stringify(classify.body).includes("call me on [PHONE]"));
   assert.ok(!JSON.stringify(classify.body).includes("012-345 6789"));
+  assert.ok(JSON.stringify(classify.body).includes("When you were not sure what to do this week, what did you do, and what happened?"));
+  assert.ok(!JSON.stringify(classify.body).includes("A bit unclear"));
 
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", low).single();
   const { data: scores } = await db.from("responses").select("question_id, scale_value").eq("person_id", who!.id).not("scale_value", "is", null);
@@ -142,9 +144,10 @@ test("R12: with no low tap the fixed light question comes under a good-taps line
   assert.deepEqual(await openReply(light), []);
 });
 
-test("R63: the last question takes one message, the bot only says thanks, and HR gets it as its own reply", async () => {
+test("R15, R63: the last question takes one message, the bot only says thanks, and HR gets it as its own reply, tagged with that question", async () => {
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["ONBOARDING"], evidence_quote: "The canteen closes before my shift ends" }) }]);
   assert.deepEqual(await answer(light, "The canteen closes before my shift ends"), [thanks]);
+  assert.ok(JSON.stringify((await modelCalls("omniroute")).at(-1)!.body).includes(remarks));
   const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", light).single();
   const { data: rows } = await db.from("responses").select("question_id").eq("person_id", who!.id).not("text_encrypted", "is", null);
   assert.deepEqual(rows, [{ question_id: "REMARKS" }]);

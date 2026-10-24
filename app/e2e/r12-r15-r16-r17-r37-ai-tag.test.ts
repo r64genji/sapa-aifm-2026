@@ -20,16 +20,6 @@ import {
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
-const interviewerDone = {
-  action: "done",
-  question: "",
-  goals_met: ["what_happened"],
-  work_detail: true,
-  serious_concern: false,
-  concern_category: "none",
-  ask_hr: false,
-  stop_reason: "nothing_to_dig",
-};
 const live = 5550000201;
 const [wrongTwice, wrongOnce, badJson, down, fallback, capped, spender] = [301, 302, 303, 304, 305, 306, 307].map(
   (n) => 5550000000 + n,
@@ -82,7 +72,6 @@ before(async () => {
 
 test("R17, R16: the model gets masked text and extra fields are not stored", async () => {
   const seen = await usageIds();
-  await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await reachOpenQuestion(live);
   await scriptModel("omniroute", [
     { kind: "json", content: { ...classifierTag(), emotion: "angry", sentiment_score: -0.8 } },
@@ -90,12 +79,12 @@ test("R17, R16: the model gets masked text and extra fields are not stored", asy
   await say(live, reply);
 
   const calls = [...(await modelCalls("omniroute:chat")), ...(await modelCalls("omniroute"))];
-  assert.equal(calls.length, 2);
+  assert.equal(calls.length, 1);
   for (const call of calls) {
     const sent = JSON.stringify(call.body);
     assert.ok(!sent.includes("012-345 6789") && !sent.includes("0123456789"));
   }
-  assert.ok(JSON.stringify(calls[1].body).includes(`${quote}. Call me [PHONE]`));
+  assert.ok(JSON.stringify(calls[0].body).includes(`${quote}. Call me [PHONE]`));
   assert.equal(await lastText(live), en.checkin.chat.remarks);
 
   const { tag } = await storedTag(live);
@@ -106,7 +95,6 @@ test("R17, R16: the model gets masked text and extra fields are not stored", asy
   assert.ok(!Object.keys(tag).some((key) => /emotion|sentiment|personality|quit|risk/.test(key)));
   const usage = (await newUsage(seen, "provider, model, call_type, input_tokens, output_tokens, cost, ok")) as unknown as { call_type: string }[];
   assert.deepEqual(usage.sort((x, y) => x.call_type.localeCompare(y.call_type)), [
-    { provider: "gemini", model: "test-chat", call_type: "chat", input_tokens: 100, output_tokens: 50, cost: 0.0002625, ok: true },
     { provider: "gemini", model: "test-gemini", call_type: "classify", input_tokens: 100, output_tokens: 50, cost: 0.0002625, ok: true },
   ]);
 });
@@ -174,8 +162,6 @@ test("DeepSeek answers when OmniRoute is down, and both calls are recorded", asy
     { provider: "gemini", ok: false, call_type: "classify" },
     { provider: "deepseek", ok: true, call_type: "classify" },
   ]);
-  const chat = usage.filter((row) => row.call_type === "chat").map((row) => row.provider);
-  assert.ok(chat.includes("gemini") && chat.includes("deepseek"));
 });
 
 test("R37: over $1.50 of fallback spend, DeepSeek gets no call", async () => {
