@@ -492,7 +492,8 @@ html[data-nav] main { opacity: 0.55; transition: opacity 0.2s ease 0.12s; cursor
 .sp-nav-item[aria-current="page"] > svg { animation: sp-nudge 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .sp-nav-count { animation: sp-dot-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .sp-nav-count.sp-lane-serious { animation: sp-dot-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both, sp-pulse 2.4s ease-out 0.4s infinite; }
-.sp-area[aria-current="true"], .sp-chip[aria-current="true"] { animation: sp-press 0.32s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.sp-stagger > .sp-area[aria-current="true"] { animation: sp-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both, sp-press 0.32s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.sp-chip[aria-current="true"] { animation: sp-pop 0.15s cubic-bezier(0.2, 0.7, 0.2, 1) both, sp-press 0.32s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .sp-qrow { transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease; }
 .sp-qrow.is-on { animation: sp-flash 0.5s ease-out; }
 .sp-switch:active::after { width: 24px; }
