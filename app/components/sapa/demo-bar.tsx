@@ -25,6 +25,17 @@ function Light({ ok, label, title }: { ok: boolean; label: string; title: string
   );
 }
 
+function pinTop(el: HTMLElement | null) {
+  if (!el) return;
+  const root = document.documentElement.style;
+  const ro = new ResizeObserver(() => root.setProperty("--sp-demo-bar", `${el.offsetHeight}px`));
+  ro.observe(el);
+  return () => {
+    ro.disconnect();
+    root.removeProperty("--sp-demo-bar");
+  };
+}
+
 export function DemoBar() {
   const status = useApi<Status>("/api/hr/demo/status", 10000);
   const [busy, setBusy] = useState(false);
@@ -59,7 +70,7 @@ export function DemoBar() {
   const s = status.data;
   const next = s?.live_hire.next_check_in;
   return (
-    <section aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
+    <section ref={pinTop} aria-label="Demo controls" className="z-20 flex flex-col gap-1.5 px-4 py-2 text-[13px] md:sticky md:top-0 md:px-8" style={{ background: "var(--surface-raised)", borderBottom: "1px solid var(--line)" }}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="flex flex-auto flex-col md:flex-none">
           <span className="sp-num text-[15px] font-bold">{next ? `Next: Day ${next.touchpoint} check-in` : s && !s.phones.live_hire_bound ? "No hire has joined yet" : "No check-in left"}</span>

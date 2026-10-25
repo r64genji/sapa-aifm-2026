@@ -627,7 +627,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
         </div>
 
-        <div className="flex min-w-0 flex-col gap-3 lg:sticky lg:top-4">
+        <div className="flex min-w-0 flex-col gap-3 lg:sticky lg:top-[calc(var(--sp-demo-bar,0px)+16px)]">
           <h3 className="m-0 text-[15px] font-bold">Send a fix</h3>
           <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
         </div>
