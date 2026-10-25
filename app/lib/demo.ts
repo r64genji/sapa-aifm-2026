@@ -2,7 +2,7 @@ import { providers } from "@/lib/ai";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const AI_CHECK_MS = process.env.SAPA_TEST === "1" ? 1000 : 4000;
-const AI_CACHE_MS = 30000;
+const AI_CACHE_MS = process.env.SAPA_TEST === "1" ? 0 : 30000;
 const FALLBACK_CAP = 1.5;
 
 let cached: { at: number; value: Awaited<ReturnType<typeof checkModels>> } | null = null;
