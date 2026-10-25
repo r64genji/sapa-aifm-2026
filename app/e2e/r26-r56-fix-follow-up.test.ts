@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
 import { classifierTag, db, dispatch, freezeClock, hrRequest, joined, resetDemo, say, scriptModel, sentTo, tap, tapScore } from "./helpers.ts";
+
+const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 
 const [a, b, c, d, e, other, late] = [1, 2, 3, 4, 5, 6, 7].map((n) => 5550003000 + n);
 const team = [a, b, c, d, e];
@@ -51,7 +54,7 @@ before(async () => {
 
 test("R26, R56: the recheck comes first with no hint of the fix, and the fix question comes after the other taps", async () => {
   const [first] = ((await sentTo(a)) as Message[]).slice(-1);
-  assert.equal(first.text, "How clear are you on what is expected of you this week?");
+  assert.equal(first.text, `${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\nHow clear are you on what is expected of you this week?`);
   assert.deepEqual(first.reply_markup!.inline_keyboard.map((row) => row.map((k) => k.text)), [
     ["Not clear at all"],
     ["A bit unclear"],
@@ -93,7 +96,7 @@ test("R56: a low fix answer asks what is still not working", async () => {
 });
 
 test("R56: a fix with no note to new hires asks no fix question", async () => {
-  assert.equal(((await sentTo(other)) as Message[]).at(-1)!.text, "How manageable is your workload this week?");
+  assert.equal(((await sentTo(other)) as Message[]).at(-1)!.text, `${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\nHow manageable is your workload this week?`);
   const from = (await sentTo(other)).length;
   await tapScore(other, 4);
   await otherTaps(other);
@@ -109,7 +112,7 @@ test("R56: a fix with no note to new hires asks no fix question", async () => {
 });
 
 test("R26: a hire whose earlier check-ins were never sent still gets the recheck first", async () => {
-  assert.equal(((await sentTo(late)) as Message[]).at(-1)!.text, "How manageable is your workload this week?");
+  assert.equal(((await sentTo(late)) as Message[]).at(-1)!.text, `${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\nHow manageable is your workload this week?`);
 });
 
 test("R26, R56: HR sees the answer words only from 5 answers, quotes from the chat, and the recheck count", async () => {

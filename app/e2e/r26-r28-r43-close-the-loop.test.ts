@@ -196,9 +196,9 @@ test("R26: the next check-in of each person in scope starts with the neutral 1-5
   const [first1, first2, first6] = await Promise.all(
     [p1, p2, p6].map(async (chat, i) => (await heard(chat)).slice(before[i])),
   );
-  assert.deepEqual(first1, [en.checkin.introNamed.replace("{name}", "Test Hire"), question(en, "MANAGER_SUPPORT")]);
-  assert.deepEqual(first2, [ms.checkin.introNamed.replace("{name}", "Test Hire"), question(ms, "MANAGER_SUPPORT")]);
-  assert.deepEqual(first6, [en.checkin.introNamed.replace("{name}", "Test Hire"), question(en, "WORKLOAD")]);
+  assert.deepEqual(first1, [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question(en, "MANAGER_SUPPORT")}`]);
+  assert.deepEqual(first2, [`${ms.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question(ms, "MANAGER_SUPPORT")}`]);
+  assert.deepEqual(first6, [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question(en, "WORKLOAD")}`]);
 
   await tapScore(p1, 4);
   await tapScore(p1, 3);

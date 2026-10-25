@@ -70,9 +70,8 @@ before(async () => {
 });
 
 test("R55, R11: the check-in starts with the intro by name and shows word buttons, one per row, with no numbers", async () => {
-  const [intro, first] = (await sentTo(low)).slice(-2) as Message[];
-  assert.equal(intro.text, en.checkin.introNamed.replace("{name}", "Test Hire"));
-  assert.equal(first.text, "How clear are you on what is expected of you this week?");
+  const [first] = (await sentTo(low)).slice(-1) as Message[];
+  assert.equal(first.text, `${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\nHow clear are you on what is expected of you this week?`);
   assert.deepEqual(labels(first), [["Not clear at all"], ["A bit unclear"], ["Somewhat clear"], ["Mostly clear"], ["Very clear"]]);
 });
 

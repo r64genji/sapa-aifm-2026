@@ -69,11 +69,13 @@ export function questionReply(person: Pick<Person, "language">, schedule: Schedu
 export function checkinStart(person: Pick<Person, "language" | "name" | "anonymous">, schedule: Schedule): Reply[] {
   const { checkin } = packs[person.language];
   const intro = person.anonymous ? checkin.introAnonymous : person.name ? checkin.introNamed.replace("{name}", person.name) : checkin.intro;
-  return [{ text: intro }, questionReply(person, schedule, 0)];
+  const question = questionReply(person, schedule, 0);
+  return [{ ...question, text: `${intro}\n\n${question.text}` }];
 }
 
 export function checkinReminder(person: Pick<Person, "language">, schedule: Schedule): Reply[] {
-  return [{ text: packs[person.language].checkin.reminder }, questionReply(person, schedule, schedule.progress)];
+  const question = questionReply(person, schedule, schedule.progress);
+  return [{ ...question, text: `${packs[person.language].checkin.reminder}\n\n${question.text}` }];
 }
 
 async function openCheckin(person: Person) {

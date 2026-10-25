@@ -56,5 +56,5 @@ test("R60: an employee check-in asks only the questions of the employee track", 
   const before = (await sentTo(chat)).length;
   await freezeClock("2027-05-03T02:00:00.000Z");
   await dispatch();
-  assert.deepEqual((await sentTo(chat)).map((m) => m.text).slice(before), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("WORKLOAD")]);
+  assert.deepEqual((await sentTo(chat)).map((m) => m.text).slice(before), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("WORKLOAD")}`]);
 });

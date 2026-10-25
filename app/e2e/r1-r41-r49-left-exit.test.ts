@@ -64,7 +64,7 @@ test("R1: after resigned or ended by the company, dispatch sends only the fixed 
   assert.deepEqual(await sent(unticked), [end]);
   assert.deepEqual(await sent(company), [end]);
   assert.deepEqual(await sent(ticked), [end, en.exit.question]);
-  assert.deepEqual(await sent(control), [en.checkin.introNamed.replace("{name}", "Test Hire"), en.checkin.questions[0].text]);
+  assert.deepEqual(await sent(control), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${en.checkin.questions[0].text}`]);
 
   const { data: open } = await db.from("checkin_schedule").select("id").eq("person_id", await personId(ticked)).in("status", ["scheduled", "sent", "reminded"]);
   assert.deepEqual(open, []);

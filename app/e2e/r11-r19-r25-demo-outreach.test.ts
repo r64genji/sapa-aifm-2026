@@ -27,7 +27,7 @@ test("R19, R23: Outreach now sends the chosen check-in to a joined phone, not to
   assert.deepEqual(await res.json(), { sent: 1 });
 
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual(texts, [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
   assert.deepEqual(await sentTo(synthetic), []);
 });
 
@@ -82,7 +82,7 @@ test("R19: Outreach now sends the Day 30 check-in at once, whatever its due date
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { sent: 1 });
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual(texts, [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
 });
 
 test("R19: Outreach now sends the check-in to every joined phone", async () => {
@@ -103,8 +103,8 @@ test("R19: Outreach now sends the check-in to every joined phone", async () => {
   assert.deepEqual(await res.json(), { sent: 2 });
 
   const texts = async (chat: number, from: number) => (await sentTo(chat)).map((m) => m.text).slice(from);
-  assert.deepEqual(await texts(live, before[0]), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
-  assert.deepEqual(await texts(second, before[1]), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual(await texts(live, before[0]), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
+  assert.deepEqual(await texts(second, before[1]), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
 });
 
 test("Bug fix: for a phone that just joined, Outreach now offers the Day 14 check-in that the home cards count", async () => {
@@ -147,7 +147,7 @@ test("R19: Outreach now skips a check-in the phone left open and sends the next 
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { sent: 1 });
   const texts = (await sentTo(live)).map((m) => m.text).slice(before);
-  assert.deepEqual(texts, [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual(texts, [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
   const { data: rows } = await db.from("checkin_schedule").select("touchpoint, status").in("touchpoint", [14, 30]).eq("person_id", (await chatPerson(live)).id).order("touchpoint");
   assert.deepEqual(rows, [{ touchpoint: 14, status: "skipped" }, { touchpoint: 30, status: "sent" }]);
 });

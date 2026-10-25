@@ -53,7 +53,7 @@ test("R21, R19: at Day 14 two dispatch calls at the same time send the live hire
   await freezeClock("2026-10-29T02:00:00.000Z");
   const [first, second] = await Promise.all([dispatch(), dispatch()]);
   assert.deepEqual([first.status, second.status], [200, 200]);
-  assert.deepEqual((await sentTo(live)).slice(before).map((m) => m.text), [en.checkin.introNamed.replace("{name}", "Test Hire"), question("ROLE_CLARITY")]);
+  assert.deepEqual((await sentTo(live)).slice(before).map((m) => m.text), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("ROLE_CLARITY")}`]);
 });
 
 let seed: { n: number; m: number; reviewed: number; ai_confident: number };

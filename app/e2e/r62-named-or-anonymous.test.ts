@@ -51,7 +51,7 @@ test("R62: after consent the hire picks named or anonymous, and an anonymous hir
   assert.ok(sent.includes(en.privacy.question));
   assert.ok(sent.includes(`You tapped "${en.privacy.anonymous}". ${en.privacy.anonymousDone}`));
   assert.ok(!sent.includes(en.yourName.question));
-  assert.ok(sent.includes("Hi, it's time for your Sapa check-in. You are anonymous."));
+  assert.ok(sent.some((t) => String(t).startsWith("Hi, it's time for your Sapa check-in. You are anonymous.\n\n")));
 });
 
 test("R62: HR sees an anonymous reply only when 5 or more people in its team named the same problem area, and never with a name", async () => {
