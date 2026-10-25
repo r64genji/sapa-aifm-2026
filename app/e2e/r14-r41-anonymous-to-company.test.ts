@@ -20,16 +20,6 @@ const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.
 const live = 5550000201;
 const quote = "tak tahu mana nak buat dulu";
 const written = `Boss bagi 3 task semua urgent, ${quote}. Call me 012-345 6789 or aisyah.tan@example.com`;
-const interviewerDone = {
-  action: "done",
-  question: "",
-  goals_met: ["what_happened"],
-  work_detail: true,
-  serious_concern: false,
-  concern_category: "none",
-  ask_hr: false,
-  stop_reason: "nothing_to_dig",
-};
 const paths = [
   "/api/hr/replies",
   "/api/hr/queue",
@@ -56,7 +46,6 @@ before(async () => {
   await say(live, "Aisha Tan");
   await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(live, score);
-  await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: quote }) }]);
   await say(live, written);
 });

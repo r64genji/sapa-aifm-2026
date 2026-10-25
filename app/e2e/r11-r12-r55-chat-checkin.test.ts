@@ -18,18 +18,6 @@ const [low, unreachable, blocked, keyword, flagged, light] = [601, 602, 603, 604
 type Message = { text: string; reply_markup?: { inline_keyboard: { text: string }[][] } };
 const labels = (m: Message) => m.reply_markup?.inline_keyboard.map((row) => row.map((b) => b.text)) ?? [];
 
-const turn = (fields: Record<string, unknown> = {}) => ({
-  action: "ask",
-  question: "",
-  goals_met: [],
-  work_detail: true,
-  serious_concern: false,
-  concern_category: "none",
-  ask_hr: false,
-  stop_reason: "none",
-  ...fields,
-});
-
 async function answer(chat: number, text: string) {
   const before = (await sentTo(chat)).length;
   await say(chat, text);
@@ -125,9 +113,7 @@ test("R12, R13: a safety keyword in the answer sends the Speak Up message and no
 });
 
 test("R12, R13: the AI's serious concern flag on the answer sends the Speak Up message and no question", async () => {
-  await scriptModel("omniroute:chat", [
-    { kind: "json", content: turn({ action: "done", serious_concern: true, concern_category: "bullying_threats", stop_reason: "serious_concern" }) },
-  ]);
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ escalate: true, escalate_category: "bullying_threats" }) }]);
   await taps(flagged, lowRole);
   assert.deepEqual(await answer(flagged, "My lead says he will make sure I fail probation if I complain"), [speakUp]);
   const [reply] = await openReply(flagged);

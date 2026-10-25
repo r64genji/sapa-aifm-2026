@@ -6,7 +6,7 @@ import type { Reply } from "@/lib/engine";
 import { escalate } from "@/lib/escalations";
 import { packs, type Language } from "@/lib/packs";
 import { detect } from "@/lib/safety";
-import { MAX_QUESTIONS, fixedFits, fixedQuestion, hasLetters, interview, wordCount, type Input, type Turn } from "@/lib/chat";
+import type { Input, Turn } from "@/lib/chat";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Chat = {
@@ -243,36 +243,7 @@ async function endChat(person: Person, scheduleId: string, chat: Chat, model: st
 
 async function chatTurn(person: Person, scheduleId: string, before: Chat, text: string): Promise<Reply[]> {
   if (before.remarks) return remarksTurn(person, scheduleId, before, text);
-  const chat: Chat = { ...before, turns: [...before.turns, { from: "new_hire", text }] };
-  const keyword = detect(text);
-  if (keyword) return endChat(person, scheduleId, chat);
-  const fixed = fixedFits(person.language, chat.focus, text);
-  const said = fixed
-    ? null
-    : await interview(person.organisation_id, {
-        language_setting: person.language,
-        topic: chat.topic,
-        taps: chat.taps,
-        focus_driver: chat.focus,
-        conversation: chat.turns,
-        questions_asked: chat.asked,
-      });
-  if (said?.serious_concern) {
-    const category = said.concern_category === "none" ? "harassment" : said.concern_category;
-    return endChat(person, scheduleId, chat, category);
-  }
-  const askHr = said?.ask_hr ? [{ text: packs[person.language].checkin.chat.askHr }] : [];
-  const detail = (said ? said.work_detail : true) && hasLetters(text) && wordCount(text) > 1;
-  const noDetail = detail ? 0 : chat.no_detail + 1;
-  const question = said ? said.question.trim() : fixed ? fixedQuestion(person.language, chat.turns, chat.asked, text) : "";
-  if (noDetail >= 2 || said?.action === "done" || chat.asked >= MAX_QUESTIONS || !question) return [...askHr, ...(await endChat(person, scheduleId, chat))];
-  const route = said ? "ai" : "fixed";
-  await saveChat(scheduleId, { ...chat, turns: [...chat.turns, { from: "bot", text: question, route }], asked: chat.asked + 1, no_detail: noDetail });
-  if (chat.response_id) {
-    const { error } = await createAdminClient().from("responses").update({ text_encrypted: encrypt(wordsOf(chat)) }).eq("id", chat.response_id);
-    if (error) throw error;
-  }
-  return [...askHr, { text: question, buttons: [doneButton(person.language)] }];
+  return endChat(person, scheduleId, { ...before, turns: [...before.turns, { from: "new_hire", text }] });
 }
 
 async function conclude(person: Person, responseId: string, text: string, chatModel: string | null, then: (() => Promise<Reply[]>) | null = null): Promise<Reply[]> {

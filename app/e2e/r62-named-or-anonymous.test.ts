@@ -4,16 +4,6 @@ import { before, test } from "node:test";
 import { classifierTag, freezeClock, hrRequest, link, resetDemo, say, scriptModel, sentTo, tap, tapScore, teamInvites } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
-const interviewerDone = {
-  action: "done",
-  question: "",
-  goals_met: ["what_happened"],
-  work_detail: true,
-  serious_concern: false,
-  concern_category: "none",
-  ask_hr: false,
-  stop_reason: "nothing_to_dig",
-};
 const bigTeam = 5550006201;
 const smallTeam = 5550006202;
 const bigReply = "Nobody told me which reports are mine, tak tahu mana nak buat dulu";
@@ -30,7 +20,6 @@ async function joinAnonymous(chat: number, token: string) {
 
 async function answer(chat: number, text: string) {
   for (const score of [4, 3, 5, 3, 3, 3]) await tapScore(chat, score);
-  await scriptModel("omniroute:chat", [{ kind: "json", content: interviewerDone }]);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag() }]);
   await say(chat, text);
 }
