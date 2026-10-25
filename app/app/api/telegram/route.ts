@@ -25,6 +25,7 @@ async function handle(request: Request, defer: (task: Promise<unknown> | (() => 
   ) {
     return new Response("Unauthorized", { status: 401 });
   }
+  void bot.initialize();
   const { update_id, ...update } = await request.json();
   const { data, error } = await createAdminClient()
     .from("inbound_updates")

@@ -1,10 +1,11 @@
+import { AdapterRateLimitError } from "@chat-adapter/shared";
 import { stopPerson } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
 
 export async function send(chatId: number, reply: Reply) {
   const base = process.env.TELEGRAM_API_BASE_URL ?? "https://api.telegram.org";
   const keys = (reply.buttons ?? []).map((b) => ({ text: b.label, callback_data: `chat:${JSON.stringify({ a: b.id, v: b.value })}` }));
-  const res = await fetch(`${base}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+  const res = await patiently(() => fetch(`${base}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
@@ -19,13 +20,28 @@ export async function send(chatId: number, reply: Reply) {
         },
       }),
     }),
-  });
+  }));
   if (res.status === 403) {
     await stopPerson(chatId);
     return false;
   }
   if (!res.ok) throw new Error(`sendMessage failed: ${res.status}`);
   return true;
+}
+
+const pause = (seconds = 1) => new Promise((resolve) => setTimeout(resolve, Math.min(seconds, 10) * 1000));
+
+export async function patiently<T>(attempt: () => Promise<T>): Promise<T> {
+  for (let tries = 1; ; tries++) {
+    try {
+      const result = await attempt();
+      if (!(result instanceof Response && result.status === 429 && tries < 3)) return result;
+      await pause((await result.json()).parameters?.retry_after);
+    } catch (error) {
+      if (!(error instanceof AdapterRateLimitError && tries < 3)) throw error;
+      await pause(error.retryAfter);
+    }
+  }
 }
 
 export async function typing(chatId: number) {

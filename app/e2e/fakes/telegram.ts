@@ -5,6 +5,7 @@ type Call = { method: string; body: Record<string, unknown> };
 const calls: Call[] = [];
 const blocked = new Set<string>();
 const failing = new Set<string>();
+const busy = new Set<string>();
 let messageId = 0;
 
 function result(method: string, body: Record<string, unknown>) {
@@ -33,6 +34,7 @@ createServer(async (req, res) => {
       calls.length = 0;
       blocked.clear();
       failing.clear();
+      busy.clear();
     }
     res.end(JSON.stringify(calls));
     return;
@@ -44,6 +46,11 @@ createServer(async (req, res) => {
   }
   if (req.url?.startsWith("/fail/")) {
     failing.add(req.url.split("/")[2]);
+    res.end("{}");
+    return;
+  }
+  if (req.url?.startsWith("/busy/")) {
+    busy.add(req.url.split("/")[2]);
     res.end("{}");
     return;
   }
@@ -59,6 +66,12 @@ createServer(async (req, res) => {
     calls.push({ method: "sendMessage.failed", body });
     res.statusCode = 429;
     res.end(JSON.stringify({ ok: false, error_code: 429, description: "Too Many Requests: retry after 5", parameters: { retry_after: 5 } }));
+    return;
+  }
+  if (busy.delete(String(body.chat_id ?? ""))) {
+    calls.push({ method: `${method}.busy`, body });
+    res.statusCode = 429;
+    res.end(JSON.stringify({ ok: false, error_code: 429, description: "Too Many Requests: retry after 1", parameters: { retry_after: 1 } }));
     return;
   }
   calls.push({ method, body });

@@ -4,7 +4,7 @@ import { PermissionError } from "@chat-adapter/shared";
 import { Chat, type CardElement } from "chat";
 import { stopPerson } from "@/lib/directory";
 import { handle, type Input, type Outcome } from "@/lib/engine";
-import { send } from "@/lib/telegram";
+import { patiently, send } from "@/lib/telegram";
 import { packs } from "@/lib/packs";
 
 export const bot = new Chat({
@@ -42,7 +42,7 @@ async function respond(
         await send(chatId, reply);
         continue;
       }
-      await post(
+      await patiently(() => post(
         reply.buttons
           ? {
               card: {
@@ -57,7 +57,7 @@ async function respond(
               },
             }
           : reply.text,
-      );
+      ));
     }
   } catch (error) {
     if (error instanceof PermissionError) return stopPerson(chatId);
