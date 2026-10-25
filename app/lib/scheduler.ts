@@ -106,6 +106,31 @@ export async function setHolidays(organisationId: string, holidays: string[]) {
   if (error) throw error;
 }
 
+async function takeRecheck(id: string, personId: string) {
+  const db = createAdminClient();
+  const { data: skipped, error } = await db
+    .from("checkin_schedule")
+    .select("id, recheck_action_id, recheck_driver")
+    .eq("person_id", personId)
+    .eq("status", "scheduled")
+    .not("recheck_action_id", "is", null)
+    .order("due_at")
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  if (!skipped) return;
+  const { data: taken, error: takeError } = await db
+    .from("checkin_schedule")
+    .update({ recheck_action_id: skipped.recheck_action_id, recheck_driver: skipped.recheck_driver })
+    .eq("id", id)
+    .is("recheck_action_id", null)
+    .select("id");
+  if (takeError) throw takeError;
+  if (taken.length === 0) return;
+  const { error: clearError } = await db.from("checkin_schedule").update({ recheck_action_id: null, recheck_driver: null }).eq("id", skipped.id);
+  if (clearError) throw clearError;
+}
+
 export async function sendOutreach(organisationId: string, touchpoint?: number) {
   const db = createAdminClient();
   const { data: org, error } = await db.from("organisations").select("demo_mode").eq("id", organisationId).single();
@@ -145,6 +170,7 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
       .select("id");
     if (claimError) throw claimError;
     if (claimed.length === 0) continue;
+    await takeRecheck(row.id, row.person_id);
     const [questions] = await withQuestions([row.id]);
     const { error: nameError } = await db.from("people").update({ awaiting_name: false }).eq("id", row.person_id);
     if (nameError) throw nameError;

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { before, test } from "node:test";
 import { classifierTag, db, dispatch, freezeClock, hrRequest, joined, resetDemo, say, scriptModel, sentTo, tap, tapScore } from "./helpers.ts";
 
-const [a, b, c, d, e, other] = [1, 2, 3, 4, 5, 6].map((n) => 5550003000 + n);
+const [a, b, c, d, e, other, late] = [1, 2, 3, 4, 5, 6, 7].map((n) => 5550003000 + n);
 const team = [a, b, c, d, e];
 const notes = { en: "Your lead will give you a written job scope.", ms: "Ketua anda akan memberi skop kerja bertulis.", zh: "你的主管会给你书面的工作范围。" };
 const changeLabels = [["Much worse"], ["A bit worse"], ["No change"], ["A bit better"], ["Much better"]];
@@ -35,10 +35,11 @@ before(async () => {
   await freezeClock("2026-10-15T15:00:00.000Z");
   for (const chat of team) await joined(chat, "2026-10-02");
   await joined(other, "2026-10-02");
-  const { data: who } = await db.from("people").select("id").eq("telegram_chat_id", other).single();
-  await db.from("people").update({ team: "IT Service Desk" }).eq("id", who!.id);
+  await joined(late, "2026-10-15");
+  const { data: who } = await db.from("people").select("id").in("telegram_chat_id", [other, late]);
+  await db.from("people").update({ team: "IT Service Desk" }).in("id", who!.map((row) => row.id));
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
-  for (const chat of [...team, other]) {
+  for (const chat of [...team, other, late]) {
     for (const score of [2, 3, 3, 3, 3, 3]) await tapScore(chat, score);
     await tap(chat, "Skip");
   }
@@ -105,6 +106,10 @@ test("R56: a fix with no note to new hires asks no fix question", async () => {
     "How well did your training prepare you for the tasks you did this week?",
   ]);
   assert.ok(!asked.some((text) => text.includes("Since the last Update from HR")));
+});
+
+test("R26: a hire whose earlier check-ins were never sent still gets the recheck first", async () => {
+  assert.equal(((await sentTo(late)) as Message[]).at(-1)!.text, "How manageable is your workload this week?");
 });
 
 test("R26, R56: HR sees the answer words only from 5 answers, quotes from the chat, and the recheck count", async () => {
