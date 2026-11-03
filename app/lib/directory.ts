@@ -13,6 +13,7 @@ export type Person = {
   language: Language;
   state: "invited" | "consent_shown" | "declined" | "active" | "stopped" | "left" | "deleted";
   telegram_chat_id: number | null;
+  channel: "whatsapp" | null;
   intake_id: string | null;
   team: string | null;
   name: string | null;
@@ -22,7 +23,7 @@ export type Person = {
 };
 
 const personColumns =
-  "id, organisation_id, language, state, telegram_chat_id, intake_id, team, name, awaiting_name, anonymous, first_job";
+  "id, organisation_id, language, state, telegram_chat_id, channel, intake_id, team, name, awaiting_name, anonymous, first_job";
 
 export async function addHire(
   organisationId: string,

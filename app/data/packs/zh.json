@@ -15,6 +15,7 @@
   "declined": "没问题。你不会再收到 Sapa 的消息。",
   "teamPrompt": "你在哪个团队？",
   "tapped": "你选了“{label}”。",
+  "choose": "选择",
   "skipped": "已跳过。本次问候已关闭。Sapa 会在下一次问候时联系你。",
   "stopped": "你已停止。Sapa 不会再给你发送消息。",
   "help": "你可以随时输入 /help、/privacy、/stop 或 停止。",

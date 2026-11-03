@@ -51,6 +51,7 @@
   "declined": "No problem. You won't get any more messages from Sapa.",
   "teamPrompt": "Which team are you in?",
   "tapped": "You tapped \"{label}\".",
+  "choose": "Choose",
   "skipped": "Skipped. This check-in is closed. Sapa will message you for the next one.",
   "stopped": "You have stopped. Sapa will not send you any more messages.",
   "help": "You can type /help, /privacy, /stop, or STOP at any time.",

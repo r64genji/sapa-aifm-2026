@@ -1,8 +1,11 @@
 import { AdapterRateLimitError } from "@chat-adapter/shared";
-import { stopPerson } from "@/lib/directory";
+import { personByChat, stopPerson } from "@/lib/directory";
 import type { Reply } from "@/lib/engine";
+import { sendWhatsApp } from "@/lib/whatsapp";
 
 export async function send(chatId: number, reply: Reply) {
+  const person = await personByChat(chatId);
+  if (person?.channel === "whatsapp") return sendWhatsApp(chatId, reply, person.language);
   const base = process.env.TELEGRAM_API_BASE_URL ?? "https://api.telegram.org";
   const keys = (reply.buttons ?? []).map((b) => ({ text: b.label, callback_data: `chat:${JSON.stringify({ a: b.id, v: b.value })}` }));
   const res = await patiently(() => fetch(`${base}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
