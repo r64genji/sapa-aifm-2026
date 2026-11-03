@@ -30,6 +30,11 @@ createServer(async (req, res) => {
     res.end("{}");
     return;
   }
+  if (!raw) {
+    res.statusCode = 404;
+    res.end("{}");
+    return;
+  }
   const body = JSON.parse(raw);
   const chat = String(body.messages?.[0]?.content ?? "").startsWith("You are Sapa's check-in helper");
   const provider = chat ? `${path}:chat` : path;
