@@ -187,8 +187,7 @@ export async function resetDemo(full = false) {
   if (modeError) throw modeError;
   if (live.length > 0) return { error: "Demo mode is off", code: 409 };
   const liveStart = liveDates(organisations[0].time_zone);
-  const salt = full ? randomBytes(8).toString("hex") : "";
-  const teams = intakes[0].teams.map((row) => ({ ...row, join_token: createHmac("sha256", process.env.DEMO_RESET_SECRET!).update(`${intakes[0].id}:${row.team}${salt}`).digest("base64url").slice(0, 22) }));
+  const teams = intakes[0].teams.map((row) => ({ ...row, join_token: createHmac("sha256", process.env.DEMO_RESET_SECRET!).update(`${intakes[0].id}:${row.team}`).digest("base64url").slice(0, 22) }));
   const intake = { ...intakes[0], ...liveStart, teams };
   const demo = demoCheckins();
   const replies = demo.responses.map(({ text, ...row }) => (text ? { ...row, text_encrypted: encrypt(text) } : row));
