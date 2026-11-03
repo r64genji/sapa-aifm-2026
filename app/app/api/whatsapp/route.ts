@@ -17,6 +17,11 @@ export async function POST(request: Request) {
   if (!signedByTwilio(`https://${host}${url.pathname}`, params, request.headers.get("x-twilio-signature"))) {
     return new Response("Unauthorized", { status: 401 });
   }
+  after(() => claim(params));
+  return ok();
+}
+
+async function claim(params: URLSearchParams) {
   const id = parseInt(createHash("sha256").update(params.get("MessageSid") ?? "").digest("hex").slice(0, 13), 16);
   const { data, error } = await createAdminClient()
     .from("inbound_updates")
@@ -26,9 +31,7 @@ export async function POST(request: Request) {
     )
     .select();
   if (error) throw error;
-  if (data.length === 0) return ok();
-  after(() => reply(Number(params.get("WaId")), params));
-  return ok();
+  if (data.length > 0) await reply(Number(params.get("WaId")), params);
 }
 
 async function reply(chatId: number, params: URLSearchParams) {
