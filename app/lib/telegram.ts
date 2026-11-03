@@ -38,8 +38,8 @@ export async function patiently<T>(attempt: () => Promise<T>): Promise<T> {
   for (let tries = 1; ; tries++) {
     try {
       const result = await attempt();
-      if (!(result instanceof Response && result.status === 429 && tries < 3)) return result;
-      await pause((await result.json()).parameters?.retry_after);
+      if (!(result instanceof Response && (result.status === 429 || result.status >= 500) && tries < 3)) return result;
+      await pause((await result.json().catch(() => ({}))).parameters?.retry_after);
     } catch (error) {
       if (!(error instanceof AdapterRateLimitError && tries < 3)) throw error;
       await pause(error.retryAfter);

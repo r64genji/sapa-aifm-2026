@@ -13,10 +13,12 @@ type Claim = { schedule_id: string; chat_id: number; language: Language; progres
 async function deliver(chatId: number, replies: Reply[]) {
   try {
     for (const reply of replies) {
-      if (!(await send(chatId, reply))) return;
+      if (!(await send(chatId, reply))) return false;
     }
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
 
@@ -161,21 +163,23 @@ export async function sendOutreach(organisationId: string, touchpoint?: number) 
     .in("status", ["sent", "reminded"]);
   if (skipError) throw skipError;
   let sent = 0;
-  for (const row of next.values()) {
-    const { data: claimed, error: claimError } = await db
-      .from("checkin_schedule")
-      .update({ status: "sent", sent_at: (await now()).toISOString() })
-      .eq("id", row.id)
-      .eq("status", "scheduled")
-      .select("id");
-    if (claimError) throw claimError;
-    if (claimed.length === 0) continue;
-    await takeRecheck(row.id, row.person_id);
-    const [questions] = await withQuestions([row.id]);
-    const { error: nameError } = await db.from("people").update({ awaiting_name: false }).eq("id", row.person_id);
-    if (nameError) throw nameError;
-    await deliver(row.people.telegram_chat_id, checkinStart(row.people, questions));
-    sent += 1;
+  const all = [...next.values()];
+  for (let i = 0; i < all.length; i += 10) {
+    await Promise.all(all.slice(i, i + 10).map(async (row) => {
+      const { data: claimed, error: claimError } = await db
+        .from("checkin_schedule")
+        .update({ status: "sent", sent_at: (await now()).toISOString() })
+        .eq("id", row.id)
+        .eq("status", "scheduled")
+        .select("id");
+      if (claimError) throw claimError;
+      if (claimed.length === 0) return;
+      await takeRecheck(row.id, row.person_id);
+      const [questions] = await withQuestions([row.id]);
+      const { error: nameError } = await db.from("people").update({ awaiting_name: false }).eq("id", row.person_id);
+      if (nameError) throw nameError;
+      if (await deliver(row.people.telegram_chat_id, checkinStart(row.people, questions))) sent += 1;
+    }));
   }
   return { sent: sent + (await dispatch()) };
 }
