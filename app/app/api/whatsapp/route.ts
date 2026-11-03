@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { after } from "next/server";
 import { now } from "@/lib/clock";
 import { personByChat } from "@/lib/directory";
@@ -16,11 +17,11 @@ export async function POST(request: Request) {
   if (!signedByTwilio(`https://${host}${url.pathname}`, params, request.headers.get("x-twilio-signature"))) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const sid = params.get("MessageSid") ?? "";
+  const id = parseInt(createHash("sha256").update(params.get("MessageSid") ?? "").digest("hex").slice(0, 13), 16);
   const { data, error } = await createAdminClient()
     .from("inbound_updates")
     .upsert(
-      { platform: "whatsapp", update_id: parseInt(sid.slice(2, 15), 16), received_at: (await now()).toISOString() },
+      { platform: "whatsapp", update_id: id, received_at: (await now()).toISOString() },
       { onConflict: "platform,update_id", ignoreDuplicates: true },
     )
     .select();
