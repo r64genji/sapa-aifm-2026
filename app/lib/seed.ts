@@ -26,6 +26,7 @@ import demo_history from "@/data/seed/demo_history.json";
 import fix_follow_up from "@/data/seed/fix_follow_up.json";
 import demo_open_fixes from "@/data/seed/demo_open_fixes.json";
 import demo_recent from "@/data/seed/demo_recent.json";
+import lead_briefs from "@/data/seed/lead_briefs.json";
 import { encrypt } from "@/lib/crypto";
 import { joinIntake, joinLink, recordConsent } from "@/lib/directory";
 import { MANAGER_TOKEN_PREFIX } from "@/lib/managers";
@@ -136,6 +137,16 @@ async function seedSpotChecks() {
   if (error) throw error;
 }
 
+async function seedLeadBriefs() {
+  if (process.env.SAPA_TEST === "1") return;
+  const rows = lead_briefs.map(({ days_ago, side, side_hours, manager, ...row }) => {
+    const sent = Date.now() - days_ago * DAY_MS;
+    return { ...row, manager_id: manager, sent_at: new Date(sent).toISOString(), side_encrypted: side ? encrypt(side) : null, side_at: side_hours ? new Date(sent + side_hours * 3600000).toISOString() : null };
+  });
+  const { error } = await createAdminClient().from("lead_briefs").insert(rows);
+  if (error) throw error;
+}
+
 async function seedFixFollowUp() {
   if (process.env.SAPA_TEST === "1") return;
   const db = createAdminClient();
@@ -200,6 +211,7 @@ export async function resetDemo(full = false) {
   if (error) throw error;
   await seedSpotChecks();
   await seedFixFollowUp();
+  await seedLeadBriefs();
   await seedNotices();
   await seedUsers();
   if (phones) await relinkPhones(phones, teams);

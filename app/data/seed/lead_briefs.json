@@ -1,0 +1,113 @@
+[
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000101",
+    "days_ago": 6,
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they get several urgent tasks at once and do not know which one to do first.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010001",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "side": "Month-end close moved up a week, so I handed out tasks without saying which come first. My fault. I can send a ranked list every Monday morning.",
+    "side_hours": 5,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  },
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000103",
+    "days_ago": 9,
+    "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say questions to you can wait a day or more, mostly in the afternoons.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010004",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say they cover tasks from people who are away and stay late to finish.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "side": "I cover two desks since a senior left in August, and I am on audit calls most afternoons. I can hold a fixed 30-minute question slot at 9:30 every day.",
+    "side_hours": 20,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  },
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000107",
+    "days_ago": 4,
+    "items": [
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say they learn the ticket system by watching others, with no set training.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "side": "Shadowing was cut short by the system migration. The ticketing course restarts next Tuesday and every new hire is booked on it.",
+    "side_hours": 3,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  },
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000106",
+    "days_ago": 12,
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the job is not what they were told when they were hired.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "side": "They were hired for reporting, but everyone starts on reconciliations for three months. Nobody told them that. I will explain the plan in their 1-on-1s.",
+    "side_hours": 26,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  },
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000104",
+    "days_ago": 7,
+    "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say it is hard to reach you when you travel.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "side": "I am in Tokyo two weeks a month. When I am away, Kenji can answer daily questions. I had not told the new hires that.",
+    "side_hours": 30,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  },
+  {
+    "manager": "6f1c2a3e-0000-4000-8000-000000000102",
+    "days_ago": 1,
+    "items": [
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say they eat and sit alone and are not in the team's group chat.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "side": null,
+    "side_hours": null,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+  }
+]
