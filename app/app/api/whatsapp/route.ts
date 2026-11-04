@@ -6,7 +6,7 @@ import { handle, type Input, type Reply } from "@/lib/engine";
 import { savePhone } from "@/lib/escalations";
 import { packs } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendWhatsApp, signedByTwilio } from "@/lib/whatsapp";
+import { sendWhatsApp, signedByTwilio, typingWhatsApp } from "@/lib/whatsapp";
 
 const ok = () => new Response("<Response/>", { headers: { "content-type": "text/xml" } });
 
@@ -31,7 +31,7 @@ async function claim(params: URLSearchParams) {
     )
     .select();
   if (error) throw error;
-  if (data.length > 0) await reply(Number(params.get("WaId")), params);
+  if (data.length > 0) await Promise.all([typingWhatsApp(params.get("MessageSid") ?? ""), reply(Number(params.get("WaId")), params)]);
 }
 
 async function reply(chatId: number, params: URLSearchParams) {

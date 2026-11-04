@@ -73,6 +73,10 @@ export async function sendWhatsApp(waId: number, reply: Reply, language: Languag
   return true;
 }
 
+export async function typingWhatsApp(messageSid: string) {
+  await twilio("https://messaging.twilio.com/v3/Indicators/Typing.json", JSON.stringify({ messageId: messageSid, channel: "WHATSAPP" }), "application/json").catch(() => {});
+}
+
 export function signedByTwilio(url: string, params: URLSearchParams, signature: string | null) {
   const data = url + [...params.keys()].sort().map((key) => key + params.get(key)).join("");
   return matchesSecret(signature, createHmac("sha1", process.env.TWILIO_AUTH_TOKEN ?? "").update(data).digest("base64"));
