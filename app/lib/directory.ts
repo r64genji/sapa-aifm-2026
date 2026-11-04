@@ -156,6 +156,7 @@ export async function teamLinks(organisationId: string) {
         team: row.team,
         lead: manager?.display_name ?? "",
         link: joinLink(row.join_token),
+        whatsapp_link: `https://wa.me/${process.env.TWILIO_WHATSAPP_FROM?.replace("+", "")}?text=${encodeURIComponent(`/start ${row.join_token}`)}`,
         lead_link: manager?.bind_token && !manager.revoked_at ? joinLink(manager.bind_token) : null,
         lead_linked: Boolean(manager?.telegram_chat_id) && !manager?.revoked_at,
       };

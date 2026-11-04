@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Button, Dialog, Loading, PageHeader, Tabs } from "@/components/sapa/ui";
 
-type TeamLink = { team: string; lead: string; link: string; lead_link: string | null; lead_linked: boolean };
+type TeamLink = { team: string; lead: string; link: string; whatsapp_link: string; lead_link: string | null; lead_linked: boolean };
 
 function Qr({ link, label }: { link: string; label: string }) {
   const [src, setSrc] = useState("");
@@ -35,8 +35,8 @@ function SaveButton({ link, name }: { link: string; name: string }) {
   return <Button onClick={save}>Save image</Button>;
 }
 
-function TeamCard({ row, leads }: { row: TeamLink; leads: boolean }) {
-  const link = leads ? row.lead_link : row.link;
+function TeamCard({ row, leads, whatsapp }: { row: TeamLink; leads: boolean; whatsapp: boolean }) {
+  const link = leads ? row.lead_link : whatsapp ? row.whatsapp_link : row.link;
   return (
     <section className="sp-card flex flex-col items-start gap-3 p-5" aria-label={row.team}>
       <div className="flex flex-col gap-0.5">
@@ -48,7 +48,7 @@ function TeamCard({ row, leads }: { row: TeamLink; leads: boolean }) {
           <Qr link={link} label={leads ? `${row.team} as team lead ${row.lead}` : row.team} />
           <div className="flex flex-wrap gap-2">
             <CopyButton link={link} />
-            <SaveButton link={link} name={`sapa-join-${leads ? "lead-" : ""}${row.team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} />
+            <SaveButton link={link} name={`sapa-join-${leads ? "lead-" : whatsapp ? "whatsapp-" : ""}${row.team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} />
           </div>
         </>
       ) : (
@@ -119,6 +119,7 @@ function AddTeam({ onAdded }: { onAdded: (team: string) => void }) {
 export default function Page() {
   const { data } = useApi<{ intake: string; teams: TeamLink[] }>("/api/hr/team-links", 60000);
   const [who, setWho] = useState<"hires" | "leads">("hires");
+  const [app, setApp] = useState<"telegram" | "whatsapp">("telegram");
   const [added, setAdded] = useState("");
   if (!data) return <Loading />;
   const leads = who === "leads";
@@ -127,6 +128,7 @@ export default function Page() {
       <PageHeader title={`Join codes · ${data.intake}`} right={
           <div className="flex flex-wrap items-center gap-2">
             <Tabs label="Show codes for" value={who} onChange={setWho} items={[["hires", "New hires"], ["leads", "Team leads"]]} />
+            {!leads && <Tabs label="Chat app" value={app} onChange={setApp} items={[["telegram", "Telegram"], ["whatsapp", "WhatsApp"]]} />}
             <AddTeam onAdded={setAdded} />
           </div>
         }
@@ -137,9 +139,9 @@ export default function Page() {
           ? "Each team lead scans their own code once, on their own phone, to get fixes and mark them done in Telegram."
           : "Hand these out yourself, for example on each team's Day 1 welcome sheet. Do not ask team leads to hand them out."}
       </p>
-      <div key={who} className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
+      <div key={`${who}-${app}`} className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
         {data.teams.map((row) => (
-          <TeamCard key={row.team} row={row} leads={leads} />
+          <TeamCard key={row.team} row={row} leads={leads} whatsapp={app === "whatsapp"} />
         ))}
       </div>
     </div>
