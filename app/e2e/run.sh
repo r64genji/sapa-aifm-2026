@@ -47,6 +47,7 @@ export TELEGRAM_API_BASE_URL=http://127.0.0.1:$FAKE_TELEGRAM_PORT
 export TELEGRAM_BOT_TOKEN=1000000001:test-token
 export TELEGRAM_BOT_USERNAME=sapa_test_bot
 export TELEGRAM_WEBHOOK_SECRET_TOKEN=test-webhook-secret
+export TWILIO_AUTH_TOKEN=test-twilio-auth-token
 export OMNIROUTE_BASE_URL=http://127.0.0.1:$FAKE_MODEL_PORT/omniroute/v1
 export OMNIROUTE_API_KEY=test-omniroute-key
 export DEEPSEEK_BASE_URL=http://127.0.0.1:$FAKE_MODEL_PORT/deepseek

@@ -35,9 +35,9 @@ async function claim(params: URLSearchParams) {
 }
 
 async function reply(chatId: number, params: URLSearchParams) {
-  const payload = params.get("ButtonPayload");
-  const tap = payload ? (JSON.parse(payload) as { a: string; v: string }) : null;
   const text = params.get("Body") ?? "";
+  const payload = params.get("ButtonPayload") ?? text;
+  const tap = payload.startsWith('{"a":') ? (JSON.parse(payload) as { a: string; v: string }) : null;
   let replies: Reply[];
   if (tap?.a === "phone") replies = await savePhone(chatId, `+${chatId}`);
   else if (!tap && !text) {
