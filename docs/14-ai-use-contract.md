@@ -15,7 +15,8 @@ The AI reads new hires' check-in replies and questions. It helps HR find shared 
 | Label a reply with a problem area (role clarity, manager support, team integration, workplace, training, workload) | It must quote the exact words it used. If the quote is not in the reply, the label waits for HR (R15). |
 | Count a label it is sure about | Labels the AI is unsure about wait for HR and stay out of counts. Every count comes from SQL, not the AI (R18). |
 | Write a short summary of counts | It is rejected if it holds a number that is not in its input (R18). |
-| Draft a suggested fix | Nobody sees it until HR opens it, and nothing happens until HR approves it. |
+| Draft a suggested fix | Nobody sees it until HR opens it, and nothing happens until HR approves it. It has six parts and cannot be sent with one empty (R68). |
+| Write the team lead brief when a check-in round closes | Sent without HR approval (owner, 4 Nov 2026). One neutral sentence per problem area. Code blocks a digit, a name of a hire who did not agree, and 5 or more words copied from a reply, then falls back to fixed text (R66). |
 | Answer a new hire's handbook question | Only from a page HR published. The answer is labelled "AI answer" and quotes the page (R31). |
 | Show a new hire the AI's reading of their own replies (`/myanswers`) | Only that person sees it. It is labelled as AI and has a "This is wrong" button (R40). |
 | Ask a new hire up to 2 follow-up questions in a check-in chat, after the fixed first question | One short, neutral question about work each time. No feelings, causes, names, advice or promises; code blocks feelings words and name or contact requests. The keyword check runs before the AI on every message, and the chat stops at once on a serious concern. The AI writes no summary for the new hire and there is no "what I will tell HR" step. HR sees the person's own words as one reply with a label and an exact quote (R12, R55, R56). |
@@ -94,7 +95,7 @@ The phone number goes only to HR. It never goes to the AI or the manager. HR nev
 - NRIC numbers, phone numbers and email addresses are masked before any text leaves Sapa (R17).
 - Replies are sent to the AI as data, not as instructions. The AI has no tools.
 - Summaries use only counts and short masked summaries, never raw replies.
-- The AI never sees names. A new hire's name stays in the people table and is added to the label HR sees after the AI has finished.
+- The AI may see a name (owner, 4 Nov 2026). It gets only the names of hires who agreed to be named to their team lead (R65).
 
 ## 6. What a new hire can always do
 

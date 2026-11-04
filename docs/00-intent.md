@@ -33,11 +33,11 @@ Agreed 16 Oct 2026 as anonymous. Changed on 21 Oct 2026 to named to HR, after th
 - After consent, the new hire picks "Share my name" or "Stay anonymous" and can change it with /privacy (R62).
 - Named: Sapa asks the name once. HR sees it with every reply, for example "Aina Rahman · AP Asia · Day 14", and can send a fix about that hire, by name, to their manager.
 - Anonymous: HR sees a reply only when 5 or more people in that team (named and anonymous) raised the same problem area. A fix from it never names the hire. HR cannot send an anonymous hire a private-chat offer, because HR could not contact them. Counts include anonymous hires.
-- A manager never sees a name, a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives carries a new hire's words. A manager receives a hire's name only in a fix HR sends from that hire's reply, so the manager can act for that person.
+- A manager never sees a reply or a dashboard. A manager's whole interface is Telegram messages from Sapa. Nothing a manager receives quotes a new hire's words: the team lead brief (R66) says the problem in the AI's own neutral words. A manager receives a hire's name only when that hire tapped a Yes on "Can Sapa tell your team lead this came from you?" (R65, agreed 4 Nov 2026), or in a fix HR sends from that hire's reply.
 - There is no minimum group size for counts. HR sees every count, even for one person. A team count can therefore show that a lone anonymous hire named a problem area; the promise to them covers their words and name, not counts.
 - HR can send a fix from one reply to that hire's own manager (R10). HR can still send a fix to a team, several teams or an intake.
 - Phone numbers, emails and ID numbers in a reply are masked in what HR sees, not only in what the AI sees.
-- The AI never sees a name.
+- The AI may see a hire's name (owner, 4 Nov 2026: "there's nothing wrong with just a name"). It gets only the names a brief or a fix may show.
 - Serious concerns still go to the company's speak-up channel, which is a separate and anonymous system.
 - Sapa keeps the Telegram chat ID so it can send check-ins. Telegram can read bot chats.
 - The consent text says the manager never sees answers and HR and the manager never see the chat ID. It does not say that Telegram can read bot chats: the owner chose to leave that out (23 Oct 2026). Do not add it back without the owner.
@@ -63,6 +63,9 @@ This list is the scope. We build and demo what is on it. We build nothing new fo
 - Serious concerns: Sapa tells the new hire, in one short message, to report it to HR through the company's speak-up channel (demo: Contoh Speak Up, with web form, email and 24-hour phone). It names only that channel: never 999, helplines, the tribunal or any outside authority. Official complaints are 100% anonymous and are a separate company system, not Sapa's problem to solve. HR sees the replies and a count, and nothing to act on in Sapa (agreed 16 Oct 2026).
 - Check-in schedule screen: HR sets the days and questions of two tracks, New hire and Employee (R60). The join code stays the same. This is not the Settings page.
 - Bahasa Malaysia, English and Chinese. All are always on. No toggle.
+- Team lead's side (agreed 4 Nov 2026, after Deanna Tung's second call, docs/16: HR must hear both sides). When a check-in round closes (24 hours, or HR's Close round button), Sapa reads the replies behind every "hard" tap and sends each team lead one message: a short brief per problem, then "What is your side?". HR sees the team lead's answer next to the new hires' replies (R66, R67).
+- Tell my team lead (agreed 4 Nov 2026). After a "hard" tap, a named hire chooses: set up a 1-on-1, just tell the team lead, or keep the name out (R65).
+- Every fix is actionable (owner, 4 Nov 2026: "when we send out the fix, it has to be something actually actionable"). A fix has six parts and cannot be sent without them (R68).
 - HR sees which teams need a fix, and sends one fix to many team leads at once (R51, R54).
 - `/say` in Telegram: a new hire writes a message for their lead in any language, and the AI gives it back as clear, polite English to send themselves. Sapa stores nothing.
 

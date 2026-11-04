@@ -11,7 +11,7 @@ Pick the one doc for your task. Read only that doc.
 | The reference customer, Contoh GBS, and its numbers | [09 client story](09-client-story.md) |
 | Which AI model runs each feature, and the eval numbers for the slides | [15 AI model choice](15-groq-vs-gemini.md) |
 | What the AI may do alone and what needs a person | [14 AI use contract](14-ai-use-contract.md) |
-| What an HR practitioner told us, open slide questions, feature ideas | [16 HR interview](16-interview-deanna-tung.md) |
+| What an HR practitioner (and judge) told us: hear both sides, a fix must say what for | [16 HR interview](16-interview-deanna-tung.md) |
 | What an HR consultant told us, decisions from it, and the root cause TODO | [17 HR interview](17-interview-muhammad-danial.md) |
 | What a change-management officer told us, and why he said drop anonymity | [18 interview](18-interview-stephen-yau.md) |
 | What an HR director told us: add Environment, let hires choose anonymity | [19 interview](19-interview-gary-teh.md) |
