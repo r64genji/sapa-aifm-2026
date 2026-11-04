@@ -18,9 +18,10 @@ if (process.env.SAPA_TEST === "1") {
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  allowedDevOrigins: ["dev-sapa.abrahamtan.com"],
+  allowedDevOrigins: ["dev-sapa.abrahamtan.com", "127.0.0.1"],
   env: { SAPA_TEST: process.env.SAPA_TEST ?? "" },
   redirects: async () => [{ source: "/impact", destination: "/fixes", permanent: false }],
+  rewrites: async () => (process.env.SUPABASE_URL ? [{ source: "/api/supabase/:path*", destination: `${process.env.SUPABASE_URL}/:path*` }] : []),
 };
 
 export default nextConfig;

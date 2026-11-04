@@ -103,7 +103,7 @@ export async function bindManager(token: string, chatId: number) {
 }
 
 export async function managerSnapshots(accessToken: string) {
-  const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
+  const client = createClient(process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
     auth: { persistSession: false },
     global: { headers: { authorization: `Bearer ${accessToken}` } },
   });
