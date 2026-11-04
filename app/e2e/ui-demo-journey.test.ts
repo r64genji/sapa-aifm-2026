@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { after, before, test } from "node:test";
 import { chromium, type Browser, type Page } from "playwright-core";
-import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, tap, tapData, tapScore } from "./helpers.ts";
+import { appUrl, classifierTag, dispatch, freezeClock, hrRequest, hrToken, link, liveInvite, resetDemo, say, scriptModel, sentTo, tap, tapData, tapScore, PLAN } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -62,6 +62,8 @@ test("Demo beat 3: Draft a fix from the Role clarity card, for Raj's team, and s
   }
   await page.locator("#f-for").click();
   await page.getByRole("option", { name: /Accounts Payable Asia/ }).click();
+  await page.getByRole("button", { name: "Fill the six parts with AI" }).waitFor();
+  for (const [key, value] of Object.entries(PLAN)) await page.fill(`#fix-${key}`, value);
   await page.getByRole("button", { name: /^Send/ }).click();
   await page.getByText("Sent. Raj has it on Telegram.").waitFor();
   await page.getByText("In real use this alert waits until Monday").waitFor();

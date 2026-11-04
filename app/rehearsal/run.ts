@@ -71,6 +71,7 @@ async function run() {
   const draft = await json(await hrRequest("/api/hr/actions", "POST", { driver: "ROLE_CLARITY" }), 201, "draft action");
   const id = draft.id as string;
   await json(await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } }), 200, "scope");
+  await json(await hrRequest(`/api/hr/actions/${id}/plan`, "POST"), 200, "six parts");
   await json(await hrRequest(`/api/hr/actions/${id}/notice`, "POST", { notes }), 200, "approve notice");
   await json(await hrRequest(`/api/hr/actions/${id}/assign`, "POST", { owner: { manager_id: raj } }), 200, "assign");
 

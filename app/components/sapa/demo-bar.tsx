@@ -59,6 +59,11 @@ export function DemoBar() {
       const result = await apiSend<{ sent: number }>("/api/hr/demo/outreach", "POST", { touchpoint: next?.touchpoint });
       setMessage(`${result.sent} message${result.sent === 1 ? "" : "s"} sent.`);
     });
+  const closeRound = () =>
+    run(async () => {
+      const result = await apiSend<{ sent: number }>("/api/hr/demo/close-round", "POST", {});
+      setMessage(`Round closed. ${result.sent} team lead${result.sent === 1 ? "" : "s"} asked for their side.`);
+    });
   const reset = (full: boolean) =>
     run(async () => {
       setConfirming(null);
@@ -81,6 +86,7 @@ export function DemoBar() {
         </button>
         <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
           <Button variant="primary" disabled={busy || !next} onClick={outreach}>Outreach now</Button>
+          <Button disabled={busy} onClick={closeRound}>Close round</Button>
           <Button disabled={busy} onClick={() => setConfirming("seed")}>Reset to seed</Button>
           <Button disabled={busy} onClick={() => setConfirming("full")}>Full reset</Button>
         </span>

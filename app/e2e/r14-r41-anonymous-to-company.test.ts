@@ -14,6 +14,7 @@ import {
   tap,
   tapScore,
   tapData,
+  PLAN,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -101,6 +102,8 @@ test("R10: one click sends a library fix with its fixed note to that hire's own 
   const replies = (await (await hrRequest("/api/hr/replies", "GET")).json()) as { id: string; text: string; drivers: string[] }[];
   const mine = replies.find((r) => r.text.includes(quote))!;
   const library = (await (await hrRequest(`/api/hr/actions/library?driver=${mine.drivers[0]}`, "GET")).json()) as { id: string; title: string; notes: { en: string } }[];
+  const { problem, who, when, talk_about, done_when } = PLAN;
+  await scriptModel("omniroute", [{ kind: "json", content: { problem, who, action: "Book a 15-minute chat with her this week.", when, talk_about, done_when } }]);
   const made = await hrRequest("/api/hr/actions", "POST", { driver: mine.drivers[0], response_id: mine.id, send_library_entry_id: library[0].id });
   assert.equal(made.status, 201);
   const { id, manager } = (await made.json()) as { id: string; manager: string };

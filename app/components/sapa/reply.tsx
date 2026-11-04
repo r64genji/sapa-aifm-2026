@@ -246,11 +246,11 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState<string | null>(null);
-  const go = async (body: Record<string, string>, then: (result: { id: string; manager?: string }) => void) => {
+  const go = async (body: Record<string, string>, then: (result: { id: string; manager?: string; open_editor?: boolean }) => void) => {
     setBusy(true);
     setError(null);
     try {
-      then(await apiSend<{ id: string; manager?: string }>("/api/hr/actions", "POST", { driver, response_id: item.id, ...body }));
+      then(await apiSend<{ id: string; manager?: string; open_editor?: boolean }>("/api/hr/actions", "POST", { driver, response_id: item.id, ...body }));
     } catch (e) {
       setError(e instanceof ApiError ? e.message : "Something went wrong. Try again.");
     } finally {
@@ -290,7 +290,7 @@ export function FixDialog({ item, onClose }: { item: Pick<ReplyItem, "id" | "dri
           </div>
           {error ? <p role="alert">{error}</p> : null}
           <div className="flex flex-wrap items-center gap-2 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
-            <Button variant="primary" disabled={busy || !picked} why={picked ? null : "Pick a fix first"} onClick={() => go({ send_library_entry_id: picked! }, (r) => setSent(r.manager ?? "their manager"))}>
+            <Button variant="primary" disabled={busy || !picked} why={picked ? null : "Pick a fix first"} onClick={() => go({ send_library_entry_id: picked! }, (r) => (r.open_editor ? router.push(`/fixes/new?id=${r.id}`) : setSent(r.manager ?? "their manager")))}>
               {busy ? <Spin /> : <Send size={15} strokeWidth={2} aria-hidden="true" />}
               {busy ? "Sending…" : "Send to their manager"}
             </Button>

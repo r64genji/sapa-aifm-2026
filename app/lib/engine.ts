@@ -1,5 +1,5 @@
 import { managerChat } from "@/lib/actions";
-import { checkinButton, checkinText, skipCheckin } from "@/lib/checkin";
+import { checkinButton, checkinText, shareButton, skipCheckin } from "@/lib/checkin";
 import { exitButton, exitText } from "@/lib/exit";
 import { confirmDelete, deletePrompt } from "@/lib/privacy";
 import { ask } from "@/lib/qa";
@@ -128,6 +128,10 @@ async function press(person: Person, id: string, value: string, languages: Langu
   if (id === "firstjob" && person.state === "active" && (value === "yes" || value === "no")) {
     await setFirstJob(person, value === "yes");
     return { replies: [{ text: pack.firstJob.thanks }] };
+  }
+  if (id === "share" && person.state === "active") {
+    const replies = await shareButton(person, value);
+    if (replies) return { replies };
   }
   if (id === "ans" && person.state === "active") {
     const replies = await checkinButton(person, value);

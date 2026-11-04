@@ -5,6 +5,21 @@
   "alreadyJoined": "You have already joined Sapa on this phone. Sapa will message you for your next check-in.",
   "managerLinked": "Linked. Sapa will message you here when HR assigns an action to you. Send /whatican to see what you can see in Sapa.",
   "whatICanSee": "What I can see: a weekly count of what your team's new hires named. You never see what they write. If a new hire shares their name, HR may send you a fix about them. You never see other teams.",
+  "lead": {
+    "opening": "HR check-in for your team. New hires named these problems this round:",
+    "meet": "{name} asked for a 1-on-1 about this.",
+    "tell": "This came from {name}.",
+    "side": "What is your side? Reply in one message. HR will read it.",
+    "thanks": "Thank you. HR will read your side.",
+    "briefs": {
+      "ROLE_CLARITY": "New hires say they are not sure what is expected of them.",
+      "MANAGER_SUPPORT": "New hires say it is hard to get help or answers from their team lead.",
+      "BELONGING": "New hires say they do not feel part of the team yet.",
+      "ONBOARDING": "New hires say something about their setup or workplace is not working.",
+      "TRAINING": "New hires say they have not had the training they need.",
+      "WORKLOAD": "New hires say their workload is hard to manage."
+    }
+  },
   "action": {
     "alert": "New action from HR: {title}",
     "due": "Due {date}.",
@@ -20,6 +35,14 @@
     "finished": "Marked done. Thank you.",
     "idle": "Sapa will message you here when HR assigns an action to you.",
     "demoLabel": "In real use this alert waits until {weekday}",
+    "plan": {
+      "problem": "Problem",
+      "who": "Who",
+      "action": "Action",
+      "when": "When",
+      "talk_about": "Talk about",
+      "done_when": "Done when"
+    },
     "notEnoughAnswers": "Not enough answers yet",
     "notEnoughComparison": "Not enough comparison yet",
     "ofFive": "({n} of 5)",
@@ -236,6 +259,12 @@
       "good": "Your taps look good.",
       "optional": "Optional. Tap Skip if you prefer not to answer.",
       "remarks": "Last one: is there anything else about work you want HR to know? It can be anything. Type it, or tap Skip."
+    },
+    "share": {
+      "question": "Can Sapa tell your team lead this came from you?",
+      "meet": "Yes, set up 1-on-1",
+      "tell": "Yes, just tell them",
+      "no": "No, keep name out"
     },
     "probe": {
       "example": "Can you give one example from this week?",

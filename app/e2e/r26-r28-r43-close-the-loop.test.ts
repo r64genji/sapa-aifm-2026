@@ -17,6 +17,7 @@ import {
   tap,
   tapScore,
   tapData,
+  PLAN,
 } from "./helpers.ts";
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -51,7 +52,7 @@ async function draft(driver: string, entry: number, title: string) {
   const res = await hrRequest("/api/hr/actions", "POST", { driver });
   assert.equal(res.status, 201);
   const id = (await res.json()).id as string;
-  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { library_entry_id: library(entry), title, steps: "Do the thing each week." })).status, 200);
+  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { library_entry_id: library(entry), title, steps: "Do the thing each week.", plan: PLAN })).status, 200);
   return id;
 }
 

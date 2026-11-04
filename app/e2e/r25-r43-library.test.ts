@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { before, test } from "node:test";
-import { db, freezeClock, hrRequest, resetDemo, scriptModel } from "./helpers.ts";
+import { db, freezeClock, hrRequest, resetDemo, scriptModel, PLAN } from "./helpers.ts";
 
 const seeded = "6f1c2a3e-0000-4000-8000-000000000401";
 const notes = { en: "Mentors will meet you weekly.", ms: "Mentor akan berjumpa anda setiap minggu.", zh: "导师每周会见你。" };
@@ -32,7 +32,7 @@ test("R43, R25: a fix sent with Add your own fix is listed in the library, can b
   assert.deepEqual(await drafted.json(), { id: first, title: "Weekly 1:1 with a mentor", steps: "Raj pairs each new hire with a mentor.", notes });
   assert.equal((await list()).some((entry) => entry.title === "Weekly 1:1 with a mentor"), false);
 
-  assert.equal((await hrRequest(`/api/hr/actions/${first}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" } })).status, 200);
+  assert.equal((await hrRequest(`/api/hr/actions/${first}`, "PATCH", { scope: { type: "team", team: "Accounts Payable Asia" }, plan: PLAN })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${first}/notice`, "POST", { no_notice_reason: "Not needed" })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${first}/assign`, "POST", { owner: "hr" })).status, 200);
 

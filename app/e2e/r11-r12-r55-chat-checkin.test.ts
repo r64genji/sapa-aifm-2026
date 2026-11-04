@@ -74,7 +74,7 @@ test("R12, R15, R17: a low tap opens no probe, the fixed question for the lowest
   assert.equal((await modelCalls("omniroute:chat")).length, calls);
 
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: "Three seniors give me urgent invoices at once" }) }]);
-  assert.deepEqual(await answer(low, "Three seniors give me urgent invoices at once, call me on 012-345 6789"), [remarks]);
+  assert.deepEqual(await answer(low, "Three seniors give me urgent invoices at once, call me on 012-345 6789"), [en.checkin.share.question]);
   const classify = (await modelCalls("omniroute")).at(-1)!;
   assert.ok(JSON.stringify(classify.body).includes("call me on [PHONE]"));
   assert.ok(!JSON.stringify(classify.body).includes("012-345 6789"));

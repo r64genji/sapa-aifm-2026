@@ -2,6 +2,7 @@ import { checkinReminder, checkinStart, SCHEDULE, type Schedule } from "@/lib/ch
 import { now } from "@/lib/clock";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { exitQuestion } from "@/lib/exit";
+import { closeRounds } from "@/lib/leads";
 import { packs, type Language } from "@/lib/packs";
 import type { Reply } from "@/lib/engine";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -77,7 +78,7 @@ export async function dispatch() {
       ...(person.ask_exit ? [exitQuestion(person.language)] : []),
     ]);
   }
-  return claims.length + left.length + nudges.length + (await sendNotices());
+  return claims.length + left.length + nudges.length + (await sendNotices()) + (await closeRounds());
 }
 
 export async function sendNotices() {

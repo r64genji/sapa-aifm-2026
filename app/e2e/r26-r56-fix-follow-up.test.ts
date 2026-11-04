@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { classifierTag, db, dispatch, freezeClock, hrRequest, joined, resetDemo, say, scriptModel, sentTo, tap, tapScore } from "./helpers.ts";
+import { classifierTag, db, dispatch, freezeClock, hrRequest, joined, resetDemo, say, scriptModel, sentTo, tap, tapScore, PLAN } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 
@@ -19,7 +19,7 @@ const detail = async (id: string) => (await (await hrRequest(`/api/hr/actions/${
 async function fix(driver: string, scopeTeam: string, notice: Record<string, unknown>) {
   const res = await hrRequest("/api/hr/actions", "POST", { driver });
   const id = (await res.json()).id as string;
-  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: scopeTeam } })).status, 200);
+  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { scope: { type: "team", team: scopeTeam }, plan: PLAN })).status, 200);
   assert.equal((await action(id, "/notice", notice)).status, 200);
   assert.equal((await action(id, "/assign", { owner: "hr" })).status, 200);
   assert.equal((await action(id, "/accept")).status, 200);

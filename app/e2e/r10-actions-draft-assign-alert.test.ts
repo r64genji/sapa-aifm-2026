@@ -16,6 +16,7 @@ import {
   sentTo,
   tapScore,
   tapData,
+  PLAN,
 } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
@@ -55,7 +56,7 @@ async function draft(title: string, driver: string, libraryNumber: number, respo
   const res = await hrRequest("/api/hr/actions", "POST", { driver, ...(responseId && { response_id: responseId }) });
   const body = await res.json();
   if (res.status === 201) {
-    assert.equal((await hrRequest(`/api/hr/actions/${body.id}`, "PATCH", { library_entry_id: library(libraryNumber), title })).status, 200);
+    assert.equal((await hrRequest(`/api/hr/actions/${body.id}`, "PATCH", { library_entry_id: library(libraryNumber), title, plan: PLAN })).status, 200);
     await hrRequest(`/api/hr/actions/${body.id}/notice`, "POST", { no_notice_reason: "Not needed for this test" });
   }
   return { status: res.status, body };

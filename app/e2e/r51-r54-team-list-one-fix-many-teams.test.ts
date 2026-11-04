@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { before, test } from "node:test";
-import { appUrl, freezeClock, hrRequest, hrToken, link, resetDemo, sentTo } from "./helpers.ts";
+import { appUrl, freezeClock, hrRequest, hrToken, link, resetDemo, sentTo, PLAN } from "./helpers.ts";
 
 const raj = "6f1c2a3e-0000-4000-8000-000000000101";
 const huiLing = "6f1c2a3e-0000-4000-8000-000000000103";
@@ -72,6 +72,7 @@ test("R54: one fix goes to three teams as one action per team in one batch; a le
   const draft = await hrRequest("/api/hr/actions", "POST", { driver: "MANAGER_SUPPORT" });
   assert.equal(draft.status, 201);
   const { id } = await draft.json();
+  assert.equal((await hrRequest(`/api/hr/actions/${id}`, "PATCH", { plan: PLAN })).status, 200);
   assert.equal((await hrRequest(`/api/hr/actions/${id}/notice`, "POST", { notes })).status, 200);
 
   const res = await hrRequest(`/api/hr/actions/${id}/batch`, "POST", {

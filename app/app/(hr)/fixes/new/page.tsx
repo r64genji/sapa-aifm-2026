@@ -28,6 +28,7 @@ type View = {
   library_entry_id: string | null;
   reason: string | null;
   notes: Partial<Notes> | null;
+  plan: Plan | null;
   held: boolean;
   demo_mode: boolean;
   today: string;
@@ -35,8 +36,9 @@ type View = {
   alert_label: string | null;
   scopes: Scope[];
   all_counts: { n: number; m: number } | null;
-  telegram: { alert: string; due: string; accept: string; done: string };
+  telegram: { alert: string; due: string; accept: string; done: string; plan: Record<keyof Plan | "action", string> };
 };
+type Plan = { problem: string; who: string; when: string; talk_about: string; done_when: string };
 type Suggestion = { title: string; steps: string; notes: Notes | null; entryId: string | null; reason: string };
 type Draft = { id: string; title: string; steps: string; notes: Notes; suggestion: Suggestion | null; decision: Decision };
 type Mode = "ai" | "library" | "none";
@@ -45,6 +47,8 @@ type Sent = { held: boolean; alert_sent: boolean; alert_label: string | null; al
 type Batch = { sent: { team: string; manager_id: string; id?: string; error?: string }[] };
 
 const EMPTY: Notes = { en: "", ms: "", zh: "" };
+const NO_PLAN: Plan = { problem: "", who: "", when: "", talk_about: "", done_when: "" };
+const TIMED = /\d|\b(today|tomorrow|daily|weekly|fortnightly|monthly|every|each|week|month|morning|afternoon|evening|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i;
 const LANGS: ["en" | "ms" | "zh", string][] = [["en", "English"], ["ms", "Bahasa Malaysia"], ["zh", "中文"]];
 const addDays = (date: string, days: number) => new Date(Date.parse(date) + days * 86400000).toISOString().slice(0, 10);
 const scopeKey = (s: Scope) => `${s.type}:${s.key}`;
@@ -69,6 +73,8 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
   const [title, setTitle] = useState("");
   const [steps, setSteps] = useState("");
   const [notes, setNotes] = useState<Notes>(EMPTY);
+  const [plan, setPlan] = useState<Plan>(NO_PLAN);
+  const [planning, setPlanning] = useState(false);
   const [lang, setLang] = useState<"en" | "ms" | "zh">("en");
   const [entryId, setEntryId] = useState<string | null>(null);
   const [ownFix, setOwnFix] = useState(false);
@@ -99,6 +105,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     setDecision("pending");
     setTitle(view.title);
     setSteps(view.steps);
+    setPlan({ ...NO_PLAN, ...view.plan });
     setNotes(library && !view.own_fix ? EMPTY : { ...EMPTY, ...view.notes });
     setEntryId(view.library_entry_id);
     setOwnFix(view.own_fix);
@@ -284,11 +291,11 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
 
   const pending = mode === "ai" && decision === "pending" && !drafting;
 
-  const saved = useRef(JSON.stringify([view.title, view.steps, view.own_fix, view.library_entry_id]));
+  const saved = useRef(JSON.stringify([view.title, view.steps, view.own_fix, view.library_entry_id, { ...NO_PLAN, ...view.plan }]));
   useEffect(() => {
-    if (sent || batch || busy || drafting || pending || !title.trim()) return;
-    const change = { title: title.trim(), ...(steps.trim() && { steps: steps.trim() }), ...(ownFix ? { own_fix: true, notes } : entryId ? { library_entry_id: entryId } : {}) };
-    const key = JSON.stringify(ownFix ? [change.title, steps.trim(), true, null, notes] : [change.title, steps.trim(), false, entryId]);
+    if (sent || batch || busy || drafting || planning || pending || !title.trim()) return;
+    const change = { title: title.trim(), ...(steps.trim() && { steps: steps.trim() }), plan, ...(ownFix ? { own_fix: true, notes } : entryId ? { library_entry_id: entryId } : {}) };
+    const key = JSON.stringify(ownFix ? [change.title, steps.trim(), true, null, plan, notes] : [change.title, steps.trim(), false, entryId, plan]);
     if (key === saved.current) return;
     const timer = setTimeout(() => {
       apiSend(`/api/hr/actions/${id}`, "PATCH", change).then(() => (saved.current = key), (e) => setError(fail(e)));
@@ -296,6 +303,28 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
     return () => clearTimeout(timer);
   });
 
+  const scopeBody = (target: Scope) => (target.type === "person" ? { type: "person" } : target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key });
+  const fillPlan = async () => {
+    if (!scope) return;
+    setPlanning(true);
+    setError(null);
+    try {
+      await apiSend(`/api/hr/actions/${id}`, "PATCH", { title: title.trim(), steps: steps.trim() || undefined, scope: scopeBody(scope) });
+      const result = await apiSend<{ steps: string; plan: Plan }>(`/api/hr/actions/${id}/plan`, "POST", {});
+      setSteps(result.steps);
+      setPlan(result.plan);
+    } catch (e) {
+      setError(fail(e));
+    }
+    setPlanning(false);
+  };
+  const autoPlan = useRef(false);
+  useEffect(() => {
+    if (autoPlan.current || sent || batch || pending || drafting || !scope || !title.trim() || Object.values(plan).some((v) => v.trim())) return;
+    autoPlan.current = true;
+    fillPlan();
+  });
+  const planOk = Object.values(plan).every((v) => v.trim()) && TIMED.test(plan.when);
   const noteOk = !!notes.en.trim() && !!notes.ms.trim();
   const tooLong = LANGS.find(([l]) => words(notes[l]) > 40);
   const why = drafting
@@ -306,6 +335,10 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       ? "Add the fix title and the message."
       : !scope
         ? multi ? "Tick at least one team with a team lead." : "Choose who the fix is for."
+        : planning
+          ? "Wait for the AI to fill the six parts."
+        : !planOk
+          ? "Fill all six parts. When must name a day, a date, a time or how often."
         : !noteOk
           ? "Add the note in English and Bahasa Malaysia."
           : tooLong
@@ -319,8 +352,9 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       await apiSend(`/api/hr/actions/${id}`, "PATCH", {
         title: title.trim(),
         steps: steps.trim(),
+        plan,
         ...(ownFix ? { own_fix: true } : entry ? { library_entry_id: entry.id } : {}),
-        scope: target.type === "person" ? { type: "person" } : target.type === "team" ? { type: "team", team: target.key } : { type: "intake", month: target.key },
+        scope: scopeBody(target),
       });
       await apiSend(`/api/hr/actions/${id}/notice`, "POST", { notes: { en: notes.en, ms: notes.ms, zh: notes.zh || undefined } });
       if (multi) {
@@ -339,7 +373,30 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
       ? `${owner.name} gets it ${shortDate(view.alert_on)}, with the weekly snapshot`
       : `${owner.name} gets it today`
     : "It stays with you";
-  const telegram = [view.telegram.alert.replace("{title}", title || "…"), steps, ...(scope?.lines ?? []), view.telegram.due.replace("{date}", shortDate(dueOn))];
+  const parts = view.telegram.plan;
+  const telegram = [
+    view.telegram.alert.replace("{title}", title || "…"),
+    `${parts.problem}: ${plan.problem || "…"}`,
+    `${parts.who}: ${plan.who || "…"}`,
+    `${parts.action}: ${steps || "…"}`,
+    `${parts.when}: ${plan.when || "…"}`,
+    `${parts.talk_about}: ${plan.talk_about || "…"}`,
+    `${parts.done_when}: ${plan.done_when || "…"}`,
+    ...(scope?.lines ?? []),
+    view.telegram.due.replace("{date}", shortDate(dueOn)),
+  ];
+  const planField = (key: keyof Plan, rows = 1) => (
+    <div key={key} className="flex flex-col gap-1">
+      <label htmlFor={`fix-${key}`} className="sp-caption" style={{ fontWeight: 600 }}>
+        {parts[key]}
+      </label>
+      {rows > 1 ? (
+        <textarea id={`fix-${key}`} className={planning ? "sp-input sp-writing sp-words" : "sp-input sp-words"} rows={rows} value={plan[key]} disabled={!!sent || planning} onChange={(e) => setPlan((p) => ({ ...p, [key]: e.target.value }))} />
+      ) : (
+        <input id={`fix-${key}`} className={planning ? "sp-input sp-writing sp-words" : "sp-input sp-words"} value={plan[key]} disabled={!!sent || planning} onChange={(e) => setPlan((p) => ({ ...p, [key]: e.target.value }))} />
+      )}
+    </div>
+  );
   const draftClass = drafting ? "sp-input sp-writing sp-words" : pending ? "sp-input sp-input-ai sp-words" : "sp-input sp-words";
   const pendingMark = pending ? <AiMark label="Drafted for your new fix" /> : null;
 
@@ -461,13 +518,26 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                 </label>
                 <input id="fix-title" className={draftClass} maxLength={120} value={title} disabled={!!sent || !!drafting} onChange={(e) => setTitle(e.target.value)} placeholder="Short name for the fix" />
               </div>
+              {planField("problem", 2)}
+              {planField("who")}
               <div className="flex flex-col gap-1">
                 <label htmlFor="fix-steps" className="sp-caption" style={{ fontWeight: 600 }}>
-                  Message to {ownerName}
+                  {parts.action}
                 </label>
                 <textarea id="fix-steps" className={draftClass} rows={4} value={steps} disabled={!!sent || !!drafting} onChange={(e) => setSteps(e.target.value)} placeholder={drafting ? "The AI is writing…" : `What you ask ${ownerName} to do. This is the Telegram message.`} />
                 <span className="sp-caption">{words(steps)} of 60 words</span>
               </div>
+              {planField("when")}
+              {planField("talk_about", 2)}
+              {planField("done_when")}
+              {!sent && !pending ? (
+                <div>
+                  <Button lane="ai" onClick={fillPlan} disabled={busy || planning || !!drafting || !scope}>
+                    {planning ? <LoaderCircle size={16} className="animate-spin" aria-hidden="true" /> : <Sparkles size={16} aria-hidden="true" />}
+                    {planning ? "Filling…" : "Fill the six parts with AI"}
+                  </Button>
+                </div>
+              ) : null}
 
               {!sent && !pending && title.trim() && (ownFix || !entry) ? (
                 <div>
@@ -676,7 +746,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
                   ))}
                 </div>
               </div>
-              <span className="sp-caption">No replies. No names.</span>
+              <span className="sp-caption">No replies.</span>
             </div>
           </section>
         </aside>

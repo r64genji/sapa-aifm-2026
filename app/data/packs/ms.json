@@ -202,6 +202,12 @@
       "optional": "Pilihan sahaja. Tekan Langkau jika tidak mahu menjawab.",
       "remarks": "Soalan terakhir: ada apa-apa lagi tentang kerja yang anda mahu HR tahu? Boleh tentang apa sahaja. Taip di sini, atau tekan Langkau."
     },
+    "share": {
+      "question": "Bolehkah Sapa beritahu ketua pasukan anda bahawa ini daripada anda?",
+      "meet": "Ya, atur 1-on-1",
+      "tell": "Ya, beritahu sahaja",
+      "no": "Tidak, rahsiakan"
+    },
     "probe": {
       "example": "Boleh beri satu contoh daripada minggu ini?",
       "effect": "Bagaimana perkara itu menjejaskan kerja anda?",

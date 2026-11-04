@@ -493,6 +493,38 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
   );
 }
 
+type LeadBrief = { id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
+
+function LeadSides({ driver }: { driver: string }) {
+  const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
+  if (!briefs?.length) return null;
+  const day = (at: string) => new Date(at).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  return (
+    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--surface-sunken)" }}>
+      <h3 className="m-0 text-[17px] font-bold">Team lead&apos;s side</h3>
+      {briefs.map((b) => (
+        <div key={b.id} className="grid min-w-0 gap-3 md:grid-cols-2">
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="sp-caption font-bold uppercase tracking-[0.06em]">Asked {b.lead} · {b.team} · {day(b.sent_at)}</span>
+            {b.items.map((item) => (
+              <span key={item.driver} className="flex flex-col gap-0.5 text-[15px]">
+                <span>{item.brief}</span>
+                {item.hires.map((h) => (
+                  <span key={h.name} className="sp-caption font-semibold">{h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}</span>
+                ))}
+              </span>
+            ))}
+          </div>
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="sp-caption font-bold uppercase tracking-[0.06em]">{b.lead} said{b.side_at ? ` · ${day(b.side_at)}` : ""}</span>
+            <span className="text-[15px] font-semibold">{b.side ?? "No answer yet"}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -573,6 +605,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </div>
 
           <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
+          <LeadSides driver={driver} />
 
           <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (

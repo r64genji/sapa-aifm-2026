@@ -242,3 +242,11 @@ export async function joined(chat: number, startDate: string) {
   await tapData(chat, 'chat:{"a":"privacy","v":"named"}');
   await say(chat, "Test Hire");
 }
+
+export const PLAN = {
+  problem: "New hires say questions to their team lead go unanswered.",
+  who: "The new hires in your team",
+  when: "Every Monday for 4 weeks",
+  talk_about: "Who to ask when you are away. This week's priorities.",
+  done_when: "Four meetings held and each new hire has a backup contact.",
+};

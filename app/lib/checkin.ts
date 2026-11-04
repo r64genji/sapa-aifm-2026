@@ -20,6 +20,7 @@ type Chat = {
   no_detail: number;
   response_id: string | null;
   remarks?: boolean;
+  sharing?: boolean;
 };
 
 export type Schedule = {
@@ -225,6 +226,43 @@ async function askRemarks(person: Person, scheduleId: string, chat: Chat | null)
   return [{ text: packs[person.language].checkin.chat.remarks, buttons: [doneButton(person.language)] }];
 }
 
+const shareReply = (language: Language): Reply => {
+  const { share } = packs[language].checkin;
+  return {
+    text: share.question,
+    buttons: (["meet", "tell", "no"] as const).map((value) => ({ label: share[value], id: "share", value })),
+  };
+};
+
+async function askShare(person: Person, scheduleId: string, chat: Chat | null): Promise<Reply[]> {
+  if (person.anonymous || !person.name) return askRemarks(person, scheduleId, chat);
+  const db = createAdminClient();
+  const [{ data: schedule, error }, { count, error: tapsError }] = await Promise.all([
+    db.from("checkin_schedule").select("share_with_lead").eq("id", scheduleId).single(),
+    db.from("responses").select("id", { count: "exact", head: true }).eq("schedule_id", scheduleId).in("question_id", DRIVERS).lte("scale_value", 2),
+  ]);
+  if (error) throw error;
+  if (tapsError) throw tapsError;
+  if (schedule.share_with_lead || !count) return askRemarks(person, scheduleId, chat);
+  const base: Chat = chat ?? { open: true, at: "", topic: "light", taps: [], focus: null, turns: [], asked: 0, no_detail: 0, response_id: null };
+  await saveChat(scheduleId, { ...base, open: true, sharing: true });
+  return [shareReply(person.language)];
+}
+
+export async function shareButton(person: Person, value: string): Promise<Reply[] | null> {
+  const open = await openChat(person);
+  if (!open?.chat.sharing || !["meet", "tell", "no"].includes(value)) return null;
+  const { data, error } = await createAdminClient()
+    .from("checkin_schedule")
+    .update({ share_with_lead: value })
+    .eq("id", open.id)
+    .is("share_with_lead", null)
+    .select("id");
+  if (error) throw error;
+  if (data.length !== 1) return null;
+  return askRemarks(person, open.id, { ...open.chat, sharing: false });
+}
+
 async function remarksTurn(person: Person, scheduleId: string, chat: Chat, text: string): Promise<Reply[]> {
   await saveChat(scheduleId, { ...chat, open: false });
   return conclude(person, await insertResponse(person, scheduleId, "REMARKS", null, text), text, null);
@@ -233,7 +271,7 @@ async function remarksTurn(person: Person, scheduleId: string, chat: Chat, text:
 async function endChat(person: Person, scheduleId: string, chat: Chat, model: string | null = null): Promise<Reply[]> {
   await saveChat(scheduleId, { ...chat, open: false });
   if (chat.remarks) return [{ text: packs[person.language].checkin.thanks }];
-  const remarks = () => askRemarks(person, scheduleId, chat);
+  const remarks = () => askShare(person, scheduleId, chat);
   if (!chat.response_id) return remarks();
   const text = wordsOf(chat);
   const { error } = await createAdminClient().from("responses").update({ text_encrypted: encrypt(text) }).eq("id", chat.response_id);
@@ -242,6 +280,7 @@ async function endChat(person: Person, scheduleId: string, chat: Chat, model: st
 }
 
 async function chatTurn(person: Person, scheduleId: string, before: Chat, text: string): Promise<Reply[]> {
+  if (before.sharing) return [shareReply(person.language)];
   if (before.remarks) return remarksTurn(person, scheduleId, before, text);
   return endChat(person, scheduleId, { ...before, turns: [...before.turns, { from: "new_hire", text }] });
 }
@@ -271,7 +310,7 @@ async function chatDone(person: Person): Promise<Reply[] | null> {
       .select("id");
     if (error) throw error;
     if (data.length !== 1) return null;
-    return askRemarks(person, open.id, open.chat);
+    return askShare(person, open.id, open.chat);
   }
   const chat = await openChat(person);
   return chat ? endChat(person, chat.id, chat.chat) : null;
