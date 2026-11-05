@@ -502,8 +502,11 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
             </div>
           ) : null}
           {sides && whole && item.lead?.side ? (
-            <div className="sp-rise flex flex-col gap-1 pt-2">
-              <span className="sp-caption" style={{ fontWeight: 600 }}>{item.lead.name}&apos;s side</span>
+            <div className="sp-rise mt-2 flex flex-col gap-2 rounded-lg px-3.5 py-3" style={{ background: "var(--fixes-soft)", borderLeft: "3px solid var(--fixes)" }}>
+              <span className="flex items-center gap-2 text-[13px] font-bold" style={{ color: "var(--fixes)" }}>
+                <Avatar name={item.lead.name} />
+                {item.lead.name}&apos;s side
+              </span>
               <Quote text={item.lead.side} />
             </div>
           ) : null}
