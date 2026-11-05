@@ -203,9 +203,12 @@ export async function leadBriefs(organisationId: string, driver: string | null =
   if (peopleError) throw peopleError;
   const { data: teams, error: teamsError } = await db.from("people").select("manager_id, team").eq("organisation_id", organisationId).in("manager_id", [...new Set(rows.map((row) => row.manager_id))]);
   if (teamsError) throw teamsError;
+  const names = new Map(people!.flatMap((p) => (p.name ? [[p.id, p.name]] : [])));
   return rows
     .map((row) => ({
       id: row.id,
+      manager_id: row.manager_id,
+      message: briefText(row.items, names),
       lead: row.managers.display_name,
       team: [...new Set(teams.filter((t) => t.manager_id === row.manager_id).map((t) => t.team as string))].sort().join(", "),
       sent_at: row.sent_at,

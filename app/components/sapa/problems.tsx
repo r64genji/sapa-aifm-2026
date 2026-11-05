@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
-import { ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
-import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month } from "./ui";
+import { Avatar, ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
+import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
@@ -498,30 +498,53 @@ type LeadBrief = { id: string; lead: string; team: string; sent_at: string; side
 function LeadSides({ driver }: { driver: string }) {
   const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
   if (!briefs?.length) return null;
-  const day = (at: string) => new Date(at).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const answered = briefs.filter((b) => b.side).length;
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--surface-sunken)" }}>
-      <h3 className="m-0 text-[17px] font-bold">Team lead&apos;s side</h3>
-      {briefs.map((b) => (
-        <div key={b.id} className="grid min-w-0 gap-3 md:grid-cols-2">
-          <div className="flex min-w-0 flex-col gap-1">
-            <span className="sp-caption font-bold uppercase tracking-[0.06em]">Asked {b.lead} · {b.team} · {day(b.sent_at)}</span>
-            {b.items.map((item) => (
-              <span key={item.driver} className="flex flex-col gap-0.5 text-[15px]">
-                <span>{item.brief}</span>
-                {item.hires.map((h) => (
-                  <span key={h.name} className="sp-caption font-semibold">{h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}</span>
-                ))}
+    <section className="flex min-w-0 flex-col gap-3" aria-label="Both sides">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <h3 className="m-0 text-[17px] font-bold">Both sides</h3>
+        <span className="flex items-center gap-1" aria-hidden="true">
+          {briefs.map((b) => (
+            <span key={b.id} className="h-2.5 w-2.5 rounded-full" style={b.side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
+          ))}
+        </span>
+        <span className="sp-caption" style={{ fontWeight: 600 }}>
+          {answered} of {briefs.length} {briefs.length === 1 ? "team lead" : "team leads"} answered
+        </span>
+      </div>
+      <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
+        {briefs.map((b) => (
+          <li key={b.id} className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
+            <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
+              <span className="text-[13px] font-bold">New hires · {b.team}</span>
+              {b.items.map((item) => (
+                <span key={item.driver} className="flex flex-col gap-1 text-[15px] leading-[22px]">
+                  {item.brief}
+                  {item.hires.map((h) => (
+                    <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
+                      {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </div>
+            <span className="hidden place-items-center md:grid" style={{ color: "var(--ink-muted)" }} aria-hidden="true">
+              →
+            </span>
+            <div
+              className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3"
+              style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}
+            >
+              <span className="flex items-center gap-2 text-[13px] font-bold">
+                <Avatar name={b.lead} waiting={!b.side} />
+                {b.lead} · {b.side ? `answered ${shortDate(b.side_at)}` : `asked ${shortDate(b.sent_at)}`}
               </span>
-            ))}
-          </div>
-          <div className="flex min-w-0 flex-col gap-1">
-            <span className="sp-caption font-bold uppercase tracking-[0.06em]">{b.lead} said{b.side_at ? ` · ${day(b.side_at)}` : ""}</span>
-            <span className="text-[15px] font-semibold">{b.side ?? "No answer yet"}</span>
-          </div>
-        </div>
-      ))}
-    </div>
+              <span className={b.side ? "text-[15px] leading-[22px]" : "sp-muted text-[15px]"}>{b.side ?? "No answer yet"}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }
 

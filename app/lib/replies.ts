@@ -8,10 +8,12 @@ import { audit, signal } from "@/lib/signal";
 import { send } from "@/lib/telegram";
 import { translation } from "@/lib/translate";
 import { fillTopic, type Schedule } from "@/lib/checkin";
+import { leadBriefs } from "@/lib/leads";
 import { packs, type Language } from "@/lib/packs";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const ANONYMOUS_MINIMUM = 5;
+const LEAD_WINDOW_MS = 14 * 24 * 3600 * 1000;
 
 export async function heldAnonymous(organisationId: string) {
   const { data, error } = await createAdminClient()
@@ -94,7 +96,7 @@ export async function readReplies(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("responses")
     .select(
-      "id, question_id, schedule_id, text_encrypted, language, created_at, anonymous, people(team, name), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
+      "id, question_id, schedule_id, text_encrypted, language, created_at, anonymous, people(team, name, manager_id), checkin_schedule(touchpoint, recheck_driver, chat), ai_tags(status, drivers, context_tags, evidence_quote, concern_level, escalate, counted, changed_by_hr, confidence)",
     )
     .eq("organisation_id", organisationId)
     .not("text_encrypted", "is", null)
@@ -102,7 +104,7 @@ export async function readReplies(organisationId: string, actor: string) {
   if (error) throw error;
   const held = await heldAnonymous(organisationId);
   const shown = data.filter((row) => !held.has(row.id));
-  type Joined = { people: { team: string | null; name: string | null } | null; checkin_schedule: (Pick<Schedule, "recheck_driver" | "chat"> & { touchpoint: number }) | null; ai_tags: { evidence_quote?: string | null } | null };
+  type Joined = { people: { team: string | null; name: string | null; manager_id: string | null } | null; checkin_schedule: (Pick<Schedule, "recheck_driver" | "chat"> & { touchpoint: number }) | null; ai_tags: { evidence_quote?: string | null; drivers?: string[]; escalate?: boolean | null } | null };
   const schedules = [...new Set(shown.map((row) => row.schedule_id).filter(Boolean))];
   const { data: taps, error: tapsError } = await db
     .from("responses")
@@ -116,6 +118,17 @@ export async function readReplies(organisationId: string, actor: string) {
     .from("audit_log")
     .insert(shown.map((row) => ({ actor, action: "read_reply_text", target: row.id, at })));
   if (auditError) throw auditError;
+  const briefs = (await leadBriefs(organisationId)).reverse();
+  const leadOf = (row: { created_at: string; schedule_id: string | null }, joined: Joined) => {
+    if (joined.ai_tags?.escalate) return null;
+    const areas = new Set([...(joined.ai_tags?.drivers ?? []), ...taps.filter((tap) => tap.schedule_id === row.schedule_id && tap.scale_value <= 2).map((tap) => tap.question_id)]);
+    const from = new Date(row.created_at).getTime();
+    const brief = briefs.find((b) => {
+      const gap = new Date(b.sent_at).getTime() - from;
+      return b.manager_id === joined.people?.manager_id && gap >= 0 && gap <= LEAD_WINDOW_MS && b.items.some((item) => areas.has(item.driver));
+    });
+    return brief ? { name: brief.lead, message: brief.message, sent_at: brief.sent_at, side: brief.side, side_at: brief.side_at } : null;
+  };
   return Promise.all(
     shown.map(async (row) => {
       const joined = row as unknown as Joined;
@@ -133,6 +146,7 @@ export async function readReplies(organisationId: string, actor: string) {
         ...joined.ai_tags,
         evidence_quote: joined.ai_tags?.evidence_quote ? mask(joined.ai_tags.evidence_quote) : null,
         log: chatLog({ ...row, text }, joined.checkin_schedule, row.schedule_id ? taps.filter((tap) => tap.schedule_id === row.schedule_id) : []),
+        lead: leadOf(row, joined),
       };
     }),
   );
@@ -187,7 +201,7 @@ export async function readQueue(organisationId: string, actor: string) {
   const { data, error } = await db
     .from("ai_tags")
     .select(
-      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, anonymous, people(team, name), checkin_schedule(touchpoint))",
+      "response_id, status, drivers, context_tags, concern_level, escalate, escalate_category, evidence_quote, summary, confidence, counted, spot_check_at, changed_by_hr, created_at, responses!inner(text_encrypted, language, anonymous, people(team, name, manager_id), checkin_schedule(touchpoint))",
     )
     .eq("organisation_id", organisationId)
     .or(

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./live.css";
 import { Loader2, Send, Shield } from "lucide-react";
 import { ApiError, apiGet, apiSend, useApi } from "./data";
@@ -25,7 +25,10 @@ export type ReplyItem = {
   serious?: boolean;
   confidence?: "low" | "medium" | "high" | null;
   log?: ChatEntry[];
+  lead?: LeadSide | null;
 };
+
+export type LeadSide = { name: string; message: string; sent_at: string; side: string | null; side_at: string | null };
 
 export type ChatEntry = { from: "bot" | "new_hire"; kind: "fixed" | "ai" | "tap" | "text"; text: string; en?: string; echo?: string; score?: number };
 
@@ -186,6 +189,112 @@ export function ChatLog({ log, evidence, language }: { log: ChatEntry[]; evidenc
   );
 }
 
+const DAY_MS = 24 * 3600 * 1000;
+const initials = (name: string) => name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+
+export function Avatar({ name, waiting }: { name: string; waiting?: boolean }) {
+  return (
+    <span
+      className="grid h-7 w-7 flex-none place-items-center rounded-full text-[11px] font-bold"
+      style={waiting ? { border: "1px dashed var(--line-strong)", color: "var(--ink-muted)" } : { background: "var(--fixes)", color: "var(--on-fixes)" }}
+      aria-hidden="true"
+    >
+      {initials(name)}
+    </span>
+  );
+}
+
+function LeadState({ lead }: { lead: LeadSide }) {
+  const answered = !!lead.side;
+  const days = Math.max(0, Math.floor((Date.now() - new Date(lead.sent_at).getTime()) / DAY_MS));
+  return (
+    <span
+      className="inline-flex min-h-5 items-center px-2 text-[11px] font-bold"
+      style={{ borderRadius: "var(--radius-round)", background: answered ? "var(--fixes-soft)" : "var(--waiting-soft)", color: answered ? "var(--fixes)" : "var(--waiting-ink)" }}
+    >
+      {answered ? "Answered" : `Waiting · ${days === 1 ? "1 day" : `${days} days`}`}
+    </span>
+  );
+}
+
+function Bubble({ from, children, label }: { from: "sapa" | "lead"; children: React.ReactNode; label: string }) {
+  const sapa = from === "sapa";
+  return (
+    <li className={`flex max-w-[92%] flex-col gap-1 ${sapa ? "self-start items-start" : "self-end items-end"}`}>
+      <span className="sp-caption">{label}</span>
+      <span
+        className="block whitespace-pre-wrap px-3.5 py-2.5 text-[15px] leading-[22px]"
+        style={{ overflowWrap: "anywhere", borderRadius: sapa ? "14px 14px 14px 4px" : "14px 14px 4px 14px", background: sapa ? "var(--surface-sunken)" : "var(--fixes-soft)" }}
+      >
+        {children}
+      </span>
+    </li>
+  );
+}
+
+function LeadPanel({ lead, open, onToggle }: { lead: LeadSide | null; open: boolean; onToggle: () => void }) {
+  if (!lead) {
+    return (
+      <div className="flex items-center gap-2.5 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
+        <span className="sp-muted text-sm">Team lead not asked</span>
+      </div>
+    );
+  }
+  if (!open) {
+    return (
+      <button type="button" className="sp-lead-foot flex w-full items-start gap-2.5 border-t pt-3 text-left" style={{ borderColor: "var(--line-soft)" }} aria-expanded={false} onClick={onToggle}>
+        <Avatar name={lead.name} waiting={!lead.side} />
+        <span className="flex min-w-0 flex-col gap-1">
+          <span className="flex flex-wrap items-center gap-2 text-sm font-bold">
+            {lead.name}&apos;s side
+            <LeadState lead={lead} />
+          </span>
+          {lead.side ? <span className="line-clamp-2 text-[15px] leading-[22px]">{lead.side}</span> : null}
+        </span>
+      </button>
+    );
+  }
+  return (
+    <div className="flex min-w-0 flex-col gap-3 rounded-lg p-3" style={{ border: "1px solid var(--line-soft)" }}>
+      <span className="flex flex-wrap items-center gap-2 text-sm font-bold">
+        <Avatar name={lead.name} waiting={!lead.side} />
+        {lead.name}&apos;s side
+        <LeadState lead={lead} />
+      </span>
+      <ol className="sp-stagger m-0 flex list-none flex-col gap-2 p-0" aria-label={`${lead.name}'s chat`}>
+        <Bubble from="sapa" label={`Sapa asked · ${shortDate(lead.sent_at)}`}>{lead.message}</Bubble>
+        {lead.side ? (
+          <Bubble from="lead" label={`${lead.name} answered · ${shortDate(lead.side_at)}`}>{lead.side}</Bubble>
+        ) : (
+          <li className="self-end rounded-[14px] px-3.5 py-2.5 text-[15px]" style={{ border: "1px dashed var(--line-strong)", color: "var(--ink-muted)" }}>
+            No answer yet
+          </li>
+        )}
+      </ol>
+    </div>
+  );
+}
+
+function useFlip<T extends HTMLElement>(key: unknown) {
+  const ref = useRef<T>(null);
+  const from = useRef<DOMRect | null>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const start = from.current;
+    from.current = null;
+    if (!el || !start || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const end = el.getBoundingClientRect();
+    el.animate(
+      [
+        { transform: `translate(${start.left - end.left}px, ${start.top - end.top}px)`, width: `${start.width}px`, height: `${start.height}px`, overflow: "hidden" },
+        { transform: "none", width: `${end.width}px`, height: `${end.height}px`, overflow: "hidden" },
+      ],
+      { duration: 520, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" },
+    );
+  }, [key]);
+  return [ref, () => (from.current = ref.current?.getBoundingClientRect() ?? null)] as const;
+}
+
 export const labelOf = (item: Pick<ReplyItem, "drivers" | "context_tags">) => {
   const names = [...item.drivers.map(driverName), ...item.context_tags.map(driverName)];
   return names.length ? names.join(", ") : "Nothing to act on";
@@ -312,6 +421,12 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
   const [busy, setBusy] = useState<string | null>(null);
   const [fixing, setFixing] = useState(false);
   const [whole, setWhole] = useState(!!full || !item.text);
+  const [leadRef, measure] = useFlip<HTMLDivElement>(whole);
+  const toggle = () => {
+    measure();
+    setWhole(!whole);
+  };
+  const sides = chat && item.lead !== undefined;
   const [local, setLocal] = useState<{ state: "confirmed" | "corrected"; label: string } | null>(null);
   const [pulse, setPulse] = useState(0);
   const run = async (key: string, action: () => Promise<unknown>, next?: { state: "confirmed" | "corrected"; label: string }) => {
@@ -341,12 +456,21 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         <span className="sp-caption">
           {item.byline} · {shortDate(item.created_at)}
         </span>
-        {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} language={item.language} /> : <TranslatedQuote language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
-        {chat && item.log ? (
-          <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={() => setWhole(!whole)}>
-            {whole ? "Show only their words" : "Show the whole check-in"}
-          </button>
-        ) : null}
+        <div className={sides && whole && item.lead ? "grid min-w-0 items-start gap-4 lg:grid-cols-2" : "flex min-w-0 flex-col gap-3"}>
+          <div key={String(whole)} className={`flex min-w-0 flex-col gap-3${whole && item.lead ? " sp-rise" : ""}`}>
+            {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} language={item.language} /> : <TranslatedQuote language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
+            {chat && item.log ? (
+              <button type="button" className="sp-link self-start text-[13px]" aria-expanded={whole} onClick={toggle}>
+                {whole ? "Show only their words" : item.lead ? "Show both sides" : "Show the whole check-in"}
+              </button>
+            ) : null}
+          </div>
+          {sides ? (
+            <div ref={leadRef} className="min-w-0">
+              <LeadPanel lead={item.lead ?? null} open={whole} onToggle={toggle} />
+            </div>
+          ) : null}
+        </div>
       </div>
       <div
         key={pulse}
