@@ -501,6 +501,12 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
               <TranslatedQuote language={item.language} text={item.evidence_quote} evidence={item.evidence_quote} />
             </div>
           ) : null}
+          {sides && whole && item.lead?.side ? (
+            <div className="sp-rise flex flex-col gap-1 pt-2">
+              <span className="sp-caption" style={{ fontWeight: 600 }}>{item.lead.name}&apos;s side</span>
+              <Quote text={item.lead.side} />
+            </div>
+          ) : null}
         </div>
         <div className="flex flex-col gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
           <div className="grid grid-cols-2 gap-2">
