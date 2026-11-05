@@ -27,8 +27,6 @@ const newEscalations = async () =>
   ((await (await hrRequest("/api/hr/escalations", "GET")).json()) as Record<string, unknown>[]).filter((e) => !seededEscalations.has(e.id));
 const en = read("../data/packs/en.json");
 const zh = read("../data/packs/zh.json");
-const [organisation] = read("../data/seed/organisations.json");
-const hrLine = organisation.escalation_contacts.general[0];
 const groups: { id: string; text: string }[] = read("../data/seed/question_groups.json");
 const groupId = (text: string) => groups.find((g) => g.text === text)!.id;
 const overtimeGroup = groupId("How do I claim overtime?");
@@ -175,7 +173,7 @@ test("R31: a draft page is never cited, and is answered from only after HR publi
 test("R32: a pay dispute gets the important-matter message, no AI answer and no escalation", async () => {
   await script(output({ important_topic: "pay_problem", answer: "Talk to payroll.", cited_path: "pay/payslip.md" }));
   const replies = await ask(payDispute, "The company paid me less than my contract says, I want to dispute it");
-  assert.deepEqual(replies, [[en.qa.important, hrLine].join("\n")]);
+  assert.deepEqual(replies, ["HR can help you with this better than I can. Please ask HR directly."]);
   assert.ok(!replies[0].includes(en.qa.disclaimer));
   assert.deepEqual(await asked(payDispute), [
     { outcome: "important", important_topic: "pay_problem", cited_path: null, group_id: null },

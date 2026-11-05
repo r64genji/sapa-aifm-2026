@@ -10,7 +10,7 @@ import { answerPages, plain } from "@/lib/handbook";
 import { mask } from "@/lib/mask";
 import { packs } from "@/lib/packs";
 import { groupList, memory, recordQuestion } from "@/lib/questions";
-import { detect, type Contacts } from "@/lib/safety";
+import { detect } from "@/lib/safety";
 import { signal } from "@/lib/signal";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -75,16 +75,6 @@ function parse(content: string) {
   }
 }
 
-async function contactsOf(organisationId: string) {
-  const { data, error } = await createAdminClient()
-    .from("organisations")
-    .select("escalation_contacts")
-    .eq("id", organisationId)
-    .single();
-  if (error) throw error;
-  return data.escalation_contacts as Contacts;
-}
-
 async function storeUnprompted(person: Person, text: string) {
   const { data, error } = await createAdminClient()
     .from("responses")
@@ -113,8 +103,7 @@ async function important(person: Person, known: Awaited<ReturnType<typeof groupL
     const responseId = await storeUnprompted(person, text);
     return escalate(person, responseId, keyword, keyword ? null : category);
   }
-  const contacts = await contactsOf(person.organisation_id);
-  return { text: [pack.qa.important, contacts.general[0]].join("\n") };
+  return { text: pack.qa.important };
 }
 
 async function awaitingAi(person: Person, text: string): Promise<Reply[]> {
