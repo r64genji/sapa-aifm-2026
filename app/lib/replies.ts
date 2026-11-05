@@ -127,7 +127,7 @@ export async function readReplies(organisationId: string, actor: string) {
       const gap = new Date(b.sent_at).getTime() - from;
       return b.manager_id === joined.people?.manager_id && gap >= 0 && gap <= LEAD_WINDOW_MS && b.items.some((item) => areas.has(item.driver));
     });
-    return brief ? { name: brief.lead, message: brief.message, sent_at: brief.sent_at, side: brief.side, side_at: brief.side_at } : null;
+    return brief ? { id: brief.id, name: brief.lead, message: brief.message, sent_at: brief.sent_at, side: brief.side, side_at: brief.side_at } : null;
   };
   return Promise.all(
     shown.map(async (row) => {

@@ -28,7 +28,7 @@ export type ReplyItem = {
   lead?: LeadSide | null;
 };
 
-export type LeadSide = { name: string; message: string; sent_at: string; side: string | null; side_at: string | null };
+export type LeadSide = { id: string; name: string; message: string; sent_at: string; side: string | null; side_at: string | null };
 
 export type ChatEntry = { from: "bot" | "new_hire"; kind: "fixed" | "ai" | "tap" | "text"; text: string; en?: string; echo?: string; score?: number };
 

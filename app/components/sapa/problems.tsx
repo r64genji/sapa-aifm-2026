@@ -495,7 +495,7 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
 
 type LeadBrief = { id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
 
-function LeadSides({ driver }: { driver: string }) {
+function LeadSides({ driver, replies }: { driver: string; replies: ReplyItem[] | undefined }) {
   const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
   if (!briefs?.length) return null;
   const answered = briefs.filter((b) => b.side).length;
@@ -517,16 +517,26 @@ function LeadSides({ driver }: { driver: string }) {
           <li key={b.id} className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
             <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
               <span className="text-[13px] font-bold">New hires · {b.team}</span>
-              {b.items.map((item) => (
-                <span key={item.driver} className="flex flex-col gap-1 text-[15px] leading-[22px]">
-                  {item.brief}
-                  {item.hires.map((h) => (
-                    <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
-                      {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
-                    </span>
-                  ))}
-                </span>
-              ))}
+              {b.items.map((item) => {
+                const quotes = (replies ?? []).filter((r) => r.lead?.id === b.id && r.drivers.includes(item.driver) && r.text);
+                return (
+                  <span key={item.driver} className="flex flex-col gap-2 text-[15px] leading-[22px]">
+                    {quotes.length
+                      ? quotes.map((r) => (
+                          <span key={r.id} className="flex flex-col gap-0.5">
+                            <TranslatedQuote language={r.language} text={r.evidence_quote ?? r.text ?? ""} />
+                            <span className="sp-caption">{r.byline.split(" · ")[0]}</span>
+                          </span>
+                        ))
+                      : item.brief}
+                    {item.hires.map((h) => (
+                      <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
+                        {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
+                      </span>
+                    ))}
+                  </span>
+                );
+              })}
             </div>
             <span className="hidden place-items-center md:grid" style={{ color: "var(--ink-muted)" }} aria-hidden="true">
               →
@@ -628,7 +638,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </div>
 
           <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
-          <LeadSides driver={driver} />
+          <LeadSides driver={driver} replies={replies.data} />
 
           <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (
