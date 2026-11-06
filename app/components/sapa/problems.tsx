@@ -176,10 +176,10 @@ function Columns({ points }: { points: Point[] }) {
   );
 }
 
-function HBar({ label, n, of, sub, onClick }: { label: string; n: number; of: number; sub?: string; onClick?: () => void }) {
+function HBar({ label, n, of, sub, on, onClick }: { label: string; n: number; of: number; sub?: string; on?: boolean; onClick?: () => void }) {
   const body = (
     <>
-      <span className="flex items-baseline justify-between gap-3 text-[13px]">
+      <span className="flex items-baseline justify-between gap-3 text-[14px]">
         <span className="min-w-0 font-semibold">{label}</span>
         <span className="sp-num flex-none sp-muted">
           {n} of {of}
@@ -192,7 +192,13 @@ function HBar({ label, n, of, sub, onClick }: { label: string; n: number; of: nu
     </>
   );
   return onClick ? (
-    <button type="button" onClick={onClick} className="flex w-full cursor-pointer flex-col gap-1.5 rounded-lg border-0 bg-transparent p-0 text-left font-[inherit] text-[color:var(--ink)] hover:opacity-80">
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={on}
+      className="-mx-3 flex cursor-pointer flex-col gap-1.5 rounded-lg border-0 px-3 py-2 text-left font-[inherit] text-[color:var(--ink)] hover:opacity-80"
+      style={{ background: on ? "var(--problems-soft)" : "transparent", boxShadow: on ? "inset 0 0 0 1.5px var(--problems)" : undefined }}
+    >
       {body}
     </button>
   ) : (
@@ -297,11 +303,36 @@ function Label({ children }: { children: ReactNode }) {
   return <h4 className="m-0 text-[12px] font-bold uppercase leading-4 tracking-[0.06em] sp-muted">{children}</h4>;
 }
 
-function Tile3({ title, wide, children }: { title: string; wide?: boolean; children: ReactNode }) {
+function Tile3({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className={`flex min-w-0 flex-col gap-4 rounded-xl p-5 ${wide ? "md:col-span-2" : ""}`} style={{ background: "var(--surface-sunken)" }}>
+    <div className="flex min-w-0 flex-col gap-4 rounded-xl p-5" style={{ background: "var(--surface-sunken)" }}>
       <Label>{title}</Label>
       {children}
+    </div>
+  );
+}
+
+function Fact({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="flex min-w-0 flex-col gap-2.5 rounded-xl px-4 py-3.5" style={{ background: "var(--surface-raised)" }}>
+      <Label>{title}</Label>
+      {children}
+    </div>
+  );
+}
+
+function MiniBar({ label, p, strong }: { label: string; p: { n: number; m: number }; strong?: boolean }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="flex items-baseline justify-between gap-2 text-[13px]">
+        <span className="font-semibold">{label}</span>
+        <span className="sp-num font-bold" style={{ color: strong ? "var(--problems)" : undefined }}>
+          {pct(p)}
+        </span>
+      </span>
+      <span className="block h-1.5 overflow-hidden rounded-full" style={{ background: "var(--track-empty)" }}>
+        <span className="block h-full rounded-full" style={{ width: `${rate(p) * 100}%`, background: strong ? "var(--problems)" : "var(--line-strong)" }} />
+      </span>
     </div>
   );
 }
@@ -325,10 +356,7 @@ function LeadBubble({ b }: { b: LeadBrief }) {
   return (
     <div className="flex min-w-0 flex-row-reverse items-end gap-2.5">
       <Avatar name={b.lead} waiting={!b.side} />
-      <div
-        className="flex min-w-0 flex-col gap-1.5 rounded-2xl rounded-br-md px-4 py-3"
-        style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}
-      >
+      <div className="flex min-w-0 flex-col gap-1.5 rounded-2xl rounded-br-md px-4 py-3" style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}>
         <span className={`text-[15px] leading-[23px] ${b.side ? "" : "sp-muted"}`}>{b.side ?? "No answer yet"}</span>
         <span className="text-[13px] leading-[18px] sp-muted">
           {b.lead} · {shortDate(b.side ? b.side_at : b.sent_at)}
@@ -352,13 +380,13 @@ function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: Reply
                 {item.brief}
               </div>
             ))}
-        {quotes.length > shown.length ? (
-          <button type="button" className="sp-link self-start pl-[38px] text-[14px] font-semibold" onClick={onMore}>
-            +{quotes.length - shown.length} more
-          </button>
-        ) : null}
-        {named.length ? (
-          <div className="flex flex-wrap gap-1.5 pl-[38px]">
+        {quotes.length > shown.length || named.length ? (
+          <div className="flex flex-wrap items-center gap-1.5 pl-[38px]">
+            {quotes.length > shown.length ? (
+              <button type="button" className="sp-link mr-1.5 text-[14px] font-semibold" onClick={onMore}>
+                +{quotes.length - shown.length} more
+              </button>
+            ) : null}
             {named.map((h) => (
               <span key={h.name} className="rounded-full px-2.5 py-0.5 text-[12px] font-semibold" style={{ background: "var(--surface-sunken)", color: "var(--problems)" }}>
                 {h.share === "meet" ? `${h.name} · 1-on-1` : `${h.name} · named`}
@@ -381,15 +409,15 @@ function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }
   const [latest, ...earlier] = only ? thread.rounds.filter((b) => replies.some((r) => r.lead?.id === b.id && only.includes(r.id))) : thread.rounds;
   return (
     <li
-      className="flex min-w-0 flex-col overflow-hidden rounded-xl"
-      style={{ background: "var(--surface-raised)", border: `1px solid ${picked ? "var(--problems)" : "var(--line)"}`, boxShadow: picked ? "0 0 0 1px var(--problems)" : "0 1px 2px rgba(28, 34, 38, 0.06)" }}
+      className="flex min-w-0 flex-col overflow-hidden rounded-2xl"
+      style={{ background: "var(--surface-raised)", border: `1px solid ${picked ? "var(--problems)" : "var(--line)"}`, boxShadow: picked ? "0 0 0 1px var(--problems)" : "0 1px 3px rgba(28, 34, 38, 0.06)" }}
     >
-      <label className="flex cursor-pointer flex-wrap items-center gap-x-3 gap-y-1.5 px-5 py-3.5" style={{ background: "var(--surface-sunken)", borderBottom: "1px solid var(--line)", borderLeft: row ? "4px solid var(--problems)" : "4px solid transparent" }}>
-        <input type="checkbox" checked={picked} onChange={onPick} className="h-[18px] w-[18px] flex-none cursor-pointer" style={{ accentColor: "var(--problems)" }} />
+      <label className="flex cursor-pointer flex-wrap items-center gap-x-3 gap-y-2 px-5 py-4" style={{ background: row ? "var(--problems-soft)" : "var(--surface-sunken)" }}>
+        <input type="checkbox" checked={picked} onChange={onPick} className="h-5 w-5 flex-none cursor-pointer" style={{ accentColor: "var(--problems)" }} />
         <span className="text-[17px] font-bold leading-6">{latest.team}</span>
         {row ? (
           <span className="sp-num rounded-full px-2.5 py-0.5 text-[13px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
-            {row.n} of {row.m}
+            {pct(row)} · {row.n} of {row.m}
           </span>
         ) : null}
         {row?.times ? (
@@ -401,9 +429,15 @@ function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }
           <MessageSquare size={14} aria-hidden="true" />
           {thread.ids.length}
         </span>
+        <span
+          className="inline-flex min-h-6 items-center px-2.5 text-[12px] font-bold"
+          style={{ borderRadius: "var(--radius-round)", background: latest.side ? "var(--fixes-soft)" : "var(--waiting-soft)", color: latest.side ? "var(--fixes)" : "var(--waiting-ink)" }}
+        >
+          {latest.side ? "Answered" : "Waiting"}
+        </span>
       </label>
       <div className="flex flex-col gap-5 px-5 py-5">
-        <Round b={latest} replies={replies} only={only} max={3} onMore={onMore} />
+        <Round b={latest} replies={replies} only={only} max={2} onMore={onMore} />
         {all
           ? earlier.map((b) => (
               <div key={b.id} className="flex flex-col gap-3 border-t pt-5" style={{ borderColor: "var(--line-soft)" }}>
@@ -413,17 +447,49 @@ function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }
             ))
           : null}
       </div>
-      <div className="flex items-center gap-3 px-5 py-3" style={{ borderTop: "1px solid var(--line-soft)" }}>
+      <div className="flex flex-wrap items-center gap-3 px-5 py-4" style={{ borderTop: "1px solid var(--line-soft)" }}>
         {earlier.length ? (
           <button type="button" className="sp-link text-[14px] font-semibold" aria-expanded={all} onClick={() => setAll(!all)}>
             {all ? "Hide earlier rounds" : `Earlier rounds (${earlier.length})`}
           </button>
         ) : null}
-        <Button href={href} className="ml-auto flex-none">
-          Draft fix
+        <Button href={href} variant="primary" lane="problems" className="ml-auto min-h-11 flex-none px-5 text-[15px]">
+          Draft fix for {latest.lead}
+          <ArrowRight size={17} aria-hidden="true" />
         </Button>
       </div>
     </li>
+  );
+}
+
+function FixChoice({ driver, entries, chosen, onChoose }: { driver: string; entries: Entry[]; chosen: string; onChoose: (id: string) => void }) {
+  return (
+    <div role="radiogroup" aria-label="Which fix" className="grid gap-3 md:grid-cols-2">
+      {[...entries, null].map((f) => {
+        const id = f?.id ?? "own";
+        const on = chosen === id;
+        const good = (f?.difference ?? 0) > 0;
+        const best = good && id === entries[0].id;
+        return (
+          <label
+            key={id}
+            className="flex cursor-pointer items-start gap-3 rounded-xl px-4 py-3.5"
+            style={{ border: `${on ? 2 : 1}px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "var(--surface-raised)", margin: on ? 0 : 1 }}
+          >
+            <input type="radio" name={`fix-${driver}`} className="mt-0.5 h-5 w-5 flex-none" style={{ accentColor: "var(--problems)" }} checked={on} onChange={() => onChoose(id)} />
+            <span className="flex min-w-0 flex-1 flex-col gap-1.5">
+              <span className="text-[15px] font-semibold leading-[21px]">{f ? f.title : "Write my own"}</span>
+              {f ? (
+                <span className="self-start rounded-full px-2.5 py-0.5 text-[12px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
+                  {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
+                </span>
+              ) : null}
+              {on && f ? <span className="text-[13px] leading-[19px] sp-muted">{f.text}</span> : null}
+            </span>
+          </label>
+        );
+      })}
+    </div>
   );
 }
 
@@ -431,7 +497,8 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [meaning, setMeaning] = useState<string | null>(null);
-  const [picked, setPicked] = useState<string[]>([]);
+  const [flipped, setFlipped] = useState<string[]>([]);
+  const [choice, setChoice] = useState<string | null>(null);
   const overview = useApi<Overview>("/api/hr/themes/overview").data;
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
@@ -455,11 +522,19 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const only = grouped.find((group) => group.title === meaning)?.reply_ids;
   const shownThreads = only ? threads.filter((t) => t.ids.some((id) => only.includes(id))) : threads;
   const answered = shownThreads.filter((t) => t.rounds[0].side).length;
-  const chosen = threads.filter((t) => picked.includes(t.rounds[0].manager_id));
-  const pick = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+  const isPicked = (t: Thread) => !!rowOf(t.teams) !== flipped.includes(t.rounds[0].manager_id);
+  const chosen = threads.filter(isPicked);
+  const flip = (id: string) => setFlipped((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+  const entries = (library.data ?? []).filter((f) => !fixes.some((a) => a.status !== "draft" && a.library_entry_id === f.id));
+  const fixId = choice ?? entries[0]?.id ?? "own";
+  const entry = entries.find((f) => f.id === fixId);
+  const hrefFor = (teams: string[]) => fixHref(driver, entry?.id, teams);
+  const target = chosen.length === 1 ? `Draft fix for ${chosen[0].rounds[0].lead}` : chosen.length ? `Draft fix for ${chosen.length} teams` : "Draft a company-wide fix";
   const intakes = intakePoints(d);
   const days = (d?.by_day ?? []).flatMap((s) => (s.enough ? [{ label: dayLabel(s.touchpoint), n: s.n, m: s.m }] : []));
   const company = where?.enough ? rate(where.company) : 0;
+  const top = where?.enough ? where.rows.toSorted((a, b) => rate(b) - rate(a))[0] : undefined;
+  const [first, other] = ["First job", "Experienced"].map((grp) => d?.by_experience.find((s) => s.group === grp));
   const read = (title: string | null) => {
     setFilter(title);
     setOpen(true);
@@ -468,13 +543,13 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
 
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4">
-      <div key={driver} className="sp-enter flex min-w-0 flex-col gap-8 px-5 py-6 sm:px-8 sm:py-8">
-        <div className="flex flex-col gap-2">
+      <div key={driver} className="sp-enter flex min-w-0 flex-col gap-10 p-4 sm:p-6">
+        <div className="flex flex-col gap-6 rounded-2xl p-5 sm:p-7" style={{ background: "var(--problems-soft)" }}>
           <div className="flex flex-wrap items-center gap-3">
             <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
               {name}
             </h2>
-            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
+            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--surface-raised)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
               {fixes.length ? "Fix in progress" : "Needs a fix"}
             </span>
             {waiting > 0 ? (
@@ -485,126 +560,113 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </Link>
             ) : null}
           </div>
-          {grouped[0] ? (
-            <p className="m-0 text-[20px] font-semibold leading-[28px]" style={{ color: "var(--problems)" }}>
-              {grouped[0].title}
-            </p>
-          ) : null}
-        </div>
 
-        {d ? (
-          <div className="sp-stagger grid gap-4 md:grid-cols-2">
-            <Tile3 title="New hires">
+          <div className="grid items-center gap-x-10 gap-y-6 md:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="flex min-w-0 flex-col gap-3">
               {card.enough ? (
-                <>
-                  <span className="sp-num text-[32px] font-bold leading-[36px]">
-                    {card.n}
-                    <span className="text-[17px] font-semibold sp-muted"> of {card.m}</span>
-                  </span>
-                  <Waffle c={card} />
-                </>
+                <span className="sp-num text-[56px] font-bold leading-[56px] tracking-[-0.02em]" style={{ color: "var(--problems)" }}>
+                  {card.n}
+                  <span className="text-[22px] font-semibold sp-muted"> of {card.m} new hires</span>
+                </span>
               ) : (
                 <CountBar notEnough />
               )}
-              <div className="flex flex-col gap-3 border-t pt-4" style={{ borderColor: "var(--line)" }}>
-                {d.by_experience.map((s) =>
-                  s.enough ? (
-                    <HBar key={s.group} label={s.group} n={s.n} of={s.m} />
-                  ) : (
-                    <span key={s.group} className="flex flex-col gap-1.5 text-[13px]">
-                      <span className="font-semibold">{s.group}</span>
-                      <CountBar notEnough have={s.have} need={s.need} />
-                    </span>
-                  ),
-                )}
-              </div>
-            </Tile3>
-            <Tile3 title="Teams">
-              <div className="flex flex-1 flex-col justify-center gap-5">
+              {grouped[0] ? <p className="m-0 text-[22px] font-semibold leading-[30px]">{grouped[0].title}</p> : null}
+            </div>
+            {card.enough ? <Waffle c={card} /> : null}
+          </div>
+
+          {d ? (
+            <div className="sp-stagger grid gap-3 md:grid-cols-3">
+              <Fact title="Where">
                 {!where?.enough ? (
                   <CountBar notEnough />
-                ) : where.verdict === "none" ? (
+                ) : !top ? (
                   <span className="flex items-center gap-2 text-[15px] font-semibold">
                     <Building2 size={18} aria-hidden="true" />
                     Spread evenly
                   </span>
                 ) : (
-                  <>
-                    {where.verdict === "most" ? <span className="text-[15px] font-semibold">Most teams</span> : null}
-                    {where.rows.toSorted((a, b) => rate(b) - rate(a)).map((r) => (
-                      <div key={r.name} className="flex flex-col gap-1">
-                        <span className="flex items-baseline justify-between gap-3">
-                          <span className="min-w-0 text-[15px] font-semibold">{r.name}</span>
-                          <span className="sp-num flex-none text-[22px] font-bold leading-7">
-                            {pct(r)}
-                            <span className="text-[13px] font-semibold sp-muted"> · {r.n} of {r.m}</span>
-                          </span>
-                        </span>
-                        <RateBar row={r} company={company} />
-                      </div>
-                    ))}
-                  </>
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-baseline justify-between gap-2">
+                      <span className="min-w-0 text-[15px] font-semibold">{top.name}</span>
+                      <span className="sp-num text-[20px] font-bold" style={{ color: "var(--problems)" }}>
+                        {pct(top)}
+                      </span>
+                    </span>
+                    <RateBar row={top} company={company} />
+                    {top.times ? (
+                      <span className="text-[13px] font-bold" style={{ color: "var(--problems)" }}>
+                        {ordinal(top.times)} time in 6 months
+                      </span>
+                    ) : null}
+                  </div>
                 )}
-              </div>
-            </Tile3>
-            <Tile3 title="Trend" wide>
+              </Fact>
+              <Fact title="Who">
+                {first?.enough && other?.enough ? (
+                  <div className="flex flex-col gap-2.5">
+                    <MiniBar label="First job" p={first} strong={rate(first) >= rate(other)} />
+                    <MiniBar label="Experienced" p={other} strong={rate(other) > rate(first)} />
+                  </div>
+                ) : (
+                  <CountBar notEnough />
+                )}
+              </Fact>
+              <Fact title="Trend">
+                {intakes.length > 1 ? (
+                  <div className="flex flex-col gap-1">
+                    <Spark points={intakes} label={`${name} by start month: ${intakes.map((p) => `${p.label} ${pct(p)}`).join(", ")}`} />
+                    <span className="flex justify-between text-[12px] sp-muted">
+                      <span>{intakes[0].label}</span>
+                      <span className="font-bold" style={{ color: "var(--problems)" }}>
+                        {intakes[intakes.length - 1].label} {pct(intakes[intakes.length - 1])}
+                      </span>
+                    </span>
+                  </div>
+                ) : (
+                  <CountBar notEnough />
+                )}
+              </Fact>
+            </div>
+          ) : (
+            <div className="sp-skel h-28" />
+          )}
+        </div>
+
+        {grouped.length || intakes.length || days.length > 1 ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            {grouped.length ? (
+              <Tile3 title="What they mean">
+                <div className="flex flex-col gap-4">
+                  {grouped.map((group) => (
+                    <HBar key={group.title} label={group.title} n={group.n} of={card.n ?? group.n} on={meaning === group.title} onClick={() => setMeaning(meaning === group.title ? null : group.title)} />
+                  ))}
+                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="text-[13px] sp-muted">+{g.not_grouped} not grouped</span> : null}
+                </div>
+              </Tile3>
+            ) : null}
+            <Tile3 title="Start month · Check-in day">
               <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
                 {intakes.length ? (
-                  <div className="flex min-w-0 flex-col gap-3 rounded-lg p-4" style={{ background: "var(--surface-raised)" }}>
-                    <Label>Start month</Label>
+                  <div className="min-w-0 rounded-lg p-3" style={{ background: "var(--surface-raised)" }}>
                     <Columns points={intakes} />
                   </div>
                 ) : null}
                 {days.length > 1 ? (
-                  <div className="flex min-w-0 flex-col gap-3 rounded-lg p-4" style={{ background: "var(--surface-raised)" }}>
-                    <Label>Check-in day</Label>
+                  <div className="min-w-0 rounded-lg p-3" style={{ background: "var(--surface-raised)" }}>
                     <Columns points={days} />
                   </div>
                 ) : null}
               </div>
             </Tile3>
           </div>
-        ) : (
-          <div className="sp-skel h-40" />
-        )}
-
-        {grouped.length ? (
-          <div className="flex flex-col gap-3">
-            <Label>What they mean</Label>
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="What they mean">
-              <button
-                type="button"
-                className="sp-chip cursor-pointer px-4 py-1"
-                aria-pressed={!meaning}
-                style={!meaning ? { borderColor: "var(--problems)", background: "var(--problems-soft)", boxShadow: "0 0 0 1px var(--problems)" } : undefined}
-                onClick={() => setMeaning(null)}
-              >
-                All
-              </button>
-              {grouped.map((group) => (
-                <button
-                  key={group.title}
-                  type="button"
-                  className="sp-chip cursor-pointer gap-2.5 py-1 pl-4 pr-1.5"
-                  aria-pressed={meaning === group.title}
-                  style={meaning === group.title ? { borderColor: "var(--problems)", background: "var(--problems-soft)", boxShadow: "0 0 0 1px var(--problems)" } : undefined}
-                  onClick={() => setMeaning(meaning === group.title ? null : group.title)}
-                >
-                  {group.title}
-                  <span className="sp-num grid h-6 min-w-6 place-items-center rounded-full px-2 text-[12px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
-                    {group.n}
-                  </span>
-                </button>
-              ))}
-              {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="text-[13px] sp-muted">+{g.not_grouped}</span> : null}
-            </div>
-          </div>
         ) : null}
 
         {threads.length ? (
-          <section className="flex min-w-0 flex-col gap-4" aria-label="Both sides">
+          <section className="flex min-w-0 flex-col gap-5" aria-label="Both sides">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <h3 className="m-0 text-[20px] font-bold leading-7">Both sides</h3>
+              <h3 className="m-0 text-[22px] font-bold leading-7">Both sides</h3>
               <span className="flex items-center gap-1" aria-hidden="true">
                 {shownThreads.map((t) => (
                   <span key={t.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={t.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
@@ -613,9 +675,16 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               <span className="text-[13px] font-semibold sp-muted">
                 {answered} of {shownThreads.length} answered
               </span>
+              {meaning ? (
+                <button type="button" className="sp-chip ml-auto cursor-pointer gap-2 py-1 pl-3 pr-3" style={{ borderColor: "var(--problems)", background: "var(--problems-soft)" }} onClick={() => setMeaning(null)}>
+                  {meaning}
+                  <span aria-hidden="true">×</span>
+                  <span className="sr-only">Show all</span>
+                </button>
+              ) : null}
             </div>
             {shownThreads.length === 0 ? <span className="sp-muted">No team lead asked yet.</span> : null}
-            <ol key={meaning ?? "all"} className="sp-stagger m-0 flex list-none flex-col gap-6 p-0">
+            <ol key={meaning ?? "all"} className="sp-stagger m-0 flex list-none flex-col gap-5 p-0">
               {shownThreads.map((t) => (
                 <ThreadCard
                   key={t.rounds[0].manager_id}
@@ -623,31 +692,73 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   replies={replies.data ?? []}
                   only={only}
                   row={rowOf(t.teams)}
-                  href={fixHref(driver, library.data?.[0]?.id, t.teams)}
-                  picked={picked.includes(t.rounds[0].manager_id)}
-                  onPick={() => pick(t.rounds[0].manager_id)}
+                  href={hrefFor(t.teams)}
+                  picked={isPicked(t)}
+                  onPick={() => flip(t.rounds[0].manager_id)}
                   onMore={() => read(t.rounds[0].team)}
                 />
               ))}
             </ol>
-            {chosen.length ? (
-              <div
-                className="sticky bottom-4 z-10 flex flex-wrap items-center gap-3 rounded-xl px-5 py-3"
-                style={{ background: "var(--ink)", color: "var(--surface-raised)", boxShadow: "0 10px 24px -12px rgba(28, 34, 38, 0.5)" }}
-              >
-                <span className="text-[15px] font-bold">
-                  {chosen.length} {chosen.length === 1 ? "team" : "teams"}
-                </span>
-                <span className="min-w-0 truncate text-[13px] opacity-75">{chosen.map((t) => t.rounds[0].team).join(", ")}</span>
-                <button type="button" className="ml-auto cursor-pointer border-0 bg-transparent text-[13px] font-semibold underline" style={{ color: "inherit" }} onClick={() => setPicked([])}>
-                  Clear
-                </button>
-                <Button href={fixHref(driver, library.data?.[0]?.id, chosen.flatMap((t) => t.teams))} variant="primary" lane="problems">
-                  Draft fix
-                </Button>
-              </div>
-            ) : null}
           </section>
+        ) : null}
+
+        <section id="send-fix" className="flex min-w-0 scroll-mt-24 flex-col gap-5 rounded-2xl p-5 sm:p-7" style={{ border: "2px solid var(--problems)" }} aria-label="Send a fix">
+          <h3 className="m-0 text-[22px] font-bold leading-7">Send a fix</h3>
+          {fixes.map((a) => (
+            <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl px-4 py-3 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
+              <span className="text-[12px] font-bold uppercase tracking-[0.06em]" style={{ color: "var(--fixes)" }}>
+                In progress
+              </span>
+              <span className="min-w-0 flex-1 font-semibold">{a.title}</span>
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          ))}
+          <div className="flex flex-col gap-3">
+            <Label>Who gets it</Label>
+            <div className="flex flex-wrap gap-2">
+              {threads.map((t) => {
+                const on = isPicked(t);
+                return (
+                  <button
+                    key={t.rounds[0].manager_id}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => flip(t.rounds[0].manager_id)}
+                    className="sp-chip cursor-pointer"
+                    style={on ? { background: "var(--problems)", borderColor: "var(--problems)", color: "var(--on-problems)" } : undefined}
+                  >
+                    {t.rounds[0].team}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label>Which fix</Label>
+            {library.data ? <FixChoice driver={driver} entries={entries} chosen={fixId} onChoose={setChoice} /> : <div className="sp-skel h-20" />}
+          </div>
+          <Button href={hrefFor(chosen.flatMap((t) => t.teams))} variant="primary" lane="problems" className="min-h-14 self-start px-7 text-[17px]">
+            {target}
+            <ArrowRight size={19} aria-hidden="true" />
+          </Button>
+        </section>
+
+        {chosen.length ? (
+          <div
+            className="sticky bottom-4 z-10 -mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-5 py-3.5"
+            style={{ background: "var(--ink)", color: "var(--surface-raised)", boxShadow: "0 14px 32px -12px rgba(28, 34, 38, 0.55)" }}
+          >
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span className="text-[15px] font-bold">{chosen.map((t) => t.rounds[0].team).join(", ")}</span>
+              <a href="#send-fix" className="truncate text-[13px] underline opacity-80" style={{ color: "inherit" }}>
+                {entry ? entry.title : "Write my own"}
+              </a>
+            </span>
+            <Button href={hrefFor(chosen.flatMap((t) => t.teams))} variant="primary" lane="problems" className="min-h-12 px-6 text-[16px]">
+              {target}
+              <ArrowRight size={18} aria-hidden="true" />
+            </Button>
+          </div>
         ) : null}
 
         <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[14px] font-semibold" aria-haspopup="dialog" disabled={!replies.data} onClick={() => read(null)}>
