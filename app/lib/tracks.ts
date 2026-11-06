@@ -1,12 +1,12 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN"];
+export const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN", "REMARKS"];
 
 export type Track = { id: "new_hire" | "employee"; name: string; days: number[]; questions: string[] };
 
 const DEFAULTS: Track[] = [
   { id: "new_hire", name: "New hire", days: [3, 7, 14, 30, 60, 90, 182], questions: BANK },
-  { id: "employee", name: "Employee", days: [273, 365, 456, 547], questions: ["MANAGER_SUPPORT", "BELONGING", "WORKLOAD", "OPEN"] },
+  { id: "employee", name: "Employee", days: [273, 365, 456, 547], questions: ["MANAGER_SUPPORT", "BELONGING", "WORKLOAD", "OPEN", "REMARKS"] },
 ];
 
 export async function tracksOf(organisationId: string) {

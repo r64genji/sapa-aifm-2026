@@ -9,7 +9,7 @@ const Tracks = z
       id: z.enum(["new_hire", "employee"]),
       name: z.string().trim().min(1).max(40),
       days: z.array(z.number().int().min(1).max(1500)).min(1),
-      questions: z.array(z.enum(BANK as [string, ...string[]])).min(1),
+      questions: z.array(z.enum(BANK as [string, ...string[]])).refine((ids) => ids.some((id) => id !== "REMARKS")),
     }),
   )
   .length(2)

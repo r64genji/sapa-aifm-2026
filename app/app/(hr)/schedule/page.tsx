@@ -7,8 +7,8 @@ import { Button, Loading, PageHeader, Select, driverName } from "@/components/sa
 
 type Track = { id: "new_hire" | "employee"; name: string; days: number[]; questions: string[] };
 
-const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN"];
-const label = (id: string) => (id === "OPEN" ? "Open question" : driverName(id));
+const BANK = ["ROLE_CLARITY", "MANAGER_SUPPORT", "BELONGING", "ONBOARDING", "TRAINING", "WORKLOAD", "OPEN", "REMARKS"];
+const label = (id: string) => (id === "OPEN" ? "Follow-up question" : id === "REMARKS" ? "Anything else?" : driverName(id));
 const sameTracks = (a: Track[], b: Track[]) => JSON.stringify(a) === JSON.stringify(b);
 const dayOfMonth = (month: number) => Math.floor((month * 365) / 12);
 const monthOfDay = (day: number) => Math.round((day * 12) / 365);

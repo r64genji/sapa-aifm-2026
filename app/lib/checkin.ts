@@ -43,7 +43,7 @@ const followUp = (schedule: Schedule) => !!schedule.recheck_action_id && !!sched
 
 const sequenceOf = (language: Language, schedule: Schedule) => {
   const tail = followUp(schedule) ? ["FIX_CHANGE"] : [];
-  const base: string[] = schedule.questions ?? packs[language].checkin.sequence;
+  const base: string[] = (schedule.questions ?? packs[language].checkin.sequence).filter((id) => id !== "REMARKS");
   const asked = base.includes("OPEN") ? base.flatMap((id) => (id === "OPEN" ? [...tail, id] : [id])) : [...base, ...tail];
   return schedule.recheck_driver ? [schedule.recheck_driver, ...asked.filter((id) => id !== schedule.recheck_driver)] : asked;
 };
@@ -222,7 +222,11 @@ const wordsOf = (chat: Chat) => saidIn(chat.turns).join("\n");
 
 async function askRemarks(person: Person, scheduleId: string, chat: Chat | null): Promise<Reply[]> {
   const base: Chat = chat ?? { open: true, at: "", topic: "light", taps: [], focus: null, turns: [], asked: 0, no_detail: 0, response_id: null };
-  await saveChat(scheduleId, { ...base, open: true, remarks: true });
+  const { data, error } = await createAdminClient().from("checkin_schedule").select("questions").eq("id", scheduleId).single<{ questions: string[] | null }>();
+  if (error) throw error;
+  const on = !data.questions || data.questions.includes("REMARKS");
+  await saveChat(scheduleId, { ...base, open: on, remarks: on });
+  if (!on) return [{ text: packs[person.language].checkin.thanks }];
   return [{ text: packs[person.language].checkin.chat.remarks, buttons: [doneButton(person.language)] }];
 }
 
