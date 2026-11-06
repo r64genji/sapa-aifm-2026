@@ -378,7 +378,7 @@ type Thread = { rounds: LeadBrief[]; ids: string[]; teams: string[] };
 
 function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }: { thread: Thread; replies: ReplyItem[]; only?: string[]; row?: TeamRow; href: string; picked: boolean; onPick: () => void; onMore: () => void }) {
   const [all, setAll] = useState(false);
-  const [latest, ...earlier] = thread.rounds;
+  const [latest, ...earlier] = only ? thread.rounds.filter((b) => replies.some((r) => r.lead?.id === b.id && only.includes(r.id))) : thread.rounds;
   return (
     <li
       className="flex min-w-0 flex-col overflow-hidden rounded-xl"
