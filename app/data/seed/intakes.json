@@ -8,35 +8,43 @@
     "teams": [
       {
         "team": "Accounts Payable Asia",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000101"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+        "join_token": "8UMXtBs24oGqmuk1xQljl7"
       },
       {
         "team": "Order-to-Cash Asia",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000102"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
+        "join_token": "3ZTh-YHkI-muGKZELCBrrp"
       },
       {
         "team": "Accounts Payable Europe",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000103"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+        "join_token": "GkMYckEfVdxoQP6mJ8tO6d"
       },
       {
         "team": "Japanese Desk",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000104"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000104",
+        "join_token": "28TfIWSxE1qvXckY7AiaGF"
       },
       {
         "team": "Korean Desk",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000105"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000105",
+        "join_token": "VP1EHpRNGSeXvooetcV1to"
       },
       {
         "team": "Record-to-Report",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000106"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+        "join_token": "5IMmZoCymGmuzWe00RBsEF"
       },
       {
         "team": "IT Service Desk",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000107"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+        "join_token": "ZSGXZQ5kwJaOWw1M5fI6tW"
       },
       {
         "team": "Thai Desk",
-        "manager_id": "6f1c2a3e-0000-4000-8000-000000000108"
+        "manager_id": "6f1c2a3e-0000-4000-8000-000000000108",
+        "join_token": "ZsxRhWp6PzzyIBYprxGP6j"
       }
     ]
   }
