@@ -493,10 +493,13 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
   );
 }
 
+const SIDES_PAGE = 5;
+
 type LeadBrief = { id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
 
 function LeadSides({ driver, replies }: { driver: string; replies: ReplyItem[] | undefined }) {
   const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
+  const [count, setCount] = useState(SIDES_PAGE);
   if (!briefs?.length) return null;
   const answered = briefs.filter((b) => b.side).length;
   return (
@@ -513,7 +516,7 @@ function LeadSides({ driver, replies }: { driver: string; replies: ReplyItem[] |
         </span>
       </div>
       <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
-        {briefs.map((b) => (
+        {briefs.slice(0, count).map((b) => (
           <li key={b.id} className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
             <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
               <span className="text-[13px] font-bold">New hires · {b.team}</span>
@@ -554,6 +557,11 @@ function LeadSides({ driver, replies }: { driver: string; replies: ReplyItem[] |
           </li>
         ))}
       </ol>
+      {briefs.length > count ? (
+        <Button className="self-start" onClick={() => setCount(count + SIDES_PAGE)}>
+          Show more ({briefs.length - count})
+        </Button>
+      ) : null}
     </section>
   );
 }
