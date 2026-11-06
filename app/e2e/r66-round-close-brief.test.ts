@@ -95,13 +95,13 @@ test("R66: an escalated reply is left out of the AI input", async () => {
   for (const score of BOTH) await tapScore(hire, score);
   await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ evidence_quote: text, summary: "The agent keeps the passport." }) }]);
   await say(hire, text);
-  const brief = "New hires say it is hard to reach you.";
-  await scriptModel("omniroute", [areas([{ area: "MANAGER_SUPPORT", ask: true, brief }, { area: "ONBOARDING", ask: false, brief: "Nothing." }])]);
+  const [brief, workplace] = ["New hires say it is hard to reach you.", "New hires say their desk setup is not ready."];
+  await scriptModel("omniroute", [areas([{ area: "MANAGER_SUPPORT", ask: true, brief }, { area: "ONBOARDING", ask: false, brief: workplace }])]);
   assert.deepEqual(await closeRound(), { sent: 1 });
   const input = (await modelCalls("omniroute")).at(-1)!.body.messages[1].content;
   assert.ok(input.includes("MANAGER_SUPPORT"));
   assert.equal(input.includes("passport"), false);
-  assert.equal(await lastText(leadChat), message([MANAGER, brief]));
+  assert.equal(await lastText(leadChat), message([MANAGER, brief], [WORKPLACE, workplace]));
 });
 
 test("R66: a round closes by itself 24 hours after the check-in was sent", async () => {
@@ -117,4 +117,26 @@ test("R66: a round closes by itself 24 hours after the check-in was sent", async
   await freezeClock("2026-10-16T15:00:00.000Z");
   await dispatch();
   assert.equal(await lastText(leadChat), message([MANAGER, brief]));
+});
+
+test("R66: an area the hire wrote about is in the brief even without a hard tap on it", async () => {
+  await freezeClock(SENT);
+  const [leadChat, hire] = [5550008008, 5550008108];
+  await team("Mei", leadChat, hire);
+  for (const score of [1, 3, 4, 4, 4, 4]) await tapScore(hire, score);
+  const text = "My lead was too busy to reply to me this week";
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["MANAGER_SUPPORT"], evidence_quote: text }) }]);
+  await say(hire, text);
+  assert.deepEqual(await closeRound(), { sent: 1 });
+  assert.equal(await lastText(leadChat), message(["Role clarity:", en.lead.briefs.ROLE_CLARITY], [MANAGER, en.lead.briefs.MANAGER_SUPPORT]));
+});
+
+test("R66: with hard taps and no text, the brief is sent even when the AI marks the area as not a problem", async () => {
+  const [leadChat, hire] = [5550008009, 5550008109];
+  await team("Hana", leadChat, hire);
+  for (const score of BOTH) await tapScore(hire, score);
+  const [manager, workplace] = ["New hires say it is hard to get answers from you.", "New hires say their desk setup is not ready."];
+  await scriptModel("omniroute", [areas([{ area: "MANAGER_SUPPORT", ask: false, brief: manager }, { area: "ONBOARDING", ask: false, brief: workplace }])]);
+  assert.deepEqual(await closeRound(), { sent: 1 });
+  assert.equal(await lastText(leadChat), message([MANAGER, manager], [WORKPLACE, workplace]));
 });
