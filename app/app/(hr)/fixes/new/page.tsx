@@ -529,7 +529,7 @@ function Editor({ id, view, entries, teams }: { id: string; view: View; entries:
               </div>
               {planField("when")}
               {planField("talk_about", 2)}
-              {planField("done_when")}
+              {planField("done_when", 2)}
               {!sent && !pending ? (
                 <div>
                   <Button lane="ai" onClick={fillPlan} disabled={busy || planning || !!drafting || !scope}>
