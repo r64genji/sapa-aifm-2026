@@ -95,12 +95,14 @@ export async function sendNotices() {
 
 export async function scheduleFor(personId: string) {
   const db = createAdminClient();
-  const { data: person, error: personError } = await db.from("people").select("organisation_id").eq("id", personId).single();
+  const { data: person, error: personError } = await db.from("people").select("organisation_id, employee").eq("id", personId).single();
   if (personError) throw personError;
+  const tracks = await tracksOf(person.organisation_id);
   const { error } = await db.rpc("write_schedule", {
     person: personId,
     at: (await now()).toISOString(),
-    days: allDays(await tracksOf(person.organisation_id)),
+    days: person.employee ? tracks.find((track) => track.id === "employee")!.days : allDays(tracks),
+    shift: person.employee ? tracks.find((track) => track.id === "new_hire")!.days.at(-1) : 0,
   });
   if (error) throw error;
 }

@@ -58,6 +58,8 @@ export async function addHire(
 
 export const joinLink = (token: string) => `https://t.me/${process.env.TELEGRAM_BOT_USERNAME}?start=${token}`;
 
+const whatsappLink = (token: string) => `https://wa.me/${process.env.TWILIO_WHATSAPP_FROM?.replace("+", "")}?text=${encodeURIComponent(`/start ${token}`)}`;
+
 export async function listHires(organisationId: string) {
   const { data, error } = await createAdminClient()
     .from("people")
@@ -95,7 +97,11 @@ export async function redeemInvite(token: string, chatId: number) {
 
 type IntakeTeam = { team: string; manager_id: string; join_token: string };
 
-export async function joinIntake(token: string, chatId: number) {
+export const EMPLOYEE_TOKEN_PREFIX = "emp-";
+
+export async function joinIntake(code: string, chatId: number) {
+  const employee = code.startsWith(EMPLOYEE_TOKEN_PREFIX);
+  const token = employee ? code.slice(EMPLOYEE_TOKEN_PREFIX.length) : code;
   const db = createAdminClient();
   const at = await now();
   const { data: intake, error } = await db
@@ -126,6 +132,7 @@ export async function joinIntake(token: string, chatId: number) {
       language: "en",
       telegram_chat_id: chatId,
       invite_used_at: at.toISOString(),
+      employee,
     })
     .select(personColumns)
     .single<Person>();
@@ -156,7 +163,9 @@ export async function teamLinks(organisationId: string) {
         team: row.team,
         lead: manager?.display_name ?? "",
         link: joinLink(row.join_token),
-        whatsapp_link: `https://wa.me/${process.env.TWILIO_WHATSAPP_FROM?.replace("+", "")}?text=${encodeURIComponent(`/start ${row.join_token}`)}`,
+        whatsapp_link: whatsappLink(row.join_token),
+        employee_link: joinLink(EMPLOYEE_TOKEN_PREFIX + row.join_token),
+        employee_whatsapp_link: whatsappLink(EMPLOYEE_TOKEN_PREFIX + row.join_token),
         lead_link: manager?.bind_token && !manager.revoked_at ? joinLink(manager.bind_token) : null,
         lead_linked: Boolean(manager?.telegram_chat_id) && !manager?.revoked_at,
       };

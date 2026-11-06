@@ -6,7 +6,8 @@ import { Plus } from "lucide-react";
 import { apiSend, useApi } from "@/components/sapa/data";
 import { Button, Dialog, Loading, PageHeader, Tabs } from "@/components/sapa/ui";
 
-type TeamLink = { team: string; lead: string; link: string; whatsapp_link: string; lead_link: string | null; lead_linked: boolean };
+type TeamLink = { team: string; lead: string; link: string; whatsapp_link: string; employee_link: string; employee_whatsapp_link: string; lead_link: string | null; lead_linked: boolean };
+type Who = "hires" | "employees" | "leads";
 
 function Qr({ link, label }: { link: string; label: string }) {
   const [src, setSrc] = useState("");
@@ -35,8 +36,10 @@ function SaveButton({ link, name }: { link: string; name: string }) {
   return <Button onClick={save}>Save image</Button>;
 }
 
-function TeamCard({ row, leads, whatsapp }: { row: TeamLink; leads: boolean; whatsapp: boolean }) {
-  const link = leads ? row.lead_link : whatsapp ? row.whatsapp_link : row.link;
+function TeamCard({ row, who, whatsapp }: { row: TeamLink; who: Who; whatsapp: boolean }) {
+  const leads = who === "leads";
+  const employees = who === "employees";
+  const link = leads ? row.lead_link : employees ? (whatsapp ? row.employee_whatsapp_link : row.employee_link) : whatsapp ? row.whatsapp_link : row.link;
   return (
     <section className="sp-card flex flex-col items-start gap-3 p-5" aria-label={row.team}>
       <div className="flex flex-col gap-0.5">
@@ -48,7 +51,7 @@ function TeamCard({ row, leads, whatsapp }: { row: TeamLink; leads: boolean; wha
           <Qr link={link} label={leads ? `${row.team} as team lead ${row.lead}` : row.team} />
           <div className="flex flex-wrap gap-2">
             <CopyButton link={link} />
-            <SaveButton link={link} name={`sapa-join-${leads ? "lead-" : whatsapp ? "whatsapp-" : ""}${row.team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} />
+            <SaveButton link={link} name={`sapa-join-${leads ? "lead-" : ""}${employees ? "employee-" : ""}${!leads && whatsapp ? "whatsapp-" : ""}${row.team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} />
           </div>
         </>
       ) : (
@@ -118,7 +121,7 @@ function AddTeam({ onAdded }: { onAdded: (team: string) => void }) {
 
 export default function Page() {
   const { data } = useApi<{ intake: string; teams: TeamLink[] }>("/api/hr/team-links", 60000);
-  const [who, setWho] = useState<"hires" | "leads">("hires");
+  const [who, setWho] = useState<Who>("hires");
   const [app, setApp] = useState<"telegram" | "whatsapp">("telegram");
   const [added, setAdded] = useState("");
   if (!data) return <Loading />;
@@ -127,7 +130,7 @@ export default function Page() {
     <div className="flex flex-col gap-6">
       <PageHeader title={`Join codes · ${data.intake}`} right={
           <div className="flex flex-wrap items-center gap-2">
-            <Tabs label="Show codes for" value={who} onChange={setWho} items={[["hires", "New hires"], ["leads", "Team leads"]]} />
+            <Tabs label="Show codes for" value={who} onChange={setWho} items={[["hires", "New hires"], ["employees", "Employees"], ["leads", "Team leads"]]} />
             {!leads && <Tabs label="Chat app" value={app} onChange={setApp} items={[["telegram", "Telegram"], ["whatsapp", "WhatsApp"]]} />}
             <AddTeam onAdded={setAdded} />
           </div>
@@ -141,7 +144,7 @@ export default function Page() {
       </p>
       <div key={`${who}-${app}`} className="sp-stagger grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
         {data.teams.map((row) => (
-          <TeamCard key={row.team} row={row} leads={leads} whatsapp={app === "whatsapp"} />
+          <TeamCard key={row.team} row={row} who={who} whatsapp={app === "whatsapp"} />
         ))}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { before, test } from "node:test";
-import { appUrl, db, dispatch, freezeClock, hrRequest, hrToken, joined, resetDemo, sentTo } from "./helpers.ts";
+import { appUrl, db, dispatch, freezeClock, hrRequest, hrToken, joined, link, resetDemo, sentTo, tap } from "./helpers.ts";
 
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const question = (id: string) => en.checkin.questions.find((q: { id: string }) => q.id === id).text;
@@ -57,4 +57,20 @@ test("R60: an employee check-in asks only the questions of the employee track", 
   await freezeClock("2027-05-03T02:00:00.000Z");
   await dispatch();
   assert.deepEqual((await sentTo(chat)).map((m) => m.text).slice(before), [`${en.checkin.introNamed.replace("{name}", "Test Hire")}\n\n${question("WORKLOAD")}`]);
+});
+
+test("R60: a person who joins with a team's employee code gets only the Employee track", async () => {
+  await save([
+    { id: "new_hire", name: "New hire", days: [2, 5], questions: ["ROLE_CLARITY", "WORKLOAD", "OPEN"] },
+    { id: "employee", name: "Employee", days: [200, 300], questions: ["WORKLOAD"] },
+  ]);
+  await freezeClock("2026-10-14T01:00:00.000Z");
+  const links = await (await hrRequest("/api/hr/team-links", "GET")).json();
+  const code = String(links.teams[0].employee_link).split("?start=")[1];
+  await link(5550000602, code);
+  await tap(5550000602, "English");
+  await tap(5550000602, "I agree");
+  const { data: person } = await db.from("people").select("id").eq("telegram_chat_id", 5550000602).single();
+  const { data } = await db.from("checkin_schedule").select("touchpoint").eq("person_id", person!.id).order("touchpoint");
+  assert.deepEqual(data!.map((row) => row.touchpoint), [200, 300]);
 });
