@@ -70,7 +70,7 @@ test("R46, R36: all three languages are offered from the start; a Chinese hire g
   await say(chat, "王小明");
 });
 
-test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and nothing of the translation is stored", async () => {
+test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a labelled AI translation, and the translation is saved for the next open", async () => {
   const advance = await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 });
   assert.equal(advance.status, 200);
   await tapScore(chat, 4);
@@ -96,26 +96,27 @@ test("R46, R53: a Chinese reply goes to needs review, HR sees the original and a
   assert.equal(item.translation, undefined);
   assert.equal((await modelCalls("omniroute")).length, classifyCalls);
 
-  await scriptModel("omniroute", [{ kind: "json", content: { translation: translated } }]);
-  const opened = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
-  assert.equal(opened.status, 200);
-  assert.deepEqual(await opened.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
-  const calls = (await modelCalls("omniroute")).slice(classifyCalls);
-  assert.equal(calls.length, 1);
-  assert.ok(JSON.stringify(calls[0].body).includes(reply));
-
-  const all = await (await hrRequest("/api/hr/replies", "GET")).json();
-  assert.equal(all.find((r: any) => r.id === response!.id).translation, undefined);
-
-  await scriptModel("omniroute", [{ kind: "text", content: "```json\n{}\n```" }, { kind: "json", content: { translation: translated } }]);
-  const retried = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
-  assert.deepEqual(await retried.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
-
   await scriptModel("omniroute", [{ kind: "text", content: "not json" }, { kind: "text", content: "still not json" }]);
   const failed = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
   assert.equal(failed.status, 200);
   assert.deepEqual(await failed.json(), { language: "zh", translation: null });
   assert.equal((await hrRequest("/api/hr/queue", "GET")).status, 200);
+
+  await scriptModel("omniroute", [{ kind: "text", content: "```json\n{}\n```" }, { kind: "json", content: { translation: translated } }]);
+  const before = (await modelCalls("omniroute")).length;
+  const opened = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
+  assert.equal(opened.status, 200);
+  assert.deepEqual(await opened.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
+  const calls = (await modelCalls("omniroute")).slice(before);
+  assert.equal(calls.length, 2);
+  assert.ok(JSON.stringify(calls[1].body).includes(reply));
+
+  const all = await (await hrRequest("/api/hr/replies", "GET")).json();
+  assert.equal(all.find((r: any) => r.id === response!.id).translation, undefined);
+
+  const reopened = await hrRequest(`/api/hr/replies/${response!.id}/translation`, "GET");
+  assert.deepEqual(await reopened.json(), { language: "zh", translation: { label: "AI translation", text: translated } });
+  assert.equal((await modelCalls("omniroute")).length, before + 2);
 
   for (const table of ["responses", "ai_tags", "ai_usage", "audit_log", "change_signals", "escalations"]) {
     const { data } = await db.from(table).select("*");
