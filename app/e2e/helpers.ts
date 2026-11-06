@@ -21,6 +21,7 @@ export async function unlinkPhones() {
 export async function resetSeed() {
   await db.from("organisations").update({ demo_mode: true }).neq("id", "00000000-0000-0000-0000-000000000000");
   await unlinkPhones();
+  await db.from("checkin_tracks").delete().neq("id", "");
   await callReset();
   await db.from("ai_usage").delete().neq("id", "00000000-0000-0000-0000-000000000000");
 }

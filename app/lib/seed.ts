@@ -202,6 +202,8 @@ export async function resetDemo(full = false) {
   const leads = process.env.SAPA_TEST === "1" ? managers : managers.map((row) => ({ ...row, bind_token: MANAGER_TOKEN_PREFIX + randomBytes(16).toString("base64url") }));
   const cases = escalations.map(({ phone, ...row }) => ({ ...row, contact_phone_encrypted: phone ? encrypt(phone) : null }));
   const phones = full ? null : await linkedPhones();
+  const tracks = full ? null : await db.from("checkin_tracks").select();
+  if (tracks?.error) throw tracks.error;
   const { error } = await db.rpc("reset_demo", {
     seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people: demo.people, consents, checkin_schedule: demo.checkin_schedule, responses: replies, ai_tags: demo.ai_tags, escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots: demo.theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
@@ -211,6 +213,10 @@ export async function resetDemo(full = false) {
   await seedLeadBriefs();
   await seedNotices();
   await seedUsers();
+  if (tracks?.data.length) {
+    const { error: tracksError } = await db.from("checkin_tracks").insert(tracks.data);
+    if (tracksError) throw tracksError;
+  }
   if (phones) await relinkPhones(phones, teams);
   const { data: lead } = await db.from("managers").select("id, display_name");
   const names = new Map(lead!.map((row) => [row.id, row.display_name]));
