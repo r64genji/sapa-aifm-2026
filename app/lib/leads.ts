@@ -83,11 +83,14 @@ const title = (driver: Driver) => {
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
 
+const listOf = (items: string[]) => (items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`);
+
 export function briefText(items: Item[], names: Map<string, string>) {
+  const who = (item: Item, share: "meet" | "tell") => listOf(item.hires.filter((hire) => hire.share === share).map((hire) => names.get(hire.person_id) ?? ""));
   const blocks = items.map((item) => [
     `${title(item.driver)}:`,
     item.brief,
-    ...item.hires.map((hire) => (hire.share === "meet" ? lead.meet : lead.tell).replace("{name}", names.get(hire.person_id) ?? "")),
+    ...(["tell", "meet"] as const).flatMap((share) => (who(item, share) ? [lead[share].replace("{name}", who(item, share)).replace("..", ".")] : [])),
   ].join("\n"));
   return [lead.opening, ...blocks, lead.side].join("\n\n");
 }

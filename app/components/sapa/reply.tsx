@@ -456,7 +456,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
         <span className="sp-caption">
           {item.byline} · {shortDate(item.created_at)}
         </span>
-        <div className={sides && whole && item.lead ? "grid min-w-0 items-start gap-4 lg:grid-cols-2" : "flex min-w-0 flex-col gap-3"}>
+        <div className={sides && whole && item.lead ? "sp-reply-sides grid min-w-0 items-start gap-4 lg:grid-cols-2" : "flex min-w-0 flex-col gap-3"}>
           <div key={String(whole)} className={`flex min-w-0 flex-col gap-3${whole && item.lead ? " sp-rise" : ""}`}>
             {chat && item.log && whole ? <ChatLog log={item.log} evidence={item.evidence_quote} language={item.language} /> : <TranslatedQuote language={item.language} text={item.text ?? ""} evidence={item.evidence_quote} />}
             {chat && item.log ? (
@@ -474,7 +474,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
       </div>
       <div
         key={pulse}
-        className={`box-border flex min-w-0 flex-[1_1_300px]${pulse ? " sp-ok" : ""} flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6`}
+        className={`sp-reply-side box-border flex min-w-0 flex-[1_1_300px]${pulse ? " sp-ok" : ""} flex-col justify-between gap-4 border-l px-5 py-5 sm:px-6`}
         style={{ background: "var(--surface-sunken)", borderColor: "var(--line-soft)" }}
       >
         <div className="flex flex-col gap-1.5">
@@ -499,15 +499,6 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
             <div className="flex flex-col gap-1 pt-2">
               <span className="sp-caption" style={{ fontWeight: 600 }}>Original quote</span>
               <TranslatedQuote language={item.language} text={item.evidence_quote} evidence={item.evidence_quote} />
-            </div>
-          ) : null}
-          {sides && whole && item.lead?.side ? (
-            <div className="sp-rise mt-2 flex flex-col gap-2 rounded-lg px-3.5 py-3" style={{ background: "var(--fixes-soft)", borderLeft: "3px solid var(--fixes)" }}>
-              <span className="flex items-center gap-2 text-[13px] font-bold" style={{ color: "var(--fixes)" }}>
-                <Avatar name={item.lead.name} />
-                {item.lead.name}&apos;s side
-              </span>
-              <Quote text={item.lead.side} />
             </div>
           ) : null}
         </div>
