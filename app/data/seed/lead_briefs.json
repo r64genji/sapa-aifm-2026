@@ -1,31 +1,253 @@
 [
   {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000101",
-    "days_ago": 6,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
     "items": [
       {
         "driver": "ROLE_CLARITY",
-        "brief": "New hires say they get several urgent tasks at once and do not know which one to do first.",
+        "brief": "New hires say you keep changing whether billing or disputes comes first.",
         "ai": true,
         "hires": [
           {
-            "person_id": "6f1c2a3e-0000-4000-8000-000000010001",
-            "share": "meet"
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010016",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say day one had no orientation and nobody showed them how to claim medical costs.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010015",
+            "share": "tell"
           }
         ]
       }
     ],
-    "side": "Month-end close moved up a week, so I handed out tasks without saying which come first. My fault. I can send a ranked list every Monday morning.",
-    "side_hours": 5,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+    "sent_at": "2026-05-19T01:30:00.000Z",
+    "side": "HR moved orientation that week and I did not replace it. I will walk them through claims on Friday. Billing first, disputes second, and I will put that in writing.",
+    "side_at": "2026-05-19T03:30:00.000Z"
   },
   {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000103",
-    "days_ago": 9,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
     "items": [
       {
+        "driver": "ONBOARDING",
+        "brief": "New hires say the handbook link in the welcome email does not open, so the leave rules are unclear.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "I did not know the link was broken. I sent the new link to the team today and I will go through leave at the next huddle.",
+    "side_at": "2026-06-16T10:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say it is not clear who signs off credit notes.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010045",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say orientation was called off more than once and they do not know who handles access cards.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-07-21T01:30:00.000Z",
+    "side": "Orientation clashed with the audit twice. Access cards are with Facilities on level 2, and I sign off credit notes. I will pin both in the team chat.",
+    "side_at": "2026-07-21T17:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
+    "items": [
+      {
+        "driver": "BELONGING",
+        "brief": "New hires ask for a chat group where new joiners can meet each other.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say nobody warned them the canteen closes early on late shift, and they hear different dress code rules.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010062",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say the billing training moves too fast to follow.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010064",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "Fair points. I will add canteen hours and the Friday dress rule to the welcome pack, start a new-joiner group this week, and split billing training into two sessions.",
+    "side_at": "2026-08-19T00:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say their tasks change every day, instructions are unclear, and nobody shared their collection target.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010093",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010096",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say nobody explained overtime claims or gave them the SOP on day one.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010079",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-09-27T01:30:00.000Z",
+    "side": "Targets came late this quarter. Each new hire now gets the SOP and their collection target on one page, and I approve OT claims every Friday.",
+    "side_at": "2026-09-28T07:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000102",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the follow-up list is long and they do not know which customers come first.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010096",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires on the Europe shift say they have not met most of their colleagues.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010092",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say they still have no system access and only watch others work.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010095",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say the queue grew a lot with the new client and they cover for absent colleagues on long shifts.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000011038",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010093",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010091",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-16T01:30:00.000Z",
+    "side": "The new client went live with no extra headcount. Two temps start next week. I will sort the list by amount owed and I have chased IT for ServiceNow access.",
+    "side_at": "2026-10-16T09:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say you and the seniors give different instructions, and they are unsure which vendors are theirs.",
+        "ai": true,
+        "hires": []
+      },
+      {
         "driver": "MANAGER_SUPPORT",
-        "brief": "New hires say questions to you can wait a day or more, mostly in the afternoons.",
+        "brief": "New hires say you have not met them one-to-one yet and are rarely free on their shift.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010007",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say nobody walked them through the long SOP.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010008",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say month-end close keeps them working late every night.",
         "ai": true,
         "hires": [
           {
@@ -33,81 +255,1197 @@
             "share": "tell"
           }
         ]
-      },
-      {
-        "driver": "WORKLOAD",
-        "brief": "New hires say they cover tasks from people who are away and stay late to finish.",
-        "ai": true,
-        "hires": []
       }
     ],
-    "side": "I cover two desks since a senior left in August, and I am on audit calls most afternoons. I can hold a fixed 30-minute question slot at 9:30 every day.",
-    "side_hours": 20,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+    "sent_at": "2026-05-19T01:30:00.000Z",
+    "side": "May was my first month leading this team and I let one-to-ones slip. I have booked them all for next week, and I will assign vendors by name.",
+    "side_at": "2026-05-19T16:30:00.000Z"
   },
   {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000107",
-    "days_ago": 4,
-    "items": [
-      {
-        "driver": "TRAINING",
-        "brief": "New hires say they learn the ticket system by watching others, with no set training.",
-        "ai": true,
-        "hires": []
-      }
-    ],
-    "side": "Shadowing was cut short by the system migration. The ticketing course restarts next Tuesday and every new hire is booked on it.",
-    "side_hours": 3,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
-  },
-  {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000106",
-    "days_ago": 12,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
     "items": [
       {
         "driver": "ROLE_CLARITY",
-        "brief": "New hires say the job is not what they were told when they were hired.",
+        "brief": "New hires say their tasks switch between matching and vendor queries, with no clear main job.",
+        "ai": true,
+        "hires": []
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you are slow to answer on Teams and they wait hours for help.",
         "ai": true,
         "hires": [
           {
-            "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010019",
             "share": "meet"
           }
         ]
       }
     ],
-    "side": "They were hired for reporting, but everyone starts on reconciliations for three months. Nobody told them that. I will explain the plan in their 1-on-1s.",
-    "side_hours": 26,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "I am on audit calls most mornings. I will check Teams at 11 and 3 every day. Matching is their main job, vendor queries only when the queue is empty.",
+    "side_at": "2026-06-16T23:30:00.000Z"
   },
   {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000104",
-    "days_ago": 7,
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
     "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you mostly talk to them when something goes wrong.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010037",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say they feel like outsiders because the groups had already formed.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010039",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say the vendor master training keeps moving and their buddy is too new to teach the ticket tool.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010036",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010038",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-07-21T01:30:00.000Z",
+    "side": "Point taken on feedback. I will start a ten-minute catch-up every Friday. Vendor master training is fixed for 5 August, and I am pairing them with a buddy who has been here three years.",
+    "side_at": "2026-07-22T06:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say they get no regular feedback or one-to-ones and do not know how they are doing.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000011008",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say they cover the queues of people who resigned and cannot keep up the pace.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000011004",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-04T01:30:00.000Z",
+    "side": "I cover two desks since two seniors left in July, and I am on audit calls most afternoons. I can hold a fixed 30-minute question slot at 9:30 every day.",
+    "side_at": "2026-08-04T08:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say at month-end they cannot tell which deadlines are theirs.",
+        "ai": true,
+        "hires": []
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say nobody tells them how they are doing and you are often away from your desk.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010055",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010053",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say month-end deadlines all land at the same time.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "I sit with the Europe team two days a week, so I am away more. I will post a month-end deadline list per person and give each new hire written feedback by the 30th.",
+    "side_at": "2026-08-18T15:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say nobody explained who approves new vendors or which work belongs to your team.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010039",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-09-11T01:30:00.000Z",
+    "side": "New vendors go to Procurement, not us. I will share the hand-off chart that shows what our team owns.",
+    "side_at": "2026-09-11T22:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they do not know which queue comes first, what their daily quota is, or what counts as done.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010073",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010072",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010070",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010069",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010053",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say they only learned about their KPI at the weekly review.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010070",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say nobody introduced them to the team on their first day.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010071",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say they still have no SAP access.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010069",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-02T01:30:00.000Z",
+    "side": "SAP access was stuck with IT and is fixed now. From this intake I will introduce new hires at the morning huddle and go through KPIs and the daily quota in week one.",
+    "side_at": "2026-10-03T05:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000103",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they do not know who sets their work priorities.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-10-09T01:30:00.000Z",
+    "side": "I set the priorities, but I only said it once. I will send the priority list every Monday.",
+    "side_at": "2026-10-09T07:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000105",
+    "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say they have had no feedback on their work yet.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010014",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say they do not feel part of the team yet.",
+        "ai": false,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010014",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-05-19T01:30:00.000Z",
+    "side": "I waited for the first-month review to give feedback. I will send short weekly notes instead.",
+    "side_at": "2026-05-19T14:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000105",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they are unsure which customer cases are theirs and which belong to a senior.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010026",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires from abroad say colleagues rarely talk to them.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010024",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "Cases are split by region in the tracker, but I never showed them. I will pair each new hire with a lunch buddy and keep the team chat in English.",
+    "side_at": "2026-06-16T21:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000105",
+    "items": [
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say many long-time staff have left and the team seldom eats together.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-09-01T01:30:00.000Z",
+    "side": "Half the team is new since July. I will book a team lunch every second Friday.",
+    "side_at": "2026-09-02T04:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say every invoice is called urgent and they do not know which to finish first.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-05-19T01:30:00.000Z",
+    "side": "Each controller pushes their own country. I will rank the countries every Monday morning.",
+    "side_at": "2026-05-19T06:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say controllers from two countries both call their invoices urgent.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010017",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "Vietnam closes first, so it goes first. I said it at the huddle but never wrote it down. It is in the team sheet now.",
+    "side_at": "2026-06-16T13:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say you and their buddy give different daily quotas.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010034",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you often cancel your weekly check-in with them.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010032",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-07-21T01:30:00.000Z",
+    "side": "Controller calls ran over, so I cancelled. I moved check-ins to 8:30, before the calls. The quota is 90 a day and I have told the buddies.",
+    "side_at": "2026-07-21T20:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say targets keep changing and every country's controller calls their work the most urgent.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010054",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010050",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you are always on calls, so they ask their buddy instead.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010049",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "Month-end close moved up a week, so I handed out tasks without saying which come first. My fault. I can send a ranked list every Monday morning.",
+    "side_at": "2026-08-19T03:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires ask which country's invoices to finish first.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-09-02T01:30:00.000Z",
+    "side": "Vietnam first, then Thailand. It is on the ranked list I send on Mondays, and I will pin it in the chat too.",
+    "side_at": "2026-09-02T05:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they get no priority order and the quota changed without the sheet being updated.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010067",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010054",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say urgent invoices keep them working late every night.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010067",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-03T01:30:00.000Z",
+    "side": "I changed the quota and forgot the sheet. It is updated now. I will cap OT at two nights a week and move the rest to the backlog.",
+    "side_at": "2026-10-03T12:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the scope sheet leaves out who approves vendor changes.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010034",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019002",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019004",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you are often in meetings and they wait hours for answers.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019001",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019003",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019004",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say they eat alone and are not in the team's group chat.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019001",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019002",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019003",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019004",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say day one had no laptop and no induction, and their system logins came late.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019001",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019002",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019003",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say they learned by watching others, with no set training on matching or vendor holds.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019001",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019002",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019003",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019004",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say their workload is hard to manage.",
+        "ai": false,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019001",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019003",
+            "share": "meet"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019004",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-06T01:30:00.000Z",
+    "side": "That intake landed in audit week and I dropped day one. I added vendor sign-off to the scope sheet, booked matching training, and added them to the team chat.",
+    "side_at": "2026-10-06T19:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000101",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they still do not know which tasks and targets are theirs.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019005",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019008",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say they feel lost without a buddy and do not want to keep asking you.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019006",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019007",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say they have no buddy, no checklist and no day one pack.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019005",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019006",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019007",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019008",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say their only training was a short deck before a full invoice load.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019005",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019006",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019007",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say their daily invoice load is too high this early.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019005",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019006",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019007",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019008",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say it is hard to get help or answers from their team lead.",
+        "ai": false,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019005",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019006",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019007",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000019008",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-20T01:30:00.000Z",
+    "side": "Two buddies resigned the same week, so nobody was free. I have named new buddies, and we will go through the day one checklist with each of them on Monday.",
+    "side_at": "2026-10-21T02:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say each senior gives a different rule for when to pass a ticket to the next level.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010012",
+            "share": "meet"
+          }
+        ]
+      },
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say they get mixed guidance on escalation and no single answer from you.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010012",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-05-19T01:30:00.000Z",
+    "side": "We never wrote the level 2 rule down. I wrote a one-page guide today: escalate after 30 minutes or on any payment block.",
+    "side_at": "2026-05-19T04:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "MANAGER_SUPPORT",
+        "brief": "New hires say you are busy and their questions often go unanswered.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010022",
+            "share": "meet"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "I cover two queues this month. I will hold a question slot at 4pm every day.",
+    "side_at": "2026-06-16T11:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "BELONGING",
+        "brief": "New hires say lunch talk is in a language they do not speak, so they sit alone.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010041",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say nobody showed them SAP properly.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010040",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-07-21T01:30:00.000Z",
+    "side": "SAP training is now on the first Wednesday. I asked the team to keep lunch talk in English or Malay when new hires join.",
+    "side_at": "2026-07-21T18:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say all tickets land in one queue and they do not know which to take.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010056",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say the training material still shows the old system.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010057",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "Shadowing was cut short by the system migration. The ticketing course restarts next Tuesday and every new hire is booked on it. I will also tag starter tickets for them.",
+    "side_at": "2026-08-19T01:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say they work overtime every day since senior staff resigned.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010074",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-09-22T01:30:00.000Z",
+    "side": "Two seniors left in August. One backfill starts on 6 October. Until then I am moving low-priority tickets to next week.",
+    "side_at": "2026-09-22T03:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000107",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say this week's target is not clear at all.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010056",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-11T01:30:00.000Z",
+    "side": "I posted the targets in the old channel by mistake. They are in the team chat now.",
+    "side_at": "2026-10-11T10:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the close calendar does not show which journals are theirs.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010029",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say month-end close keeps them on reconciliations late at night and at weekends.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010028",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010029",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010031",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "Close was two people short. I will split bank recon across three people and mark each owner on the close calendar.",
+    "side_at": "2026-06-16T17:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "items": [
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say there is no training on the billing system.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010046",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say they cover a senior's journals while that senior is on leave.",
+        "ai": true,
+        "hires": []
+      }
+    ],
+    "sent_at": "2026-07-21T01:30:00.000Z",
+    "side": "The leave cover was my call and I should have shared it out. Billing training is with the system team and I asked for a session in August.",
+    "side_at": "2026-07-22T00:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the job is not what they were told when they were hired, and every email is marked urgent.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010065",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010046",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-09-13T01:30:00.000Z",
+    "side": "They were hired for reporting, but everyone starts on reconciliations for three months. Nobody told them that. I will explain the plan in their 1-on-1s.",
+    "side_at": "2026-09-14T07:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "items": [
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say two close calendars run at once and only they know the new system.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "ONBOARDING",
+        "brief": "New hires say something about their setup or workplace is not working.",
+        "ai": false,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010081",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-09-22T01:30:00.000Z",
+    "side": "True. I will train two more people on the new system this month so the load is shared.",
+    "side_at": "2026-09-22T09:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000106",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they do not know their part in close or which reconciliations come first.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010099",
+            "share": "tell"
+          }
+        ]
+      },
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say back-to-back calls and long hours leave no time to update the log.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010098",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010097",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-16T01:30:00.000Z",
+    "side": "I will give each new hire a close checklist with their reconciliations in order, and block 30 minutes after lunch with no calls.",
+    "side_at": "2026-10-16T16:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000104",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say nobody told them clearly what is expected in their first month.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010023",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-06-16T01:30:00.000Z",
+    "side": "I will write first-month goals for each new hire and go through them on day one.",
+    "side_at": "2026-06-16T23:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000104",
+    "items": [
+      {
+        "driver": "TRAINING",
+        "brief": "New hires say their laptop came late and they missed the classroom training.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010059",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "IT was short of laptops that month. I booked a catch-up class for everyone who missed it.",
+    "side_at": "2026-08-19T06:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000104",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires ask what the real month-end deadline is.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010013",
+            "share": "tell"
+          }
+        ]
+      },
       {
         "driver": "MANAGER_SUPPORT",
         "brief": "New hires say it is hard to reach you when you travel.",
         "ai": true,
-        "hires": []
-      }
-    ],
-    "side": "I am in Tokyo two weeks a month. When I am away, Kenji can answer daily questions. I had not told the new hires that.",
-    "side_hours": 30,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
-  },
-  {
-    "manager": "6f1c2a3e-0000-4000-8000-000000000102",
-    "days_ago": 1,
-    "items": [
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010076",
+            "share": "meet"
+          }
+        ]
+      },
       {
         "driver": "BELONGING",
-        "brief": "New hires say they eat and sit alone and are not in the team's group chat.",
-        "ai": true,
-        "hires": []
+        "brief": "New hires say they do not feel part of the team yet.",
+        "ai": false,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010076",
+            "share": "meet"
+          }
+        ]
       }
     ],
-    "side": null,
-    "side_hours": null,
-    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001"
+    "sent_at": "2026-09-22T01:30:00.000Z",
+    "side": "I am in Tokyo two weeks a month. When I am away, Kenji can answer daily questions. I had not told the new hires that. Month-end cut-off is the 3rd working day.",
+    "side_at": "2026-09-22T08:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000104",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say the SOP and the seniors disagree, and nobody defined when a ticket counts as done.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010075",
+            "share": "tell"
+          },
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010077",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-13T01:30:00.000Z",
+    "side": "The SOP is out of date. I will update it this month. Until then the SOP wins, and a ticket is done when the customer confirms.",
+    "side_at": "2026-10-13T15:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000108",
+    "items": [
+      {
+        "driver": "WORKLOAD",
+        "brief": "New hires say their daily invoice quota is far above what they can do.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010060",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-08-18T01:30:00.000Z",
+    "side": "That quota is for staff after three months. New hires ramp from 60 to 120 by month three. I had not told them.",
+    "side_at": "2026-08-18T22:30:00.000Z"
+  },
+  {
+    "organisation_id": "6f1c2a3e-0000-4000-8000-000000000001",
+    "manager_id": "6f1c2a3e-0000-4000-8000-000000000108",
+    "items": [
+      {
+        "driver": "ROLE_CLARITY",
+        "brief": "New hires say they do not know whether to clear the call log or the backlog emails first.",
+        "ai": true,
+        "hires": [
+          {
+            "person_id": "6f1c2a3e-0000-4000-8000-000000010089",
+            "share": "tell"
+          }
+        ]
+      }
+    ],
+    "sent_at": "2026-10-16T01:30:00.000Z",
+    "side": "Call log first, always. I will add it to the shift notes.",
+    "side_at": "2026-10-17T05:30:00.000Z"
   }
 ]

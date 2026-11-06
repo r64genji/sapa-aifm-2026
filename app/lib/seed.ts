@@ -139,10 +139,7 @@ async function seedSpotChecks() {
 
 async function seedLeadBriefs() {
   if (process.env.SAPA_TEST === "1") return;
-  const rows = lead_briefs.map(({ days_ago, side, side_hours, manager, ...row }) => {
-    const sent = Date.now() - days_ago * DAY_MS;
-    return { ...row, manager_id: manager, sent_at: new Date(sent).toISOString(), side_encrypted: side ? encrypt(side) : null, side_at: side_hours ? new Date(sent + side_hours * 3600000).toISOString() : null };
-  });
+  const rows = lead_briefs.map(({ side, ...row }) => ({ ...row, side_encrypted: encrypt(side) }));
   const { error } = await createAdminClient().from("lead_briefs").insert(rows);
   if (error) throw error;
 }
