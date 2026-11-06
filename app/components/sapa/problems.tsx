@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
@@ -176,7 +176,7 @@ function Columns({ points }: { points: Point[] }) {
   );
 }
 
-function HBar({ label, n, of, sub, on, onClick }: { label: string; n: number; of: number; sub?: string; on?: boolean; onClick?: () => void }) {
+function HBar({ label, n, of, sub, onClick }: { label: string; n: number; of: number; sub?: string; onClick?: () => void }) {
   const body = (
     <>
       <span className="flex items-baseline justify-between gap-3 text-[14px]">
@@ -192,13 +192,7 @@ function HBar({ label, n, of, sub, on, onClick }: { label: string; n: number; of
     </>
   );
   return onClick ? (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={on}
-      className="-mx-3 flex cursor-pointer flex-col gap-1.5 rounded-lg border-0 px-3 py-2 text-left font-[inherit] text-[color:var(--ink)] hover:opacity-80"
-      style={{ background: on ? "var(--problems-soft)" : "transparent", boxShadow: on ? "inset 0 0 0 1.5px var(--problems)" : undefined }}
-    >
+    <button type="button" onClick={onClick} className="-mx-3 flex cursor-pointer flex-col gap-1.5 rounded-lg border-0 bg-transparent px-3 py-2 text-left font-[inherit] text-[color:var(--ink)] hover:bg-[color:var(--surface-raised)]">
       {body}
     </button>
   ) : (
@@ -366,8 +360,8 @@ function LeadBubble({ b }: { b: LeadBrief }) {
   );
 }
 
-function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: ReplyItem[]; only?: string[]; max?: number; onMore?: () => void }) {
-  const quotes = replies.filter((r) => r.lead?.id === b.id && b.items.some((item) => r.drivers.includes(item.driver)) && r.text && (!only || only.includes(r.id)));
+function Round({ b, replies, max, onMore }: { b: LeadBrief; replies: ReplyItem[]; max?: number; onMore?: () => void }) {
+  const quotes = replies.filter((r) => r.lead?.id === b.id && b.items.some((item) => r.drivers.includes(item.driver)) && r.text);
   const shown = max ? quotes.slice(0, max) : quotes;
   const named = b.items.flatMap((item) => item.hires);
   return (
@@ -404,9 +398,9 @@ function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: Reply
 
 type Thread = { rounds: LeadBrief[]; ids: string[]; teams: string[] };
 
-function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }: { thread: Thread; replies: ReplyItem[]; only?: string[]; row?: TeamRow; href: string; picked: boolean; onPick: () => void; onMore: () => void }) {
+function ThreadCard({ thread, replies, row, href, picked, onPick, onMore }: { thread: Thread; replies: ReplyItem[]; row?: TeamRow; href: string; picked: boolean; onPick: () => void; onMore: () => void }) {
   const [all, setAll] = useState(false);
-  const [latest, ...earlier] = only ? thread.rounds.filter((b) => replies.some((r) => r.lead?.id === b.id && only.includes(r.id))) : thread.rounds;
+  const [latest, ...earlier] = thread.rounds;
   return (
     <li
       className="flex min-w-0 flex-col overflow-hidden rounded-2xl"
@@ -437,12 +431,12 @@ function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }
         </span>
       </label>
       <div className="flex flex-col gap-5 px-5 py-5">
-        <Round b={latest} replies={replies} only={only} max={2} onMore={onMore} />
+        <Round b={latest} replies={replies} max={2} onMore={onMore} />
         {all
           ? earlier.map((b) => (
               <div key={b.id} className="flex flex-col gap-3 border-t pt-5" style={{ borderColor: "var(--line-soft)" }}>
                 <Label>{shortDate(b.sent_at)}</Label>
-                <Round b={b} replies={replies} only={only} />
+                <Round b={b} replies={replies} />
               </div>
             ))
           : null}
@@ -464,7 +458,7 @@ function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }
 
 function FixChoice({ driver, entries, chosen, onChoose }: { driver: string; entries: Entry[]; chosen: string; onChoose: (id: string) => void }) {
   return (
-    <div role="radiogroup" aria-label="Which fix" className="grid gap-3 md:grid-cols-2">
+    <div role="radiogroup" aria-label="Which fix" className="flex flex-col gap-2">
       {[...entries, null].map((f) => {
         const id = f?.id ?? "own";
         const on = chosen === id;
@@ -473,12 +467,12 @@ function FixChoice({ driver, entries, chosen, onChoose }: { driver: string; entr
         return (
           <label
             key={id}
-            className="flex cursor-pointer items-start gap-3 rounded-xl px-4 py-3.5"
+            className="flex cursor-pointer items-start gap-3 rounded-xl px-3.5 py-3"
             style={{ border: `${on ? 2 : 1}px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "var(--surface-raised)", margin: on ? 0 : 1 }}
           >
             <input type="radio" name={`fix-${driver}`} className="mt-0.5 h-5 w-5 flex-none" style={{ accentColor: "var(--problems)" }} checked={on} onChange={() => onChoose(id)} />
             <span className="flex min-w-0 flex-1 flex-col gap-1.5">
-              <span className="text-[15px] font-semibold leading-[21px]">{f ? f.title : "Write my own"}</span>
+              <span className="text-[14px] font-semibold leading-5">{f ? f.title : "Write my own"}</span>
               {f ? (
                 <span className="self-start rounded-full px-2.5 py-0.5 text-[12px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
                   {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
@@ -496,19 +490,8 @@ function FixChoice({ driver, entries, chosen, onChoose }: { driver: string; entr
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [meaning, setMeaning] = useState<string | null>(null);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [choice, setChoice] = useState<string | null>(null);
-  const [seen, setSeen] = useState({ hero: true, fix: false });
-  const hero = useRef<HTMLDivElement>(null);
-  const send = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const watch = new IntersectionObserver((list) =>
-      setSeen((was) => list.reduce((now, e) => ({ ...now, [e.target === hero.current ? "hero" : "fix"]: e.isIntersecting }), was)),
-    );
-    for (const el of [hero.current, send.current]) if (el) watch.observe(el);
-    return () => watch.disconnect();
-  }, [driver]);
   const overview = useApi<Overview>("/api/hr/themes/overview").data;
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
@@ -529,9 +512,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const threads = Object.values((briefs ?? []).reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}))
     .map((rounds): Thread => ({ rounds, teams: rounds[0].team.split(", "), ids: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).map((r) => r.id) }))
     .sort((a, b) => rate(rowOf(b.teams) ?? { n: 0, m: 0 }) - rate(rowOf(a.teams) ?? { n: 0, m: 0 }) || b.ids.length - a.ids.length);
-  const only = grouped.find((group) => group.title === meaning)?.reply_ids;
-  const shownThreads = only ? threads.filter((t) => t.ids.some((id) => only.includes(id))) : threads;
-  const answered = shownThreads.filter((t) => t.rounds[0].side).length;
+  const answered = threads.filter((t) => t.rounds[0].side).length;
   const isPicked = (t: Thread) => !!rowOf(t.teams) !== flipped.includes(t.rounds[0].manager_id);
   const chosen = threads.filter(isPicked);
   const flip = (id: string) => setFlipped((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
@@ -553,109 +534,99 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
 
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4">
-      <div key={driver} className="sp-enter flex min-w-0 flex-col gap-10 p-4 sm:p-6">
-        <div ref={hero} className="flex flex-col gap-6 rounded-2xl p-5 sm:p-7" style={{ background: "var(--problems-soft)" }}>
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
-              {name}
-            </h2>
-            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--surface-raised)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
-              {fixes.length ? "Fix in progress" : "Needs a fix"}
-            </span>
-            {waiting > 0 ? (
-              <Link href={`/replies?area=${driver}`} className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
-                <MessageSquare size={14} aria-hidden="true" />
-                {waiting} to check
-                <ArrowRight size={14} aria-hidden="true" />
-              </Link>
-            ) : null}
-          </div>
-
-          <div className="grid items-center gap-x-10 gap-y-6 md:grid-cols-[minmax(0,1fr)_auto]">
-            <div className="flex min-w-0 flex-col gap-3">
-              {card.enough ? (
-                <span className="sp-num text-[56px] font-bold leading-[56px] tracking-[-0.02em]" style={{ color: "var(--problems)" }}>
-                  {card.n}
-                  <span className="text-[22px] font-semibold sp-muted"> of {card.m} new hires</span>
-                </span>
-              ) : (
-                <CountBar notEnough />
-              )}
-              {grouped[0] ? <p className="m-0 text-[22px] font-semibold leading-[30px]">{grouped[0].title}</p> : null}
+      <div key={driver} className="sp-enter grid items-start gap-6 p-4 sm:p-6 xl:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
+        <div className="flex min-w-0 flex-col gap-10">
+          <div className="flex flex-col gap-6 rounded-2xl p-5 sm:p-7" style={{ background: "var(--problems-soft)" }}>
+            <div className="flex flex-wrap items-center gap-3">
+              <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
+                {name}
+              </h2>
+              <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--surface-raised)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
+                {fixes.length ? "Fix in progress" : "Needs a fix"}
+              </span>
+              {waiting > 0 ? (
+                <Link href={`/replies?area=${driver}`} className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+                  <MessageSquare size={14} aria-hidden="true" />
+                  {waiting} to check
+                  <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              ) : null}
             </div>
-            {card.enough ? <Waffle c={card} /> : null}
-          </div>
 
-          {d ? (
-            <div className="sp-stagger grid gap-3 md:grid-cols-3">
-              <Fact title="Where">
-                {!where?.enough ? (
-                  <CountBar notEnough />
-                ) : !top ? (
-                  <span className="flex items-center gap-2 text-[15px] font-semibold">
-                    <Building2 size={18} aria-hidden="true" />
-                    Spread evenly
+            <div className="grid items-center gap-x-10 gap-y-6 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div className="flex min-w-0 flex-col gap-3">
+                {card.enough ? (
+                  <span className="sp-num text-[56px] font-bold leading-[56px] tracking-[-0.02em]" style={{ color: "var(--problems)" }}>
+                    {card.n}
+                    <span className="text-[22px] font-semibold sp-muted"> of {card.m} new hires</span>
                   </span>
                 ) : (
-                  <div className="flex flex-col gap-1">
-                    <span className="flex items-baseline justify-between gap-2">
-                      <span className="min-w-0 text-[15px] font-semibold">{top.name}</span>
-                      <span className="sp-num text-[20px] font-bold" style={{ color: "var(--problems)" }}>
-                        {pct(top)}
-                      </span>
-                    </span>
-                    <RateBar row={top} company={company} />
-                    {top.times ? (
-                      <span className="text-[13px] font-bold" style={{ color: "var(--problems)" }}>
-                        {ordinal(top.times)} time in 6 months
-                      </span>
-                    ) : null}
-                  </div>
-                )}
-              </Fact>
-              <Fact title="Who">
-                {first?.enough && other?.enough ? (
-                  <div className="flex flex-col gap-2.5">
-                    <MiniBar label="First job" p={first} strong={rate(first) >= rate(other)} />
-                    <MiniBar label="Experienced" p={other} strong={rate(other) > rate(first)} />
-                  </div>
-                ) : (
                   <CountBar notEnough />
                 )}
-              </Fact>
-              <Fact title="Trend">
-                {intakes.length > 1 ? (
-                  <div className="flex flex-col gap-1">
-                    <Spark points={intakes} label={`${name} by start month: ${intakes.map((p) => `${p.label} ${pct(p)}`).join(", ")}`} />
-                    <span className="flex justify-between text-[12px] sp-muted">
-                      <span>{intakes[0].label}</span>
-                      <span className="font-bold" style={{ color: "var(--problems)" }}>
-                        {intakes[intakes.length - 1].label} {pct(intakes[intakes.length - 1])}
-                      </span>
-                    </span>
-                  </div>
-                ) : (
-                  <CountBar notEnough />
-                )}
-              </Fact>
+                {grouped[0] ? <p className="m-0 text-[22px] font-semibold leading-[30px]">{grouped[0].title}</p> : null}
+              </div>
+              {card.enough ? <Waffle c={card} /> : null}
             </div>
-          ) : (
-            <div className="sp-skel h-28" />
-          )}
-        </div>
 
-        {grouped.length || intakes.length || days.length > 1 ? (
-          <div className="flex flex-col gap-4">
-            {grouped.length ? (
-              <Tile3 title="What they mean">
-                <div className="grid gap-x-10 gap-y-2 md:grid-cols-2">
-                  {grouped.map((group) => (
-                    <HBar key={group.title} label={group.title} n={group.n} of={card.n ?? group.n} on={meaning === group.title} onClick={() => setMeaning(meaning === group.title ? null : group.title)} />
-                  ))}
-                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="self-center text-[13px] sp-muted">+{g.not_grouped} not grouped</span> : null}
-                </div>
-              </Tile3>
-            ) : null}
+            {d ? (
+              <div className="sp-stagger grid gap-3 md:grid-cols-3">
+                <Fact title="Where">
+                  {!where?.enough ? (
+                    <CountBar notEnough />
+                  ) : !top ? (
+                    <span className="flex items-center gap-2 text-[15px] font-semibold">
+                      <Building2 size={18} aria-hidden="true" />
+                      Spread evenly
+                    </span>
+                  ) : (
+                    <div className="flex flex-col gap-1">
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="min-w-0 text-[15px] font-semibold">{top.name}</span>
+                        <span className="sp-num text-[20px] font-bold" style={{ color: "var(--problems)" }}>
+                          {pct(top)}
+                        </span>
+                      </span>
+                      <RateBar row={top} company={company} />
+                      {top.times ? (
+                        <span className="text-[13px] font-bold" style={{ color: "var(--problems)" }}>
+                          {ordinal(top.times)} time in 6 months
+                        </span>
+                      ) : null}
+                    </div>
+                  )}
+                </Fact>
+                <Fact title="Who">
+                  {first?.enough && other?.enough ? (
+                    <div className="flex flex-col gap-2.5">
+                      <MiniBar label="First job" p={first} strong={rate(first) >= rate(other)} />
+                      <MiniBar label="Experienced" p={other} strong={rate(other) > rate(first)} />
+                    </div>
+                  ) : (
+                    <CountBar notEnough />
+                  )}
+                </Fact>
+                <Fact title="Trend">
+                  {intakes.length > 1 ? (
+                    <div className="flex flex-col gap-1">
+                      <Spark points={intakes} label={`${name} by start month: ${intakes.map((p) => `${p.label} ${pct(p)}`).join(", ")}`} />
+                      <span className="flex justify-between text-[12px] sp-muted">
+                        <span>{intakes[0].label}</span>
+                        <span className="font-bold" style={{ color: "var(--problems)" }}>
+                          {intakes[intakes.length - 1].label} {pct(intakes[intakes.length - 1])}
+                        </span>
+                      </span>
+                    </div>
+                  ) : (
+                    <CountBar notEnough />
+                  )}
+                </Fact>
+              </div>
+            ) : (
+              <div className="sp-skel h-28" />
+            )}
+          </div>
+
+          {intakes.length || days.length > 1 ? (
             <div className="grid gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
               {intakes.length ? (
                 <Tile3 title="By start month">
@@ -668,62 +639,73 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 </Tile3>
               ) : null}
             </div>
-          </div>
-        ) : null}
+          ) : null}
 
-        {threads.length ? (
-          <section className="flex min-w-0 flex-col gap-5" aria-label="Both sides">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <h3 className="m-0 text-[22px] font-bold leading-7">Both sides</h3>
-              <span className="flex items-center gap-1" aria-hidden="true">
-                {shownThreads.map((t) => (
-                  <span key={t.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={t.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
+          {threads.length ? (
+            <section className="flex min-w-0 flex-col gap-5" aria-label="Both sides">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <h3 className="m-0 text-[22px] font-bold leading-7">Both sides</h3>
+                <span className="flex items-center gap-1" aria-hidden="true">
+                  {threads.map((t) => (
+                    <span key={t.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={t.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
+                  ))}
+                </span>
+                <span className="text-[13px] font-semibold sp-muted">
+                  {answered} of {threads.length} answered
+                </span>
+              </div>
+              <ol className="sp-stagger m-0 flex list-none flex-col gap-5 p-0">
+                {threads.map((t) => (
+                  <ThreadCard
+                    key={t.rounds[0].manager_id}
+                    thread={t}
+                    replies={replies.data ?? []}
+                    row={rowOf(t.teams)}
+                    href={hrefFor(t.teams)}
+                    picked={isPicked(t)}
+                    onPick={() => flip(t.rounds[0].manager_id)}
+                    onMore={() => read(t.rounds[0].team)}
+                  />
                 ))}
-              </span>
-              <span className="text-[13px] font-semibold sp-muted">
-                {answered} of {shownThreads.length} answered
-              </span>
-              {meaning ? (
-                <button type="button" className="sp-chip ml-auto cursor-pointer gap-2 py-1 pl-3 pr-3" style={{ borderColor: "var(--problems)", background: "var(--problems-soft)" }} onClick={() => setMeaning(null)}>
-                  {meaning}
-                  <span aria-hidden="true">×</span>
-                  <span className="sr-only">Show all</span>
-                </button>
-              ) : null}
-            </div>
-            {shownThreads.length === 0 ? <span className="sp-muted">No team lead asked yet.</span> : null}
-            <ol key={meaning ?? "all"} className="sp-stagger m-0 flex list-none flex-col gap-5 p-0">
-              {shownThreads.map((t) => (
-                <ThreadCard
-                  key={t.rounds[0].manager_id}
-                  thread={t}
-                  replies={replies.data ?? []}
-                  only={only}
-                  row={rowOf(t.teams)}
-                  href={hrefFor(t.teams)}
-                  picked={isPicked(t)}
-                  onPick={() => flip(t.rounds[0].manager_id)}
-                  onMore={() => read(t.rounds[0].team)}
-                />
-              ))}
-            </ol>
-          </section>
-        ) : null}
+              </ol>
+            </section>
+          ) : null}
 
-        <section ref={send} id="send-fix" className="flex min-w-0 scroll-mt-24 flex-col gap-5 rounded-2xl p-5 sm:p-7" style={{ border: "2px solid var(--problems)" }} aria-label="Send a fix">
-          <h3 className="m-0 text-[22px] font-bold leading-7">Send a fix</h3>
+          <section className="flex min-w-0 flex-col gap-4 rounded-xl p-5" style={{ background: "var(--surface-sunken)" }} aria-label="What they mean">
+            <div className="flex flex-wrap items-center gap-3">
+              <h3 className="m-0 text-[22px] font-bold leading-7">What they mean</h3>
+              <Button className="ml-auto" disabled={!replies.data} aria-haspopup="dialog" onClick={() => read(null)}>
+                <MessageSquare size={15} aria-hidden="true" />
+                All {mine.length} replies
+              </Button>
+            </div>
+            {grouped.length ? (
+              <div className="grid gap-x-10 gap-y-1 md:grid-cols-2">
+                {grouped.map((group) => (
+                  <HBar key={group.title} label={group.title} n={group.n} of={card.n ?? group.n} onClick={() => read(group.title)} />
+                ))}
+                {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="self-center text-[13px] sp-muted">+{g.not_grouped} not grouped</span> : null}
+              </div>
+            ) : null}
+          </section>
+        </div>
+
+        <aside className="flex min-w-0 flex-col gap-5 rounded-2xl p-5 xl:sticky xl:top-[calc(var(--sp-demo-bar,0px)+16px)]" style={{ border: "2px solid var(--problems)" }} aria-label="Send a fix">
+          <h3 className="m-0 text-[20px] font-bold leading-7">Send a fix</h3>
           {fixes.map((a) => (
-            <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl px-4 py-3 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
-              <span className="text-[12px] font-bold uppercase tracking-[0.06em]" style={{ color: "var(--fixes)" }}>
-                In progress
+            <Link key={a.id} href={`/fixes/${a.id}`} className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="text-[11px] font-bold uppercase tracking-[0.06em]" style={{ color: "var(--fixes)" }}>
+                  In progress
+                </span>
+                <span className="text-[14px] font-semibold leading-5">{a.title}</span>
               </span>
-              <span className="min-w-0 flex-1 font-semibold">{a.title}</span>
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           ))}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2.5">
             <Label>Who gets it</Label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {threads.map((t) => {
                 const on = isPicked(t);
                 return (
@@ -741,38 +723,16 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               })}
             </div>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2.5">
             <Label>Which fix</Label>
             {library.data ? <FixChoice driver={driver} entries={entries} chosen={fixId} onChoose={setChoice} /> : <div className="sp-skel h-20" />}
           </div>
-          <Button href={hrefFor(chosen.flatMap((t) => t.teams))} variant="primary" lane="problems" className="min-h-14 self-start px-7 text-[17px]">
+          <Button href={hrefFor(chosen.flatMap((t) => t.teams))} variant="primary" lane="problems" className="min-h-14 w-full justify-center px-6 text-[16px]">
             {target}
-            <ArrowRight size={19} aria-hidden="true" />
+            <ArrowRight size={18} aria-hidden="true" />
           </Button>
-        </section>
+        </aside>
 
-        {chosen.length && !seen.hero && !seen.fix ? (
-          <div
-            className="sticky bottom-4 z-10 -mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-5 py-3.5"
-            style={{ background: "var(--ink)", color: "var(--surface-raised)", boxShadow: "0 14px 32px -12px rgba(28, 34, 38, 0.55)" }}
-          >
-            <span className="flex min-w-0 flex-1 flex-col">
-              <span className="text-[15px] font-bold">{chosen.map((t) => t.rounds[0].team).join(", ")}</span>
-              <a href="#send-fix" className="truncate text-[13px] underline opacity-80" style={{ color: "inherit" }}>
-                {entry ? entry.title : "Write my own"}
-              </a>
-            </span>
-            <Button href={hrefFor(chosen.flatMap((t) => t.teams))} variant="primary" lane="problems" className="min-h-12 px-6 text-[16px]">
-              {target}
-              <ArrowRight size={18} aria-hidden="true" />
-            </Button>
-          </div>
-        ) : null}
-
-        <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[14px] font-semibold" aria-haspopup="dialog" disabled={!replies.data} onClick={() => read(null)}>
-          <MessageSquare size={15} aria-hidden="true" />
-          Review the {mine.length} replies in full
-        </button>
         {open ? (
           <ReplySheet
             driver={driver}
