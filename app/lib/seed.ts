@@ -101,13 +101,6 @@ function demoCheckins() {
   };
 }
 
-function demoHolds() {
-  if (process.env.SAPA_TEST === "1") return quality_holds;
-  return quality_holds.map((h) =>
-    h.driver === "MANAGER_SUPPORT" && h.language === "ms" ? { ...h, state: "held", reason: "HR changed 3 of 12 spot checks, more than 20%" } : h,
-  );
-}
-
 async function seedNotices() {
   if (process.env.SAPA_TEST === "1") return;
   const done = demoActions() as { id: string; organisation_id: string; status: string; notes?: object; scope_type: string; scope_team?: string; scope_intake?: string; done_at: string }[];
@@ -157,7 +150,7 @@ async function seedFixFollowUp() {
 function passedPacks() {
   if (process.env.SAPA_TEST === "1") return language_packs;
   const results = { test_passed_on: "2026-10-15", test_results_file: "eval/results/2026-10-15T21-54-14-063Z-gemini-classify-test.json" };
-  return language_packs.map((pack) => (pack.language === "zh" ? pack : { ...pack, ...results }));
+  return language_packs.map((pack) => ({ ...pack, ...results }));
 }
 
 async function linkedPhones() {
@@ -205,7 +198,7 @@ export async function resetDemo(full = false) {
   const tracks = full ? null : await db.from("checkin_tracks").select();
   if (tracks?.error) throw tracks.error;
   const { error } = await db.rpc("reset_demo", {
-    seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people: demo.people, consents, checkin_schedule: demo.checkin_schedule, responses: replies, ai_tags: demo.ai_tags, escalations: cases, quality_holds: demoHolds(), handbook_pages, question_groups, asked_questions, theme_snapshots: demo.theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
+    seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people: demo.people, consents, checkin_schedule: demo.checkin_schedule, responses: replies, ai_tags: demo.ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots: demo.theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
   if (error) throw error;
   await seedSpotChecks();
