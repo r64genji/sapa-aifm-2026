@@ -9,3 +9,10 @@ Sapa, a voluntary new-hire check-in bot plus HR backend, for AIFM 2026 Challenge
 - App code lives in `app/` only. Running it and testing it: [app/README.md](app/README.md).
 
 Check command: `cd app && npm test -- e2e/<file>.test.ts …`, with every test file that covers the rules or bug you changed, in one run. Its last line is `E2E PASS: …` or `E2E FAIL: …`. Run the full `npm test` only when the owner asks ([app/README.md](app/README.md#test)).
+
+## Work in your own worktree
+
+- Call `EnterWorktree` before your first edit. Edits to the main checkout are blocked. Other tools: `git worktree add .claude/worktrees/<name> -b <name>` and work there.
+- Commit before you stop. At the end of each turn the Stop hook runs `~/.claude/bin/land`: it rebases on `main`, runs `cd app && npx tsc --noEmit`, and moves local `main`. If it fails, fix it and stop again. Never ask the operator before you land. Push with `~/.claude/bin/land --push`.
+- The worktree stays for your next turn. `~/.claude/bin/worktrees --clean` removes it later.
+- A new worktree has no `node_modules`. Run `~/.claude/bin/link-deps` to link the main checkout's copy; do not run `npm install` there.

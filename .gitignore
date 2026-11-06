@@ -40,3 +40,4 @@ __pycache__/
 .vercel
 
 docs/reference/interviews/
+.claude/worktrees/
