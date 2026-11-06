@@ -167,7 +167,7 @@ async function linkedPhones() {
   const db = createAdminClient();
   const seeded = new Set(people.map((row) => row.id));
   const [hires, leads] = await Promise.all([
-    db.from("people").select("id, team, language, telegram_chat_id").eq("state", "active").not("telegram_chat_id", "is", null).order("invite_used_at"),
+    db.from("people").select("id, team, language, channel, telegram_chat_id").eq("state", "active").not("telegram_chat_id", "is", null).order("invite_used_at"),
     db.from("managers").select("id, telegram_chat_id").is("revoked_at", null).not("telegram_chat_id", "is", null),
   ]);
   for (const { error } of [hires, leads]) if (error) throw error;
@@ -185,7 +185,7 @@ async function relinkPhones({ hires, leads }: Awaited<ReturnType<typeof linkedPh
     const person = token ? await joinIntake(token, hire.telegram_chat_id) : null;
     if (!person) continue;
     const language = hire.language as Language;
-    const { error } = await db.from("people").update({ language, state: "active" }).eq("id", person.id);
+    const { error } = await db.from("people").update({ language, channel: hire.channel, state: "active" }).eq("id", person.id);
     if (error) throw error;
     await recordConsent(person, packs[language].consentVersion);
     await scheduleFor(person.id);
