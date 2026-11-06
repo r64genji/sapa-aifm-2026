@@ -280,7 +280,6 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
             <ReplyRow
               key={r.id}
               chat
-              whole
               item={r}
               onConfirm={() => send(`/api/hr/replies/${r.id}/review`, {})}
               onChange={(change) => send(`/api/hr/replies/${r.id}/review`, change)}
@@ -339,8 +338,8 @@ function LeadBubble({ b }: { b: LeadBrief }) {
   );
 }
 
-function Round({ b, replies, max, onMore }: { b: LeadBrief; replies: ReplyItem[]; max?: number; onMore?: () => void }) {
-  const quotes = replies.filter((r) => r.lead?.id === b.id && b.items.some((item) => r.drivers.includes(item.driver)) && r.text);
+function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: ReplyItem[]; only?: string[]; max?: number; onMore?: () => void }) {
+  const quotes = replies.filter((r) => r.lead?.id === b.id && b.items.some((item) => r.drivers.includes(item.driver)) && r.text && (!only || only.includes(r.id)));
   const shown = max ? quotes.slice(0, max) : quotes;
   const named = b.items.flatMap((item) => item.hires);
   return (
@@ -377,7 +376,7 @@ function Round({ b, replies, max, onMore }: { b: LeadBrief; replies: ReplyItem[]
 
 type Thread = { rounds: LeadBrief[]; ids: string[]; teams: string[] };
 
-function ThreadCard({ thread, replies, row, href, picked, onPick, onMore }: { thread: Thread; replies: ReplyItem[]; row?: TeamRow; href: string; picked: boolean; onPick: () => void; onMore: () => void }) {
+function ThreadCard({ thread, replies, only, row, href, picked, onPick, onMore }: { thread: Thread; replies: ReplyItem[]; only?: string[]; row?: TeamRow; href: string; picked: boolean; onPick: () => void; onMore: () => void }) {
   const [all, setAll] = useState(false);
   const [latest, ...earlier] = thread.rounds;
   return (
@@ -404,12 +403,12 @@ function ThreadCard({ thread, replies, row, href, picked, onPick, onMore }: { th
         </span>
       </label>
       <div className="flex flex-col gap-5 px-5 py-5">
-        <Round b={latest} replies={replies} max={3} onMore={onMore} />
+        <Round b={latest} replies={replies} only={only} max={3} onMore={onMore} />
         {all
           ? earlier.map((b) => (
               <div key={b.id} className="flex flex-col gap-3 border-t pt-5" style={{ borderColor: "var(--line-soft)" }}>
                 <Label>{shortDate(b.sent_at)}</Label>
-                <Round b={b} replies={replies} />
+                <Round b={b} replies={replies} only={only} />
               </div>
             ))
           : null}
@@ -431,6 +430,7 @@ function ThreadCard({ thread, replies, row, href, picked, onPick, onMore }: { th
 function Problem({ driver, card, actions, waiting }: { driver: string; card: Card; actions: Action[]; waiting: number }) {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [meaning, setMeaning] = useState<string | null>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const overview = useApi<Overview>("/api/hr/themes/overview").data;
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
@@ -452,7 +452,9 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const threads = Object.values((briefs ?? []).reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}))
     .map((rounds): Thread => ({ rounds, teams: rounds[0].team.split(", "), ids: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).map((r) => r.id) }))
     .sort((a, b) => rate(rowOf(b.teams) ?? { n: 0, m: 0 }) - rate(rowOf(a.teams) ?? { n: 0, m: 0 }) || b.ids.length - a.ids.length);
-  const answered = threads.filter((t) => t.rounds[0].side).length;
+  const only = grouped.find((group) => group.title === meaning)?.reply_ids;
+  const shownThreads = only ? threads.filter((t) => t.ids.some((id) => only.includes(id))) : threads;
+  const answered = shownThreads.filter((t) => t.rounds[0].side).length;
   const chosen = threads.filter((t) => picked.includes(t.rounds[0].manager_id));
   const pick = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   const intakes = intakePoints(d);
@@ -571,7 +573,14 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             <Label>What they mean</Label>
             <div className="flex flex-wrap items-center gap-2" role="group" aria-label="What they mean">
               {grouped.map((group) => (
-                <button key={group.title} type="button" className="sp-chip cursor-pointer gap-2.5 py-1 pl-4 pr-1.5" onClick={() => read(group.title)}>
+                <button
+                  key={group.title}
+                  type="button"
+                  className="sp-chip cursor-pointer gap-2.5 py-1 pl-4 pr-1.5"
+                  aria-pressed={meaning === group.title}
+                  style={meaning === group.title ? { borderColor: "var(--problems)", background: "var(--problems-soft)", boxShadow: "0 0 0 1px var(--problems)" } : undefined}
+                  onClick={() => setMeaning(meaning === group.title ? null : group.title)}
+                >
                   {group.title}
                   <span className="sp-num grid h-6 min-w-6 place-items-center rounded-full px-2 text-[12px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
                     {group.n}
@@ -588,20 +597,22 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <h3 className="m-0 text-[20px] font-bold leading-7">Both sides</h3>
               <span className="flex items-center gap-1" aria-hidden="true">
-                {threads.map((t) => (
+                {shownThreads.map((t) => (
                   <span key={t.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={t.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
                 ))}
               </span>
               <span className="text-[13px] font-semibold sp-muted">
-                {answered} of {threads.length} answered
+                {answered} of {shownThreads.length} answered
               </span>
             </div>
-            <ol className="sp-stagger m-0 flex list-none flex-col gap-6 p-0">
-              {threads.map((t) => (
+            {shownThreads.length === 0 ? <span className="sp-muted">No team lead asked yet.</span> : null}
+            <ol key={meaning ?? "all"} className="sp-stagger m-0 flex list-none flex-col gap-6 p-0">
+              {shownThreads.map((t) => (
                 <ThreadCard
                   key={t.rounds[0].manager_id}
                   thread={t}
                   replies={replies.data ?? []}
+                  only={only}
                   row={rowOf(t.teams)}
                   href={fixHref(driver, library.data?.[0]?.id, t.teams)}
                   picked={picked.includes(t.rounds[0].manager_id)}

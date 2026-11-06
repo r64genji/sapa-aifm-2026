@@ -495,7 +495,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
               {{ low: "AI not sure", medium: "AI fairly sure", high: "AI sure" }[confidence]}
             </span>
           ) : null}
-          {chat && item.evidence_quote ? (
+          {chat && whole && item.evidence_quote ? (
             <div className="flex flex-col gap-1 pt-2">
               <span className="sp-caption" style={{ fontWeight: 600 }}>Original quote</span>
               <TranslatedQuote language={item.language} text={item.evidence_quote} evidence={item.evidence_quote} />
@@ -503,7 +503,7 @@ export function ReplyRow({ item, onConfirm, onChange, onRetry, onUndo, chat, fre
           ) : null}
         </div>
         <div className="flex flex-col gap-2 [&_.sp-btn]:justify-center [&_.sp-btn]:px-3">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 [&>:only-child]:col-span-2">
             {pending ? (
               <Button variant="primary" disabled={!!busy} onClick={() => run("confirm", onConfirm, { state: "confirmed", label: labelOf(item) })}>
                 {busy === "confirm" ? <Spin /> : null}
