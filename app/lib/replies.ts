@@ -31,7 +31,6 @@ export async function heldAnonymous(organisationId: string) {
     }
   }
   const shown = (row: (typeof rows)[number]) =>
-    (row.status === "ok" || row.status === "reviewed") &&
     row.drivers.some((driver) => (people.get(`${row.responses.people?.team}|${driver}`)?.size ?? 0) >= ANONYMOUS_MINIMUM);
   const held = new Set(rows.filter((row) => row.responses.anonymous && !shown(row)).map((row) => row.response_id));
   const { data: untagged, error: untaggedError } = await createAdminClient()
