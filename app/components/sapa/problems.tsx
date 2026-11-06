@@ -118,7 +118,7 @@ function Tile({ c, active, start, fix, waiting, onPick }: { c: Card; active: boo
   );
 }
 
-export function Waffle({ c }: { c: Card }) {
+export function Waffle({ c, dot = 14 }: { c: Card; dot?: number }) {
   const m = c.m ?? 0;
   const parts = [
     { n: c.reviewed ?? 0, color: "var(--problems)", label: "you checked" },
@@ -132,14 +132,14 @@ export function Waffle({ c }: { c: Card }) {
       <div
         role="img"
         aria-label={`${c.n} of ${m} who answered: ${parts.map((p) => `${p.n} ${p.label}`).join(", ")}`}
-        className="grid gap-[5px] self-start"
-        style={{ gridTemplateColumns: `repeat(${cols}, 14px)` }}
+        className="grid self-start"
+        style={{ gridTemplateColumns: `repeat(${cols}, ${dot}px)`, gap: Math.round(dot / 2.8) }}
       >
         {Array.from({ length: m }, (_, i) => (
-          <span key={i} className="sp-dot h-[14px] w-[14px] rounded-full" style={{ background: fills[i] ?? "var(--track-empty)", ...delay(i * 6) }} />
+          <span key={i} className="sp-dot rounded-full" style={{ width: dot, height: dot, background: fills[i] ?? "var(--track-empty)", ...delay(i * 6) }} />
         ))}
       </div>
-      <figcaption className="flex flex-wrap gap-x-3 gap-y-1 sp-caption">
+      <figcaption className="flex flex-wrap gap-x-3 gap-y-1 sp-caption" style={dot > 14 ? { fontSize: 13 } : undefined}>
         {parts
           .filter((p) => p.n)
           .map((p) => (
@@ -506,7 +506,7 @@ function TeamPicker({ driver, threads, isPicked, flip, rowOf }: { driver: string
           <div
             role="group"
             aria-label="Who gets it"
-            className="absolute inset-x-0 top-[calc(100%+6px)] z-30 flex max-h-[360px] flex-col overflow-y-auto rounded-xl p-1.5"
+            className="absolute inset-x-0 top-[calc(100%+6px)] z-30 flex max-h-[360px] flex-col overflow-y-auto overscroll-contain rounded-xl p-1.5"
             style={{ background: "var(--surface-raised)", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow-pop)" }}
           >
             {threads.map((t) => {
@@ -659,9 +659,16 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 ) : (
                   <CountBar notEnough />
                 )}
-                {grouped[0] ? <p className="m-0 text-[22px] font-semibold leading-[30px]">{grouped[0].title}</p> : null}
+                {grouped[0] ? (
+                  <div className="flex flex-col gap-1.5 rounded-xl px-4 py-3.5" style={{ background: "var(--surface-raised)", borderLeft: "4px solid var(--problems)" }}>
+                    <span className="text-[12px] font-bold uppercase leading-4 tracking-[0.06em]" style={{ color: "var(--problems)" }}>
+                      Root cause
+                    </span>
+                    <p className="m-0 text-[20px] font-semibold leading-[28px]">{grouped[0].title}</p>
+                  </div>
+                ) : null}
               </div>
-              {card.enough ? <Waffle c={card} /> : null}
+              {card.enough ? <Waffle c={card} dot={22} /> : null}
             </div>
 
             {d ? (
