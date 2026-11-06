@@ -148,7 +148,7 @@ export async function generate(organisationId: string, system: string, user: str
 }
 
 export function groundedPage(pages: Page[], result: z.infer<typeof Answer>) {
-  const page = pages.find((p) => p.path === result.cited_path);
+  const page = pages.find((p) => p.path === result.cited_path.replace(/^\/+/, ""));
   const quote = plain(result.supporting_quote);
   return page && result.answer.trim() !== "" && quote !== "" && plain(page.body).includes(quote) ? page : undefined;
 }
