@@ -252,6 +252,7 @@ textarea.sp-input { min-height: 84px; resize: vertical; }
 .sp-panel { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-left: 3px solid var(--fixes); background: var(--surface-sunken); border-radius: 0 var(--radius-control) var(--radius-control) 0; }
 .sp-panel-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
 .sp-quote-lg { font-size: 22px; line-height: 31px; }
+.sp-bubble .sp-quote { font-size: 16px; line-height: 24px; }
 .sp-evidence { background: var(--evidence); border-bottom: 2px solid var(--ink); padding: 0 2px; color: inherit; }
 .sp-quote-by { font-family: var(--font-sans); font-size: 13px; line-height: 18px; color: var(--ink-muted); margin-top: 3px; }
 
