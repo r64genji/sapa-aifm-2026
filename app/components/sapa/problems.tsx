@@ -543,9 +543,9 @@ function LeadRow({ group, replies, href }: { group: LeadGroup; replies: ReplyIte
   return (
     <li>
       <details className="sp-fold min-w-0 rounded-lg" style={{ border: "1px solid var(--line)" }}>
-        <summary className="flex cursor-pointer flex-wrap items-center gap-x-3 gap-y-2 px-3 py-3">
+        <summary className="flex cursor-pointer items-center gap-3 px-3 py-3">
           <Avatar name={latest.lead} waiting={!latest.side} />
-          <span className="flex min-w-0 flex-[1_1_220px] flex-col gap-0.5">
+          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] font-bold leading-5">
               {latest.lead}
               <span className="sp-caption" style={{ fontWeight: 600 }}>
@@ -561,7 +561,7 @@ function LeadRow({ group, replies, href }: { group: LeadGroup; replies: ReplyIte
             <span className={`line-clamp-1 text-[14px] leading-5 ${latest.side ? "" : "sp-muted"}`}>{latest.side ?? "No answer yet"}</span>
           </span>
           <Button href={href} className="flex-none">
-            Draft fix for {latest.lead}
+            Draft fix
           </Button>
           <ChevronDown size={18} className="sp-chev sp-muted flex-none" aria-hidden="true" />
         </summary>
