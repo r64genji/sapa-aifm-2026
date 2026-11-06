@@ -84,6 +84,14 @@ test("R8, R18, R37: a 4-person group is dropped, a title with a number is retrie
   assert.equal((await modelCalls("omniroute")).length, 2);
 });
 
+test("Bug: the next day the same replies show the saved root cause without a new model call", async () => {
+  const first = await groups();
+  const calls = (await modelCalls("omniroute")).length;
+  await freezeClock("2026-10-16T15:00:00.000Z");
+  assert.deepEqual(await groups(), first);
+  assert.equal((await modelCalls("omniroute")).length, calls);
+});
+
 test("When the model fails the route says unavailable and shows no groups", async () => {
   await db.from("theme_groups").delete().eq("organisation_id", org);
   await scriptModel("omniroute", [{ kind: "error", status: 503 }]);

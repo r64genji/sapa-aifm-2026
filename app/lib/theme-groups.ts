@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { z } from "zod";
 import { complete } from "@/lib/ai";
 import { now } from "@/lib/clock";
@@ -41,21 +42,13 @@ export async function themeGroups(organisationId: string, driver: string, touchp
   const c = await counts(organisationId, touchpoint, null);
   if (!c.enough) return { touchpoint, driver, status: "ok", enough: false, have: c.respondents, need: c.min_group_size };
   const at = await now();
-  const day = at.toISOString().slice(0, 10);
-  const { data: cached, error: cacheError } = await db
-    .from("theme_groups")
-    .select("result")
-    .eq("organisation_id", organisationId)
-    .eq("driver", driver)
-    .eq("touchpoint", touchpoint)
-    .eq("day", day)
-    .maybeSingle();
-  if (cacheError) throw cacheError;
-  if (cached) return cached.result;
-
   const { data, error } = await db.rpc("theme_reply_summaries", { org: organisationId, touch: touchpoint, driver, at: at.toISOString() });
   if (error) throw error;
   const replies = (data as { response_id: string; summary: string }[]).slice(0, MAX_REPLIES);
+  const key = { organisation_id: organisationId, driver, touchpoint, replies_hash: createHash("sha256").update(JSON.stringify([c.min_group_size, replies])).digest("hex") };
+  const { data: cached, error: cacheError } = await db.from("theme_groups").select("result").match(key).maybeSingle();
+  if (cacheError) throw cacheError;
+  if (cached) return cached.result;
   const people = async (ids: string[]) => {
     const { data: n, error: peopleError } = await db.rpc("reply_people", { ids });
     if (peopleError) throw peopleError;
@@ -95,7 +88,7 @@ export async function themeGroups(organisationId: string, driver: string, touchp
   const result = { touchpoint, driver, status: "ok", groups, not_grouped: replies.length - grouped };
   const { error: saveError } = await db
     .from("theme_groups")
-    .upsert({ organisation_id: organisationId, driver, touchpoint, day, result }, { ignoreDuplicates: true });
+    .upsert({ ...key, result }, { ignoreDuplicates: true });
   if (saveError) throw saveError;
   return result;
 }
