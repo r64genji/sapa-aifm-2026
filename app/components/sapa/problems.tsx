@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookCheck, ChevronDown, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { Avatar, ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
 import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
@@ -493,75 +493,123 @@ function RootCause({ name, top, experience, where }: { name: string; top?: { tit
   );
 }
 
-const SIDES_PAGE = 5;
+type LeadBrief = { id: string; manager_id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
 
-type LeadBrief = { id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
+function Round({ b, replies }: { b: LeadBrief; replies: ReplyItem[] }) {
+  return (
+    <li className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
+      <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
+        <span className="text-[13px] font-bold">New hires · {shortDate(b.sent_at)}</span>
+        {b.items.map((item) => {
+          const quotes = replies.filter((r) => r.lead?.id === b.id && r.drivers.includes(item.driver) && r.text);
+          return (
+            <span key={item.driver} className="flex flex-col gap-2 text-[15px] leading-[22px]">
+              {quotes.length
+                ? quotes.map((r) => (
+                    <span key={r.id} className="flex flex-col gap-0.5">
+                      <TranslatedQuote language={r.language} text={r.evidence_quote ?? r.text ?? ""} />
+                      <span className="sp-caption">{r.byline.split(" · ")[0]}</span>
+                    </span>
+                  ))
+                : item.brief}
+              {item.hires.map((h) => (
+                <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
+                  {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
+                </span>
+              ))}
+            </span>
+          );
+        })}
+      </div>
+      <span className="hidden place-items-center md:grid" style={{ color: "var(--ink-muted)" }} aria-hidden="true">
+        →
+      </span>
+      <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}>
+        <span className="flex items-center gap-2 text-[13px] font-bold">
+          <Avatar name={b.lead} waiting={!b.side} />
+          {b.lead} · {b.side ? `answered ${shortDate(b.side_at)}` : `asked ${shortDate(b.sent_at)}`}
+        </span>
+        <span className={b.side ? "text-[15px] leading-[22px]" : "sp-muted text-[15px]"}>{b.side ?? "No answer yet"}</span>
+      </div>
+    </li>
+  );
+}
 
-function LeadSides({ driver, replies }: { driver: string; replies: ReplyItem[] | undefined }) {
+type LeadGroup = { rounds: LeadBrief[]; replies: number };
+
+function LeadRow({ group, replies, href }: { group: LeadGroup; replies: ReplyItem[]; href: string }) {
+  const [all, setAll] = useState(false);
+  const [latest, ...earlier] = group.rounds;
+  return (
+    <li>
+      <details className="sp-fold min-w-0 rounded-lg" style={{ border: "1px solid var(--line)" }}>
+        <summary className="flex cursor-pointer flex-wrap items-center gap-x-3 gap-y-2 px-3 py-3">
+          <Avatar name={latest.lead} waiting={!latest.side} />
+          <span className="flex min-w-0 flex-[1_1_220px] flex-col gap-0.5">
+            <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] font-bold leading-5">
+              {latest.lead}
+              <span className="sp-caption" style={{ fontWeight: 600 }}>
+                {latest.team} · {group.replies} {group.replies === 1 ? "reply" : "replies"}
+              </span>
+              <span
+                className="inline-flex min-h-5 items-center px-2 text-[11px] font-bold"
+                style={{ borderRadius: "var(--radius-round)", background: latest.side ? "var(--fixes-soft)" : "var(--waiting-soft)", color: latest.side ? "var(--fixes)" : "var(--waiting-ink)" }}
+              >
+                {latest.side ? "Answered" : "Waiting"}
+              </span>
+            </span>
+            <span className={`line-clamp-1 text-[14px] leading-5 ${latest.side ? "" : "sp-muted"}`}>{latest.side ?? "No answer yet"}</span>
+          </span>
+          <Button href={href} className="flex-none">
+            Draft fix for {latest.lead}
+          </Button>
+          <ChevronDown size={18} className="sp-chev sp-muted flex-none" aria-hidden="true" />
+        </summary>
+        <div className="flex flex-col gap-3 border-t px-3 pb-3 pt-3" style={{ borderColor: "var(--line-soft)" }}>
+          <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
+            {(all ? group.rounds : [latest]).map((b) => (
+              <Round key={b.id} b={b} replies={replies} />
+            ))}
+          </ol>
+          {earlier.length && !all ? (
+            <button type="button" className="sp-link self-start text-[14px]" onClick={() => setAll(true)}>
+              Earlier rounds ({earlier.length})
+            </button>
+          ) : null}
+        </div>
+      </details>
+    </li>
+  );
+}
+
+function LeadSides({ driver, replies, entry }: { driver: string; replies: ReplyItem[] | undefined; entry: string | undefined }) {
   const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
-  const [count, setCount] = useState(SIDES_PAGE);
   if (!briefs?.length) return null;
-  const answered = briefs.filter((b) => b.side).length;
+  const linked = (replies ?? []).filter((r) => r.drivers.includes(driver));
+  const groups = Object.values(
+    briefs.reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}),
+  )
+    .map((rounds): LeadGroup => ({ rounds, replies: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).length }))
+    .sort((a, b) => Number(!!a.rounds[0].side) - Number(!!b.rounds[0].side) || b.replies - a.replies);
+  const answered = groups.filter((g) => g.rounds[0].side).length;
   return (
     <section className="flex min-w-0 flex-col gap-3" aria-label="Both sides">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <h3 className="m-0 text-[17px] font-bold">Both sides</h3>
         <span className="flex items-center gap-1" aria-hidden="true">
-          {briefs.map((b) => (
-            <span key={b.id} className="h-2.5 w-2.5 rounded-full" style={b.side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
+          {groups.map((g) => (
+            <span key={g.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={g.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
           ))}
         </span>
         <span className="sp-caption" style={{ fontWeight: 600 }}>
-          {answered} of {briefs.length} {briefs.length === 1 ? "team lead" : "team leads"} answered
+          {answered} of {groups.length} {groups.length === 1 ? "team lead" : "team leads"} answered
         </span>
       </div>
-      <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
-        {briefs.slice(0, count).map((b) => (
-          <li key={b.id} className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
-            <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
-              <span className="text-[13px] font-bold">New hires · {b.team}</span>
-              {b.items.map((item) => {
-                const quotes = (replies ?? []).filter((r) => r.lead?.id === b.id && r.drivers.includes(item.driver) && r.text);
-                return (
-                  <span key={item.driver} className="flex flex-col gap-2 text-[15px] leading-[22px]">
-                    {quotes.length
-                      ? quotes.map((r) => (
-                          <span key={r.id} className="flex flex-col gap-0.5">
-                            <TranslatedQuote language={r.language} text={r.evidence_quote ?? r.text ?? ""} />
-                            <span className="sp-caption">{r.byline.split(" · ")[0]}</span>
-                          </span>
-                        ))
-                      : item.brief}
-                    {item.hires.map((h) => (
-                      <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
-                        {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
-                      </span>
-                    ))}
-                  </span>
-                );
-              })}
-            </div>
-            <span className="hidden place-items-center md:grid" style={{ color: "var(--ink-muted)" }} aria-hidden="true">
-              →
-            </span>
-            <div
-              className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3"
-              style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}
-            >
-              <span className="flex items-center gap-2 text-[13px] font-bold">
-                <Avatar name={b.lead} waiting={!b.side} />
-                {b.lead} · {b.side ? `answered ${shortDate(b.side_at)}` : `asked ${shortDate(b.sent_at)}`}
-              </span>
-              <span className={b.side ? "text-[15px] leading-[22px]" : "sp-muted text-[15px]"}>{b.side ?? "No answer yet"}</span>
-            </div>
-          </li>
+      <ol className="sp-stagger m-0 flex list-none flex-col gap-2 p-0">
+        {groups.map((g) => (
+          <LeadRow key={g.rounds[0].manager_id} group={g} replies={replies ?? []} href={fixHref(driver, entry, g.rounds[0].team.split(", "))} />
         ))}
       </ol>
-      {briefs.length > count ? (
-        <Button className="self-start" onClick={() => setCount(count + SIDES_PAGE)}>
-          Show more ({briefs.length - count})
-        </Button>
-      ) : null}
     </section>
   );
 }
@@ -646,7 +694,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </div>
 
           <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
-          <LeadSides driver={driver} replies={replies.data} />
+          <LeadSides driver={driver} replies={replies.data} entry={library.data?.[0]?.id} />
 
           <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (
