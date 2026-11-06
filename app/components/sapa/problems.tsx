@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, BookCheck, ChevronDown, BookX, Building2, Info, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { Avatar, ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
 import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
@@ -430,7 +430,7 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
   );
 }
 
-function Panel({ title, children }: { title: string; children: ReactNode }) {
+function Tile3({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="flex min-w-0 flex-col gap-3 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
       <h4 className="m-0 text-[13px] font-bold">{title}</h4>
@@ -439,178 +439,114 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function RootCause({ name, top, experience, where }: { name: string; top?: { title: string; n: number }; experience?: Detail["by_experience"]; where?: Teams }) {
-  const [first, other] = ["First job", "Experienced"].map((g) => experience?.find((s) => s.group === g));
-  const who =
-    first?.enough && other?.enough
-      ? rate(first) >= rate(other) * 1.5
-        ? `First-job hires more: ${pct(first)} vs ${pct(other)}`
-        : rate(other) >= rate(first) * 1.5
-          ? `Experienced hires more: ${pct(other)} vs ${pct(first)}`
-          : `First job and experienced alike: ${pct(first)} vs ${pct(other)}`
-      : "Not enough people yet to split";
-  const facts: { label: string; value: ReactNode }[] = [
-    { label: "What", value: top ? `${top.title} (${top.n} people)` : "No shared idea yet" },
-    { label: "Who", value: who },
-    {
-      label: "Where",
-      value: !where?.enough
-        ? "Not enough people yet"
-        : where.verdict === "none"
-          ? "Spread evenly across teams"
-          : where.verdict === "most"
-            ? "Most teams: a company-wide cause"
-            : where.rows.map((r) => (
-                <span key={r.name} className="block">
-                  {r.name}
-                  {r.times ? (
-                    <span className="font-bold" style={{ color: "var(--problems)" }}>
-                      {" "}
-                      · {ordinal(r.times)} time in 6 months
-                    </span>
-                  ) : null}
-                </span>
-              )),
-    },
-  ];
+type LeadBrief = { id: string; manager_id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
+
+function HireBubble({ r }: { r: ReplyItem }) {
+  const who = r.byline.split(" · ")[0];
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-5 py-4" style={{ background: "var(--problems-soft)" }}>
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-        <h3 className="m-0 text-[17px] font-bold" style={{ color: "var(--problems)" }}>
-          Root cause
-        </h3>
-        <span className="sp-caption">Why new hires name {name.toLowerCase()}, from counts only</span>
+    <div className="flex min-w-0 items-end gap-2">
+      <Avatar name={who} waiting />
+      <div className="flex min-w-0 flex-col gap-1 rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-[15px] leading-[22px]" style={{ background: "var(--problems-soft)" }}>
+        <TranslatedQuote language={r.language} text={r.text ?? ""} evidence={r.evidence_quote} />
+        <span className="sp-caption">{who}</span>
       </div>
-      <dl className="m-0 grid gap-x-6 gap-y-3 text-[15px] md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
-        {facts.map((f) => (
-          <div key={f.label} className="flex min-w-0 flex-col gap-0.5">
-            <dt className="sp-caption font-bold uppercase tracking-[0.06em]">{f.label}</dt>
-            <dd className="m-0 font-semibold">{f.value}</dd>
-          </div>
-        ))}
-      </dl>
     </div>
   );
 }
 
-type LeadBrief = { id: string; manager_id: string; lead: string; team: string; sent_at: string; side: string | null; side_at: string | null; items: { driver: string; brief: string; hires: { name: string; share: "meet" | "tell" }[] }[] };
-
-function Round({ b, replies }: { b: LeadBrief; replies: ReplyItem[] }) {
+function LeadBubble({ b }: { b: LeadBrief }) {
   return (
-    <li className="grid min-w-0 items-stretch gap-2 md:grid-cols-[1fr_auto_1fr]">
-      <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={{ background: "var(--problems-soft)" }}>
-        <span className="text-[13px] font-bold">New hires · {shortDate(b.sent_at)}</span>
-        {b.items.map((item) => {
-          const quotes = replies.filter((r) => r.lead?.id === b.id && r.drivers.includes(item.driver) && r.text);
-          return (
-            <span key={item.driver} className="flex flex-col gap-2 text-[15px] leading-[22px]">
-              {quotes.length
-                ? quotes.map((r) => (
-                    <span key={r.id} className="flex flex-col gap-0.5">
-                      <TranslatedQuote language={r.language} text={r.evidence_quote ?? r.text ?? ""} />
-                      <span className="sp-caption">{r.byline.split(" · ")[0]}</span>
-                    </span>
-                  ))
-                : item.brief}
-              {item.hires.map((h) => (
-                <span key={h.name} className="text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
-                  {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
-                </span>
-              ))}
-            </span>
-          );
-        })}
-      </div>
-      <span className="hidden place-items-center md:grid" style={{ color: "var(--ink-muted)" }} aria-hidden="true">
-        →
-      </span>
-      <div className="flex min-w-0 flex-col gap-1.5 rounded-lg px-4 py-3" style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}>
-        <span className="flex items-center gap-2 text-[13px] font-bold">
-          <Avatar name={b.lead} waiting={!b.side} />
-          {b.lead} · {b.side ? `answered ${shortDate(b.side_at)}` : `asked ${shortDate(b.sent_at)}`}
+    <div className="flex min-w-0 flex-row-reverse items-end gap-2">
+      <Avatar name={b.lead} waiting={!b.side} />
+      <div
+        className="flex min-w-0 flex-col gap-1 rounded-2xl rounded-br-sm px-3.5 py-2.5 text-[15px] leading-[22px]"
+        style={b.side ? { background: "var(--fixes-soft)" } : { border: "1px dashed var(--line-strong)" }}
+      >
+        <span className={b.side ? "" : "sp-muted"}>{b.side ?? "No answer yet"}</span>
+        <span className="sp-caption">
+          {b.lead} · {shortDate(b.side ? b.side_at : b.sent_at)}
         </span>
-        <span className={b.side ? "text-[15px] leading-[22px]" : "sp-muted text-[15px]"}>{b.side ?? "No answer yet"}</span>
       </div>
-    </li>
+    </div>
   );
 }
 
-type LeadGroup = { rounds: LeadBrief[]; replies: number };
-
-function LeadRow({ group, replies, href }: { group: LeadGroup; replies: ReplyItem[]; href: string }) {
-  const [all, setAll] = useState(false);
-  const [latest, ...earlier] = group.rounds;
+function Round({ b, replies, max, onMore }: { b: LeadBrief; replies: ReplyItem[]; max?: number; onMore?: () => void }) {
+  const quotes = replies.filter((r) => r.lead?.id === b.id && b.items.some((item) => r.drivers.includes(item.driver)) && r.text);
+  const shown = max ? quotes.slice(0, max) : quotes;
   return (
-    <li>
-      <details className="sp-fold min-w-0 rounded-lg" style={{ border: "1px solid var(--line)" }}>
-        <summary className="flex cursor-pointer items-center gap-3 px-3 py-3">
-          <Avatar name={latest.lead} waiting={!latest.side} />
-          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] font-bold leading-5">
-              {latest.lead}
-              <span className="sp-caption" style={{ fontWeight: 600 }}>
-                {latest.team} · {group.replies} {group.replies === 1 ? "reply" : "replies"}
-              </span>
-              <span
-                className="inline-flex min-h-5 items-center px-2 text-[11px] font-bold"
-                style={{ borderRadius: "var(--radius-round)", background: latest.side ? "var(--fixes-soft)" : "var(--waiting-soft)", color: latest.side ? "var(--fixes)" : "var(--waiting-ink)" }}
-              >
-                {latest.side ? "Answered" : "Waiting"}
-              </span>
-            </span>
-            <span className={`line-clamp-1 text-[14px] leading-5 ${latest.side ? "" : "sp-muted"}`}>{latest.side ?? "No answer yet"}</span>
-          </span>
-          <Button href={href} className="flex-none">
-            Draft fix
-          </Button>
-          <ChevronDown size={18} className="sp-chev sp-muted flex-none" aria-hidden="true" />
-        </summary>
-        <div className="flex flex-col gap-3 border-t px-3 pb-3 pt-3" style={{ borderColor: "var(--line-soft)" }}>
-          <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
-            {(all ? group.rounds : [latest]).map((b) => (
-              <Round key={b.id} b={b} replies={replies} />
+    <div className="grid min-w-0 gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="flex min-w-0 flex-col gap-2">
+        {shown.length
+          ? shown.map((r) => <HireBubble key={r.id} r={r} />)
+          : b.items.map((item) => (
+              <div key={item.driver} className="rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-[15px] leading-[22px]" style={{ background: "var(--problems-soft)" }}>
+                {item.brief}
+              </div>
             ))}
-          </ol>
-          {earlier.length && !all ? (
-            <button type="button" className="sp-link self-start text-[14px]" onClick={() => setAll(true)}>
-              Earlier rounds ({earlier.length})
-            </button>
-          ) : null}
-        </div>
-      </details>
-    </li>
+        {quotes.length > shown.length ? (
+          <button type="button" className="sp-link self-start pl-9 text-[14px]" onClick={onMore}>
+            +{quotes.length - shown.length} more
+          </button>
+        ) : null}
+        {b.items
+          .flatMap((item) => item.hires)
+          .map((h) => (
+            <span key={h.name} className="pl-9 text-[13px] font-semibold" style={{ color: "var(--problems)" }}>
+              {h.share === "meet" ? `${h.name} asked for a 1-on-1` : `${h.name} agreed to be named`}
+            </span>
+          ))}
+      </div>
+      <div className="flex min-w-0 flex-col justify-end md:pt-10">
+        <LeadBubble b={b} />
+      </div>
+    </div>
   );
 }
 
-function LeadSides({ driver, replies, entry }: { driver: string; replies: ReplyItem[] | undefined; entry: string | undefined }) {
-  const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
-  if (!briefs?.length) return null;
-  const linked = (replies ?? []).filter((r) => r.drivers.includes(driver));
-  const groups = Object.values(
-    briefs.reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}),
-  )
-    .map((rounds): LeadGroup => ({ rounds, replies: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).length }))
-    .sort((a, b) => Number(!!a.rounds[0].side) - Number(!!b.rounds[0].side) || b.replies - a.replies);
-  const answered = groups.filter((g) => g.rounds[0].side).length;
+type Thread = { rounds: LeadBrief[]; ids: string[]; teams: string[] };
+
+function ThreadCard({ thread, replies, row, href, onMore }: { thread: Thread; replies: ReplyItem[]; row?: TeamRow; href: string; onMore: () => void }) {
+  const [all, setAll] = useState(false);
+  const [latest, ...earlier] = thread.rounds;
   return (
-    <section className="flex min-w-0 flex-col gap-3" aria-label="Both sides">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <h3 className="m-0 text-[17px] font-bold">Both sides</h3>
-        <span className="flex items-center gap-1" aria-hidden="true">
-          {groups.map((g) => (
-            <span key={g.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={g.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
-          ))}
+    <li className="flex min-w-0 flex-col gap-3 rounded-lg px-4 py-3.5" style={{ border: row ? "1.5px solid var(--problems)" : "1px solid var(--line)" }}>
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <span className="text-[15px] font-bold">{latest.team}</span>
+        <span className="inline-flex items-center gap-1 sp-caption" style={{ fontWeight: 600 }} aria-label={`${thread.ids.length} replies`}>
+          <MessageSquare size={13} aria-hidden="true" />
+          {thread.ids.length}
         </span>
-        <span className="sp-caption" style={{ fontWeight: 600 }}>
-          {answered} of {groups.length} {groups.length === 1 ? "team lead" : "team leads"} answered
-        </span>
+        {row ? (
+          <span className="sp-num rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
+            {row.n} of {row.m}
+          </span>
+        ) : null}
+        {row?.times ? (
+          <span className="text-[12px] font-bold" style={{ color: "var(--problems)" }}>
+            {ordinal(row.times)} time in 6 months
+          </span>
+        ) : null}
+        <Button href={href} className="ml-auto flex-none">
+          Draft fix
+        </Button>
       </div>
-      <ol className="sp-stagger m-0 flex list-none flex-col gap-2 p-0">
-        {groups.map((g) => (
-          <LeadRow key={g.rounds[0].manager_id} group={g} replies={replies ?? []} href={fixHref(driver, entry, g.rounds[0].team.split(", "))} />
-        ))}
-      </ol>
-    </section>
+      <Round b={latest} replies={replies} max={3} onMore={onMore} />
+      {earlier.length ? (
+        all ? (
+          earlier.map((b) => (
+            <div key={b.id} className="flex flex-col gap-2 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
+              <span className="sp-caption">{shortDate(b.sent_at)}</span>
+              <Round b={b} replies={replies} />
+            </div>
+          ))
+        ) : (
+          <button type="button" className="sp-link self-start text-[14px]" onClick={() => setAll(true)}>
+            Earlier rounds ({earlier.length})
+          </button>
+        )
+      ) : null}
+    </li>
   );
 }
 
@@ -621,7 +557,8 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
   const replies = useApi<ReplyItem[]>("/api/hr/replies", 30000);
-  const where = { data: overview?.teams[driver] };
+  const briefs = useApi<LeadBrief[]>(`/api/hr/lead-briefs?driver=${driver}`, 10000).data;
+  const where = overview?.teams[driver];
   const fixes = actions.filter((a) => a.driver === driver && live(a));
   const name = driverName(driver);
 
@@ -631,9 +568,15 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const mine = (replies.data ?? [])
     .filter((r) => !r.escalate && r.drivers?.includes(driver) && counted(r))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
-  const byId = new Map(mine.map((r) => [r.id, r]));
+  const linked = (replies.data ?? []).filter((r) => r.drivers.includes(driver));
+  const threads = Object.values((briefs ?? []).reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}))
+    .map((rounds): Thread => ({ rounds, teams: rounds[0].team.split(", "), ids: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).map((r) => r.id) }))
+    .sort((a, b) => Number(!!a.rounds[0].side) - Number(!!b.rounds[0].side) || b.ids.length - a.ids.length);
+  const rowOf = (t: Thread) => (where?.enough ? where.rows.find((r) => r.teams.some((team) => t.teams.includes(team))) : undefined);
+  const answered = threads.filter((t) => t.rounds[0].side).length;
   const intakes = intakePoints(d);
   const days = (d?.by_day ?? []).flatMap((s) => (s.enough ? [{ label: dayLabel(s.touchpoint), n: s.n, m: s.m }] : []));
+  const company = where?.enough ? rate(where.company) : 0;
   const read = (title: string | null) => {
     setFilter(title);
     setOpen(true);
@@ -644,114 +587,132 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-clip">
       <div key={driver} className="sp-enter grid items-start gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
         <div className="flex min-w-0 flex-col gap-5">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
-              {name}
-            </h2>
-            <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
-              {fixes.length ? "Fix in progress" : "Needs a fix"}
-            </span>
-            {waiting > 0 ? (
-              <Link href={`/replies?area=${driver}`} className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
-                <MessageSquare size={14} aria-hidden="true" />
-                {waiting} new {waiting === 1 ? "reply" : "replies"} to check
-                <ArrowRight size={14} aria-hidden="true" />
-              </Link>
-            ) : null}
-          </div>
-          <div className="grid items-end gap-x-8 gap-y-5 sm:grid-cols-[auto_minmax(0,1fr)]">
-            {card.enough ? (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col">
-                  <span className="sp-num text-[44px] font-bold leading-[46px]">
-                    {card.n}
-                    <span className="text-[20px] font-semibold sp-muted"> of {card.m}</span>
-                  </span>
-                  <span className="sp-meta">who answered</span>
-                  {card.avg != null ? <span className="sp-meta">Company average {card.avg} of 5</span> : null}
-                </div>
-                <Waffle c={card} />
-              </div>
-            ) : (
-              <CountBar notEnough />
-            )}
-            {intakes.length ? (
-              <div className="flex min-w-0 flex-col gap-2">
-                <div className="flex items-center gap-0.5">
-                  <h3 className="m-0 text-[13px] font-bold">Share of hires, by start month</h3>
-                  <span className="sp-tip sp-tip-below">
-                    <button type="button" className="sp-tip-btn" aria-label="What this chart shows">
-                      <Info size={16} strokeWidth={2} aria-hidden="true" />
-                    </button>
-                    <span role="tooltip" className="sp-tip-bubble">
-                      Each bar is the share of that month&apos;s new hires who named this problem in their latest check-in. Hover a bar for the exact count. The dashed line is the share across all months together, so months with more hires count for more.
-                    </span>
-                  </span>
-                </div>
-                <Columns points={intakes} />
-              </div>
+          <div className="flex flex-col gap-1.5">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
+                {name}
+              </h2>
+              <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={{ background: fixes.length ? "var(--fixes-soft)" : "var(--problems-soft)", color: fixes.length ? "var(--fixes)" : "var(--problems)" }}>
+                {fixes.length ? "Fix in progress" : "Needs a fix"}
+              </span>
+              {waiting > 0 ? (
+                <Link href={`/replies?area=${driver}`} className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold no-underline hover:brightness-95" style={{ background: "var(--ai-soft)", color: "var(--ai)" }}>
+                  <MessageSquare size={14} aria-hidden="true" />
+                  {waiting} to check
+                  <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              ) : null}
+            </div>
+            {grouped[0] ? (
+              <p className="m-0 text-[20px] font-semibold leading-[28px]" style={{ color: "var(--problems)" }}>
+                {grouped[0].title}
+              </p>
             ) : null}
           </div>
 
-          <RootCause name={name} top={grouped[0]} experience={d?.by_experience} where={where.data} />
-          <LeadSides driver={driver} replies={replies.data} entry={library.data?.[0]?.id} />
-
-          <h3 className="m-0 text-[15px] font-bold">Evidence behind the root cause</h3>
           {d ? (
-            <div className="sp-stagger -mt-2 grid gap-3 sm:grid-cols-2">
-              <div className="grid min-w-0 sm:col-span-2">
-                <Panel title="What they mean">
-                  {grouped.length ? (
-                    <div className="gap-x-6 md:columns-2">
-                      {grouped.map((group) => {
-                        const sample = group.reply_ids.map((id) => byId.get(id)).find((r) => r?.text);
-                        return (
-                          <div key={group.title} className="mb-4 flex min-w-0 break-inside-avoid flex-col gap-2 last:mb-0">
-                            <HBar label={group.title} n={group.n} of={card.n ?? group.n} onClick={() => read(group.title)} />
-                            {sample ? <TranslatedQuote language={sample.language} text={sample.text!} evidence={sample.evidence_quote} /> : null}
-                          </div>
-                        );
-                      })}
-                    </div>
+            <div className="sp-stagger grid gap-3 md:grid-cols-3">
+              <Tile3 title={card.enough ? `${card.n} of ${card.m}` : name}>
+                {card.enough ? <Waffle c={card} /> : <CountBar notEnough />}
+                {d.by_experience.map((s) =>
+                  s.enough ? (
+                    <HBar key={s.group} label={s.group} n={s.n} of={s.m} />
                   ) : (
-                    <span className="sp-caption">No shared idea yet: each came from fewer than 5 people.</span>
-                  )}
-                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 && grouped.length ? <span className="sp-caption">+{g.not_grouped} not grouped</span> : null}
-                </Panel>
-              </div>
-              {d.by_experience.length ? (
-                <Panel title="First job or experienced">
-                  {d.by_experience.map((s) =>
-                    s.enough ? (
-                      <HBar key={s.group} label={s.group} n={s.n} of={s.m} sub={`${Math.round((s.n / Math.max(s.m, 1)) * 100)}% named ${name.toLowerCase()}`} />
-                    ) : (
-                      <span key={s.group} className="flex flex-col gap-1.5 text-[13px]">
-                        <span className="font-semibold">{s.group}</span>
-                        <CountBar notEnough have={s.have} need={s.need} />
-                      </span>
-                    ),
-                  )}
-                </Panel>
-              ) : null}
-              {days.length > 1 ? (
-                <Panel title="Each check-in">
-                  <Columns points={days} />
-                </Panel>
-              ) : null}
+                    <span key={s.group} className="flex flex-col gap-1.5 text-[13px]">
+                      <span className="font-semibold">{s.group}</span>
+                      <CountBar notEnough have={s.have} need={s.need} />
+                    </span>
+                  ),
+                )}
+              </Tile3>
+              <Tile3 title="Teams">
+                {!where?.enough ? (
+                  <CountBar notEnough />
+                ) : where.verdict === "none" ? (
+                  <span className="flex items-center gap-2 text-[14px] font-semibold">
+                    <Building2 size={16} aria-hidden="true" />
+                    Spread evenly
+                  </span>
+                ) : (
+                  <>
+                    {where.verdict === "most" ? <span className="text-[14px] font-semibold">Most teams</span> : null}
+                    {where.rows.map((r) => (
+                      <div key={r.name} className="flex flex-col gap-0.5">
+                        <span className="flex items-baseline justify-between gap-2 text-[13px]">
+                          <span className="min-w-0 font-semibold">{r.name}</span>
+                          <span className="sp-num flex-none sp-muted">
+                            {r.n} of {r.m}
+                          </span>
+                        </span>
+                        <RateBar row={r} company={company} />
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Tile3>
+              <Tile3 title="Trend">
+                {intakes.length ? <Columns points={intakes} /> : null}
+                {days.length > 1 ? <Columns points={days} /> : null}
+              </Tile3>
             </div>
           ) : (
             <div className="sp-skel h-40" />
           )}
+
+          {grouped.length ? (
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="What they mean">
+              {grouped.map((group) => (
+                <button key={group.title} type="button" className="sp-chip cursor-pointer" onClick={() => read(group.title)}>
+                  {group.title}
+                  <span className="sp-num font-bold" style={{ color: "var(--problems)" }}>
+                    {group.n}
+                  </span>
+                </button>
+              ))}
+              {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="sp-caption">+{g.not_grouped}</span> : null}
+            </div>
+          ) : null}
+
+          {threads.length ? (
+            <section className="flex min-w-0 flex-col gap-3" aria-label="Both sides">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <h3 className="m-0 text-[17px] font-bold">Both sides</h3>
+                <span className="flex items-center gap-1" aria-hidden="true">
+                  {threads.map((t) => (
+                    <span key={t.rounds[0].id} className="h-2.5 w-2.5 rounded-full" style={t.rounds[0].side ? { background: "var(--fixes)" } : { border: "1.5px dashed var(--line-strong)" }} />
+                  ))}
+                </span>
+                <span className="sp-caption" style={{ fontWeight: 600 }}>
+                  {answered} of {threads.length} answered
+                </span>
+              </div>
+              <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
+                {threads.map((t) => (
+                  <ThreadCard key={t.rounds[0].manager_id} thread={t} replies={replies.data ?? []} row={rowOf(t)} href={fixHref(driver, library.data?.[0]?.id, t.teams)} onMore={() => read(t.rounds[0].team)} />
+                ))}
+              </ol>
+            </section>
+          ) : null}
+
           <button type="button" className="sp-link inline-flex items-center gap-1.5 self-start text-[14px]" aria-haspopup="dialog" disabled={!replies.data} onClick={() => read(null)}>
             <MessageSquare size={15} aria-hidden="true" />
             Review the {mine.length} replies in full
           </button>
-          {open ? <ReplySheet driver={driver} replies={mine} groups={grouped} filter={filter} setFilter={setFilter} onClose={close} /> : null}
+          {open ? (
+            <ReplySheet
+              driver={driver}
+              replies={mine}
+              groups={[...grouped, ...threads.map((t) => ({ title: t.rounds[0].team, reply_ids: t.ids }))]}
+              filter={filter}
+              setFilter={setFilter}
+              onClose={close}
+            />
+          ) : null}
         </div>
 
         <div className="flex min-w-0 flex-col gap-3 lg:sticky lg:top-[calc(var(--sp-demo-bar,0px)+16px)]">
           <h3 className="m-0 text-[15px] font-bold">Send a fix</h3>
-          <SendFix key={driver} driver={driver} where={where.data} entries={library.data} fixes={fixes} />
+          <SendFix key={driver} driver={driver} where={where} entries={library.data} fixes={fixes} />
         </div>
       </div>
     </section>
