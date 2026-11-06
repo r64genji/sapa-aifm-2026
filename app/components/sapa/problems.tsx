@@ -430,9 +430,9 @@ function ReplySheet({ driver, replies, groups, filter, setFilter, onClose }: { d
   );
 }
 
-function Tile3({ title, children }: { title: string; children: ReactNode }) {
+function Tile3({ title, wide, children }: { title: string; wide?: boolean; children: ReactNode }) {
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-lg px-4 py-3.5" style={{ background: "var(--surface-sunken)" }}>
+    <div className={`flex min-w-0 flex-col gap-3 rounded-lg px-4 py-3.5 ${wide ? "md:col-span-2" : ""}`} style={{ background: "var(--surface-sunken)" }}>
       <h4 className="m-0 text-[13px] font-bold">{title}</h4>
       {children}
     </div>
@@ -611,7 +611,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </div>
 
           {d ? (
-            <div className="sp-stagger grid gap-3 md:grid-cols-3">
+            <div className="sp-stagger grid gap-3 md:grid-cols-2">
               <Tile3 title={card.enough ? `${card.n} of ${card.m}` : name}>
                 {card.enough ? <Waffle c={card} /> : <CountBar notEnough />}
                 {d.by_experience.map((s) =>
@@ -650,9 +650,11 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   </>
                 )}
               </Tile3>
-              <Tile3 title="Trend">
-                {intakes.length ? <Columns points={intakes} /> : null}
-                {days.length > 1 ? <Columns points={days} /> : null}
+              <Tile3 title="Trend" wide>
+                <div className="grid gap-6 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                  {intakes.length ? <Columns points={intakes} /> : null}
+                  {days.length > 1 ? <Columns points={days} /> : null}
+                </div>
               </Tile3>
             </div>
           ) : (
