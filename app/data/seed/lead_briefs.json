@@ -968,7 +968,7 @@
       },
       {
         "driver": "MANAGER_SUPPORT",
-        "brief": "New hires say it is hard to get help or answers from their team lead.",
+        "brief": "New hires say it is hard to get help or answers from you.",
         "ai": false,
         "hires": [
           {
