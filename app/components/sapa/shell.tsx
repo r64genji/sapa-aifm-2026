@@ -135,7 +135,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </span>
       <span className="flex min-w-0 flex-auto flex-col">
         <span className="truncate font-semibold">{me.data.name}</span>
-        <span className="sp-caption truncate">HR · {me.data.organisation.replace(/ \(.*$/, "").replace("Contoh Global Business Services", "Contoh GBS")}</span>
+        <span className="sp-caption truncate">HR · {me.data.organisation.replace(/ \(.*$/, "").replace("Bayan Global Services", "Bayan GBS")}</span>
       </span>
     </>
   );
