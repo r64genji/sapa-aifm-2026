@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { before, test } from "node:test";
-import { db, dispatch, freezeClock, hrRequest, link, resetDemo, sentTo, tapData, PLAN } from "./helpers.ts";
+import { db, dispatch, freezeClock, hrRequest, link, resetDemo, sentTo, PLAN } from "./helpers.ts";
 
 const leadChat = 5550006901;
 const library = (n: number) => `6f1c2a3e-0000-4000-8000-0000000004${String(n).padStart(2, "0")}`;
@@ -60,24 +60,4 @@ test("R69: an ignored fix gets one nudge 24 hours after the alert and one the da
   const shown = await row(id);
   assert.equal(shown.nudged_at, "2026-10-16T03:01:00+00:00");
   assert.equal(shown.late_nudged_at, "2026-10-17T16:01:00+00:00");
-});
-
-test("R69: in demo mode Nudge leads sends the nudges at once, and Mark done on a nudge finishes the fix", async () => {
-  await demoMode(true);
-  await freezeClock("2026-10-20T03:00:00.000Z");
-  const id = await assign("Quiet hours", 10);
-
-  const tap = async () => (await (await hrRequest("/api/hr/demo/nudge", "POST", {})).json()).sent;
-  assert.equal(await tap(), 1);
-  assert.equal(await tap(), 1);
-  assert.equal(await tap(), 0);
-  const sent = await nudges("Quiet hours");
-  assert.deepEqual(sent.map((m) => m.text), [
-    'Reminder from HR: "Quiet hours" is still waiting for you. Due Thu 22 Oct.',
-    'Reminder from HR: "Quiet hours" was due Thu 22 Oct and is not marked done yet.',
-  ]);
-
-  const done = (sent[1].reply_markup as { inline_keyboard: { text: string; callback_data: string }[][] }).inline_keyboard.flat()[0].callback_data;
-  await tapData(leadChat, done);
-  assert.equal((await row(id)).status, "done");
 });

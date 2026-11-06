@@ -64,11 +64,6 @@ export function DemoBar() {
       const result = await apiSend<{ sent: number }>("/api/hr/demo/close-round", "POST", {});
       setMessage(`Round closed. ${result.sent} team lead${result.sent === 1 ? "" : "s"} asked for their side.`);
     });
-  const nudge = () =>
-    run(async () => {
-      const result = await apiSend<{ sent: number }>("/api/hr/demo/nudge", "POST", {});
-      setMessage(`${result.sent} nudge${result.sent === 1 ? "" : "s"} sent. In real use a nudge waits 24 hours, or until the day after the due date.`);
-    });
   const reset = (full: boolean) =>
     run(async () => {
       setConfirming(null);
@@ -92,7 +87,6 @@ export function DemoBar() {
         <span id="demo-controls" className={`${open ? "flex" : "hidden"} w-full flex-wrap gap-2 md:flex md:w-auto`}>
           <Button variant="primary" disabled={busy || !next} onClick={outreach}>Outreach now</Button>
           <Button disabled={busy} onClick={closeRound}>Close round</Button>
-          <Button disabled={busy} onClick={nudge}>Nudge leads</Button>
           <Button disabled={busy} onClick={() => setConfirming("seed")}>Reset to seed</Button>
           <Button disabled={busy} onClick={() => setConfirming("full")}>Full reset</Button>
         </span>

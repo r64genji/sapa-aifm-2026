@@ -779,17 +779,15 @@ export async function releaseAlerts() {
   return ids.length;
 }
 
-export async function nudgeFixes(organisationId: string | null = null) {
+export async function nudgeFixes() {
   const db = createAdminClient();
   const at = await now();
-  let query = db
+  const { data, error } = await db
     .from("actions")
     .select("id, title, status, due_on, alert_sent_at, nudged_at, late_nudged_at, organisations!inner(time_zone), managers!actions_owner_manager_id_fkey!inner(telegram_chat_id)")
     .in("status", ["assigned", "accepted"])
     .not("alert_sent_at", "is", null)
     .not("managers.telegram_chat_id", "is", null);
-  if (organisationId) query = query.eq("organisation_id", organisationId);
-  const { data, error } = await query;
   if (error) throw error;
   let sent = 0;
   for (const row of data as unknown as {
@@ -803,8 +801,8 @@ export async function nudgeFixes(organisationId: string | null = null) {
     organisations: { time_zone: string };
     managers: { telegram_chat_id: number };
   }[]) {
-    const unaccepted = !row.nudged_at && row.status === "assigned" && (organisationId !== null || Date.parse(row.alert_sent_at) <= at.getTime() - 86400000);
-    const late = !row.late_nudged_at && (organisationId !== null || row.due_on < localDate(at, row.organisations.time_zone));
+    const unaccepted = !row.nudged_at && row.status === "assigned" && Date.parse(row.alert_sent_at) <= at.getTime() - 86400000;
+    const late = !row.late_nudged_at && row.due_on < localDate(at, row.organisations.time_zone);
     if (!unaccepted && !late) continue;
     const column = unaccepted ? "nudged_at" : "late_nudged_at";
     const { data: claimed, error: claimError } = await db.from("actions").update({ [column]: at.toISOString() }).eq("id", row.id).is(column, null).select("id");
