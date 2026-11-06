@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, Check, ChevronDown, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { Avatar, ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
 import { Button, CountBar, DRIVERS, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
@@ -456,6 +456,100 @@ function ThreadCard({ thread, replies, row, href, picked, onPick, onMore }: { th
   );
 }
 
+function TeamCount({ team, driver, strong }: { team: string; driver: string; strong: boolean }) {
+  const c = useApi<Themes>(`/api/hr/themes?team=${encodeURIComponent(team)}`).data?.cards.find((x) => x.driver === driver);
+  if (!c) return <span className="sp-skel h-5 w-12 rounded-full" />;
+  return (
+    <span
+      className="sp-num flex-none rounded-full px-2 py-0.5 text-[12px] font-bold"
+      style={strong ? { background: "var(--problems)", color: "var(--on-problems)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}
+      title={c.enough ? undefined : c.message}
+    >
+      {c.enough ? `${c.n} of ${c.m}` : "Under 5"}
+    </span>
+  );
+}
+
+function TeamPicker({ driver, threads, isPicked, flip, rowOf }: { driver: string; threads: Thread[]; isPicked: (t: Thread) => boolean; flip: (id: string) => void; rowOf: (teams: string[]) => TeamRow | undefined }) {
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => !root.current?.contains(e.target as Node) && setOpen(false);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("pointerdown", away);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("pointerdown", away);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]);
+  const chosen = threads.filter(isPicked);
+  return (
+    <div ref={root} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen(!open)}
+        className="flex min-h-12 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3.5 py-2 text-left font-[inherit] text-[color:var(--ink)]"
+        style={{ background: "var(--surface-raised)", border: `1.5px solid ${open ? "var(--problems)" : "var(--line-strong)"}` }}
+      >
+        <Users size={17} aria-hidden="true" style={{ color: "var(--problems)" }} />
+        <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">
+          {chosen.length === 0 ? "Company-wide" : chosen.length === 1 ? chosen[0].rounds[0].team : `${chosen.length} teams`}
+        </span>
+        <ChevronDown size={18} aria-hidden="true" className="flex-none sp-muted" style={{ transform: open ? "rotate(180deg)" : undefined, transition: "transform 0.15s" }} />
+      </button>
+      {open ? (
+        <div
+          role="group"
+          aria-label="Who gets it"
+          className="absolute inset-x-0 top-[calc(100%+6px)] z-30 flex max-h-[360px] flex-col overflow-y-auto rounded-xl p-1.5"
+          style={{ background: "var(--surface-raised)", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow-pop)" }}
+        >
+          {threads.map((t) => {
+            const on = isPicked(t);
+            return (
+              <label key={t.rounds[0].manager_id} className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-[color:var(--surface-sunken)]" style={on ? { background: "var(--problems-soft)" } : undefined}>
+                <input type="checkbox" className="sr-only" checked={on} onChange={() => flip(t.rounds[0].manager_id)} />
+                <span
+                  aria-hidden="true"
+                  className="grid h-5 w-5 flex-none place-items-center rounded-md"
+                  style={on ? { background: "var(--problems)", color: "var(--on-problems)" } : { border: "1.5px solid var(--line-strong)" }}
+                >
+                  {on ? <Check size={14} strokeWidth={3} /> : null}
+                </span>
+                <span className="min-w-0 flex-1 text-[14px] font-semibold leading-5">{t.rounds[0].team}</span>
+                {t.teams.map((team) => (
+                  <TeamCount key={team} team={team} driver={driver} strong={!!rowOf([team])} />
+                ))}
+              </label>
+            );
+          })}
+        </div>
+      ) : null}
+      {chosen.length > 1 ? (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {chosen.map((t) => (
+            <button
+              key={t.rounds[0].manager_id}
+              type="button"
+              onClick={() => flip(t.rounds[0].manager_id)}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border-0 px-2.5 py-1 text-[12px] font-semibold"
+              style={{ background: "var(--problems-soft)", color: "var(--problems)" }}
+            >
+              {t.rounds[0].team}
+              <span aria-hidden="true">×</span>
+              <span className="sr-only">Remove</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function FixChoice({ driver, entries, chosen, onChoose }: { driver: string; entries: Entry[]; chosen: string; onChoose: (id: string) => void }) {
   return (
     <div role="radiogroup" aria-label="Which fix" className="flex flex-col gap-2">
@@ -705,23 +799,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           ))}
           <div className="flex flex-col gap-2.5">
             <Label>Who gets it</Label>
-            <div className="flex flex-wrap gap-1.5">
-              {threads.map((t) => {
-                const on = isPicked(t);
-                return (
-                  <button
-                    key={t.rounds[0].manager_id}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => flip(t.rounds[0].manager_id)}
-                    className="sp-chip cursor-pointer"
-                    style={on ? { background: "var(--problems)", borderColor: "var(--problems)", color: "var(--on-problems)" } : undefined}
-                  >
-                    {t.rounds[0].team}
-                  </button>
-                );
-              })}
-            </div>
+            <TeamPicker driver={driver} threads={threads} isPicked={isPicked} flip={flip} rowOf={rowOf} />
           </div>
           <div className="flex flex-col gap-2.5">
             <Label>Which fix</Label>
