@@ -17,7 +17,8 @@ type Themes = { cards: Card[]; context: Context[] };
 type Share = { enough: true; n: number; m: number } | { enough: false };
 type Detail = { by_intake: (Share & { intake: string })[] };
 type QueueRow = { id: string; status: string; drivers: string[]; context_tags: string[]; escalate: boolean; evidence_quote: string | null; text: string | null; note: string | null; created_at: string; language?: string; byline: string };
-type Action = { id: string; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null; recheck_pending: boolean };
+type Action = { id: string; driver: string; scope_team: string | null; title: string; status: string; owner: string | null; overdue: boolean; due_on: string | null; verdict: string | null; recheck_pending: boolean };
+type Overview = { teams: Record<string, { enough: boolean; rows?: { name: string; teams: string[] }[] }> };
 type Upcoming = { date: string; touchpoint: number; people: number }[];
 type Questions = { groups: { id: string; askers: number; unknown: number; handbook_path: string | null }[] };
 
@@ -231,6 +232,7 @@ export default function Page() {
   const actions = useApi<Action[]>("/api/hr/actions");
   const questions = useApi<Questions>("/api/hr/questions");
   const upcoming = useApi<Upcoming>("/api/hr/upcoming");
+  const overview = useApi<Overview>("/api/hr/themes/overview");
 
   const doneIds = new Set(done.map((d) => d.row.id));
   const toCheck = (queue.data ?? []).filter((r) => !r.escalate && !doneIds.has(r.id));
@@ -249,6 +251,12 @@ export default function Page() {
   const answered = cards.reduce((most, c) => Math.max(most, c.m ?? 0), 0);
   const judged = (actions.data ?? []).filter((a) => a.status === "done" && a.verdict && a.verdict !== "too_early");
   const running = open.length - drafts;
+  const sent = open.filter((a) => a.status !== "draft");
+  const unfixed = new Set(
+    Object.entries(overview.data?.teams ?? {}).flatMap(([driver, list]) =>
+      (list.rows ?? []).filter((r) => !sent.some((a) => a.driver === driver && a.scope_team && r.teams.includes(a.scope_team))).map((r) => r.name),
+    ),
+  ).size;
 
   return (
     <>
@@ -265,7 +273,7 @@ export default function Page() {
       <Loop
         steps={[
           { step: "Heard", lane: "ai", value: themes.data ? answered : undefined, label: "new hires answered", href: "/replies?view=all" },
-          { step: "Found", lane: "problems", value: themes.data ? enough.length : undefined, label: enough.length === 1 ? "shared problem" : "shared problems", href: "/problems" },
+          { step: "Found", lane: "problems", value: overview.data && actions.data ? unfixed : undefined, label: unfixed === 1 ? "team needs a fix" : "teams need a fix", href: "/problems" },
           { step: "Fixing", lane: "fixes", value: actions.data ? running : undefined, label: running === 1 ? "fix in progress" : "fixes in progress", href: "/fixes" },
           { step: "Worked", lane: "fixes", value: actions.data ? judged.filter((a) => a.verdict === "worked").length : undefined, label: `of ${judged.length} finished fixes worked`, href: "/fixes" },
         ]}
