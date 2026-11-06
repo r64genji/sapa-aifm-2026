@@ -328,6 +328,7 @@ export async function checkinButton(person: Person, value: string): Promise<Repl
     return [questionReply(person, open, open.progress)];
   }
   if (!(await store(person, open, scale, null))) return null;
+  if (open.progress + 1 === sequence.length) return askShare(person, open.id, open.chat);
   return [await proceed(person, open, open.progress + 1)];
 }
 
