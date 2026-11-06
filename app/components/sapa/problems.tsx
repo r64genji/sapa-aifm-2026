@@ -486,51 +486,53 @@ function TeamPicker({ driver, threads, isPicked, flip, rowOf }: { driver: string
   }, [open]);
   const chosen = threads.filter(isPicked);
   return (
-    <div ref={root} className="relative">
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-haspopup="true"
-        onClick={() => setOpen(!open)}
-        className="flex min-h-12 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3.5 py-2 text-left font-[inherit] text-[color:var(--ink)]"
-        style={{ background: "var(--surface-raised)", border: `1.5px solid ${open ? "var(--problems)" : "var(--line-strong)"}` }}
-      >
-        <Users size={17} aria-hidden="true" style={{ color: "var(--problems)" }} />
-        <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">
-          {chosen.length === 0 ? "Company-wide" : chosen.length === 1 ? chosen[0].rounds[0].team : `${chosen.length} teams`}
-        </span>
-        <ChevronDown size={18} aria-hidden="true" className="flex-none sp-muted" style={{ transform: open ? "rotate(180deg)" : undefined, transition: "transform 0.15s" }} />
-      </button>
-      {open ? (
-        <div
-          role="group"
-          aria-label="Who gets it"
-          className="absolute inset-x-0 top-[calc(100%+6px)] z-30 flex max-h-[360px] flex-col overflow-y-auto rounded-xl p-1.5"
-          style={{ background: "var(--surface-raised)", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow-pop)" }}
+    <div ref={root} className="flex flex-col gap-2">
+      <div className="relative">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-haspopup="true"
+          onClick={() => setOpen(!open)}
+          className="flex min-h-12 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3.5 py-2 text-left font-[inherit] text-[color:var(--ink)]"
+          style={{ background: "var(--surface-raised)", border: `1.5px solid ${open ? "var(--problems)" : "var(--line-strong)"}` }}
         >
-          {threads.map((t) => {
-            const on = isPicked(t);
-            return (
-              <label key={t.rounds[0].manager_id} className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-[color:var(--surface-sunken)]" style={on ? { background: "var(--problems-soft)" } : undefined}>
-                <input type="checkbox" className="sr-only" checked={on} onChange={() => flip(t.rounds[0].manager_id)} />
-                <span
-                  aria-hidden="true"
-                  className="grid h-5 w-5 flex-none place-items-center rounded-md"
-                  style={on ? { background: "var(--problems)", color: "var(--on-problems)" } : { border: "1.5px solid var(--line-strong)" }}
-                >
-                  {on ? <Check size={14} strokeWidth={3} /> : null}
-                </span>
-                <span className="min-w-0 flex-1 text-[14px] font-semibold leading-5">{t.rounds[0].team}</span>
-                {t.teams.map((team) => (
-                  <TeamCount key={team} team={team} driver={driver} strong={!!rowOf([team])} />
-                ))}
-              </label>
-            );
-          })}
-        </div>
-      ) : null}
+          <Users size={17} aria-hidden="true" style={{ color: "var(--problems)" }} />
+          <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">
+            {chosen.length === 0 ? "Company-wide" : chosen.length === 1 ? chosen[0].rounds[0].team : `${chosen.length} teams`}
+          </span>
+          <ChevronDown size={18} aria-hidden="true" className="flex-none sp-muted" style={{ transform: open ? "rotate(180deg)" : undefined, transition: "transform 0.15s" }} />
+        </button>
+        {open ? (
+          <div
+            role="group"
+            aria-label="Who gets it"
+            className="absolute inset-x-0 top-[calc(100%+6px)] z-30 flex max-h-[360px] flex-col overflow-y-auto rounded-xl p-1.5"
+            style={{ background: "var(--surface-raised)", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow-pop)" }}
+          >
+            {threads.map((t) => {
+              const on = isPicked(t);
+              return (
+                <label key={t.rounds[0].manager_id} className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-[color:var(--surface-sunken)]" style={on ? { background: "var(--problems-soft)" } : undefined}>
+                  <input type="checkbox" className="sr-only" checked={on} onChange={() => flip(t.rounds[0].manager_id)} />
+                  <span
+                    aria-hidden="true"
+                    className="grid h-5 w-5 flex-none place-items-center rounded-md"
+                    style={on ? { background: "var(--problems)", color: "var(--on-problems)" } : { border: "1.5px solid var(--line-strong)" }}
+                  >
+                    {on ? <Check size={14} strokeWidth={3} /> : null}
+                  </span>
+                  <span className="min-w-0 flex-1 text-[14px] font-semibold leading-5">{t.rounds[0].team}</span>
+                  {t.teams.map((team) => (
+                    <TeamCount key={team} team={team} driver={driver} strong={!!rowOf([team])} />
+                  ))}
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
       {chosen.length > 1 ? (
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {chosen.map((t) => (
             <button
               key={t.rounds[0].manager_id}
