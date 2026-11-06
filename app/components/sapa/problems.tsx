@@ -344,7 +344,7 @@ function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: Reply
   const named = b.items.flatMap((item) => item.hires);
   return (
     <div className="grid min-w-0 gap-4 md:grid-cols-2 md:gap-8">
-      <div className="flex min-w-0 flex-col gap-3">
+      <div className="flex min-w-0 flex-col gap-3 md:pb-8">
         {shown.length
           ? shown.map((r) => <HireBubble key={r.id} r={r} />)
           : b.items.map((item) => (
@@ -367,7 +367,7 @@ function Round({ b, replies, only, max, onMore }: { b: LeadBrief; replies: Reply
           </div>
         ) : null}
       </div>
-      <div className="flex min-w-0 flex-col justify-end">
+      <div className="flex min-w-0 flex-col justify-end md:pt-8">
         <LeadBubble b={b} />
       </div>
     </div>
@@ -572,6 +572,15 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           <div className="flex flex-col gap-3">
             <Label>What they mean</Label>
             <div className="flex flex-wrap items-center gap-2" role="group" aria-label="What they mean">
+              <button
+                type="button"
+                className="sp-chip cursor-pointer px-4 py-1"
+                aria-pressed={!meaning}
+                style={!meaning ? { borderColor: "var(--problems)", background: "var(--problems-soft)", boxShadow: "0 0 0 1px var(--problems)" } : undefined}
+                onClick={() => setMeaning(null)}
+              >
+                All
+              </button>
               {grouped.map((group) => (
                 <button
                   key={group.title}
