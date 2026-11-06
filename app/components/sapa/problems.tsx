@@ -668,7 +668,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                   </div>
                 ) : null}
               </div>
-              {card.enough ? <Waffle c={card} dot={22} /> : null}
+              {card.enough ? <Waffle c={card} dot={18} /> : null}
             </div>
 
             {d ? (
