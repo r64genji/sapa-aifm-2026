@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
@@ -166,7 +166,7 @@ function Columns({ points }: { points: Point[] }) {
         <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 border-t border-dashed" style={{ bottom: `${20 + (avg / top) * 84}px`, borderColor: "var(--line-strong)" }} />
         {points.map((p, i) => (
           <div key={p.label} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title={`${p.label}: ${p.n} of ${p.m} hires named it`}>
-            <span className="sp-num relative px-0.5 text-[11px] font-semibold sp-muted" style={{ background: "var(--surface-raised)" }}>{pct(p)}</span>
+            <span className="sp-num relative px-0.5 text-[11px] font-semibold sp-muted" style={{ background: "var(--surface-sunken)" }}>{pct(p)}</span>
             <span className="sp-grow-y w-full max-w-9 rounded-t" style={{ height: `${Math.max((rate(p) / top) * 84, 3)}px`, background: i === points.length - 1 ? "var(--problems)" : "var(--problems-soft)", ...delay(i * 70) }} />
             <span className="sp-caption">{p.label}</span>
           </div>
@@ -499,6 +499,16 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   const [meaning, setMeaning] = useState<string | null>(null);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [choice, setChoice] = useState<string | null>(null);
+  const [seen, setSeen] = useState({ hero: true, fix: false });
+  const hero = useRef<HTMLDivElement>(null);
+  const send = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const watch = new IntersectionObserver((list) =>
+      setSeen((was) => list.reduce((now, e) => ({ ...now, [e.target === hero.current ? "hero" : "fix"]: e.isIntersecting }), was)),
+    );
+    for (const el of [hero.current, send.current]) if (el) watch.observe(el);
+    return () => watch.disconnect();
+  }, [driver]);
   const overview = useApi<Overview>("/api/hr/themes/overview").data;
   const groups = useApi<Groups>(`/api/hr/themes/${driver}/groups`);
   const library = useApi<Entry[]>(`/api/hr/actions/library?driver=${driver}`);
@@ -544,7 +554,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4">
       <div key={driver} className="sp-enter flex min-w-0 flex-col gap-10 p-4 sm:p-6">
-        <div className="flex flex-col gap-6 rounded-2xl p-5 sm:p-7" style={{ background: "var(--problems-soft)" }}>
+        <div ref={hero} className="flex flex-col gap-6 rounded-2xl p-5 sm:p-7" style={{ background: "var(--problems-soft)" }}>
           <div className="flex flex-wrap items-center gap-3">
             <h2 id="cur-title" className="m-0 text-[28px] font-bold leading-[34px] tracking-[-0.01em]">
               {name}
@@ -635,31 +645,29 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
         </div>
 
         {grouped.length || intakes.length || days.length > 1 ? (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="flex flex-col gap-4">
             {grouped.length ? (
               <Tile3 title="What they mean">
-                <div className="flex flex-col gap-4">
+                <div className="grid gap-x-10 gap-y-2 md:grid-cols-2">
                   {grouped.map((group) => (
                     <HBar key={group.title} label={group.title} n={group.n} of={card.n ?? group.n} on={meaning === group.title} onClick={() => setMeaning(meaning === group.title ? null : group.title)} />
                   ))}
-                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="text-[13px] sp-muted">+{g.not_grouped} not grouped</span> : null}
+                  {g && g.status === "ok" && "groups" in g && g.not_grouped > 0 ? <span className="self-center text-[13px] sp-muted">+{g.not_grouped} not grouped</span> : null}
                 </div>
               </Tile3>
             ) : null}
-            <Tile3 title="Start month · Check-in day">
-              <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                {intakes.length ? (
-                  <div className="min-w-0 rounded-lg p-3" style={{ background: "var(--surface-raised)" }}>
-                    <Columns points={intakes} />
-                  </div>
-                ) : null}
-                {days.length > 1 ? (
-                  <div className="min-w-0 rounded-lg p-3" style={{ background: "var(--surface-raised)" }}>
-                    <Columns points={days} />
-                  </div>
-                ) : null}
-              </div>
-            </Tile3>
+            <div className="grid gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+              {intakes.length ? (
+                <Tile3 title="By start month">
+                  <Columns points={intakes} />
+                </Tile3>
+              ) : null}
+              {days.length > 1 ? (
+                <Tile3 title="By check-in day">
+                  <Columns points={days} />
+                </Tile3>
+              ) : null}
+            </div>
           </div>
         ) : null}
 
@@ -702,7 +710,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </section>
         ) : null}
 
-        <section id="send-fix" className="flex min-w-0 scroll-mt-24 flex-col gap-5 rounded-2xl p-5 sm:p-7" style={{ border: "2px solid var(--problems)" }} aria-label="Send a fix">
+        <section ref={send} id="send-fix" className="flex min-w-0 scroll-mt-24 flex-col gap-5 rounded-2xl p-5 sm:p-7" style={{ border: "2px solid var(--problems)" }} aria-label="Send a fix">
           <h3 className="m-0 text-[22px] font-bold leading-7">Send a fix</h3>
           {fixes.map((a) => (
             <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl px-4 py-3 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
@@ -743,7 +751,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           </Button>
         </section>
 
-        {chosen.length ? (
+        {chosen.length && !seen.hero && !seen.fix ? (
           <div
             className="sticky bottom-4 z-10 -mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-5 py-3.5"
             style={{ background: "var(--ink)", color: "var(--surface-raised)", boxShadow: "0 14px 32px -12px rgba(28, 34, 38, 0.55)" }}
