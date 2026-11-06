@@ -779,13 +779,53 @@ export async function releaseAlerts() {
   return ids.length;
 }
 
+export async function nudgeFixes(organisationId: string | null = null) {
+  const db = createAdminClient();
+  const at = await now();
+  let query = db
+    .from("actions")
+    .select("id, title, status, due_on, alert_sent_at, nudged_at, late_nudged_at, organisations!inner(time_zone), managers!actions_owner_manager_id_fkey!inner(telegram_chat_id)")
+    .in("status", ["assigned", "accepted"])
+    .not("alert_sent_at", "is", null)
+    .not("managers.telegram_chat_id", "is", null);
+  if (organisationId) query = query.eq("organisation_id", organisationId);
+  const { data, error } = await query;
+  if (error) throw error;
+  let sent = 0;
+  for (const row of data as unknown as {
+    id: string;
+    title: string;
+    status: string;
+    due_on: string;
+    alert_sent_at: string;
+    nudged_at: string | null;
+    late_nudged_at: string | null;
+    organisations: { time_zone: string };
+    managers: { telegram_chat_id: number };
+  }[]) {
+    const unaccepted = !row.nudged_at && row.status === "assigned" && (organisationId !== null || Date.parse(row.alert_sent_at) <= at.getTime() - 86400000);
+    const late = !row.late_nudged_at && (organisationId !== null || row.due_on < localDate(at, row.organisations.time_zone));
+    if (!unaccepted && !late) continue;
+    const column = unaccepted ? "nudged_at" : "late_nudged_at";
+    const { data: claimed, error: claimError } = await db.from("actions").update({ [column]: at.toISOString() }).eq("id", row.id).is(column, null).select("id");
+    if (claimError) throw claimError;
+    if (claimed.length === 0) continue;
+    const reply: Reply = {
+      text: (unaccepted ? text.nudge : text.lateNudge).replace("{title}", row.title).replace("{date}", dueDate(row.due_on)),
+      buttons: [{ label: text.done, id: "done", value: row.id }],
+    };
+    if (await send(row.managers.telegram_chat_id, reply).catch((e) => console.error(e))) sent += 1;
+  }
+  return sent;
+}
+
 export async function listActions(organisationId: string) {
   const org = await organisation(organisationId);
   const today = localDate(await now(), org.time_zone);
   const { data, error } = await createAdminClient()
     .from("actions")
     .select(
-      "id, organisation_id, batch_id, driver, source, library_entry_id, draft_reason, title, steps, plan, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, people!actions_scope_person_id_fkey(name), status, held, due_on, alert_due_on, alert_sent_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
+      "id, organisation_id, batch_id, driver, source, library_entry_id, draft_reason, title, steps, plan, draft_notes, notes, no_notice_reason, note_approved_at, scope_type, scope_person_id, scope_team, scope_intake, people!actions_scope_person_id_fkey(name), status, held, due_on, alert_due_on, alert_sent_at, nudged_at, late_nudged_at, done_at, score_change, outcome_note, dismiss_reason, created_at, assigned_at, accepted_at, dismissed_at, note_approved_by, managers!actions_owner_manager_id_fkey(display_name)",
     )
     .eq("organisation_id", organisationId)
     .order("created_at");

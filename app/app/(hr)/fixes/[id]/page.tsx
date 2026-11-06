@@ -27,6 +27,8 @@ type Detail = {
   due_on: string | null;
   alert_due_on: string | null;
   alert_sent_at: string | null;
+  nudged_at: string | null;
+  late_nudged_at: string | null;
   alert_label: string | null;
   created_at: string;
   assigned_at: string | null;
@@ -235,7 +237,9 @@ export default function Page() {
     ...(a.note_approved_at ? [["Note approved", shortDate(a.note_approved_at)] as [string, string]] : []),
     ...(a.assigned_at ? [[`Assigned to ${owner}`, shortDate(a.assigned_at)] as [string, string]] : []),
     ...(a.alert_sent_at ? [[`Sent to ${owner} on Telegram`, shortDate(a.alert_sent_at)] as [string, string]] : []),
+    ...(a.nudged_at ? [[`Nudged ${owner} to accept`, shortDate(a.nudged_at)] as [string, string]] : []),
     ...(a.accepted_at ? [[`${owner} accepted`, shortDate(a.accepted_at)] as [string, string]] : []),
+    ...(a.late_nudged_at ? [[`Nudged ${owner}: past due`, shortDate(a.late_nudged_at)] as [string, string]] : []),
     ...(a.done_at ? [[`${owner} marked it done`, shortDate(a.done_at)] as [string, string]] : []),
     ...(a.notice.sent_at ? [[`Note sent to ${plural(a.notice.sent_count, "new hire")}`, shortDate(a.notice.sent_at)] as [string, string]] : []),
     ...(a.recheck.asked ? [["Recheck answered", `${a.recheck.answered} of ${a.recheck.asked}`] as [string, string]] : []),

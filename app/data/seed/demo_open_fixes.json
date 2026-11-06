@@ -49,7 +49,8 @@
     },
     "note_approved_by": "seed",
     "note_approved_at": "2026-10-15T02:30:00Z",
-    "hiring_side": false
+    "hiring_side": false,
+    "nudged_at": "2026-10-16T02:30:00Z"
   },
   {
     "id": "6f1c2a3e-0000-4000-8000-000000000903",

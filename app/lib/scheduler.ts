@@ -3,6 +3,7 @@ import { now } from "@/lib/clock";
 import { claimMilestones, milestoneReply } from "@/lib/milestones";
 import { exitQuestion } from "@/lib/exit";
 import { closeRounds } from "@/lib/leads";
+import { nudgeFixes } from "@/lib/actions";
 import { packs, type Language } from "@/lib/packs";
 import type { Reply } from "@/lib/engine";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -78,7 +79,7 @@ export async function dispatch() {
       ...(person.ask_exit ? [exitQuestion(person.language)] : []),
     ]);
   }
-  return claims.length + left.length + nudges.length + (await sendNotices()) + (await closeRounds());
+  return claims.length + left.length + nudges.length + (await sendNotices()) + (await closeRounds()) + (await nudgeFixes());
 }
 
 export async function sendNotices() {

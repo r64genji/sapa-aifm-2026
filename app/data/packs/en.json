@@ -53,6 +53,8 @@
     "evidenceUsed": "Used {times} here.",
     "evidenceRise": "{driver} rose {diff} {direction} than in other teams ({n} people).",
     "noticeSent": "Notice sent to {hires}, {time}",
+    "nudge": "Reminder from HR: \"{title}\" is still waiting for you. Due {date}.",
+    "lateNudge": "Reminder from HR: \"{title}\" was due {date} and is not marked done yet.",
     "drivers": {
       "ROLE_CLARITY": "role clarity",
       "MANAGER_SUPPORT": "manager support",
