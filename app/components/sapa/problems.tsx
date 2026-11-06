@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookCheck, BookX, Building2, MessageCircleQuestion, MessageSquare, Users } from "lucide-react";
 import { ApiError, apiSend, useApi } from "./data";
 import { Avatar, ReplyRow, TranslatedQuote, type ReplyItem } from "./reply";
-import { Button, CountBar, DRIVERS, FixTrack, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
+import { Button, CountBar, DRIVERS, LaneSection, Loading, Row, dayLabel, delay, driverName, month, shortDate } from "./ui";
 
 type Share = { enough: true; n: number; m: number; reviewed?: number; ai_confident?: number; score_only?: number } | { enough: false; have: number; need: number };
 type Card = { driver: string; enough: boolean; n?: number; m?: number; reviewed?: number; ai_confident?: number; score_only?: number; avg?: number | null; message?: string };
@@ -32,7 +32,6 @@ type Questions = {
 type Action = { id: string; driver: string; status: string; owner: string | null; assigned_at: string | null; due_on: string | null; title: string; steps: string | null; library_entry_id: string | null };
 type Point = { label: string; n: number; m: number };
 
-const STEP: Record<string, number> = { draft: 1, assigned: 2, accepted: 3 };
 const live = (a: Action) => a.status === "draft" || a.status === "assigned" || a.status === "accepted";
 const counted = (r: ReplyItem) => r.status === "reviewed" || (r.status === "ok" && r.counted !== false);
 const inHandbook = (g: Questions["groups"][number]) => !!g.handbook_path && g.unknown === 0;
@@ -211,141 +210,6 @@ function RateBar({ row, company }: { row: TeamRow; company: number }) {
         <div className="sp-bar-fill sp-lane-problems h-full rounded-full" style={{ width: `${rate(row) * 100}%` }} />
         <span aria-hidden="true" className="absolute -bottom-1 -top-1 w-0.5 rounded" style={{ left: `${company * 100}%`, background: "var(--ink)" }} />
       </div>
-    </div>
-  );
-}
-
-function Num({ n, title }: { n: number; title: string }) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <span aria-hidden="true" className="sp-step">
-        {n}
-      </span>
-      <h3 className="m-0 text-[15px] font-bold">{title}</h3>
-    </div>
-  );
-}
-
-function SendFix({ driver, where, entries, fixes }: { driver: string; where: Teams | undefined; entries: Entry[] | undefined; fixes: Action[] }) {
-  const [off, setOff] = useState<string[]>([]);
-  const [pick, setPick] = useState<string | null>(null);
-  const shown = (entries ?? []).filter((f) => !fixes.some((a) => a.status !== "draft" && a.library_entry_id === f.id));
-  const chosen = pick ?? shown[0]?.id ?? "own";
-  const entry = shown.find((f) => f.id === chosen);
-  const rows = where?.enough ? where.rows : [];
-  const ticked = rows.filter((r) => !off.includes(r.name));
-  const teams = ticked.flatMap((r) => r.teams);
-  const lead = ticked.length === 1 && ticked[0].kind === "team" && ticked[0].leads.length === 1 ? ticked[0].leads[0].name : null;
-  const label = !teams.length ? "Draft a company-wide fix" : lead ? `Draft fix for ${lead}` : `Draft fix for ${teams.length} teams`;
-  const company = where?.enough ? rate(where.company) : 0;
-  const listed = rows.filter((r) => r.kind === "team").length;
-
-  return (
-    <div className="flex flex-col gap-5 rounded-xl px-4 py-4 sm:px-5" style={{ border: "2px solid var(--problems)", background: "var(--surface-raised)" }}>
-      {fixes.map((a) => (
-        <Link key={a.id} href={`/fixes/${a.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg px-3 py-2.5 no-underline" style={{ background: "var(--fixes-soft)", color: "var(--ink)" }}>
-          <span className="flex min-w-0 flex-[1_1_180px] flex-col">
-            <span className="text-xs font-bold" style={{ color: "var(--fixes)" }}>
-              Fix in progress
-            </span>
-            <span className="font-semibold">{a.title}</span>
-          </span>
-          <span className="w-[160px] flex-none text-[12px]">
-            <FixTrack step={STEP[a.status] ?? 1} detail={a.owner ?? "HR"} />
-          </span>
-        </Link>
-      ))}
-
-      <div className="flex flex-col gap-5">
-        <div className="flex min-w-0 flex-col gap-3">
-          <Num n={1} title="Who gets it" />
-          {!where ? (
-            <div className="sp-skel h-16" />
-          ) : !where.enough ? (
-            <span className="sp-meta">Teams show once 5 people answer a check-in.</span>
-          ) : rows.length === 0 ? (
-            <div className="flex items-center gap-3 rounded-lg px-3 py-3" style={{ background: "var(--surface-sunken)" }}>
-              <Building2 size={20} aria-hidden="true" style={{ color: "var(--problems)" }} />
-              <span className="flex flex-col">
-                <span className="font-semibold">Everyone</span>
-                <span className="sp-caption">No team is above the company rate ({Math.round(company * 100)}%).</span>
-              </span>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {rows.map((r) => (
-                <label key={r.name} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-3" style={{ background: off.includes(r.name) ? "transparent" : "var(--problems-soft)" }}>
-                  <input type="checkbox" className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={!off.includes(r.name)} onChange={() => setOff((o) => (o.includes(r.name) ? o.filter((x) => x !== r.name) : [...o, r.name]))} />
-                  <span className="flex min-w-0 flex-1 flex-col gap-1.5">
-                    <span className="flex flex-wrap items-baseline justify-between gap-x-3">
-                      <span className="font-semibold">{r.kind === "tower" ? `${r.name} tower` : r.name}</span>
-                      <span className="sp-num text-[13px] font-bold">
-                        {r.n} of {r.m}
-                        <span style={{ color: "var(--problems)" }}> · +{Math.round((rate(r) - company) * 100)} more in every 100 than the company overall</span>
-                      </span>
-                    </span>
-                    <span className="sp-caption">
-                      {r.leads.map((l) => l.name).join(", ") || "No team lead"}
-                      {r.avg !== null ? ` · avg ${r.avg} (company ${where.company.avg ?? "–"})` : ""}
-                    </span>
-                    <RateBar row={r} company={company} />
-                  </span>
-                </label>
-              ))}
-              {where.verdict === "most" ? <span className="sp-caption">In most teams. Untick all for one company-wide fix.</span> : null}
-            </div>
-          )}
-        </div>
-
-        <div className="flex min-w-0 flex-col gap-3">
-          <Num n={2} title="Which fix" />
-          {!entries ? (
-            <div className="sp-skel h-16" />
-          ) : (
-            <div role="radiogroup" aria-label="Which fix" className="flex flex-col gap-2">
-              {[...shown, null].map((f) => {
-                const id = f?.id ?? "own";
-                const on = chosen === id;
-                const good = (f?.difference ?? 0) > 0;
-                const best = good && id === shown[0].id;
-                return (
-                  <label key={id} className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5" style={{ border: `1px solid ${on ? "var(--problems)" : "var(--line)"}`, background: on ? "var(--problems-soft)" : "transparent" }}>
-                    <input type="radio" name={`fix-${driver}`} className="mt-1 h-4 w-4 flex-none accent-[color:var(--problems)]" checked={on} onChange={() => setPick(id)} />
-                    <span className="flex min-w-0 flex-1 flex-col gap-1">
-                      <span className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="font-semibold">{f ? f.title : "Write my own"}</span>
-                        {f ? (
-                          <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" title={f.evidence} style={good ? { background: "var(--fixes-soft)", color: "var(--fixes)" } : { background: "var(--surface-sunken)", color: "var(--ink-muted)" }}>
-                            {best ? `Best fit · score +${f.difference!.toFixed(1)}` : good ? `Also worked · score +${f.difference!.toFixed(1)}` : f.used ? `Used ${f.used}×` : "Not tried here"}
-                          </span>
-                        ) : null}
-                      </span>
-                      {best && f ? <span className="sp-meta">Why: {f.evidence}</span> : null}
-                      {on && f ? <span className="sp-meta">{f.text}</span> : null}
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
-          )}
-          </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <Button variant="primary" lane="problems" className="min-h-12 px-6 text-[15px]" href={fixHref(driver, entry?.id, teams)}>
-          {label}
-          <ArrowRight size={17} aria-hidden="true" />
-        </Button>
-        <span className="sp-caption">Nothing is sent until you approve it.</span>
-      </div>
-
-      {where?.enough ? (
-        <span className="border-t pt-3 sp-caption" style={{ borderColor: "var(--line-soft)" }}>
-          {listed} of {where.eligible} teams with 5+ answers listed{rows.length > listed ? `, plus ${rows.length - listed} pooled ${rows.length - listed === 1 ? "tower" : "towers"}` : ""}. A to Z, never ranked.
-          {where.small ? ` ${where.small} under 5: no number.` : ""}
-          {where.safety ? ` ${where.safety} more hidden so others cannot be worked out.` : ""} Live count.
-        </span>
-      ) : null}
     </div>
   );
 }
@@ -532,19 +396,18 @@ function ThreadCard({ thread, replies, row, href, onMore }: { thread: Thread; re
         </Button>
       </div>
       <Round b={latest} replies={replies} max={3} onMore={onMore} />
-      {earlier.length ? (
-        all ? (
-          earlier.map((b) => (
+      {all
+        ? earlier.map((b) => (
             <div key={b.id} className="flex flex-col gap-2 border-t pt-3" style={{ borderColor: "var(--line-soft)" }}>
               <span className="sp-caption">{shortDate(b.sent_at)}</span>
               <Round b={b} replies={replies} />
             </div>
           ))
-        ) : (
-          <button type="button" className="sp-link self-start text-[14px]" onClick={() => setAll(true)}>
-            Earlier rounds ({earlier.length})
-          </button>
-        )
+        : null}
+      {earlier.length ? (
+        <button type="button" className="sp-link self-start text-[14px]" aria-expanded={all} onClick={() => setAll(!all)}>
+          {all ? "Hide earlier rounds" : `Earlier rounds (${earlier.length})`}
+        </button>
       ) : null}
     </li>
   );
@@ -569,10 +432,10 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
     .filter((r) => !r.escalate && r.drivers?.includes(driver) && counted(r))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   const linked = (replies.data ?? []).filter((r) => r.drivers.includes(driver));
+  const rowOf = (teams: string[]) => (where?.enough ? where.rows.find((r) => r.teams.some((team) => teams.includes(team))) : undefined);
   const threads = Object.values((briefs ?? []).reduce<Record<string, LeadBrief[]>>((by, b) => ({ ...by, [b.manager_id]: [...(by[b.manager_id] ?? []), b] }), {}))
     .map((rounds): Thread => ({ rounds, teams: rounds[0].team.split(", "), ids: linked.filter((r) => rounds.some((b) => b.id === r.lead?.id)).map((r) => r.id) }))
-    .sort((a, b) => Number(!!a.rounds[0].side) - Number(!!b.rounds[0].side) || b.ids.length - a.ids.length);
-  const rowOf = (t: Thread) => (where?.enough ? where.rows.find((r) => r.teams.some((team) => t.teams.includes(team))) : undefined);
+    .sort((a, b) => rate(rowOf(b.teams) ?? { n: 0, m: 0 }) - rate(rowOf(a.teams) ?? { n: 0, m: 0 }) || b.ids.length - a.ids.length);
   const answered = threads.filter((t) => t.rounds[0].side).length;
   const intakes = intakePoints(d);
   const days = (d?.by_day ?? []).flatMap((s) => (s.enough ? [{ label: dayLabel(s.touchpoint), n: s.n, m: s.m }] : []));
@@ -585,7 +448,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
 
   return (
     <section id="cur" aria-labelledby="cur-title" className="sp-card min-w-0 scroll-mt-4 overflow-clip">
-      <div key={driver} className="sp-enter grid items-start gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+      <div key={driver} className="sp-enter px-5 py-5 sm:px-6">
         <div className="flex min-w-0 flex-col gap-5">
           <div className="flex flex-col gap-1.5">
             <div className="flex flex-wrap items-center gap-2.5">
@@ -636,7 +499,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 ) : (
                   <>
                     {where.verdict === "most" ? <span className="text-[14px] font-semibold">Most teams</span> : null}
-                    {where.rows.map((r) => (
+                    {where.rows.toSorted((a, b) => rate(b) - rate(a)).map((r) => (
                       <div key={r.name} className="flex flex-col gap-0.5">
                         <span className="flex items-baseline justify-between gap-2 text-[13px]">
                           <span className="min-w-0 font-semibold">{r.name}</span>
@@ -651,9 +514,19 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
                 )}
               </Tile3>
               <Tile3 title="Trend" wide>
-                <div className="grid gap-6 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                  {intakes.length ? <Columns points={intakes} /> : null}
-                  {days.length > 1 ? <Columns points={days} /> : null}
+                <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                  {intakes.length ? (
+                    <div className="flex min-w-0 flex-col gap-2 rounded-lg px-3 py-2.5" style={{ background: "var(--surface-raised)" }}>
+                      <h5 className="m-0 text-[12px] font-bold uppercase tracking-[0.06em] sp-muted">Start month</h5>
+                      <Columns points={intakes} />
+                    </div>
+                  ) : null}
+                  {days.length > 1 ? (
+                    <div className="flex min-w-0 flex-col gap-2 rounded-lg px-3 py-2.5" style={{ background: "var(--surface-raised)" }}>
+                      <h5 className="m-0 text-[12px] font-bold uppercase tracking-[0.06em] sp-muted">Check-in day</h5>
+                      <Columns points={days} />
+                    </div>
+                  ) : null}
                 </div>
               </Tile3>
             </div>
@@ -664,9 +537,9 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
           {grouped.length ? (
             <div className="flex flex-wrap items-center gap-2" role="group" aria-label="What they mean">
               {grouped.map((group) => (
-                <button key={group.title} type="button" className="sp-chip cursor-pointer" onClick={() => read(group.title)}>
+                <button key={group.title} type="button" className="sp-chip cursor-pointer gap-2.5 py-1 pl-4 pr-1.5" onClick={() => read(group.title)}>
                   {group.title}
-                  <span className="sp-num font-bold" style={{ color: "var(--problems)" }}>
+                  <span className="sp-num grid h-6 min-w-6 place-items-center rounded-full px-2 text-[12px] font-bold" style={{ background: "var(--problems)", color: "var(--on-problems)" }}>
                     {group.n}
                   </span>
                 </button>
@@ -690,7 +563,7 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               </div>
               <ol className="sp-stagger m-0 flex list-none flex-col gap-3 p-0">
                 {threads.map((t) => (
-                  <ThreadCard key={t.rounds[0].manager_id} thread={t} replies={replies.data ?? []} row={rowOf(t)} href={fixHref(driver, library.data?.[0]?.id, t.teams)} onMore={() => read(t.rounds[0].team)} />
+                  <ThreadCard key={t.rounds[0].manager_id} thread={t} replies={replies.data ?? []} row={rowOf(t.teams)} href={fixHref(driver, library.data?.[0]?.id, t.teams)} onMore={() => read(t.rounds[0].team)} />
                 ))}
               </ol>
             </section>
@@ -710,11 +583,6 @@ function Problem({ driver, card, actions, waiting }: { driver: string; card: Car
               onClose={close}
             />
           ) : null}
-        </div>
-
-        <div className="flex min-w-0 flex-col gap-3 lg:sticky lg:top-[calc(var(--sp-demo-bar,0px)+16px)]">
-          <h3 className="m-0 text-[15px] font-bold">Send a fix</h3>
-          <SendFix key={driver} driver={driver} where={where} entries={library.data} fixes={fixes} />
         </div>
       </div>
     </section>
