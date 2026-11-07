@@ -6,6 +6,7 @@ import { classifierTag, dispatch, freezeClock, hrRequest, joined, link, modelCal
 const en = JSON.parse(readFileSync(new URL("../data/packs/en.json", import.meta.url), "utf8"));
 const SENT = "2026-10-15T15:00:00.000Z";
 const BOTH = [4, 1, 4, 1, 4, 4];
+const ONE = [4, 1, 4, 4, 4, 4];
 const MANAGER = "Manager support:";
 const WORKPLACE = "Workplace:";
 
@@ -17,9 +18,9 @@ async function team(name: string, leadChat: number, hire: number) {
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
 }
 
-async function checkin(hire: number, text: string, share: "meet" | "tell" | "no" | null) {
-  for (const score of BOTH) await tapScore(hire, score);
-  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["MANAGER_SUPPORT"], evidence_quote: text }) }]);
+async function checkin(hire: number, text: string, share: "meet" | "tell" | "no" | null, taps = BOTH, drivers = ["MANAGER_SUPPORT"]) {
+  for (const score of taps) await tapScore(hire, score);
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers, evidence_quote: text }) }]);
   await say(hire, text);
   if (share) await tap(hire, en.checkin.share[share]);
 }
@@ -34,10 +35,10 @@ before(async () => {
   await freezeClock(SENT);
 });
 
-test("R66: an area the AI marks as not a problem for the team lead is left out of the brief", async () => {
+test("R66: an area with no hard tap that the AI marks as not a problem for the team lead is left out of the brief", async () => {
   const [leadChat, hire] = [5550008001, 5550008101];
   await team("Siti", leadChat, hire);
-  await checkin(hire, "The canteen has no halal food and my lead takes days to answer", "no");
+  await checkin(hire, "The canteen has no halal food and my lead takes days to answer", "no", ONE, ["MANAGER_SUPPORT", "ONBOARDING"]);
   const brief = "New hires say your answers to their questions take days.";
   await scriptModel("omniroute", [areas([{ area: "MANAGER_SUPPORT", ask: true, brief }, { area: "ONBOARDING", ask: false, brief: "The canteen has no halal food." }])]);
   assert.deepEqual(await closeRound(), { sent: 1 });
@@ -46,10 +47,10 @@ test("R66: an area the AI marks as not a problem for the team lead is left out o
   assert.deepEqual(rows.find((row) => row.lead === "Siti")!.items.map((item) => item.driver), ["MANAGER_SUPPORT"]);
 });
 
-test("R66: when the AI marks every area as not a problem for the team lead, nothing is sent", async () => {
+test("R66: when the AI marks every area with no hard tap as not a problem for the team lead, nothing is sent", async () => {
   const [leadChat, hire] = [5550008002, 5550008102];
   await team("Wei", leadChat, hire);
-  await checkin(hire, "Parking near the office costs too much", "no");
+  await checkin(hire, "Parking near the office costs too much", null, [4, 4, 4, 4, 4, 4], ["MANAGER_SUPPORT", "ONBOARDING"]);
   const before = (await sentTo(leadChat)).length;
   await scriptModel("omniroute", [areas([{ area: "MANAGER_SUPPORT", ask: false, brief: "Parking costs too much." }, { area: "ONBOARDING", ask: false, brief: "Parking costs too much." }])]);
   assert.deepEqual(await closeRound(), { sent: 0 });
@@ -71,7 +72,7 @@ test("R66: with the AI unreachable, every area gets its fixed brief", async () =
 test("R66: a brief with a digit is retried once, then the fixed brief is used", async () => {
   const [leadChat, hire] = [5550008004, 5550008104];
   await team("Lena", leadChat, hire);
-  await checkin(hire, "My lead answers my questions very late", "no");
+  await checkin(hire, "My lead answers my questions very late", "no", ONE);
   const digit = areas([{ area: "MANAGER_SUPPORT", ask: true, brief: "New hires wait 3 days for your answers." }, { area: "ONBOARDING", ask: false, brief: "Nothing." }]);
   await scriptModel("omniroute", [digit, digit]);
   assert.deepEqual(await closeRound(), { sent: 1 });
@@ -81,7 +82,7 @@ test("R66: a brief with a digit is retried once, then the fixed brief is used", 
 test("R66: a brief that names a hire who did not tap Yes is retried once, then the fixed brief is used", async () => {
   const [leadChat, hire] = [5550008005, 5550008105];
   await team("Kumar", leadChat, hire);
-  await checkin(hire, "My lead answers my questions very late", "no");
+  await checkin(hire, "My lead answers my questions very late", "no", ONE);
   const named = areas([{ area: "MANAGER_SUPPORT", ask: true, brief: "Test Hire says your answers come late." }, { area: "ONBOARDING", ask: false, brief: "Nothing." }]);
   await scriptModel("omniroute", [named, named]);
   assert.deepEqual(await closeRound(), { sent: 1 });
@@ -107,7 +108,7 @@ test("R66: an escalated reply is left out of the AI input", async () => {
 test("R66: a round closes by itself 24 hours after the check-in was sent", async () => {
   const [leadChat, hire] = [5550008007, 5550008107];
   await team("Daniel", leadChat, hire);
-  await checkin(hire, "My lead answers my questions very late", "no");
+  await checkin(hire, "My lead answers my questions very late", "no", ONE);
   const before = (await sentTo(leadChat)).length;
   await freezeClock("2026-10-16T14:59:00.000Z");
   await dispatch();

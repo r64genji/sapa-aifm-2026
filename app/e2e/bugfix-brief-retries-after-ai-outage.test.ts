@@ -16,8 +16,8 @@ before(async () => {
   await link(leadChat, String(made.telegram_link).split("?start=")[1]);
   await hrRequest(`/api/hr/managers/${made.manager_id}/hires`, "POST", { code_names: [`Hire ${hire}`] });
   assert.equal((await hrRequest("/api/hr/demo/outreach", "POST", { touchpoint: 14 })).status, 200);
-  for (const score of [4, 1, 4, 1, 4, 4]) await tapScore(hire, score);
-  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["MANAGER_SUPPORT"], evidence_quote: text }) }]);
+  for (const score of [4, 1, 4, 4, 4, 4]) await tapScore(hire, score);
+  await scriptModel("omniroute", [{ kind: "json", content: classifierTag({ drivers: ["MANAGER_SUPPORT", "ONBOARDING"], evidence_quote: text }) }]);
   await say(hire, text);
   await tap(hire, en.checkin.share.no);
 });

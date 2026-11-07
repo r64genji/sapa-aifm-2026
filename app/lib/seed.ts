@@ -197,6 +197,8 @@ export async function resetDemo(full = false) {
   const phones = full ? null : await linkedPhones();
   const tracks = full ? null : await db.from("checkin_tracks").select();
   if (tracks?.error) throw tracks.error;
+  const translations = await db.from("translations").select();
+  if (translations.error) throw translations.error;
   const { error } = await db.rpc("reset_demo", {
     seed: { organisations, language_packs: passedPacks(), managers: leads, intakes: [intake], people: demo.people, consents, checkin_schedule: demo.checkin_schedule, responses: replies, ai_tags: demo.ai_tags, escalations: cases, quality_holds, handbook_pages, question_groups, asked_questions, theme_snapshots: demo.theme_snapshots, team_towers, tower_snapshots, action_library, actions: demoActions(), intake_outcomes, milestone_nudges },
   });
@@ -209,6 +211,10 @@ export async function resetDemo(full = false) {
   if (tracks?.data.length) {
     const { error: tracksError } = await db.from("checkin_tracks").insert(tracks.data);
     if (tracksError) throw tracksError;
+  }
+  if (translations.data.length) {
+    const { error: translationsError } = await db.from("translations").insert(translations.data);
+    if (translationsError) throw translationsError;
   }
   if (phones) await relinkPhones(phones, teams);
   const { data: lead } = await db.from("managers").select("id, display_name");

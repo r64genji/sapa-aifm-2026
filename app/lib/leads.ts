@@ -72,7 +72,7 @@ async function write(organisationId: string, areas: Area[], hidden: string[]) {
   if (!last) return areas.map(fixed);
   return areas.flatMap((area) => {
     const out = last!.areas.find((candidate) => candidate.area === area.driver);
-    if (out && !out.ask && area.replies.length) return [];
+    if (out && !out.ask && area.replies.length) return area.taps ? [fixed(area)] : [];
     if (out && briefHolds(out.brief, area.replies.map((reply) => reply.text), hidden)) return [{ driver: area.driver, brief: out.brief.trim(), ai: true, hires: area.hires }];
     return [fixed(area)];
   });
